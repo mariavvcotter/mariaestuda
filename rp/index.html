@@ -1,1 +1,1330 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✨ Relações Públicas — Plataforma de Estudo</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #faf7f2;
+  --warm: #f0ebe0;
+  --ink: #1a1209;
+  --rust: #c4440a;
+  --gold: #d4a017;
+  --sage: #4a6741;
+  --sky: #2d6a8f;
+  --plum: #6b3d6e;
+  --coral: #e8624a;
+  --mint: #3d8c7a;
+  --bg: #fdf9f4;
+}
 
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ——— HEADER ——— */
+.hero {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 3rem 2rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(196,68,10,0.25) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 30%, rgba(45,106,143,0.2) 0%, transparent 55%);
+}
+.hero-emoji { font-size: 3rem; display: block; margin-bottom: 0.5rem; position: relative; z-index: 1; }
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  position: relative; z-index: 1;
+  line-height: 1.1;
+}
+.hero h1 span { color: var(--gold); font-style: italic; }
+.hero-sub {
+  margin-top: 0.75rem;
+  font-size: 1rem;
+  opacity: 0.7;
+  position: relative; z-index: 1;
+}
+.hero-tags {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;
+  margin-top: 1.25rem; position: relative; z-index: 1;
+}
+.tag {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 999px;
+  padding: 0.25rem 0.85rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tag:hover { background: var(--rust); border-color: var(--rust); }
+.tag.active { background: var(--gold); border-color: var(--gold); color: var(--ink); font-weight: 600; }
+
+/* ——— NAV ——— */
+.nav {
+  background: white;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  padding: 0 1.5rem;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.nav::-webkit-scrollbar { display: none; }
+.nav-btn {
+  background: none; border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem; font-weight: 500;
+  padding: 1rem 1.1rem;
+  color: #666;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.nav-btn:hover { color: var(--rust); }
+.nav-btn.active { color: var(--rust); border-bottom-color: var(--rust); font-weight: 600; }
+
+/* ——— MAIN ——— */
+.main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem; }
+.section { display: none; }
+.section.active { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.35rem;
+}
+.section-title span { color: var(--rust); font-style: italic; }
+.section-subtitle { color: #777; margin-bottom: 2rem; font-size: 0.92rem; }
+
+/* ——— CARDS GRID ——— */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; margin-bottom: 2.5rem; }
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  transition: all 0.25s;
+  cursor: default;
+}
+.card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.1); }
+.card-icon { font-size: 2rem; margin-bottom: 0.75rem; display: block; }
+.card-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.4rem;
+}
+.card h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; line-height: 1.3; }
+.card p { font-size: 0.88rem; line-height: 1.6; color: #555; }
+.card ul { font-size: 0.86rem; line-height: 1.7; color: #555; padding-left: 1.1rem; }
+.card ul li { margin-bottom: 0.2rem; }
+
+.card.rust { border-top: 4px solid var(--rust); }
+.card.gold { border-top: 4px solid var(--gold); }
+.card.sky { border-top: 4px solid var(--sky); }
+.card.sage { border-top: 4px solid var(--sage); }
+.card.plum { border-top: 4px solid var(--plum); }
+.card.mint { border-top: 4px solid var(--mint); }
+.card.coral { border-top: 4px solid var(--coral); }
+
+/* ——— TIMELINE DIAGRAM ——— */
+.diagram-box {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  border: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+  margin-bottom: 2rem;
+}
+.diagram-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 1.5rem; }
+.models-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; }
+.model-card {
+  border-radius: 12px; padding: 1.25rem;
+  border: 2px solid;
+  position: relative;
+}
+.model-card .model-num {
+  position: absolute; top: -14px; left: 16px;
+  font-size: 0.7rem; font-weight: 700;
+  padding: 2px 10px; border-radius: 99px;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.model-card h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; margin-top: 0.3rem; }
+.model-card p { font-size: 0.82rem; line-height: 1.55; color: #555; }
+.model-card .tag-small {
+  display: inline-block; font-size: 0.7rem; padding: 2px 8px;
+  border-radius: 99px; margin-top: 0.5rem; font-weight: 600;
+}
+.m1 { border-color: #e8b4a0; background: #fdf5f2; }
+.m1 .model-num { background: #e8b4a0; color: #5a1a00; }
+.m2 { border-color: #f0d080; background: #fffbee; }
+.m2 .model-num { background: #f0d080; color: #5a3d00; }
+.m3 { border-color: #a0c4e8; background: #f0f8ff; }
+.m3 .model-num { background: #a0c4e8; color: #00305a; }
+.m4 { border-color: #a0e8c0; background: #f0fff8; }
+.m4 .model-num { background: #a0e8c0; color: #005a30; }
+
+/* ——— FLASHCARDS ——— */
+.fc-container { perspective: 1000px; max-width: 600px; margin: 0 auto; }
+.fc-progress { text-align: center; margin-bottom: 1rem; font-size: 0.88rem; color: #888; }
+.fc-inner {
+  width: 100%; height: 280px; cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+}
+.fc-inner.flipped { transform: rotateY(180deg); }
+.fc-front, .fc-back {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  border-radius: 20px;
+  padding: 2.5rem;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  text-align: center;
+}
+.fc-front {
+  background: linear-gradient(135deg, var(--ink) 0%, #3a2820 100%);
+  color: var(--cream);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.fc-front .fc-q { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; line-height: 1.4; }
+.fc-front .fc-hint { font-size: 0.78rem; opacity: 0.5; margin-top: 1rem; }
+.fc-back {
+  background: linear-gradient(135deg, var(--rust) 0%, #8b2a00 100%);
+  color: white;
+  transform: rotateY(180deg);
+}
+.fc-back .fc-a { font-size: 0.95rem; line-height: 1.7; }
+.fc-nav { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; }
+.fc-btn {
+  padding: 0.65rem 1.8rem;
+  border-radius: 99px; border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600;
+  transition: all 0.2s;
+}
+.fc-btn.prev { background: var(--warm); color: var(--ink); }
+.fc-btn.next { background: var(--ink); color: white; }
+.fc-btn:hover { transform: scale(1.04); }
+.fc-category {
+  font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em;
+  opacity: 0.6; margin-bottom: 0.8rem; font-weight: 600;
+}
+
+/* ——— QUIZ ——— */
+.quiz-box { max-width: 680px; margin: 0 auto; }
+.quiz-q {
+  background: white; border-radius: 18px;
+  padding: 2rem; margin-bottom: 1rem;
+  border: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+}
+.quiz-q-num { font-size: 0.75rem; font-weight: 600; color: var(--rust); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.quiz-q-text { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 600; line-height: 1.5; margin-bottom: 1.5rem; }
+.quiz-options { display: flex; flex-direction: column; gap: 0.65rem; }
+.quiz-opt {
+  background: var(--warm);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 0.85rem 1.2rem;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  text-align: left;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.quiz-opt:hover { border-color: var(--sky); background: #f0f7ff; }
+.quiz-opt.correct { background: #e8fff2; border-color: var(--sage); color: #1a5a30; }
+.quiz-opt.wrong { background: #fff0f0; border-color: var(--coral); color: #5a1a00; }
+.quiz-opt .opt-letter {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
+}
+.quiz-opt.correct .opt-letter { background: var(--sage); color: white; }
+.quiz-opt.wrong .opt-letter { background: var(--coral); color: white; }
+.quiz-explanation {
+  background: #f8f4ff; border-left: 4px solid var(--plum);
+  padding: 1rem 1.25rem; border-radius: 0 12px 12px 0;
+  font-size: 0.88rem; line-height: 1.6; color: #444;
+  margin-top: 1rem; display: none;
+}
+.quiz-explanation.show { display: block; animation: fadeIn 0.3s; }
+.quiz-next-btn {
+  display: none; margin-top: 1rem;
+  padding: 0.75rem 2rem; border-radius: 99px;
+  background: var(--ink); color: white; border: none;
+  font-family: 'DM Sans', sans-serif; font-size: 0.92rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.quiz-next-btn.show { display: inline-flex; align-items: center; gap: 0.5rem; }
+.quiz-next-btn:hover { background: var(--rust); }
+.quiz-score {
+  background: linear-gradient(135deg, var(--ink), #3a2820);
+  color: white; border-radius: 20px; padding: 3rem 2rem;
+  text-align: center; display: none;
+}
+.quiz-score.show { display: block; animation: fadeIn 0.4s; }
+.quiz-score .big-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 5rem; font-weight: 900; color: var(--gold);
+  line-height: 1;
+}
+.quiz-score p { opacity: 0.8; margin: 0.75rem 0; }
+.quiz-restart {
+  margin-top: 1.5rem; padding: 0.75rem 2rem; border-radius: 99px;
+  background: var(--rust); color: white; border: none;
+  font-family: 'DM Sans', sans-serif; font-size: 0.92rem; font-weight: 600;
+  cursor: pointer;
+}
+
+/* ——— GOSSIP / FOFOCA ——— */
+.gossip-card {
+  background: white; border-radius: 18px;
+  padding: 1.75rem; margin-bottom: 1.25rem;
+  border: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+  display: flex; gap: 1.25rem;
+}
+.gossip-avatar {
+  width: 54px; height: 54px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; flex-shrink: 0;
+}
+.gossip-content { flex: 1; }
+.gossip-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.2rem; }
+.gossip-title { font-size: 0.75rem; color: #888; margin-bottom: 0.7rem; }
+.gossip-text { font-size: 0.9rem; line-height: 1.7; color: #444; }
+.gossip-text strong { color: var(--ink); }
+.gossip-tag {
+  display: inline-block; font-size: 0.68rem; padding: 2px 10px;
+  border-radius: 99px; margin-top: 0.7rem; font-weight: 600;
+}
+.hot-tag { background: #ffe5dc; color: #b83000; }
+.cool-tag { background: #dce8ff; color: #003080; }
+.theory-tag { background: #f0ffe8; color: #2a6010; }
+.drama-tag { background: #fce8ff; color: #600080; }
+
+/* ——— ESQUEMAS ——— */
+.esquema-box {
+  background: white; border-radius: 20px;
+  padding: 2rem; margin-bottom: 2rem;
+  border: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+  overflow-x: auto;
+}
+.esquema-box h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 1.5rem; }
+
+.flow {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;
+}
+.flow-node {
+  background: var(--warm); border-radius: 10px;
+  padding: 0.6rem 1rem; font-size: 0.82rem; font-weight: 500;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+.flow-node.highlighted { background: var(--rust); color: white; }
+.flow-node.blue { background: var(--sky); color: white; }
+.flow-node.green { background: var(--sage); color: white; }
+.flow-arrow { font-size: 1.2rem; color: #aaa; }
+
+.table-clean { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.table-clean th {
+  background: var(--ink); color: white;
+  padding: 0.65rem 1rem; text-align: left; font-weight: 600;
+  font-size: 0.8rem;
+}
+.table-clean td { padding: 0.65rem 1rem; border-bottom: 1px solid #f0ebe0; }
+.table-clean tr:last-child td { border-bottom: none; }
+.table-clean tr:nth-child(even) td { background: var(--bg); }
+
+.pillars-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; }
+.pillar {
+  border-radius: 12px; padding: 1rem 0.75rem;
+  text-align: center; border: 2px solid;
+}
+.pillar .p-num { font-size: 1.5rem; font-weight: 900; font-family: 'Playfair Display', serif; }
+.pillar .p-name { font-size: 0.78rem; font-weight: 600; margin-top: 0.2rem; }
+.pillar .p-sub { font-size: 0.7rem; color: #777; margin-top: 0.25rem; }
+
+/* ——— RESUMOS ——— */
+.resumo-block {
+  background: white; border-radius: 18px;
+  padding: 2rem; margin-bottom: 1.5rem;
+  border: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.04);
+}
+.resumo-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-weight: 700;
+  margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.6rem;
+}
+.resumo-block .resumo-subtitle { font-size: 0.8rem; color: #999; margin-bottom: 1.25rem; }
+.resumo-block p { font-size: 0.9rem; line-height: 1.75; color: #444; margin-bottom: 0.8rem; }
+.resumo-block h4 { font-weight: 700; font-size: 0.92rem; margin: 1.25rem 0 0.5rem; color: var(--ink); }
+.resumo-block ul { padding-left: 1.2rem; }
+.resumo-block li { font-size: 0.88rem; line-height: 1.7; color: #555; margin-bottom: 0.25rem; }
+.highlight-box {
+  background: linear-gradient(135deg, #fff8ee, #fff3dc);
+  border: 1px solid #f0d080; border-radius: 12px;
+  padding: 1rem 1.25rem; margin: 1rem 0;
+  font-size: 0.88rem; line-height: 1.65; color: #5a3a00;
+}
+.highlight-box strong { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: #c4880a; margin-bottom: 0.4rem; }
+
+/* ——— PROGRESS ——— */
+.progress-bar-wrap { background: rgba(0,0,0,0.08); border-radius: 99px; height: 6px; margin-bottom: 0.3rem; }
+.progress-bar-fill { height: 100%; border-radius: 99px; background: var(--rust); transition: width 0.4s; }
+
+/* ——— RESPONSIVE ——— */
+@media (max-width: 600px) {
+  .cards-grid { grid-template-columns: 1fr; }
+  .gossip-card { flex-direction: column; }
+  .models-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="hero-emoji">📣</span>
+  <h1>Relações <span>Públicas</span></h1>
+  <p class="hero-subtitle">Plataforma de Estudo — Prof. Doutor Nuno Goulart Brandão · UCF/FCH</p>
+  <div class="hero-tags">
+    <span class="tag">Modelos de Grunig</span>
+    <span class="tag">Identidade & Imagem</span>
+    <span class="tag">Stakeholders</span>
+    <span class="tag">RSE</span>
+    <span class="tag">Comunicação Interna</span>
+    <span class="tag">Gestão de Crises</span>
+  </div>
+</header>
+
+<nav class="nav" id="nav">
+  <button class="nav-btn active" onclick="showTab('resumos')">📚 Resumos</button>
+  <button class="nav-btn" onclick="showTab('esquemas')">🗺️ Esquemas</button>
+  <button class="nav-btn" onclick="showTab('flashcards')">🃏 Flashcards</button>
+  <button class="nav-btn" onclick="showTab('quiz')">🎯 Quiz</button>
+  <button class="nav-btn" onclick="showTab('fofoca')">🔥 Fofoca</button>
+  <button class="nav-btn" onclick="showTab('temas')">⚡ Temas-Chave</button>
+</nav>
+
+<main class="main">
+
+<!-- ════════════════════════════════════════════════
+     RESUMOS
+════════════════════════════════════════════════ -->
+<section class="section active" id="resumos">
+  <h2 class="section-title">📚 <span>Resumos</span> da Matéria</h2>
+  <p class="section-subtitle">Toda a sebenta destilada — sem contexto histórico, sem instrumentos dos media</p>
+
+  <div class="resumo-block">
+    <h3>🎯 Posicionamento das RP</h3>
+    <p class="resumo-subtitle">PARTE I — Fundamentos · Caps. 2 e 3</p>
+    <p>As Relações Públicas são uma <strong>responsabilidade de gestão</strong> centrada no diálogo permanente e na procura da gestão de conflitos. O seu princípio orientador exige <em>disponibilidade para modificações de comportamento</em> por parte das organizações — não apenas persuasão dos públicos.</p>
+    <h4>O que fazem as RP nas organizações?</h4>
+    <ul>
+      <li>Interpretam a opinião pública interna e externa</li>
+      <li>Aconselham os órgãos de poder</li>
+      <li>São porta-voz da instituição</li>
+      <li>Actuam em 3 níveis: <strong>Interno → Institucional → Envolvente</strong></li>
+    </ul>
+    <h4>7 Princípios da Comunicação Eficaz</h4>
+    <ul>
+      <li><strong>Clareza</strong> — linguagem acessível</li>
+      <li><strong>Coerência</strong> — sincronia mensagem/acção</li>
+      <li><strong>Adequação</strong> — linguagem conforme o público</li>
+      <li><strong>Oportunidade</strong> — momento certo</li>
+      <li><strong>Distribuição</strong> — chegar devidamente aos receptores</li>
+      <li><strong>Adaptação e Uniformidade</strong> — controlo da divulgação</li>
+      <li><strong>Aceitação e Interesse</strong> — grau de receptividade</li>
+    </ul>
+    <div class="highlight-box">
+      <strong>💡 Definição Clássica</strong>
+      Conjunto de métodos de análise de situação e detecção de tendências, bem como de avaliação dos respectivos reflexos na Instituição — como auxiliar do diagnóstico necessário à tomada de decisão.
+    </div>
+    <h4>RP vs. Publicidade</h4>
+    <ul>
+      <li>RP: <strong>informar, educar</strong> → obter credibilidade permanente</li>
+      <li>Publicidade: <strong>persuadir, vender</strong> → credibilidade em cada campanha</li>
+    </ul>
+  </div>
+
+  <div class="resumo-block">
+    <h3>🧱 Modelos de Grunig & Hunt</h3>
+    <p class="resumo-subtitle">PARTE I — Fundamentos · Cap. 2 · Absolutamente central no exame</p>
+    <p>James Grunig e Todd Hunt (2003) propuseram 4 modelos que contextualizam o desenvolvimento histórico das RP e como são praticadas nas organizações hoje.</p>
+    <div class="highlight-box">
+      <strong>⚠️ Atenção ao exame</strong>
+      O 4.º Modelo (Simétrico Bidireccional) é o ideal/teoria de excelência. Pode ser combinado com o 3.º para máxima eficácia organizacional. O Modelo Simétrico estabelece uma teoria normativa de como as RP devem ser praticadas segundo princípios éticos.
+    </div>
+  </div>
+
+  <div class="resumo-block">
+    <h3>🏛️ Identidade, Reputação e Imagem</h3>
+    <p class="resumo-subtitle">PARTE II — Cap. 1 · Triângulo fundamental</p>
+    <p><strong>Identidade</strong> = o que a organização é, faz e diz → conceito "emissor" (definido pela org.)</p>
+    <p><strong>Imagem</strong> = o que se passa na mente dos públicos → conceito "receptor"</p>
+    <p><strong>Reputação</strong> = activo intangível gerado pela confiança, transparência e interacção entre identidade e imagem (Fombrun, 1996)</p>
+    <h4>3 Critérios de Identidade Organizacional</h4>
+    <ul>
+      <li>Definição do <strong>carácter</strong> da empresa (foco central de existência)</li>
+      <li>Características que a <strong>distinguem</strong> de outras organizações</li>
+      <li>Características que permitem a <strong>identificação ao longo do tempo</strong> (permanência)</li>
+    </ul>
+    <h4>Condições para Identidade e Reputação</h4>
+    <ul>
+      <li>Coerência · Responsabilidade · Credibilidade · Confiança · Transparência</li>
+    </ul>
+    <div class="highlight-box">
+      <strong>💥 Dissonância = Perigo!</strong>
+      Se os públicos percepcionam alto grau de dissonância entre o que a org. diz e faz, reagem negativamente. Isso é interpretado como hipocrisia. (Effron et al., 2018)
+    </div>
+  </div>
+
+  <div class="resumo-block">
+    <h3>👥 Públicos & Stakeholders</h3>
+    <p class="resumo-subtitle">PARTE II — Cap. 2</p>
+    <p><strong>Stakeholder</strong> (Freeman, 2010): "grupo ou indivíduo que pode afectar ou é afectado pelo cumprimento da finalidade e objectivos da organização."</p>
+    <h4>4 Categorias de Públicos (Grunig & Repper, 1992)</h4>
+    <ul>
+      <li><strong>Não-públicos</strong> — não reconhecem envolvimento com a org.</li>
+      <li><strong>Públicos Latentes</strong> — défice de envolvimento por constrangimentos percepcionados</li>
+      <li><strong>Públicos Conscientes</strong> — envolvimento crescente mas sem comunicação própria</li>
+      <li><strong>Públicos Activos</strong> — alta percepção, eliminam constrangimentos, envolvem-se</li>
+    </ul>
+    <h4>5 Vertentes de Gestão dos Stakeholders (Freeman)</h4>
+    <ul>
+      <li>Identificação de novos stakeholders</li>
+      <li>Desenvolvimento de estratégias para todos</li>
+      <li>Integração de todas as preocupações</li>
+      <li>Negociação dos assuntos-chave de interesse mútuo</li>
+      <li>Investigação em novos pontos e tendências</li>
+    </ul>
+  </div>
+
+  <div class="resumo-block">
+    <h3>🌱 Responsabilidade Social Empresarial</h3>
+    <p class="resumo-subtitle">PARTE II — Cap. 3</p>
+    <p>Bowen (1957), "pai" da RSE: obrigação dos homens de negócio prosseguirem políticas e linhas de acção que sejam desejáveis para os objectivos e valores da sociedade — para lá da maximização do lucro.</p>
+    <h4>7 Pilares da RSE (Instituto Ethos)</h4>
+    <ul>
+      <li>Valores, Transparência e Governança</li>
+      <li>Público Interno</li>
+      <li>Meio Ambiente</li>
+      <li>Fornecedores</li>
+      <li>Consumidores e Clientes</li>
+      <li>Comunidade</li>
+      <li>Governo e Sociedade</li>
+    </ul>
+    <h4>Modelo de 3 Domínios (Schwartz & Carroll, 2003)</h4>
+    <ul>
+      <li>Económico · Legal · Ético</li>
+    </ul>
+    <h4>4 Virtudes da Governança Corporativa</h4>
+    <ul>
+      <li><strong>Equidade</strong> — tratamento justo, sem discriminação</li>
+      <li><strong>Transparência</strong> — empresa translúcida, sem ocultar relevantes</li>
+      <li><strong>Accountability</strong> — prestação de contas além do legalmente exigido</li>
+      <li><strong>Responsabilidade Corporativa</strong> — assumir consequências dos actos</li>
+    </ul>
+    <div class="highlight-box">
+      <strong>📌 Corporate Political Advocacy (CPA)</strong>
+      Empresas que assumem posições públicas em questões políticas/sociais. Exemplos: Ben & Jerry's (Black Lives Matter), Gillette (#MeToo), Lidl (estereótipos de género). Critérios: consistência, plausibilidade e autenticidade.
+    </div>
+  </div>
+
+  <div class="resumo-block">
+    <h3>💬 Comunicação Interna</h3>
+    <p class="resumo-subtitle">PARTE II — Cap. 4</p>
+    <p>A comunicação interna é <strong>necessidade, crença e vontade</strong> (Almeida, 2000). É o "espelho da comunicação interna" (dimensão imagem).</p>
+    <h4>4 Funções da Comunicação nas Org. (Bilhim)</h4>
+    <ul>
+      <li>Controlo do comportamento organizacional</li>
+      <li>Motivação dos colaboradores</li>
+      <li>Necessidade de afiliação/identificação</li>
+      <li>Fornecimento de informação para decisão</li>
+      <li>+ <strong>5.º (Brandão)</strong>: Ir ao encontro das necessidades dos colaboradores</li>
+    </ul>
+    <h4>3 Tipos de Comunicação</h4>
+    <ul>
+      <li><strong>Descendente</strong> — poder → colaboradores (predominante)</li>
+      <li><strong>Ascendente</strong> — colaboradores → poder (ideias, sugestões)</li>
+      <li><strong>Horizontal</strong> — entre unidades/mesmo nível hierárquico</li>
+    </ul>
+    <h4>5 Barreiras à Comunicação (Thayer, 1979)</h4>
+    <ul>
+      <li>Barreiras Organizacionais</li>
+      <li>Barreiras Interpessoais</li>
+      <li>Barreiras Individuais</li>
+      <li>Barreiras Económicas, Geográficas e Temporais</li>
+      <li>Barreiras de Canal e Meios</li>
+    </ul>
+    <div class="highlight-box">
+      <strong>🗣️ Máxima de Ouro</strong>
+      "Não Comunicar é Comunicar Negativamente." · As empresas com programa de comunicação interna têm maior facilidade na comunicação externa.
+    </div>
+  </div>
+
+  <div class="resumo-block">
+    <h3>📢 Publicidade Institucional & RP Especializadas</h3>
+    <p class="resumo-subtitle">PARTE II — Caps. 5 e 6</p>
+    <h4>Publicidade Institucional</h4>
+    <ul>
+      <li>Função das RP: fortalecer relações com diferentes públicos/partes interessadas</li>
+      <li>Marketing = função de <em>linha</em> (investe para converter em rendimento)</li>
+      <li>RP = função de <em>staff</em> (gere relacionamentos internos/externos)</li>
+    </ul>
+    <h4>Lobbying & Public Affairs</h4>
+    <ul>
+      <li>Persuadir/pressionar poderes públicos na defesa de interesses da organização</li>
+      <li>Deve ser: dentro da lei, ético, transparente, discreto</li>
+    </ul>
+    <h4>Gestão de Crises — Fases (Fearn-Banks)</h4>
+    <ul>
+      <li>Detecção → Preparação/Prevenção → Contenção → Recuperação → Lições Aprendidas</li>
+    </ul>
+    <h4>Tipos de Crise (Lampreia)</h4>
+    <ul>
+      <li><strong>Previsível</strong>: crises económicas, alterações estruturais</li>
+      <li><strong>Imprevisível</strong>: catástrofes, acidentes, sabotagens</li>
+    </ul>
+  </div>
+
+  <div class="resumo-block">
+    <h3>⚖️ Ética & Cultura Organizacional</h3>
+    <p class="resumo-subtitle">PARTE I — Cap. 3 · Extremamente relevante</p>
+    <h4>6 Indicadores de Crescimento Organizacional</h4>
+    <ul>
+      <li>Sobrevivência a longo prazo · Crescimento sustentado · Rentabilidade</li>
+      <li>Capacidade de Inovação · Processos de tomada de decisão</li>
+      <li><strong>6.º (Brandão)</strong>: Avaliação das necessidades dos Stakeholders com Ética de Responsabilidade</li>
+    </ul>
+    <h4>3 Níveis da Cultura Organizacional (Schein)</h4>
+    <ul>
+      <li><strong>Visível</strong> — artefactos, vestuário, comportamentos</li>
+      <li><strong>Maior consciência</strong> — valores e normas</li>
+      <li><strong>Invisível</strong> — pressupostos básicos, crenças tácitas</li>
+    </ul>
+    <h4>15 Valores da Ética Empresarial</h4>
+    <ul>
+      <li>Confiança · Credibilidade · Respeito · Cumprimento de promessas</li>
+      <li>Decisões a M/L prazo · Políticas de RSE · Capacidade de inovação</li>
+      <li>Concorrência leal · Respeito pelo consumidor · Ética = ADN da org.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     ESQUEMAS
+════════════════════════════════════════════════ -->
+<section class="section" id="esquemas">
+  <h2 class="section-title">🗺️ <span>Esquemas</span> Visuais</h2>
+  <p class="section-subtitle">Mapas, tabelas e diagramas para estudar visualmente</p>
+
+  <!-- Modelos Grunig -->
+  <div class="diagram-box">
+    <div class="diagram-title">Os 4 Modelos de Grunig & Hunt — Comparação Completa</div>
+    <div class="models-grid">
+      <div class="model-card m1">
+        <span class="model-num">Modelo 1</span>
+        <h4>Agente de Imprensa</h4>
+        <p><em>Press Agentry / Publicity</em> — As RP servem uma função de propaganda. Objetivo: publicity favorável nos media.</p>
+        <span class="tag-small" style="background:#ffc4a0;color:#5a1a00">Monólogo · Assimétrico</span>
+      </div>
+      <div class="model-card m2">
+        <span class="model-num">Modelo 2</span>
+        <h4>Informação Pública</h4>
+        <p><em>Public Information</em> — Profissionais como "jornalistas residentes". Informação fidedigna para os media, mas só favorável.</p>
+        <span class="tag-small" style="background:#f0d080;color:#5a3a00">Monólogo · Assimétrico</span>
+      </div>
+      <div class="model-card m3">
+        <span class="model-num">Modelo 3</span>
+        <h4>Assimétrico Bidireccional</h4>
+        <p><em>Two-way Asymmetrical</em> — Usa pesquisa para persuadir os públicos. O diálogo existe mas o domínio é da organização.</p>
+        <span class="tag-small" style="background:#a0c4e8;color:#00305a">Diálogo · Persuasão</span>
+      </div>
+      <div class="model-card m4">
+        <span class="model-num">Modelo 4 ⭐</span>
+        <h4>Simétrico Bidireccional</h4>
+        <p><em>Two-way Symmetrical</em> — Compreensão mútua. RP como mediadores. Negociação e compromisso com os públicos. <strong>Teoria de Excelência.</strong></p>
+        <span class="tag-small" style="background:#a0e8c0;color:#005a30">Ideal · Excelência</span>
+      </div>
+    </div>
+    <table class="table-clean" style="margin-top:1.5rem">
+      <thead>
+        <tr>
+          <th>Modelo</th><th>Ligação histórica</th><th>Comunicação</th><th>Investigação</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1.º Agente de Imprensa</td><td>Primórdios das RP</td><td>1 sentido</td><td>Não usa</td></tr>
+        <tr><td>2.º Info. Pública</td><td>Ivy Lee (1906)</td><td>1 sentido</td><td>Pouco</td></tr>
+        <tr><td>3.º Assimétrico</td><td>Edward Bernays</td><td>2 sentidos (domina org.)</td><td>Para persuadir</td></tr>
+        <tr><td>4.º Simétrico ⭐</td><td>Modelo ideal/futuro</td><td>2 sentidos (equilibrado)</td><td>Para entender</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Identidade vs Imagem vs Reputação -->
+  <div class="diagram-box">
+    <div class="diagram-title">Triângulo: Identidade ↔ Imagem ↔ Reputação</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem">
+      <div style="background:#f8f4ff;border:2px solid var(--plum);border-radius:14px;padding:1.25rem">
+        <div style="font-weight:800;color:var(--plum);font-size:1.1rem;margin-bottom:0.5rem">🏛️ Identidade</div>
+        <p style="font-size:0.85rem;line-height:1.6;color:#555">O que a organização <strong>é, faz e diz</strong>. Conceito <em>emissor</em> — definido pela org. Engloba história, valores, crenças, "código genético".</p>
+      </div>
+      <div style="background:#f0fff8;border:2px solid var(--mint);border-radius:14px;padding:1.25rem">
+        <div style="font-weight:800;color:var(--mint);font-size:1.1rem;margin-bottom:0.5rem">🪞 Imagem</div>
+        <p style="font-size:0.85rem;line-height:1.6;color:#555">O que se passa <strong>na mente dos públicos</strong>. Conceito <em>receptor</em> — como a identidade é percepcionada. Auto-imagem (interna) e imagem pública (externa).</p>
+      </div>
+      <div style="background:#fff8ee;border:2px solid var(--gold);border-radius:14px;padding:1.25rem">
+        <div style="font-weight:800;color:#b8800a;font-size:1.1rem;margin-bottom:0.5rem">⭐ Reputação</div>
+        <p style="font-size:0.85rem;line-height:1.6;color:#555">Activo <strong>intangível</strong> que gera valor. Constrói-se com base na confiança + transparência + interacção entre identidade e imagem. Capital reputacional = vantagem competitiva.</p>
+      </div>
+    </div>
+    <div style="margin-top:1.25rem;padding:1rem;background:var(--warm);border-radius:12px;font-size:0.88rem;line-height:1.6">
+      <strong>🔑 Regra de ouro:</strong> A <em>imagem</em> tem de corresponder à realidade vivida pela organização (identidade + cultura). Se não for assim → <strong>dissonância → hipocrisia percepcionada → danos na reputação.</strong>
+    </div>
+  </div>
+
+  <!-- RSE Pilares -->
+  <div class="diagram-box">
+    <div class="diagram-title">Os 7 Pilares RSE — Instituto Ethos</div>
+    <div class="pillars-grid">
+      <div class="pillar" style="border-color:#c4440a;background:#fff5f2">
+        <div class="p-num" style="color:#c4440a">1</div>
+        <div class="p-name">Valores, Transparência & Governança</div>
+      </div>
+      <div class="pillar" style="border-color:#2d6a8f;background:#f0f8ff">
+        <div class="p-num" style="color:#2d6a8f">2</div>
+        <div class="p-name">Público Interno</div>
+      </div>
+      <div class="pillar" style="border-color:#4a6741;background:#f4fff0">
+        <div class="p-num" style="color:#4a6741">3</div>
+        <div class="p-name">Meio Ambiente</div>
+      </div>
+      <div class="pillar" style="border-color:#d4a017;background:#fffbee">
+        <div class="p-num" style="color:#d4a017">4</div>
+        <div class="p-name">Fornecedores</div>
+      </div>
+      <div class="pillar" style="border-color:#6b3d6e;background:#fdf0ff">
+        <div class="p-num" style="color:#6b3d6e">5</div>
+        <div class="p-name">Consumidores & Clientes</div>
+      </div>
+      <div class="pillar" style="border-color:#3d8c7a;background:#f0fffc">
+        <div class="p-num" style="color:#3d8c7a">6</div>
+        <div class="p-name">Comunidade</div>
+      </div>
+      <div class="pillar" style="border-color:#e8624a;background:#fff8f5">
+        <div class="p-num" style="color:#e8624a">7</div>
+        <div class="p-name">Governo & Sociedade</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fluxo comunicação interna -->
+  <div class="diagram-box">
+    <div class="diagram-title">Comunicação Interna — Fluxos e Barreiras</div>
+    <div style="margin-bottom:1.25rem">
+      <div style="font-weight:600;font-size:0.85rem;margin-bottom:0.75rem;color:#666">FLUXOS COMUNICACIONAIS</div>
+      <div class="flow">
+        <div class="flow-node highlighted">Gestão/Poder</div>
+        <span class="flow-arrow">⬇️</span>
+        <div class="flow-node">Descendente (principal)</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node">Colaboradores</div>
+        <span class="flow-arrow">⬆️</span>
+        <div class="flow-node">Ascendente</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-node highlighted">Ideias/Sugestões</div>
+      </div>
+      <div class="flow" style="margin-top:0.6rem">
+        <div class="flow-node blue">Departamento A</div>
+        <span class="flow-arrow">↔️</span>
+        <div class="flow-node blue">Horizontal</div>
+        <span class="flow-arrow">↔️</span>
+        <div class="flow-node blue">Departamento B</div>
+      </div>
+    </div>
+    <table class="table-clean">
+      <thead><tr><th>Barreira</th><th>Causas Principais</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1. Organizacionais</strong></td><td>Distância física, especialização, relações de poder, posse de informação</td></tr>
+        <tr><td><strong>2. Interpessoais</strong></td><td>Clima de contacto, valores e padrões, atitudes antagónicas</td></tr>
+        <tr><td><strong>3. Individuais</strong></td><td>Hábitos de pensamento, inaptidões para receber/transmitir mensagens</td></tr>
+        <tr><td><strong>4. Económicas/Geo/Temporais</strong></td><td>Custo, distância, falta de tempo adequado</td></tr>
+        <tr><td><strong>5. Canal e Meios</strong></td><td>Uso de canal inadequado para a mensagem e público</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Gestão de Crises -->
+  <div class="diagram-box">
+    <div class="diagram-title">Gestão de Crises — 5 Fases (Fearn-Banks) + 3 Fases (Carracosa)</div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;align-items:center;margin-bottom:1.5rem">
+      <div style="background:#ffe5dc;border:2px solid #e86030;border-radius:10px;padding:0.65rem 0.85rem;font-size:0.82rem;font-weight:600;text-align:center">
+        1<br>Detecção
+      </div>
+      <span style="color:#ccc;font-size:1.3rem">→</span>
+      <div style="background:#fff8dc;border:2px solid #d4a017;border-radius:10px;padding:0.65rem 0.85rem;font-size:0.82rem;font-weight:600;text-align:center">
+        2<br>Prevenção
+      </div>
+      <span style="color:#ccc;font-size:1.3rem">→</span>
+      <div style="background:#ffe0e0;border:2px solid var(--coral);border-radius:10px;padding:0.65rem 0.85rem;font-size:0.82rem;font-weight:600;text-align:center">
+        3<br>Contenção
+      </div>
+      <span style="color:#ccc;font-size:1.3rem">→</span>
+      <div style="background:#e0f8f0;border:2px solid var(--mint);border-radius:10px;padding:0.65rem 0.85rem;font-size:0.82rem;font-weight:600;text-align:center">
+        4<br>Recuperação
+      </div>
+      <span style="color:#ccc;font-size:1.3rem">→</span>
+      <div style="background:#e8e0ff;border:2px solid var(--plum);border-radius:10px;padding:0.65rem 0.85rem;font-size:0.82rem;font-weight:600;text-align:center">
+        5<br>Lições
+      </div>
+    </div>
+    <table class="table-clean">
+      <thead><tr><th>Carracosa</th><th>Descrição</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Fase Aguda</strong></td><td>Pressão e especulação pelos media</td></tr>
+        <tr><td><strong>Fase Crónica</strong></td><td>Organização enfrenta a crise e analisa efeitos</td></tr>
+        <tr><td><strong>Fase de Recuperação</strong></td><td>Restabelecer equilíbrio — quanto mais rápido, menores os danos</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     FLASHCARDS
+════════════════════════════════════════════════ -->
+<section class="section" id="flashcards">
+  <h2 class="section-title">🃏 <span>Flashcards</span></h2>
+  <p class="section-subtitle">Clica no cartão para ver a resposta · <strong id="fc-count">1 de 20</strong></p>
+
+  <div class="fc-container">
+    <div class="fc-inner" id="fc" onclick="flipCard()">
+      <div class="fc-front">
+        <div class="fc-category" id="fc-cat">Modelos</div>
+        <div class="fc-q" id="fc-q">Texto da pergunta</div>
+        <div class="fc-hint">👆 Clica para ver a resposta</div>
+      </div>
+      <div class="fc-back">
+        <div class="fc-a" id="fc-a">Texto da resposta</div>
+      </div>
+    </div>
+    <div class="fc-nav">
+      <button class="fc-btn prev" onclick="fcPrev()">← Anterior</button>
+      <button class="fc-btn next" onclick="fcNext()">Próximo →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     QUIZ
+════════════════════════════════════════════════ -->
+<section class="section" id="quiz">
+  <h2 class="section-title">🎯 <span>Quiz</span> de Preparação</h2>
+  <p class="section-subtitle">12 perguntas de escolha múltipla — nível exame</p>
+
+  <div class="quiz-box">
+    <div id="quiz-area">
+      <div class="quiz-q" id="quiz-card">
+        <!-- dinâmico -->
+      </div>
+    </div>
+    <div class="quiz-score" id="quiz-score">
+      <div class="big-num" id="score-num">0/12</div>
+      <p id="score-msg">Resultado</p>
+      <button class="quiz-restart" onclick="restartQuiz()">🔄 Recomeçar Quiz</button>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     FOFOCA / GOSSIP
+════════════════════════════════════════════════ -->
+<section class="section" id="fofoca">
+  <h2 class="section-title">🔥 <span>Fofoca</span> Académica</h2>
+  <p class="section-subtitle">A matéria contada como fofoca — para não esquecer mais!</p>
+
+  <div class="gossip-card">
+    <div class="gossip-avatar" style="background:#ffe5dc">🕵️</div>
+    <div class="gossip-content">
+      <div class="gossip-name">Ivy Lee vs. Bernays — A Rivalidade Épica</div>
+      <div class="gossip-title">Drama dos Fundadores das RP Modernas · c. 1906–1952</div>
+      <div class="gossip-text">
+        Então, <strong>Ivy Lee</strong> aparece em 1906 e declara: <em>"O público já não pode mais ser ignorado!"</em> — grande disruptor para a época! O homem via as RP como uma ferramenta <strong>táctica</strong>, quase jornalística. O seu foco? Os jornalistas. A imprensa. A notícia. Simples, eficaz, mas... limitado.
+        <br><br>
+        Aí chega <strong>Edward Bernays</strong> — sobrinho de Sigmund Freud (sim, aquele!) — e eleva o jogo para outro nível. Ele incorpora a psicanálise nas RP. Desejos inconscientes, forças irracionais das multidões... Bernays não quer apenas gerir a imprensa, quer <strong>gerir a sociedade inteira</strong> com ética e responsabilidade social. O "Pai das RP Científicas" escreveu três obras de referência e fundou o primeiro curso de RP na Universidade de Nova Iorque em 1923!
+      </div>
+      <span class="gossip-tag drama-tag">🎭 Drama Histórico</span>
+      <span class="gossip-tag hot-tag">🔥 Sai no exame</span>
+    </div>
+  </div>
+
+  <div class="gossip-card">
+    <div class="gossip-avatar" style="background:#e8f4ff">🏆</div>
+    <div class="gossip-content">
+      <div class="gossip-name">Grunig e os 4 Modelos — O Académico que Mandou em Tudo</div>
+      <div class="gossip-title">James E. Grunig · Teoria de Excelência · Universidade de Maryland</div>
+      <div class="gossip-text">
+        James Grunig, com Todd Hunt, cria em 1984 (publicado em Portugal como 2003) os famosos 4 modelos. <strong>Spoiler: o Modelo 4 é o herói da história.</strong>
+        <br><br>
+        Os modelos 1 e 2 são os "vilões" — propaganda e informação unilateral. O modelo 3 já tem diálogo mas só para manipular. E o modelo 4, o <strong>Simétrico Bidireccional</strong>, é o ideal: compreensão mútua, negociação, RP como mediadores. Grunig e a sua esposa Larissa dizem mesmo que este modelo é a teoria normativa de como as RP DEVEM ser praticadas.
+        <br><br>
+        O twist? O professor Brandão acrescenta que na prática combinar o 3.º com o 4.º modelo é o caminho para a excelência organizacional real! 🔥
+      </div>
+      <span class="gossip-tag theory-tag">📚 Core da Teoria</span>
+      <span class="gossip-tag hot-tag">🔥 Crítico para o exame</span>
+    </div>
+  </div>
+
+  <div class="gossip-card">
+    <div class="gossip-avatar" style="background:#f0ffe8">🌿</div>
+    <div class="gossip-content">
+      <div class="gossip-name">Freeman e os Stakeholders — A Revolução Silenciosa</div>
+      <div class="gossip-title">Edward Freeman · Strategic Management: A Stakeholder Approach · 2010</div>
+      <div class="gossip-text">
+        Antes de Freeman, as empresas só se preocupavam com accionistas, colaboradores, fornecedores e clientes. E pronto.
+        <br><br>
+        Freeman chega e diz: <em>"Espera, e o Governo? E os concorrentes? E a SOCIEDADE CIVIL?"</em> — A definição que toda a gente cita: stakeholder é "qualquer grupo ou indivíduo que pode <strong>afectar ou é afectado</strong> pelo cumprimento da finalidade e objectivos da organização."
+        <br><br>
+        A grande mudança: não é só "troca" com os públicos, é <strong>"colaboração"</strong>! E Freeman ainda defende que são as RP que devem gerir esta dialéctica. Ou seja, as RP ganham um papel ainda mais central!
+      </div>
+      <span class="gossip-tag cool-tag">💙 Conceito-chave</span>
+    </div>
+  </div>
+
+  <div class="gossip-card">
+    <div class="gossip-avatar" style="background:#fff0f8">😱</div>
+    <div class="gossip-content">
+      <div class="gossip-name">O Escândalo da Hipocrisia Corporativa — a Armadilha das Marcas</div>
+      <div class="gossip-title">Effron, O'Connor, Leroy & Lucas · 2018 · Quando "Dizer e Fazer" Não Batem Certo</div>
+      <div class="gossip-text">
+        Uma empresa passa anos a dizer que se preocupa com o ambiente. Depois é apanhada a fazer greenwashing. <strong>Boom — reputação destruída.</strong>
+        <br><br>
+        A teoria dos autores diz que os públicos reagem muito negativamente quando percepcionam <em>dissonância</em> — ou seja, quando acham que a empresa diz uma coisa mas faz outra. Pior: isso é interpretado como hipocrisia, que é diferente de simples inautenticidade.
+        <br><br>
+        Exemplo do livro: líderes do Congresso americano a apoiarem controlo de imigração quando os seus próprios antepassados imigraram pela mesma via. A hipocrisia não é sobre autenticidade — é sobre <strong>defender uma posição moral que te beneficiou pessoalmente!</strong>
+        <br><br>
+        Lição para as RP: a <strong>coerência entre identidade e imagem é literalmente sobrevivência</strong>.
+      </div>
+      <span class="gossip-tag drama-tag">😱 Polémico</span>
+      <span class="gossip-tag hot-tag">🔥 Sai no exame</span>
+    </div>
+  </div>
+
+  <div class="gossip-card">
+    <div class="gossip-avatar" style="background:#fff8ee">⚖️</div>
+    <div class="gossip-content">
+      <div class="gossip-name">Bowen, o "Pai da RSE" — O Homem que Mudou o Capitalismo</div>
+      <div class="gossip-title">Howard Bowen · Social Responsibilities of the Businessman · 1957</div>
+      <div class="gossip-text">
+        Em 1957 Bowen diz algo que soa óbvio hoje mas era revolucionário na altura: as empresas não podem só maximizar o lucro. Têm de prosseguir "os objectivos e valores da nossa sociedade."
+        <br><br>
+        Carroll (1999) chama-lhe o "pai" da RSE. Décadas depois, a Comissão Europeia assume que a RSE é o "comportamento empresarial que integra questões sociais, ambientais, éticas, do consumidor e de direitos humanos nas suas estratégias e operações."
+        <br><br>
+        E o engraçado? Muitas empresas ainda resistem. O Prof. Brandão cita o caso português — muitas empresas não têm experiência nem metodologia para fazer os ODS (Objetivos de Desenvolvimento Sustentável da ONU) funcionar no negócio delas!
+      </div>
+      <span class="gossip-tag theory-tag">📚 Fundamento RSE</span>
+    </div>
+  </div>
+
+  <div class="gossip-card">
+    <div class="gossip-avatar" style="background:#f0f8ff">🏢</div>
+    <div class="gossip-content">
+      <div class="gossip-name">Corporate Political Advocacy — Quando as Empresas Entram na Política</div>
+      <div class="gossip-title">Wettstein & Baur · Ciszek & Logan · Ben & Jerry's, Starbucks, Gillette, Lidl...</div>
+      <div class="gossip-text">
+        CPA (Corporate Political Advocacy) é a última grande tendência: empresas que assumem posições públicas em questões políticas e sociais. E geram amor e ódio ao mesmo tempo!
+        <br><br>
+        • <strong>Ben & Jerry's</strong> apoia o Black Lives Matter → aprovação + boicote<br>
+        • <strong>Gillette</strong> faz vídeo sobre masculinidade tóxica (#MeToo) → viral, polémico<br>
+        • <strong>Lidl Portugal</strong> inverte papéis de género nos brinquedos de Natal 2020 → eurodeputada aplaude!<br>
+        • <strong>Santander</strong> pinta logo com cores LGBTQ+ → avalanche de reações divididas
+        <br><br>
+        A regra de ouro do CPA: <strong>consistência, plausibilidade e autenticidade</strong>. Sem estes 3 critérios, a empresa parece oportunista e a reputação vai a pique!
+      </div>
+      <span class="gossip-tag hot-tag">🔥 Actualidade</span>
+      <span class="gossip-tag cool-tag">💙 Exemplos concretos</span>
+    </div>
+  </div>
+
+  <div class="gossip-card">
+    <div class="gossip-avatar" style="background:#ffeeff">🧠</div>
+    <div class="gossip-content">
+      <div class="gossip-name">Prisão Cognitiva — O Novo Pesadelo das RP na Era Digital</div>
+      <div class="gossip-title">Kim & Grunig · American Behavioral Scientist · 2021</div>
+      <div class="gossip-text">
+        Kim e Grunig (2021) — sim, o mesmo Grunig dos 4 modelos mas com o filho! — identificam um fenómeno novo e assustador: a <strong>"prisão cognitiva"</strong>.
+        <br><br>
+        O que é? É quando uma pessoa fica presa numa conclusão predefinida e não consegue evoluir epistemicamente. O algoritmo das redes sociais reforça constantemente as mesmas crenças (câmara de eco). Resultado: <strong>inércia epistémica</strong> — não consegue absorver novo conhecimento, mesmo sendo esforçada e diligente.
+        <br><br>
+        Para as RP, isto é crítico: os públicos que estão em "prisão cognitiva" são imunes às mensagens normais. E as campanhas de desinformação exploram exactamente este mecanismo. Os profissionais de RP têm MAIS responsabilidade do que nunca no enquadramento das suas mensagens!
+      </div>
+      <span class="gossip-tag theory-tag">📚 Teoria Nova</span>
+      <span class="gossip-tag drama-tag">🤯 Mind-blowing</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     TEMAS-CHAVE
+════════════════════════════════════════════════ -->
+<section class="section" id="temas">
+  <h2 class="section-title">⚡ <span>Temas-Chave</span> para o Exame</h2>
+  <p class="section-subtitle">O que sai mesmo — organizado por probabilidade</p>
+
+  <div class="cards-grid">
+    <div class="card rust">
+      <span class="card-icon">🎯</span>
+      <div class="card-label" style="color:var(--rust)">MUITO PROVÁVEL</div>
+      <h3>Os 4 Modelos de Grunig</h3>
+      <p>Saber caracterizar cada modelo, ligar aos autores históricos (Ivy Lee, Bernays), e explicar porque o Simétrico Bidireccional é o ideal.</p>
+    </div>
+    <div class="card rust">
+      <span class="card-icon">🏛️</span>
+      <div class="card-label" style="color:var(--rust)">MUITO PROVÁVEL</div>
+      <h3>Identidade vs. Imagem vs. Reputação</h3>
+      <p>Distinguir os 3 conceitos. Saber que Identidade = emissor, Imagem = receptor, Reputação = capital intangível.</p>
+    </div>
+    <div class="card gold">
+      <span class="card-icon">👥</span>
+      <div class="card-label" style="color:#b8800a">PROVÁVEL</div>
+      <h3>Stakeholders & 4 Categorias de Públicos</h3>
+      <p>Definição de Freeman. As 4 categorias de Grunig & Repper: não-públicos, latentes, conscientes, activos.</p>
+    </div>
+    <div class="card gold">
+      <span class="card-icon">⚖️</span>
+      <div class="card-label" style="color:#b8800a">PROVÁVEL</div>
+      <h3>Ética e Cultura Organizacional</h3>
+      <p>6 indicadores de crescimento (com o 6.º de Brandão). 3 Níveis de cultura (Schein). 4 virtudes da Governança Corporativa.</p>
+    </div>
+    <div class="card sky">
+      <span class="card-icon">🌱</span>
+      <div class="card-label" style="color:var(--sky)">IMPORTANTE</div>
+      <h3>RSE & Desenvolvimento Sustentável</h3>
+      <p>Bowen como "pai". 7 pilares Ethos. Modelo 3 domínios Schwartz & Carroll. Greenwashing e CPA.</p>
+    </div>
+    <div class="card sky">
+      <span class="card-icon">💬</span>
+      <div class="card-label" style="color:var(--sky)">IMPORTANTE</div>
+      <h3>Comunicação Interna</h3>
+      <p>5 funções (Bilhim + Brandão). 3 fluxos. 5 barreiras. 4 vertentes da política de comunicação.</p>
+    </div>
+    <div class="card sage">
+      <span class="card-icon">📢</span>
+      <div class="card-label" style="color:var(--sage)">COMPLEMENTAR</div>
+      <h3>Publicidade Institucional</h3>
+      <p>Diferença RP vs. Marketing. RP como função de staff. Objetivos: Capital de Confiança, Credibilidade, Transparência.</p>
+    </div>
+    <div class="card sage">
+      <span class="card-icon">🚨</span>
+      <div class="card-label" style="color:var(--sage)">COMPLEMENTAR</div>
+      <h3>Gestão de Crises</h3>
+      <p>5 fases Fearn-Banks. 3 fases Carracosa. Tipos de crise (previsível/imprevisível). Papel pro-activo das RP.</p>
+    </div>
+    <div class="card plum">
+      <span class="card-icon">📜</span>
+      <div class="card-label" style="color:var(--plum)">BÓNUS</div>
+      <h3>Escola Crítica das RP</h3>
+      <p>Surge nos anos 80/90. Critica perspectiva gestionária. Pós-modernismo: dissenso como pluralidade discursiva. L'Etang, Holtzhausen.</p>
+    </div>
+    <div class="card plum">
+      <span class="card-icon">🔢</span>
+      <div class="card-label" style="color:var(--plum)">LISTAS PARA MEMORIZAR</div>
+      <h3>Números Críticos</h3>
+      <ul>
+        <li>7 princípios comunicação eficaz</li>
+        <li>4 modelos Grunig</li>
+        <li>7 pilares RSE Ethos</li>
+        <li>4 virtudes Governança Corporativa</li>
+        <li>5 barreiras comunicação (Thayer)</li>
+        <li>5 fases gestão de crise</li>
+        <li>4 categorias de públicos</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="background:linear-gradient(135deg,var(--ink),#3a2820);border-radius:20px;padding:2rem;color:white;margin-top:1rem">
+    <div style="font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:1rem">⚠️ Não sai no exame</div>
+    <p style="opacity:0.8;font-size:0.9rem;line-height:1.7">
+      Segundo a tua indicação: <strong style="color:var(--gold)">contextualização histórica</strong> (origens nas civilizações antigas, EUA vs. Europa, etc.) e <strong style="color:var(--gold)">instrumentos dos media</strong> (como escrever comunicados de imprensa, conferências de imprensa, entrevistas, etc.) não são avaliados no exame. Não percas tempo com esses capítulos!
+    </p>
+  </div>
+</section>
+
+</main>
+
+<script>
+// ═══════════════════════════════ TABS ═══════════════════════════════
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const idx = ['resumos','esquemas','flashcards','quiz','fofoca','temas'].indexOf(id);
+  document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ═══════════════════════════════ FLASHCARDS ═══════════════════════════════
+const flashcards = [
+  { cat: 'Modelos Grunig', q: 'O que defende o 1.º Modelo de Grunig (Press Agentry)?', a: 'As RP servem uma função de propaganda. Os programas visam unicamente conseguir publicity favorável para as organizações nos media. É um modelo assimétrico — comunicação unidireccional.' },
+  { cat: 'Modelos Grunig', q: 'Qual a diferença entre o 1.º e 2.º Modelo de Grunig?', a: 'Ambos são monólogos e assimétricos. O 1.º (Press Agentry) usa propaganda/promoção em massa. O 2.º (Informação Pública) usa informação fidedigna, mas só favorável — como "jornalistas residentes".' },
+  { cat: 'Modelos Grunig', q: 'O que caracteriza o 4.º Modelo — Simétrico Bidireccional?', a: 'Tem como finalidade a compreensão mútua (não persuasão). Os RP são mediadores. Usa comunicação para gerir conflitos e colaborar estrategicamente. As organizações centram-se na negociação e compromisso com os stakeholders.' },
+  { cat: 'Modelos Grunig', q: 'A que fase histórica corresponde cada modelo de Grunig?', a: '1.º = Primórdios das RP\n2.º = Fase de Ivy Lee\n3.º = Fase de Edward Bernays\n4.º = Modelo ideal / teoria de excelência' },
+  { cat: 'Identidade', q: 'Qual a diferença entre Identidade, Imagem e Reputação?', a: 'Identidade = o que a org. É, faz e diz (emissor). Imagem = como é percepcionada pelos públicos (receptor). Reputação = activo intangível gerado pela confiança + transparência + interacção entre identidade e imagem.' },
+  { cat: 'Identidade', q: '3 critérios para uma identidade organizacional rigorosa (Albert & Whetten)', a: '1.º Definição do carácter central da empresa\n2.º Características que a distinguem das outras\n3.º Características de permanência e coerência ao longo do tempo' },
+  { cat: 'Stakeholders', q: 'Definição de Stakeholder segundo Freeman (2010)', a: '"Grupo ou indivíduo que pode afectar ou é afectado pelo cumprimento da finalidade e objectivos da organização." Inclui para lá dos tradicionais públicos: Governo, concorrentes e sociedade civil.' },
+  { cat: 'Públicos', q: '4 Categorias de Públicos segundo Grunig & Repper (1992)', a: '1.ª Não-públicos — sem envolvimento\n2.ª Públicos Latentes — défice por constrangimentos\n3.ª Públicos Conscientes — envolvimento crescente mas sem comunicação por iniciativa\n4.ª Públicos Activos — eliminam constrangimentos, envolvem-se' },
+  { cat: 'RSE', q: 'Quem é o "pai" da RSE e o que defendia?', a: 'Howard Bowen (1957). Defendia que as empresas têm obrigação de prosseguir políticas que sejam desejáveis para os objectivos e valores da sociedade — para lá da maximização do lucro.' },
+  { cat: 'RSE', q: '4 Virtudes da Governança Corporativa', a: '1.ª Equidade — tratamento justo\n2.ª Transparência — empresa translúcida\n3.ª Accountability — prestação de contas além do legalmente exigido\n4.ª Responsabilidade Corporativa — assumir consequências dos actos' },
+  { cat: 'Comunicação Interna', q: 'Para Vítor Almeida (2000), a comunicação interna está para as empresas como...', a: 'Uma Necessidade (coordenação de actividades), uma Crença (portadora de soluções) e uma Vontade (tem de ser devidamente pensada e bem gerida).' },
+  { cat: 'Comunicação Interna', q: '5 Funções da Comunicação nas Organizações (Bilhim + Brandão)', a: '1.ª Controlo do comportamento\n2.ª Motivação dos colaboradores\n3.ª Necessidade de afiliação/identificação\n4.ª Informação para tomada de decisão\n5.ª (Brandão) Ir ao encontro das necessidades e expectativas dos colaboradores' },
+  { cat: 'Ética', q: '3 Níveis da Cultura Organizacional segundo Schein', a: '1.º Visível — artefactos, vestuário, comportamentos\n2.º Maior consciência — valores e normas (mais conscientes)\n3.º Invisível — pressupostos básicos, tomados como verdade, determinam percepções e comportamentos' },
+  { cat: 'Ética', q: '6.º Indicador de crescimento organizacional, segundo Brandão', a: 'Avaliação das necessidades e contribuições dos seus Stakeholders — que envolvem uma Ética de Responsabilidade. Os outros 5 (sobrevivência, crescimento, rentabilidade, inovação, processos de decisão) são insuficientes sem este.' },
+  { cat: 'Gestão de Crises', q: '5 Fases da gestão de crise segundo Fearn-Banks', a: '1.ª Detecção\n2.ª Preparação/Prevenção\n3.ª Contenção\n4.ª Recuperação\n5.ª Lições Aprendidas' },
+  { cat: 'Gestão de Crises', q: '2 Tipos de Crise segundo Lampreia (2003)', a: 'Previsível: situações antecipáveis (crises económicas, alterações estruturais).\nImprevisível: mais difíceis de gerir (catástrofes, acidentes, sabotagens, agressões).\nAmbas devem ter planos de prevenção!' },
+  { cat: 'Publicidade Inst.', q: 'Diferença entre RP como função de staff vs. Marketing como função de linha', a: 'Marketing = função de linha — converte investimento em rendimento, centrado em clientes.\nRP = função de staff — gere relacionamentos internos/externos, cuida da reputação e imagem institucional.' },
+  { cat: 'RP Especializadas', q: 'Definição de CPA (Corporate Political Advocacy) e os 3 critérios para ter credibilidade', a: 'Empresas que assumem posições públicas em questões sociopolíticas. Critérios: (a) Consistência com os valores da empresa; (b) Plausibilidade — compromisso a longo prazo; (c) Autenticidade — acções concretas, não só palavras.' },
+  { cat: 'Escola Crítica', q: 'Quando surge a Escola Crítica das RP e o que questiona?', a: 'Surge nos anos 1980 e 1990. Questiona a visão das RP como mera função de gestão orientada para eficácia organizacional. Recorre a abordagens interdisciplinares, pós-modernismo, análise de desequilíbrios de poder e dissenso.' },
+  { cat: 'Posicionamento', q: '7 Princípios da Comunicação Eficaz nas organizações', a: '1. Clareza  2. Coerência  3. Adequação  4. Oportunidade e actualidade  5. Distribuição  6. Adaptação e uniformidade  7. Aceitação e interesse' }
+];
+
+let fcIndex = 0;
+let fcFlipped = false;
+
+function renderFC() {
+  const card = flashcards[fcIndex];
+  document.getElementById('fc-cat').textContent = card.cat;
+  document.getElementById('fc-q').textContent = card.q;
+  document.getElementById('fc-a').textContent = card.a;
+  document.getElementById('fc-count').textContent = `${fcIndex + 1} de ${flashcards.length}`;
+  const el = document.getElementById('fc');
+  el.classList.remove('flipped');
+  fcFlipped = false;
+}
+
+function flipCard() {
+  fcFlipped = !fcFlipped;
+  document.getElementById('fc').classList.toggle('flipped', fcFlipped);
+}
+function fcNext() { fcIndex = (fcIndex + 1) % flashcards.length; renderFC(); }
+function fcPrev() { fcIndex = (fcIndex - 1 + flashcards.length) % flashcards.length; renderFC(); }
+renderFC();
+
+// ═══════════════════════════════ QUIZ ═══════════════════════════════
+const quizData = [
+  {
+    q: 'Qual dos 4 Modelos de Grunig & Hunt é considerado o modelo ideal e a "teoria de excelência" em RP?',
+    opts: ['Modelo de Agente de Imprensa', 'Modelo de Informação Pública', 'Modelo Assimétrico Bidireccional', 'Modelo Simétrico Bidireccional'],
+    correct: 3,
+    exp: 'O 4.º Modelo — Simétrico Bidireccional — tem como finalidade a compreensão mútua. Os RP são mediadores, usando a comunicação para gerir conflitos. Grunig & Grunig (1992) descrevem-no como teoria normativa de como as RP devem ser praticadas segundo princípios éticos.'
+  },
+  {
+    q: 'A que fase histórica das RP está associado o Modelo Assimétrico Bidireccional (3.º Modelo)?',
+    opts: ['Ivy Lee (1906)', 'Edward Bernays', 'Primórdios da profissão', 'Grunig e Hunt (2003)'],
+    correct: 1,
+    exp: 'O 3.º Modelo corresponde à fase marcada por Edward Bernays. Os 4 modelos ligam-se: 1.º = Primórdios; 2.º = Ivy Lee; 3.º = Bernays; 4.º = Modelo ideal.'
+  },
+  {
+    q: 'Segundo Freeman (2010), um stakeholder é...',
+    opts: [
+      'Apenas os accionistas e colaboradores da organização',
+      'Grupo ou indivíduo que pode afectar ou é afectado pelo cumprimento dos objectivos da organização',
+      'Qualquer pessoa que compra os produtos ou serviços da empresa',
+      'Os líderes de opinião e representantes dos media'
+    ],
+    correct: 1,
+    exp: 'A definição exacta de Freeman: "grupo ou indivíduo que pode afectar ou é afectado pelo cumprimento da finalidade e objectivos da organização." Vai para além dos públicos tradicionais, incluindo Governo, concorrentes e sociedade civil.'
+  },
+  {
+    q: 'Quais são as 3 condições para que uma Identidade Organizacional seja rigorosa?',
+    opts: [
+      'Missão, visão e valores',
+      'Carácter central, características distintivas e permanência temporal',
+      'Imagem, reputação e credibilidade',
+      'Coerência, transparência e confiança'
+    ],
+    correct: 1,
+    exp: 'Segundo Albert e Whetten (2004): 1) Definição do carácter central da empresa; 2) Características que a distinguem das outras; 3) Características de permanência e coerência ao longo do tempo.'
+  },
+  {
+    q: 'Quem é considerado o "pai" da RSE (Responsabilidade Social Empresarial)?',
+    opts: ['Archie Carroll', 'Howard Bowen', 'Charles Fombrun', 'Edward Freeman'],
+    correct: 1,
+    exp: 'Howard Bowen (1957), in "Social Responsibilities of the Businessman", definiu RSE como a obrigação dos homens de negócio de prosseguir políticas desejáveis para os objectivos e valores da sociedade — para lá da maximização do lucro. Carroll (1999) chama-lhe o "pai" da RSE.'
+  },
+  {
+    q: 'Quais as 4 virtudes da Governança Corporativa?',
+    opts: [
+      'Inovação, Sustentabilidade, Crescimento e Rentabilidade',
+      'Equidade, Transparência, Accountability e Responsabilidade',
+      'Confiança, Credibilidade, Ética e Comunicação',
+      'Missão, Visão, Valores e Cultura'
+    ],
+    correct: 1,
+    exp: 'As 4 virtudes são: Equidade (tratamento justo), Transparência (empresa translúcida), Accountability (prestação de contas além do legalmente exigido) e Responsabilidade Corporativa (assumir consequências dos actos).'
+  },
+  {
+    q: 'Para Vítor Almeida (2000), a comunicação interna está para as empresas como...',
+    opts: [
+      'Uma obrigação legal, uma ferramenta de marketing e uma estratégia',
+      'Uma necessidade, uma crença e uma vontade',
+      'Um direito, uma responsabilidade e uma oportunidade',
+      'Uma função, um processo e um resultado'
+    ],
+    correct: 1,
+    exp: 'Almeida (2000) define: Necessidade (coordenação de actividades), Crença (portadora de soluções) e Vontade (tem de ser pensada e adequada às características da empresa).'
+  },
+  {
+    q: 'Qual das seguintes NÃO é uma das 5 barreiras à comunicação interna de Thayer (1979)?',
+    opts: [
+      'Barreiras Organizacionais',
+      'Barreiras Interpessoais',
+      'Barreiras Tecnológicas',
+      'Barreiras de Canal e Meios'
+    ],
+    correct: 2,
+    exp: 'As 5 barreiras de Thayer são: 1) Organizacionais; 2) Interpessoais; 3) Individuais; 4) Económicas, Geográficas e Temporais; 5) Canal e Meios. "Barreiras Tecnológicas" não existe nesta classificação!'
+  },
+  {
+    q: 'Segundo Bilhim (2006), quantas funções tem a comunicação nas organizações? (Com a contribuição do Prof. Brandão)',
+    opts: ['3 funções', '4 funções', '5 funções', '7 funções'],
+    correct: 2,
+    exp: 'Bilhim identifica 4 funções: controlo, motivação, afiliação/identificação e informação para decisão. O Prof. Brandão acrescenta uma 5.ª: que a informação vá ao encontro das necessidades e expectativas dos colaboradores.'
+  },
+  {
+    q: 'O 6.º indicador de crescimento organizacional acrescentado por Brandão é...',
+    opts: [
+      'Capacidade de inovação tecnológica',
+      'Rentabilidade acima da média do sector',
+      'Avaliação das necessidades e contribuições dos Stakeholders com Ética de Responsabilidade',
+      'Processos adequados de tomada de decisão'
+    ],
+    correct: 2,
+    exp: 'Brandão acrescenta o 6.º indicador: Avaliação das necessidades e contribuições dos Stakeholders — que envolvem uma Ética de Responsabilidade. Os outros 5 são insuficientes sem este eixo ético.'
+  },
+  {
+    q: 'As 5 fases da gestão de crise segundo Fearn-Banks são, pela ordem correcta:',
+    opts: [
+      'Prevenção → Detecção → Contenção → Recuperação → Lições',
+      'Detecção → Preparação/Prevenção → Contenção → Recuperação → Lições',
+      'Detecção → Contenção → Preparação → Recuperação → Análise',
+      'Avaliação → Prevenção → Gestão → Recuperação → Comunicação'
+    ],
+    correct: 1,
+    exp: 'Fearn-Banks (2001): 1) Detecção; 2) Preparação/Prevenção; 3) Contenção; 4) Recuperação; 5) Lições Aprendidas. Esta ordem lógica vai desde a identificação da crise até ao aprender com ela para o futuro.'
+  },
+  {
+    q: 'No contexto do Corporate Political Advocacy (CPA), quais os 3 critérios para que uma causa apoiada por uma empresa tenha credibilidade?',
+    opts: [
+      'Popularidade, visibilidade e timing',
+      'Consistência, plausibilidade e autenticidade',
+      'Rentabilidade, alinhamento de marca e ROI comunicacional',
+      'Legalidade, ética e aprovação dos accionistas'
+    ],
+    correct: 1,
+    exp: 'Wettstein & Baur (2016): (a) Consistência — a causa deve ser consistente com os valores da empresa; (b) Plausibilidade — compromisso de longo prazo; (c) Autenticidade — acções concretas, não apenas palavras. Sem estes 3, a empresa parece oportunista.'
+  }
+];
+
+let quizIndex = 0;
+let quizScore = 0;
+let quizAnswered = false;
+
+function renderQuiz() {
+  const q = quizData[quizIndex];
+  const letters = ['A', 'B', 'C', 'D'];
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('quiz-score').classList.remove('show');
+
+  document.getElementById('quiz-card').innerHTML = `
+    <div class="quiz-q-num">Pergunta ${quizIndex + 1} de ${quizData.length}</div>
+    <div style="margin-bottom:0.5rem">
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${(quizIndex/quizData.length)*100}%"></div></div>
+      <div style="font-size:0.72rem;color:#aaa;text-align:right">${quizScore} corretas</div>
+    </div>
+    <div class="quiz-q-text">${q.q}</div>
+    <div class="quiz-options" id="quiz-opts">
+      ${q.opts.map((o, i) => `
+        <button class="quiz-opt" onclick="answerQ(${i})" id="opt-${i}">
+          <span class="opt-letter">${letters[i]}</span>
+          ${o}
+        </button>
+      `).join('')}
+    </div>
+    <div class="quiz-explanation" id="quiz-exp">${q.exp}</div>
+    <button class="quiz-next-btn" id="quiz-next" onclick="nextQ()">
+      ${quizIndex < quizData.length - 1 ? 'Próxima Pergunta →' : 'Ver Resultado 🏆'}
+    </button>
+  `;
+  quizAnswered = false;
+}
+
+function answerQ(i) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+  const q = quizData[quizIndex];
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach((btn, idx) => {
+    btn.disabled = true;
+    if (idx === q.correct) btn.classList.add('correct');
+    if (idx === i && i !== q.correct) btn.classList.add('wrong');
+  });
+  if (i === q.correct) quizScore++;
+  document.getElementById('quiz-exp').classList.add('show');
+  document.getElementById('quiz-next').classList.add('show');
+}
+
+function nextQ() {
+  quizIndex++;
+  if (quizIndex >= quizData.length) {
+    document.getElementById('quiz-area').style.display = 'none';
+    const pct = Math.round((quizScore/quizData.length)*100);
+    let msg = pct >= 80 ? '🎉 Excelente! Estás mesmo preparado(a)!' : pct >= 60 ? '👍 Bom resultado! Revê as perguntas erradas.' : '📚 Continua a estudar — volta ao resumo!';
+    document.getElementById('score-num').textContent = `${quizScore}/${quizData.length}`;
+    document.getElementById('score-msg').textContent = `${pct}% — ${msg}`;
+    document.getElementById('quiz-score').classList.add('show');
+  } else {
+    renderQuiz();
+  }
+}
+
+function restartQuiz() {
+  quizIndex = 0; quizScore = 0; quizAnswered = false;
+  renderQuiz();
+}
+
+renderQuiz();
+</script>
+</body>
+</html>
