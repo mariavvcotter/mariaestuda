@@ -493,6 +493,82 @@ body {
 }
 .story-ending p { font-size: 0.95rem; line-height: 1.8; opacity: 0.85; max-width: 520px; margin: 0 auto; }
 
+/* ——— SEARCH ——— */
+.search-bar-wrap {
+  background: white;
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  padding: 0.75rem 1.5rem;
+  display: none;
+  position: sticky;
+  top: 49px;
+  z-index: 99;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+.search-bar-wrap.open { display: block; animation: fadeIn 0.2s ease; }
+.search-input-row { display: flex; gap: 0.65rem; align-items: center; max-width: 700px; margin: 0 auto; }
+.search-input {
+  flex: 1;
+  border: 1.5px solid rgba(0,0,0,0.12);
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  background: var(--bg);
+}
+.search-input:focus { border-color: var(--rust); }
+.search-close {
+  background: none; border: none; cursor: pointer;
+  font-size: 1.2rem; color: #aaa; padding: 0.3rem;
+  transition: color 0.15s;
+}
+.search-close:hover { color: var(--ink); }
+.search-results {
+  max-width: 700px; margin: 0.85rem auto 0;
+  max-height: 55vh; overflow-y: auto;
+  scrollbar-width: thin;
+}
+.search-results::-webkit-scrollbar { width: 4px; }
+.search-results::-webkit-scrollbar-thumb { background: #d0c8bc; border-radius: 99px; }
+.search-empty { font-size: 0.88rem; color: #aaa; text-align: center; padding: 1rem 0; }
+.search-result-item {
+  background: var(--bg);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.search-result-item:hover { background: white; border-color: rgba(196,68,10,0.25); transform: translateX(2px); }
+.search-result-section {
+  font-size: 0.68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--rust); margin-bottom: 0.2rem;
+}
+.search-result-title { font-size: 0.92rem; font-weight: 600; color: var(--ink); margin-bottom: 0.25rem; }
+.search-result-snippet { font-size: 0.82rem; line-height: 1.55; color: #666; }
+.search-result-snippet mark {
+  background: #fff3c0; color: var(--ink);
+  border-radius: 3px; padding: 0 2px;
+}
+.search-count { font-size: 0.78rem; color: #aaa; margin-bottom: 0.6rem; }
+.nav-search-btn {
+  background: none; border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem; font-weight: 500;
+  padding: 1rem 1.1rem;
+  color: #666;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  display: flex; align-items: center; gap: 0.4rem;
+  margin-left: auto;
+}
+.nav-search-btn:hover { color: var(--rust); }
+.nav-search-btn.active { color: var(--rust); border-bottom-color: var(--rust); }
+
 /* ——— RESPONSIVE ——— */
 @media (max-width: 600px) {
   .cards-grid { grid-template-columns: 1fr; }
@@ -525,7 +601,16 @@ body {
   <button class="nav-btn" onclick="showTab('fofoca')">🔥 Fofoca</button>
   <button class="nav-btn" onclick="showTab('temas')">⚡ Temas-Chave</button>
   <button class="nav-btn" onclick="showTab('historia')">📖 A História</button>
+  <button class="nav-search-btn" id="search-toggle-btn" onclick="toggleSearch()" title="Pesquisar (Ctrl+K)">🔍 Pesquisar</button>
 </nav>
+
+<div class="search-bar-wrap" id="search-bar">
+  <div class="search-input-row">
+    <input class="search-input" id="search-input" type="text" placeholder="Pesquisa em toda a matéria… ex: stakeholder, modelo simétrico, Grunig, RSE" autocomplete="off" oninput="doSearch(this.value)" onkeydown="searchKeydown(event)">
+    <button class="search-close" onclick="closeSearch()" title="Fechar">✕</button>
+  </div>
+  <div class="search-results" id="search-results"></div>
+</div>
 
 <main class="main">
 
@@ -1587,6 +1672,218 @@ function restartQuiz() {
 }
 
 renderQuiz();
+
+// ═══════════════════════════════════════════════════════
+// SEARCH ENGINE
+// ═══════════════════════════════════════════════════════
+
+// Static knowledge base — every concept, definition, list item indexed
+const SEARCH_INDEX = [
+  // ── POSICIONAMENTO ──
+  { section: 'resumos', tab: 'resumos', title: 'Posicionamento das RP', text: 'As Relações Públicas são uma responsabilidade de gestão centrada no diálogo permanente e na procura da gestão de conflitos. O seu princípio orientador exige disponibilidade para modificações de comportamento por parte das organizações — não apenas persuasão dos públicos.' },
+  { section: 'resumos', tab: 'resumos', title: '3 Níveis de actuação das RP', text: 'As RP actuam em 3 níveis: Interno — do Poder para o interior da Instituição. Institucional — do Poder para o exterior da Instituição. Envolvente — da própria Organização.' },
+  { section: 'resumos', tab: 'resumos', title: 'Definição Clássica de Relações Públicas', text: 'Conjunto de métodos de análise de situação e detecção de tendências, bem como de avaliação dos respectivos reflexos na Instituição que representamos como auxiliar do diagnóstico necessário à tomada de decisão.' },
+  { section: 'resumos', tab: 'resumos', title: 'RP vs. Publicidade', text: 'As Relações Públicas visam informar, educar e provocar compreensão, obtendo credibilidade permanente. A Publicidade visa persuadir e vender, obtendo credibilidade em cada campanha. A Publicidade é uma técnica auxiliar utilizada pelo Marketing e pelas RP.' },
+  { section: 'resumos', tab: 'resumos', title: '7 Princípios da Comunicação Eficaz', text: 'Clareza — linguagem acessível. Coerência — sincronia entre mensagem e acção. Adequação — linguagem conforme as características dos públicos. Oportunidade e actualidade — o melhor momento para comunicar. Distribuição — a mensagem chega devidamente aos receptores. Adaptação e uniformidade — controlo do que é divulgado. Aceitação e interesse — grau de receptividade baseado na confiança.' },
+  { section: 'resumos', tab: 'resumos', title: 'Estratégias de RP: Aceitação Social e Zona de Influência', text: 'Aceitação Social: atingir clima de confiança através de actividades comunitárias, apoios e patrocínios, respeitando os valores da comunidade. Zona de Influência Pública: espaço conquistado pela Instituição que lhe permite impor o seu papel de parceiro social e económico na envolvente comunitária.' },
+  { section: 'resumos', tab: 'resumos', title: 'Advocacia em Relações Públicas', text: 'A advocacia em RP é definida como o acto de representar publicamente um indivíduo, organização ou ideia com o objectivo de persuadir audiências a olharem favoravelmente. Envolve práticas como relações com os media, gestão de assuntos públicos, comunicação estratégica e estabelecimento de parcerias. (Edgett, 2002)' },
+
+  // ── MODELOS GRUNIG ──
+  { section: 'esquemas', tab: 'esquemas', title: '1.º Modelo: Agente de Imprensa (Press Agentry)', text: 'Sustenta que as RP servem uma função de propaganda. As suas principais propostas são conseguir publicity favorável para as organizações. Os programas de acção visam unicamente promover a organização nos media. Comunicação unidireccional. Não usa pesquisa. Modelo assimétrico. Fase histórica: Primórdios das RP.' },
+  { section: 'esquemas', tab: 'esquemas', title: '2.º Modelo: Informação Pública (Public Information)', text: 'É semelhante ao primeiro modelo — ambos vêem as RP como um monólogo. As organizações utilizam os seus profissionais como jornalistas residentes para a difusão de informação fidedigna mas apenas favorável, visando a reputação da organização. Modelo assimétrico. Fase histórica: Ivy Lee.' },
+  { section: 'esquemas', tab: 'esquemas', title: '3.º Modelo: Assimétrico Bidireccional (Two-way Asymmetrical)', text: 'Usa a pesquisa para desenvolver mensagens adequadas aos seus públicos estratégicos. Usa o conhecimento sobre atitudes e comportamentos para persuadir os públicos a aceitarem o ponto de vista da organização. O diálogo existe mas é dominado pela organização. Fase histórica: Edward Bernays.' },
+  { section: 'esquemas', tab: 'esquemas', title: '4.º Modelo: Simétrico Bidireccional (Two-way Symmetrical)', text: 'Tem como finalidade principal a compreensão mútua, e não apenas a persuasão. Estabelece efeitos equilibrados entre os públicos de interesse e a organização. Os RP têm o papel de mediadores. Usa a comunicação para gerir conflitos e colaborar estrategicamente. As organizações centram a actividade na negociação e no compromisso. Teoria de Excelência. Modelo ideal. Grunig e Larissa Grunig (1992).' },
+  { section: 'esquemas', tab: 'esquemas', title: 'Comparação dos 4 Modelos com a história das RP', text: '1.º Modelo — Primórdios da prática da profissão de RP. 2.º Modelo — Fase marcada pela intervenção de Ivy Lee. 3.º Modelo — Fase marcada por Edward Bernays. 4.º Modelo — Modelo ideal ou teoria de excelência em RP. O uso do 4.º modelo pode ser combinado com o 3.º para a efectiva contribuição das RP para a eficácia organizacional.' },
+  { section: 'esquemas', tab: 'esquemas', title: 'Escola Crítica das Relações Públicas', text: 'Os estudos críticos chegam às RP nos anos 1980 e 1990, desafiando a visão das RP como mera função de gestão orientada para a eficácia. O pós-modernismo contempla os desequilíbrios de poder e o dissenso como pluralidade discursiva e ideológica. O conceito de dissenso é o contrário do consenso — a unanimidade não é exigida nem é o objectivo. (L\'Etang, Holtzhausen, Ciszek & Logan)' },
+
+  // ── IDENTIDADE IMAGEM REPUTAÇÃO ──
+  { section: 'resumos', tab: 'resumos', title: 'Identidade Organizacional — definição e conceito', text: 'A identidade é o que a organização é, faz e diz. É um conceito emissor — definido pela organização. Engloba história, valores, crenças, o código genético da empresa. A autonomização da identidade determina uma consciência de responsabilidade acrescida. A identidade distingue-se da imagem: enquanto a imagem é o que se passa na mente dos públicos, a identidade é o que a organização é, faz e diz.' },
+  { section: 'resumos', tab: 'resumos', title: '3 Critérios de Identidade Organizacional Rigorosa', text: 'Segundo Albert e Whetten (2004): 1.º Definição do carácter da empresa — o foco central de existência. 2.º Definição das características que distinguem a empresa das outras — singularidade. 3.º Definição das características que permitem identificação ao longo do tempo — permanência e coerência.' },
+  { section: 'resumos', tab: 'resumos', title: 'Imagem Institucional — definição', text: 'A imagem corresponde à impressão percebida dos públicos sobre dada organização. Tench e Yeomans (2006): tanto pode ser projectada para o interior — auto-imagem — e/ou para o exterior — imagem pública. As RP reúnem factores proactivos e reactivos para auxiliar a redução de discrepância entre como a organização gostaria de ser percepcionada e a imagem real.' },
+  { section: 'resumos', tab: 'resumos', title: 'Reputação Organizacional — definição e importância', text: 'A Reputação depende da confiança, transparência e da interacção dos conceitos de identidade e imagem (Fombrun, 1996). A Reputação é um activo intangível que gera valor estratégico e garantia de vantagem competitiva e de diferenciação através do seu capital reputacional. A imagem gerada tem de corresponder à realidade vivida pela organização.' },
+  { section: 'resumos', tab: 'resumos', title: 'Condições para Identidade e Reputação', text: 'As condições decisivas para a definição da identidade e reputação de cada organização passam por: Coerência, Responsabilidade, Credibilidade, Confiança e Transparência.' },
+  { section: 'resumos', tab: 'resumos', title: 'Dissonância, Hipocrisia e Autenticidade', text: 'Effron, O\'Connor, Leroy & Lucas (2018): os públicos reagem negativamente se perceberem alto grau de dissonância (baixa integridade comportamental) e interpretarem essa dissonância como reivindicação de um benefício moral indevido — hipocrisia. A falta de autenticidade ocorre quando as aparições públicas não reflectem o verdadeiro eu. A hipocrisia não necessita de falsas aparências. Na vida contemporânea a autenticidade adquiriu destaque como novo modelo de comunicação.' },
+  { section: 'resumos', tab: 'resumos', title: 'Eixos Identitários de Kapferer', text: 'Kapferer (1991): necessidade de conhecer os eixos identitários da empresa — singularidade, unicidade e permanência. O elemento de maior intemporalidade é a história da empresa, o seu código genético, decisivo para processos de mudança. Os de maior temporalidade são os atributos físico-materiais e as lógicas de relacionamento com os diferentes públicos.' },
+
+  // ── PÚBLICOS E STAKEHOLDERS ──
+  { section: 'resumos', tab: 'resumos', title: 'Definição de Stakeholder — Freeman (2010)', text: 'Para Edward Freeman, stakeholder ou parte interessada é um grupo ou indivíduo que pode afectar ou é afectado pelo cumprimento da finalidade e objectivos da organização. Esta visão acrescenta valor aos tradicionais públicos (accionistas, colaboradores, fornecedores e clientes), incluindo também o Governo, os concorrentes e a sociedade civil.' },
+  { section: 'resumos', tab: 'resumos', title: '4 Categorias de Públicos — Grunig e Repper (1992)', text: '1.ª Não-públicos — não reconhecem ou não são reconhecidos como envolvidos com dada organização. 2.ª Públicos Latentes — défice de envolvimento devido a percepção de constrangimentos. 3.ª Públicos Conscientes — aumento do nível de envolvimento mas não comunicam por sua iniciativa. 4.ª Públicos Activos — elevada percepção, eliminam constrangimentos, reconhecem e aumentam envolvimento.' },
+  { section: 'resumos', tab: 'resumos', title: '5 Vertentes de Gestão de Stakeholders — Freeman', text: 'Freeman (2010) defende 5 vertentes de gestão: 1.ª Identificação de novos stakeholders ou de menor visibilidade. 2.ª Promoção de estratégias para todos os stakeholders. 3.ª Integração de todas as suas preocupações. 4.ª Negociação com os stakeholders dos assuntos-chave de interesse mútuo. 5.ª Investigação em novos pontos e tendências para aconselhamento da gestão.' },
+  { section: 'resumos', tab: 'resumos', title: 'Prisão Cognitiva e Inércia Epistémica — Kim & Grunig (2021)', text: 'Conceito de prisão cognitiva: movimento cognitivo e comunicativo em torno de uma conclusão predefinida para optimizar ideias estabelecidas — processo interminável de reforços de crenças. A inércia epistémica resulta de trabalho cognitivo fútil incapaz de influenciar a situação problemática. Os profissionais de RP têm responsabilidade acrescida no enquadramento que dão aos assuntos para minimizar o impacto da desinformação.' },
+  { section: 'resumos', tab: 'resumos', title: 'Teoria Situacional dos Públicos — Pieczka (2019)', text: 'Magda Pieczka alerta para as limitações da teoria situacional dos públicos, redefinindo o conceito de público como família de três termos: o público enquanto indivíduos que partilham espaços; o público auto-organizado ao nível da atenção partilhada; e o público enquanto imaginário político e social. Defende uma abordagem performativa do público para compreensão mais complexa de como o público se forma em diferentes contextos.' },
+
+  // ── ÉTICA E CULTURA ──
+  { section: 'resumos', tab: 'resumos', title: '6 Indicadores de Crescimento Organizacional — Brandão', text: 'Carvalho et al. (2011) identificam 5 indicadores: 1 Sobrevivência a longo prazo. 2 Crescimento sustentado. 3 Rentabilidade adequada. 4 Capacidade de Inovação. 5 Processos adequados de tomada de decisão. Brandão acrescenta o 6.º: Avaliação das necessidades e contribuições dos Stakeholders que envolvem uma Ética de Responsabilidade.' },
+  { section: 'resumos', tab: 'resumos', title: 'Ética de Responsabilidade — definição', text: 'Uma Ética de Responsabilidade projecta-se no campo do trabalho e no exercício das profissões, no contexto organizacional, marcando todo o processo relacional, de criatividade e inovação, bem como da tomada de decisões. A questão Ética deve ser encarada como prioritária nas Organizações para o seu posicionamento e ADN.' },
+  { section: 'resumos', tab: 'resumos', title: '3 Níveis da Cultura Organizacional — Schein (2004)', text: '1.º Visível — elementos mais visíveis mas mais indecifráveis: disposição física, vestuário, relacionamento dos colaboradores, produtos e serviços, relatórios anuais. 2.º Maior consciência — valores e normas frequentemente conscientes e articulados; comportamentos dos colaboradores em momentos chave. 3.º Invisíveis — bases fundamentais do sistema de significados; o que era um valor passa a ser inconscientemente visto como realidade.' },
+  { section: 'resumos', tab: 'resumos', title: 'Funções da Cultura Organizacional — Bilhim (2006)', text: '1.º Papel específico na definição das fronteiras da empresa. 2.º Conferir sentido de identidade aos seus membros. 3.º Facilitar a identificação com os objectivos organizacionais. 4.º Alargar a estabilidade do sistema social. 5.º Funcionar como mecanismo de controlo que guia e dá forma às atitudes e comportamentos dos funcionários.' },
+  { section: 'resumos', tab: 'resumos', title: '2 Dimensões dos Desafios Éticos — Samuel Mercier (2004)', text: 'Dimensão Contextual: pressões do ambiente sociopolítico, papel da gestão da reputação e confiança, necessidade de adequação ao ambiente técnico-económico. Dimensão Organizacional: equilíbrio entre adaptação às pressões externas, conservação da coesão e eficácia do sistema, necessidade de referência cultural comum sustentada numa base socialmente responsável.' },
+  { section: 'resumos', tab: 'resumos', title: '4 Virtudes da Governança Corporativa', text: '1.ª Equidade — tratamento justo, sem atitudes ou políticas discriminatórias. 2.ª Transparência — organização translúcida que vai ao encontro das necessidades dos stakeholders sem ocultar relevantes. 3.ª Accountability — relatório anual que vai além das exigências legais, disponível a todos os interessados. 4.ª Responsabilidade Corporativa — assumir as consequências dos actos, sejam intencionais ou não.' },
+  { section: 'resumos', tab: 'resumos', title: '15 Valores da Ética Empresarial', text: 'Confiança; Credibilidade; Respeito pela propriedade, stakeholders e sociedade; Ir ao encontro das expectativas da sociedade; Cumprimento de promessas; Tomada de decisões para médio e longo prazo; Definição clara da natureza e comportamento organizacional; Políticas de Responsabilidade Social; Capacidade de Negociação; Cultura adequada à Organização; Políticas relacionais activas com os stakeholders; Rigor, Excelência e política de Verdade na Gestão; Capacidade de Inovação e ser Empreendedora; Espírito de concorrência leal; Respeito pela autonomia, liberdade e defesa do consumidor.' },
+  { section: 'resumos', tab: 'resumos', title: '3 Princípios Orientadores de Conduta Ética', text: '1.º Sentido de Responsabilidade — decisões não são fruto da vontade de alguns mas de todos. 2.º Consciência Corporativa — todos conhecem e compreendem os objectivos e valores da empresa; abertura da gestão para participação activa dos colaboradores. 3.º Identidade Organizacional — conjunto de ideais, valores e crenças partilhadas por todos os colaboradores; conceito emissor definido pela organização.' },
+
+  // ── RSE ──
+  { section: 'resumos', tab: 'resumos', title: 'Responsabilidade Social Empresarial — Bowen (1957)', text: 'Howard Bowen, considerado o pai da RSE por Archie Carroll (1999). Definição: obrigação dos homens de negócio prosseguirem as políticas e linhas de acção que são desejáveis para os objectivos e valores da sociedade — para lá da maximização do lucro.' },
+  { section: 'resumos', tab: 'resumos', title: 'Definição de RSC — Comissão Europeia', text: 'A Comissão Europeia (2011) assume que a RSC é o comportamento empresarial que integra questões sociais, ambientais, éticas, do consumidor e de direitos humanos nas suas estratégias e operações empresariais. A RSC é a estrutura que permite às empresas gerir questões de sustentabilidade e justiça social para o benefício das comunidades.' },
+  { section: 'resumos', tab: 'resumos', title: '7 Pilares RSE — Instituto Ethos', text: '1 Valores, Transparência e Governança. 2 Público Interno. 3 Meio Ambiente. 4 Fornecedores. 5 Consumidores e Clientes. 6 Comunidade. 7 Governo e Sociedade. Os valores e princípios éticos formam a base da cultura empresarial orientando a conduta e fundamentando a missão social.' },
+  { section: 'resumos', tab: 'resumos', title: 'Modelo de 3 Domínios da RSE — Schwartz e Carroll (2003)', text: 'Schwartz e Carroll (2003): modelo de três domínios — Económico, Legal e Ético. Este modelo fortalece a integração das responsabilidades filantrópicas no domínio ético e/ou económico. Em 2008 os autores propuseram um novo modelo centrado nos conceitos de Valor (benefícios para a sociedade), Equilíbrio (harmonia entre interesses da organização e partes interessadas) e Accountability (dever de reportar contas).' },
+  { section: 'resumos', tab: 'resumos', title: '2 Vertentes da RSE — Tench e Yeomans (2006)', text: '1.ª Associa-se à reputação e alicerça-se na ideia de que a responsabilidade social gera vantagem competitiva. 2.ª Baseia-se na obtenção de desenvolvimento sustentado, inerente à noção das organizações serem socialmente responsáveis para com as partes interessadas e a sociedade — organizações percepcionadas como empresas cidadãs.' },
+  { section: 'resumos', tab: 'resumos', title: 'Corporate Political Advocacy (CPA)', text: 'CPA é a prática de comunicar publicamente posições sobre questões sociopolíticas e tentar envolver diferentes públicos em assuntos complexos. Gera simultaneamente aprovação e aquisição dos que apoiam e desaprovação e boicote dos que se opõem. Critérios de credibilidade: (a) Consistência — coerente com os valores da empresa; (b) Plausibilidade — compromisso de longo prazo; (c) Autenticidade — acções concretas. Exemplos: Ben & Jerry\'s, Starbucks, Gillette, Lidl Portugal, Santander.' },
+  { section: 'resumos', tab: 'resumos', title: 'Greenwashing e Riscos de Reputação na RSE', text: 'Weder, Einwiller e Eberwein (2019): existem riscos de reputação decorrentes de frequentes reclamações de greenwashing ou whitewashing — recorrer à desinformação ou parcerias estratégicas com fins exclusivamente comerciais para transmitir uma imagem de responsabilidade que não corresponde à realidade. Um ambiente de media altamente volátil com conteúdos gerados pelos utilizadores implica novos tipos de críticas pelos stakeholders.' },
+  { section: 'resumos', tab: 'resumos', title: 'Agenda 2030 e Objetivos de Desenvolvimento Sustentável', text: 'Os ODS e a Agenda 2030, adoptados pelos Estados Membros das Nações Unidas em 2015. São 17 ODS com 169 metas, desenvolvidos com base nos 8 Objectivos de Desenvolvimento do Milénio (2000–2015). Representam visão comum para a Humanidade em dimensões social, económica e ambiental. A pandemia COVID-19 reforçou a necessidade de resposta global colaborativa.' },
+
+  // ── COMUNICAÇÃO INTERNA ──
+  { section: 'resumos', tab: 'resumos', title: 'Comunicação Interna — Definição Geral', text: 'A comunicação interna torna-se fundamental para a credibilização de dada organização junto dos seus colaboradores. Deve implicar a troca de informações e ideias, proporcionar ajuda no desempenho das funções, influenciar a atitude dos colaboradores, envolver os colaboradores nas decisões estratégicas, e visar a criação de condições para potenciar a participação activa e o sentimento de pertença.' },
+  { section: 'resumos', tab: 'resumos', title: 'Comunicação Interna — Almeida (2000): Necessidade, Crença e Vontade', text: 'Vítor Almeida (2000): a comunicação interna está para as empresas como: (i) Uma Necessidade — porque é determinante na coordenação das actividades da empresa. (ii) Uma Crença — porque é portadora de soluções. (iii) Uma Vontade — porque tem de ser devidamente pensada e adequada às características da empresa e seus colaboradores.' },
+  { section: 'resumos', tab: 'resumos', title: '5 Funções da Comunicação nas Organizações — Bilhim + Brandão', text: 'Bilhim (2006) identifica 4 funções: 1.ª Controlo (formal e informal) do comportamento organizacional. 2.ª Motivação dos colaboradores através do esclarecimento e feedback sobre o desempenho. 3.ª Necessidade de afiliação e identificação do indivíduo com a organização. 4.ª Fornecimento de informação necessária para a tomada de decisão. Brandão acrescenta a 5.ª: que a informação vá ao encontro das necessidades e expectativas dos colaboradores.' },
+  { section: 'resumos', tab: 'resumos', title: '3 Fluxos de Comunicação Interna', text: 'A comunicação interna deve ter políticas multidireccionais: Descendente — do Poder para o interior da Instituição (predominante). Ascendente — dos colaboradores para a gestão, com ideias, sugestões e chamadas de opinião. Horizontal — entre unidades ao mesmo nível hierárquico dentro da mesma empresa e do mesmo grupo empresarial.' },
+  { section: 'resumos', tab: 'resumos', title: '5 Barreiras à Comunicação Interna — Thayer (1979)', text: 'Lee Thayer (1979): 1 Barreiras Organizacionais — tipo de estrutura e procedimentos, distância física, especialização, relações de poder. 2 Barreiras Interpessoais — clima de contacto interpessoal, valores e padrões de conduta, atitudes conflituosas. 3 Barreiras Individuais — hábitos de pensamento obsoletos, inaptidões para receber e transmitir mensagens. 4 Barreiras Económicas, Geográficas e Temporais — custo, local e tempo. 5 Barreiras de Canal e Meios — utilização do canal e meios inadequados.' },
+  { section: 'resumos', tab: 'resumos', title: '4 Princípios Orientadores da Comunicação Interna — Elias e Mascaray (2003)', text: '1.º Elemento integrante do sistema organizacional em constante interacção com os restantes. 2.º Elemento facilitador para a integração dos colaboradores num projecto da empresa. 3.º Agente de mudança, adequando a organização às novas exigências. 4.º Elemento de coesão, que orienta todas as acções para a execução do projecto empresarial.' },
+  { section: 'resumos', tab: 'resumos', title: '4 Níveis de Villafañe — Comunicação Interna e RH', text: 'Villafañe (1998): 1.º Envolvimento expressivo — valorização e reconhecimento do colaborador. 2.º Proporcionar harmonia das acções da empresa. 3.º Proporcionar a mudança de atitudes em situações de crise, fusões e mudanças organizacionais. 4.º Proporcionar a melhoria da produtividade através da sensibilização dos colaboradores para os objectivos.' },
+  { section: 'resumos', tab: 'resumos', title: '3 Dimensões da Comunicação Interna', text: '1.ª Informação — coloca à disposição de todos os dados que lhes dizem respeito. 2.ª Animação — animação hierárquica que estrutura a relação contratual e humana, espaço de explicação pedagógica. 3.ª Imagem (institucional) — envolve sentimento de valorização dos trabalhadores, funciona como espelho da comunicação interna.' },
+  { section: 'resumos', tab: 'resumos', title: '4 Vertentes da Política de Comunicação Interna', text: '1.ª Vertente Técnica — informação adequada a quadros, colaboradores, fornecedores e accionistas. 2.ª Vertente Coordenadora — interdependência das partes funcionais, necessidade de redes de comunicação eficazes. 3.ª Vertente Motivacional — estimular elementos da organização para colaborar activamente nos objectivos. 4.ª Vertente Integracional — integração plena dos quadros na empresa, conhecimento do historial e das relações sociais internas.' },
+  { section: 'resumos', tab: 'resumos', title: 'Trabalhadores como Primeiro Público da Empresa', text: 'As bases da estrutura da comunicação interna: 1 O trabalhador é um vector de imagem. 2 O trabalhador é a estrutura mais credível — advém da proximidade física e técnica. 3 O trabalhador é a estrutura mais escutada e interveniente na formação da imagem da empresa. Os trabalhadores são o primeiro público da empresa: têm maiores motivos para reagir, estão em contacto com clientes e fornecedores, e a Administração compromete-se com o exterior através deles.' },
+  { section: 'resumos', tab: 'resumos', title: 'Máxima de Ouro da Comunicação Interna', text: 'Não comunicar é comunicar negativamente. As Empresas que dispõem de um adequado programa de Comunicação Interna têm maior facilidade na Comunicação Externa.' },
+
+  // ── PUBLICIDADE INSTITUCIONAL ──
+  { section: 'resumos', tab: 'resumos', title: 'Publicidade Institucional — Função e Distinção', text: 'A Publicidade Institucional é uma área de intervenção das RP que tem como principal função estabelecer ou fortalecer bases relacionais favoráveis com os diferentes públicos ou partes interessadas. O Marketing é função directiva de linha centrado nos clientes. As RP actuam como função directiva de staff ao nível da gestão de relacionamentos internos e externos.' },
+  { section: 'resumos', tab: 'resumos', title: 'Objectivos da Publicidade Institucional', text: 'A gestão da imagem institucional junto dos públicos de interesse visa assegurar a longevidade organizacional através da criação e reforço de: Capital de Confiança; Credibilidade; Transparência — o que implica ética e responsabilidade.' },
+
+  // ── RP ESPECIALIZADAS / LOBBYING / CRISES ──
+  { section: 'resumos', tab: 'resumos', title: 'Lobbying e Public Affairs', text: 'Cabe às RP o desenvolvimento de contactos com fontes de Governo e Organismos Públicos para estabelecer mediação comunicacional. O Lobbying visa persuadir ou pressionar os poderes públicos na defesa dos interesses da organização e seus stakeholders. Lampreia (2005): deve ser sempre realizado no cumprimento legislativo, com ética empresarial, transparência de processos, boas práticas e discrição.' },
+  { section: 'resumos', tab: 'resumos', title: 'RP Financeiras', text: 'As RP Financeiras exigem profundos conhecimentos sobre gestão das finanças corporativas e quadro jurídico. O profissional não pode ser apenas um técnico de comunicação, mas um verdadeiro especialista dos assuntos económicos. A comunicação deve ser geradora de aceitação e retenção de mensagens com interpretação, simplificação, confiança e transparência — questões de Corporate Governance.' },
+  { section: 'resumos', tab: 'resumos', title: '5 Fases da Gestão de Crises — Fearn-Banks', text: 'Fearn-Banks (2001) identifica 5 fases: 1.ª Detecção. 2.ª Preparação e Prevenção — planeamento para evitar a crise com acções proactivas. 3.ª Contenção — reduzir a duração ou evitar contágio a outros assuntos. 4.ª Recuperação — esforço para tudo voltar à normalidade. 5.ª Lições aprendidas — avaliar a crise, o que se perdeu e o que corrigir no futuro.' },
+  { section: 'resumos', tab: 'resumos', title: '3 Fases de Desenvolvimento de Crise — Carracosa', text: 'Carracosa (1992): 1.ª Fase Aguda — coincidente com a pressão e especulação nos órgãos de comunicação social. 2.ª Fase Crónica — momento em que a organização gere e analisa os efeitos e consequências da crise. 3.ª Fase de Recuperação — tempo necessário para reestabelecer o equilíbrio anterior; planos de comunicação permitem recuperação mais rápida com menores danos de imagem.' },
+  { section: 'resumos', tab: 'resumos', title: '2 Tipos de Crise — Lampreia (2003)', text: '1.º Crises de ordem Previsível: situações que de algum modo se podem antever — crises económicas, alterações estruturais na empresa ou no contexto socioeconómico e legal. 2.º Crises de ordem Imprevisível: situações mais complicadas de gerir — catástrofes naturais, financeiras, sabotagens, acidentes, agressões. Ambas devem ser pensadas como possíveis ocorrências com planos de prevenção adequados.' },
+
+  // ── FLASHCARDS CONTEÚDO ──
+  { section: 'flashcards', tab: 'flashcards', title: 'Flashcard: Modelo Simétrico Bidireccional', text: 'Finalidade: compreensão mútua. RP são mediadores. Comunicação para gerir conflitos e colaborar estrategicamente. Negociação e compromisso com stakeholders. Teoria normativa de excelência. Grunig e Larissa Grunig (1992).' },
+  { section: 'flashcards', tab: 'flashcards', title: 'Flashcard: Stakeholder vs. Público', text: 'Freeman (2010): stakeholder é grupo ou indivíduo que pode afectar ou é afectado pelos objectivos da organização. Grunig & Repper: distinções muito ténues entre públicos e stakeholders — ambas correspondem a segmentações de categorias idênticas, estabelecendo-se em 4 categorias: não-públicos, latentes, conscientes e activos.' },
+
+  // ── HISTÓRIA / STORYTELLING ──
+  { section: 'historia', tab: 'historia', title: 'A história completa das RP — storytelling', text: 'A história das Relações Públicas narrada como uma série de capítulos: o mundo que mudou e as organizações que ainda não tinham percebido; os quatro modelos de Grunig como quatro filosofias de poder; a tensão entre identidade e imagem; a revolução dos stakeholders de Freeman; a ética como ADN das organizações; a batalha invisível da comunicação interna; e o dia em que tudo corre mal — a gestão de crises.' },
+  { section: 'historia', tab: 'historia', title: 'Triângulo relacional das sociedades — comunicação, informação, comutação', text: 'Na sociedade da comunicação o princípio activo situa-se no pólo emissor. Na sociedade da informação situa-se no pólo receptor. Na sociedade da comutação a criatividade deriva da interacção entre ambos os pólos e as aparências assumem principal destaque face à percepção das outras duas relações de sociedade.' },
+];
+
+let searchOpen = false;
+
+function toggleSearch() {
+  searchOpen = !searchOpen;
+  const bar = document.getElementById('search-bar');
+  const btn = document.getElementById('search-toggle-btn');
+  if (searchOpen) {
+    bar.classList.add('open');
+    btn.classList.add('active');
+    setTimeout(() => document.getElementById('search-input').focus(), 50);
+  } else {
+    closeSearch();
+  }
+}
+
+function closeSearch() {
+  searchOpen = false;
+  document.getElementById('search-bar').classList.remove('open');
+  document.getElementById('search-toggle-btn').classList.remove('active');
+  document.getElementById('search-input').value = '';
+  document.getElementById('search-results').innerHTML = '';
+}
+
+function searchKeydown(e) {
+  if (e.key === 'Escape') closeSearch();
+}
+
+// Global Ctrl+K / Cmd+K shortcut
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    toggleSearch();
+  }
+});
+
+function highlight(text, query) {
+  if (!query) return text;
+  const words = query.trim().split(/\s+/).filter(w => w.length > 1);
+  let result = text;
+  words.forEach(word => {
+    const re = new RegExp('(' + word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+    result = result.replace(re, '<mark>$1</mark>');
+  });
+  return result;
+}
+
+function getSnippet(text, query, maxLen = 160) {
+  const words = query.trim().toLowerCase().split(/\s+/).filter(w => w.length > 1);
+  let best = 0;
+  words.forEach(word => {
+    const idx = text.toLowerCase().indexOf(word);
+    if (idx !== -1) best = Math.max(0, idx - 40);
+  });
+  let snippet = text.slice(best, best + maxLen);
+  if (best > 0) snippet = '…' + snippet;
+  if (best + maxLen < text.length) snippet = snippet + '…';
+  return snippet;
+}
+
+const SECTION_LABELS = {
+  resumos: '📚 Resumos',
+  esquemas: '🗺️ Esquemas',
+  flashcards: '🃏 Flashcards',
+  quiz: '🎯 Quiz',
+  fofoca: '🔥 Fofoca',
+  temas: '⚡ Temas-Chave',
+  historia: '📖 A História',
+};
+
+function doSearch(query) {
+  const container = document.getElementById('search-results');
+  const q = query.trim().toLowerCase();
+
+  if (q.length < 2) {
+    container.innerHTML = q.length === 0 ? '' : '<div class="search-empty">Escreve pelo menos 2 caracteres…</div>';
+    return;
+  }
+
+  const words = q.split(/\s+/).filter(w => w.length > 1);
+
+  const scored = SEARCH_INDEX.map(item => {
+    const haystack = (item.title + ' ' + item.text).toLowerCase();
+    let score = 0;
+    words.forEach(word => {
+      // Title matches score higher
+      if (item.title.toLowerCase().includes(word)) score += 3;
+      // Body matches
+      const bodyMatches = (haystack.match(new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length;
+      score += bodyMatches;
+    });
+    return { ...item, score };
+  })
+  .filter(item => item.score > 0)
+  .sort((a, b) => b.score - a.score)
+  .slice(0, 12);
+
+  if (scored.length === 0) {
+    container.innerHTML = `<div class="search-empty">Nenhum resultado para "<strong>${query}</strong>". Tenta outros termos.</div>`;
+    return;
+  }
+
+  const countEl = `<div class="search-count">${scored.length} resultado${scored.length !== 1 ? 's' : ''} para "<strong>${query}</strong>"</div>`;
+  const items = scored.map(item => {
+    const snippet = highlight(getSnippet(item.text, q), q);
+    const titleHL = highlight(item.title, q);
+    return `<div class="search-result-item" onclick="goToResult('${item.tab}')">
+      <div class="search-result-section">${SECTION_LABELS[item.section] || item.section}</div>
+      <div class="search-result-title">${titleHL}</div>
+      <div class="search-result-snippet">${snippet}</div>
+    </div>`;
+  }).join('');
+
+  container.innerHTML = countEl + items;
+}
+
+function goToResult(tab) {
+  closeSearch();
+  showTab(tab);
+}
 </script>
 </body>
 </html>
