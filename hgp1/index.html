@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1383–1385 · A Revolução Épica de Portugal</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root {
+  --fire: #ff4500;
+  --gold: #d4a017;
+  --blood: #8b0000;
+  --ember: #ff6b35;
+  --dark: #0a0704;
+  --smoke: #1a1410;
+  --parch: #f0e6cc;
+  --steel: #8a9bb0;
+  --green: #1a4a2e;
+  --blade: #c8d8e8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Crimson Text',serif;background:var(--dark);color:var(--parch);overflow-x:hidden;}
+ 
+/* PARTICLES */
+#particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.particle{position:absolute;border-radius:50%;animation:floatUp linear infinite;opacity:0;}
+@keyframes floatUp{0%{transform:translateY(100vh) scale(0);opacity:0;}10%{opacity:1;}90%{opacity:0.6;}100%{transform:translateY(-20vh) scale(1.5);opacity:0;}}
+ 
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;text-align:center;padding:2rem;background:radial-gradient(ellipse at 30% 60%,#3a0800 0%,#1a0c04 40%,#0a0704 100%);}
+.hero-flames{position:absolute;bottom:0;left:0;right:0;height:300px;background:linear-gradient(0deg,rgba(255,69,0,0.3) 0%,rgba(255,107,53,0.1) 50%,transparent 100%);animation:flicker 3s ease-in-out infinite alternate;}
+@keyframes flicker{0%{opacity:0.6;transform:scaleX(1);}50%{opacity:1;transform:scaleX(1.02);}100%{opacity:0.7;transform:scaleX(0.98);}}
+.hero-bg-text{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:clamp(8rem,25vw,20rem);color:transparent;-webkit-text-stroke:1px rgba(212,160,23,0.08);line-height:1;user-select:none;animation:slowPulse 8s ease-in-out infinite;}
+@keyframes slowPulse{0%,100%{opacity:0.5;transform:scale(1);}50%{opacity:1;transform:scale(1.02);}}
+.hero-sword{position:absolute;right:5%;top:50%;transform:translateY(-50%) rotate(15deg);opacity:0.06;font-size:20rem;animation:swordFloat 6s ease-in-out infinite;}
+@keyframes swordFloat{0%,100%{transform:translateY(-50%) rotate(15deg);}50%{transform:translateY(-55%) rotate(13deg);}}
+.hero-content{position:relative;z-index:2;}
+.hero-badge{display:inline-block;border:1px solid var(--gold);color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:0.75rem;letter-spacing:0.3em;padding:0.4rem 1.5rem;margin-bottom:2rem;animation:fadeInDown 1s ease both;}
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(2.5rem,7vw,6rem);font-weight:900;line-height:1;animation:fadeInUp 1s ease 0.3s both;text-shadow:0 0 60px rgba(255,69,0,0.5);}
+.hero h1 em{color:var(--fire);font-style:normal;display:block;}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+.hero-sub{font-size:1.1rem;color:#c8a878;margin-top:1.2rem;animation:fadeInUp 1s ease 0.6s both;line-height:1.7;}
+.hero-nav{display:flex;flex-wrap:wrap;gap:0.8rem;margin-top:2.5rem;justify-content:center;animation:fadeInUp 1s ease 0.9s both;}
+.hero-nav a{text-decoration:none;padding:0.8rem 1.8rem;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.15em;border-radius:1px;transition:all 0.3s;position:relative;overflow:hidden;}
+.hero-nav a::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,0.1);transform:translateX(-100%);transition:transform 0.3s;}
+.hero-nav a:hover::before{transform:translateX(0);}
+.btn-gossip{background:linear-gradient(135deg,#8b0000,#c0392b);color:#fff;box-shadow:0 4px 20px rgba(192,57,43,0.4);}
+.btn-f1{background:linear-gradient(135deg,#990011,#e8002d);color:#fff;box-shadow:0 4px 20px rgba(232,0,45,0.4);}
+.btn-quiz{background:linear-gradient(135deg,#1a4a2e,#2e6b3e);color:#fff;box-shadow:0 4px 20px rgba(46,107,62,0.4);}
+.btn-flash{background:linear-gradient(135deg,#1a2a4a,#1a3a5c);color:#fff;box-shadow:0 4px 20px rgba(26,58,92,0.4);}
+.hero-nav a:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,0.5);}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);animation:bounce 2s infinite;font-size:1.5rem;opacity:0.4;}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-10px);}}
+ 
+/* STICKY NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(10,7,4,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(212,160,23,0.2);padding:0.8rem 2rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap;}
+.nav-logo{font-family:'Cinzel',serif;font-size:1rem;color:var(--gold);margin-right:auto;letter-spacing:0.1em;}
+nav a{text-decoration:none;font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.12em;color:#a08060;padding:0.3rem 0.6rem;transition:all 0.2s;border-bottom:2px solid transparent;}
+nav a:hover{color:var(--gold);border-bottom-color:var(--gold);}
+ 
+/* SECTION BASE */
+.sec{padding:6rem 1.5rem;position:relative;}
+.sec-inner{max-width:980px;margin:0 auto;}
+.sec-header{text-align:center;margin-bottom:4rem;}
+.sec-tag{display:inline-block;font-family:'Bebas Neue',sans-serif;font-size:0.75rem;letter-spacing:0.3em;padding:0.35rem 1.2rem;border-radius:1px;margin-bottom:1rem;}
+.sec-title{font-family:'Cinzel',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:900;line-height:1.1;}
+.sec-sub{color:#9a8060;margin-top:0.6rem;font-size:1rem;}
+ 
+/* DIVIDER */
+.divider{text-align:center;padding:1rem;font-size:2rem;opacity:0.3;}
+ 
+/* ===== GOSSIP ===== */
+#gossip{background:linear-gradient(180deg,#120806 0%,#0a0704 100%);}
+#gossip .sec-tag{color:var(--fire);background:rgba(255,69,0,0.1);border:1px solid rgba(255,69,0,0.3);}
+#gossip .sec-title{color:var(--parch);}
+.gossip-intro{background:linear-gradient(135deg,rgba(212,160,23,0.08),rgba(212,160,23,0.03));border-left:3px solid var(--gold);padding:1.2rem 1.8rem;font-style:italic;color:var(--gold);font-size:1.1rem;margin-bottom:3rem;border-radius:0 4px 4px 0;}
+.g-card{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:2rem;margin-bottom:1.5rem;position:relative;overflow:hidden;transition:all 0.4s;transform:translateY(20px);opacity:0;}
+.g-card.visible{transform:translateY(0);opacity:1;}
+.g-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,69,0,0.03),transparent);opacity:0;transition:opacity 0.3s;}
+.g-card:hover::before{opacity:1;}
+.g-card:hover{border-color:rgba(255,69,0,0.2);transform:translateY(-2px);}
+.g-card-header{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem;}
+.g-emoji{font-size:2.5rem;flex-shrink:0;filter:drop-shadow(0 0 10px rgba(255,69,0,0.5));}
+.g-title{font-family:'Cinzel',serif;font-size:1.15rem;color:var(--gold);}
+.g-drama{display:inline-block;background:var(--blood);color:#ff9999;font-size:0.6rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:0.15rem 0.5rem;border-radius:2px;margin-left:0.5rem;vertical-align:middle;}
+.g-text{color:#c8a878;line-height:1.85;font-size:1rem;}
+.g-text strong{color:var(--parch);}
+ 
+/* SVG ILLUSTRATIONS */
+.illus-wrap{text-align:center;margin:2rem 0;opacity:0;transform:scale(0.9);transition:all 0.6s;}
+.illus-wrap.visible{opacity:1;transform:scale(1);}
+ 
+/* ===== F1 ===== */
+#f1{background:#080808;border-top:3px solid #e8002d;border-bottom:3px solid #e8002d;}
+#f1 .sec-tag{color:#e8002d;background:rgba(232,0,45,0.1);border:1px solid rgba(232,0,45,0.3);}
+#f1 .sec-title{color:#fff;}
+.f1-card{background:#111;border:1px solid #222;border-left:4px solid #e8002d;border-radius:4px;padding:1.8rem;margin-bottom:1.2rem;position:relative;overflow:hidden;transition:all 0.3s;}
+.f1-card:hover{border-left-color:#ff4466;background:#161616;transform:translateX(4px);}
+.f1-card::after{content:'';position:absolute;top:0;right:0;width:30%;height:100%;background:repeating-linear-gradient(45deg,transparent,transparent 5px,rgba(232,0,45,0.03) 5px,rgba(232,0,45,0.03) 10px);}
+.f1-lap{font-family:'Bebas Neue',sans-serif;font-size:0.7rem;letter-spacing:0.3em;color:#555;margin-bottom:0.4rem;}
+.f1-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:#e8002d;margin-bottom:0.6rem;letter-spacing:0.05em;}
+.f1-text{color:#bbb;line-height:1.75;font-size:0.95rem;}
+.f1-text strong{color:#fff;}
+.f1-podium{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-top:2.5rem;}
+.pod{background:#111;border:1px solid #222;border-radius:4px;padding:1.5rem;text-align:center;}
+.pod-pos{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;}
+.p1{color:#ffd700;text-shadow:0 0 20px rgba(255,215,0,0.5);}
+.p2{color:#e8002d;text-shadow:0 0 20px rgba(232,0,45,0.5);}
+.p3{color:#888;}
+.pod-name{font-family:'Cinzel',serif;font-weight:700;color:#fff;margin:0.3rem 0 0.2rem;font-size:0.9rem;}
+.pod-team{font-size:0.75rem;color:#555;}
+ 
+/* ===== TIMELINE ===== */
+#timeline{background:linear-gradient(180deg,#0a0704 0%,#080c0a 100%);}
+#timeline .sec-tag{color:var(--gold);background:rgba(212,160,23,0.1);border:1px solid rgba(212,160,23,0.3);}
+.tl{position:relative;padding-left:2.5rem;}
+.tl::before{content:'';position:absolute;left:0.5rem;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--fire),var(--gold),var(--green));}
+.tl-item{position:relative;margin-bottom:2.2rem;opacity:0;transform:translateX(-20px);transition:all 0.5s;}
+.tl-item.visible{opacity:1;transform:translateX(0);}
+.tl-dot{position:absolute;left:-2rem;top:0.35rem;width:16px;height:16px;border-radius:50%;border:2px solid var(--dark);box-shadow:0 0 10px currentColor;}
+.tl-date{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--gold);letter-spacing:0.08em;}
+.tl-title{font-family:'Cinzel',serif;font-size:1rem;font-weight:700;margin:0.2rem 0 0.4rem;}
+.tl-text{color:#9a7855;font-size:0.92rem;line-height:1.65;}
+ 
+/* ===== QUIZ ===== */
+#quiz{background:linear-gradient(180deg,#060c08 0%,#080c06 100%);}
+#quiz .sec-tag{color:#4a9a5a;background:rgba(74,154,90,0.1);border:1px solid rgba(74,154,90,0.3);}
+.quiz-tabs{display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:2.5rem;}
+.qtab{padding:0.5rem 1.3rem;border-radius:2px;border:1px solid #2a4a30;background:transparent;color:#5a8a60;font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s;}
+.qtab.active,.qtab:hover{background:var(--green);border-color:var(--green);color:#fff;}
+ 
+/* QUIZ SLIDER */
+.quiz-slider-wrap{position:relative;overflow:hidden;}
+.quiz-slider{display:flex;transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);}
+.q-slide{min-width:100%;padding:0.25rem;}
+.q-card{background:rgba(26,74,46,0.08);border:1px solid rgba(74,154,90,0.15);border-radius:12px;padding:2rem;position:relative;overflow:hidden;}
+.q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--fire),var(--gold),var(--green));}
+.q-progress-bar{position:absolute;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--fire),var(--gold));transition:width 0.5s ease;}
+.q-num{font-family:'Bebas Neue',sans-serif;font-size:0.75rem;letter-spacing:0.25em;color:#4a9a5a;margin-bottom:0.5rem;}
+.q-text{font-family:'Cinzel',serif;font-size:1.1rem;margin-bottom:1.5rem;line-height:1.5;color:var(--parch);}
+.q-illus{text-align:center;margin-bottom:1.2rem;}
+.options{display:flex;flex-direction:column;gap:0.6rem;}
+.option{display:flex;align-items:center;gap:0.8rem;padding:0.9rem 1.1rem;border-radius:6px;border:1px solid rgba(255,255,255,0.07);cursor:pointer;font-size:0.95rem;color:#c8a878;transition:all 0.2s;background:rgba(255,255,255,0.02);font-family:'Crimson Text',serif;}
+.option:hover{border-color:rgba(74,154,90,0.4);background:rgba(74,154,90,0.06);transform:translateX(4px);}
+.option.correct{background:rgba(46,107,62,0.25);border-color:#2e6b3e;color:#a8e0b8;}
+.option.wrong{background:rgba(139,0,0,0.2);border-color:#8b0000;color:#f0a0a0;}
+.option.disabled{pointer-events:none;}
+.opt-letter{width:28px;height:28px;min-width:28px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;font-family:'Bebas Neue',sans-serif;letter-spacing:0;}
+.q-feedback{margin-top:1rem;padding:0.9rem 1.1rem;border-radius:6px;font-size:0.9rem;line-height:1.65;display:none;}
+.q-feedback.show{display:block;animation:fadeInUp 0.3s ease;}
+.fb-c{background:rgba(46,107,62,0.15);border:1px solid rgba(46,107,62,0.3);color:#a8e0b8;}
+.fb-w{background:rgba(139,0,0,0.12);border:1px solid rgba(139,0,0,0.3);color:#f0a0a0;}
+.quiz-nav{display:flex;align-items:center;justify-content:space-between;margin-top:1.5rem;flex-wrap:wrap;gap:1rem;}
+.quiz-nav-btn{padding:0.6rem 1.5rem;border-radius:2px;border:1px solid rgba(74,154,90,0.3);background:transparent;color:#4a9a5a;font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s;}
+.quiz-nav-btn:hover:not(:disabled){background:var(--green);border-color:var(--green);color:#fff;}
+.quiz-nav-btn:disabled{opacity:0.3;pointer-events:none;}
+.quiz-dots{display:flex;gap:0.4rem;flex-wrap:wrap;justify-content:center;}
+.qdot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.1);transition:all 0.3s;cursor:pointer;}
+.qdot.active{background:var(--gold);transform:scale(1.3);}
+.qdot.answered-c{background:var(--green);}
+.qdot.answered-w{background:var(--blood);}
+.quiz-score-panel{text-align:center;padding:2rem;border:1px dashed rgba(74,154,90,0.3);border-radius:8px;display:none;animation:fadeInUp 0.5s ease;}
+.quiz-score-panel.show{display:block;}
+.score-big{font-family:'Bebas Neue',sans-serif;font-size:5rem;color:var(--gold);text-shadow:0 0 30px rgba(212,160,23,0.5);line-height:1;}
+.score-msg{color:#9a8060;margin:0.5rem 0 1.5rem;}
+.btn-reset{padding:0.7rem 2rem;background:var(--green);color:#fff;border:none;border-radius:2px;font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s;}
+.btn-reset:hover{background:#245533;transform:translateY(-2px);}
+ 
+/* ===== FLASHCARDS ===== */
+#flash{background:linear-gradient(135deg,#06060e 0%,#0a0704 100%);}
+#flash .sec-tag{color:#6a90d0;background:rgba(106,144,208,0.1);border:1px solid rgba(106,144,208,0.3);}
+.flash-cats{display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:2.5rem;}
+.fcat{padding:0.45rem 1.1rem;border-radius:2px;border:1px solid #2a3a5a;background:transparent;color:#6a80b0;font-family:'Bebas Neue',sans-serif;font-size:0.8rem;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s;}
+.fcat.active,.fcat:hover{background:#1a3a5c;border-color:#1a3a5c;color:#fff;}
+.fc-wrap{perspective:1200px;max-width:620px;margin:0 auto;height:300px;cursor:pointer;}
+.fc-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.7s cubic-bezier(0.4,0,0.2,1);}
+.fc-inner.flipped{transform:rotateY(180deg);}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem;text-align:center;}
+.fc-front{background:linear-gradient(135deg,#0d1e3a 0%,#0a1628 50%,#152a4a 100%);border:1px solid rgba(100,150,220,0.15);box-shadow:0 20px 60px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.05);}
+.fc-back{background:linear-gradient(135deg,#1a0a2e 0%,#100820 50%,#2a1245 100%);border:1px solid rgba(160,100,220,0.15);box-shadow:0 20px 60px rgba(0,0,0,0.5);transform:rotateY(180deg);}
+.fc-cat{font-family:'Bebas Neue',sans-serif;font-size:0.65rem;letter-spacing:0.3em;color:#4a7ab0;margin-bottom:1rem;}
+.fc-q{font-family:'Cinzel',serif;font-size:1.2rem;font-weight:700;color:#c8d8f0;line-height:1.4;}
+.fc-a{font-size:1rem;color:#c0a8e8;line-height:1.75;}
+.fc-a strong{color:#e0d0ff;}
+.fc-hint{font-size:0.7rem;color:#3a5a8a;margin-top:1.2rem;letter-spacing:0.1em;font-family:'Bebas Neue',sans-serif;}
+.fc-nav{display:flex;gap:1rem;align-items:center;justify-content:center;margin-top:1.5rem;}
+.fc-btn{padding:0.6rem 1.5rem;border-radius:2px;border:1px solid rgba(100,150,220,0.25);background:transparent;color:#6a90c0;font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s;}
+.fc-btn:hover:not(:disabled){background:rgba(26,58,92,0.5);border-color:rgba(100,150,220,0.5);color:#c0d4f0;}
+.fc-btn:disabled{opacity:0.2;pointer-events:none;}
+.fc-counter{font-family:'Bebas Neue',sans-serif;font-size:0.9rem;color:#4a6a9a;padding:0 0.5rem;}
+.fc-prog{max-width:620px;margin:1rem auto 0;height:3px;background:rgba(100,150,220,0.08);border-radius:2px;}
+.fc-progbar{height:100%;background:linear-gradient(90deg,#1a3a5c,#6a90c0);border-radius:2px;transition:width 0.4s ease;}
+.fc-shuffle{padding:0.5rem 1.2rem;border-radius:2px;border:1px solid rgba(100,150,220,0.2);background:transparent;color:#4a6a9a;font-family:'Bebas Neue',sans-serif;font-size:0.75rem;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s;margin-top:1rem;}
+.fc-shuffle:hover{border-color:rgba(100,150,220,0.4);color:#8ab0d8;}
+ 
+/* FOOTER */
+footer{text-align:center;padding:3rem 1.5rem;border-top:1px solid rgba(212,160,23,0.1);color:#4a3a25;font-size:0.82rem;font-family:'Bebas Neue',sans-serif;letter-spacing:0.1em;}
+ 
+/* SCROLL ANIMATIONS */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(30px);transition:all 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+ 
+/* FIRE GLOW effect on headings */
+.fire-glow{text-shadow:0 0 40px rgba(255,69,0,0.4),0 0 80px rgba(255,69,0,0.2);}
+.gold-glow{text-shadow:0 0 30px rgba(212,160,23,0.5);}
+</style>
+</head>
+<body>
+ 
+<!-- PARTICLES -->
+<div id="particles"></div>
+ 
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-flames"></div>
+  <div class="hero-bg-text">1383</div>
+  <div class="hero-sword">⚔</div>
+  <div class="hero-content">
+    <div class="hero-badge">📚 HGP · 5.º ANO · SUBDOMÍNIO C2</div>
+    <h1 class="fire-glow">A Crise de<em>1383–1385</em></h1>
+    <p class="hero-sub">Traição. Assassinato. Batalhas épicas.<br>A revolução que salvou Portugal — contada de formas que nunca esquecerás.</p>
+    <div class="hero-nav">
+      <a href="#gossip" class="btn-gossip">🗣 Fofoca Histórica</a>
+      <a href="#f1" class="btn-f1">🏎 Modo F1</a>
+      <a href="#quiz" class="btn-quiz">🧠 Quiz</a>
+      <a href="#timeline" class="btn-flash">📅 Cronologia</a>
+    </div>
+  </div>
+  <div class="scroll-hint">⬇</div>
+</div>
+ 
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">⚔ 1383–1385</span>
+  <a href="#gossip">Fofoca</a>
+  <a href="#f1">F1</a>
+  <a href="#timeline">Cronologia</a>
+  <a href="#quiz">Quiz</a>
+  
+</nav>
+ 
+<!-- GOSSIP -->
+<section class="sec" id="gossip">
+<div class="sec-inner">
+  <div class="sec-header reveal">
+    <div class="sec-tag">💅 TEA HISTÓRICO</div>
+    <h2 class="sec-title fire-glow">A História como Fofoca</h2>
+    <p class="sec-sub">O nível de drama é absolutamente medieval</p>
+  </div>
+  <div class="gossip-intro reveal">
+    "Querida Portugal do século XIV, temos <em>muito</em> a conversar. Pega no chá 🍵 e prepara-te para o maior escândalo da história lusitana."
+  </div>
+ 
+  <!-- SVG: Europa em Crise -->
+  <div class="illus-wrap reveal">
+    <svg viewBox="0 0 400 180" width="400" max-width="100%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="fireGrad" cx="50%" cy="80%">
+          <stop offset="0%" stop-color="#ff4500" stop-opacity="0.8"/>
+          <stop offset="100%" stop-color="#ff4500" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <!-- Ground -->
+      <rect x="0" y="140" width="400" height="40" fill="#1a0c04" rx="2"/>
+      <!-- Castle silhouette -->
+      <rect x="60" y="80" width="80" height="70" fill="#2a1a10"/>
+      <rect x="55" y="65" width="20" height="25" fill="#2a1a10"/>
+      <rect x="115" y="65" width="20" height="25" fill="#2a1a10"/>
+      <rect x="85" y="55" width="25" height="30" fill="#2a1a10"/>
+      <!-- Castle windows -->
+      <rect x="88" y="100" width="12" height="16" fill="#ff6600" opacity="0.7"/>
+      <rect x="105" y="100" width="12" height="16" fill="#ff4400" opacity="0.5"/>
+      <!-- Flames at castle -->
+      <ellipse cx="100" cy="80" rx="20" ry="10" fill="url(#fireGrad)" opacity="0.6">
+        <animate attributeName="ry" values="10;15;8;12;10" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;1;0.4;0.8;0.6" dur="1.5s" repeatCount="indefinite"/>
+      </ellipse>
+      <!-- Skull -->
+      <circle cx="280" cy="105" r="18" fill="#3a2a20"/>
+      <circle cx="274" cy="102" r="4" fill="#0a0704"/>
+      <circle cx="286" cy="102" r="4" fill="#0a0704"/>
+      <rect x="272" y="113" width="16" height="3" fill="#2a1a10" rx="1"/>
+      <rect x="275" y="116" width="3" height="5" fill="#2a1a10"/>
+      <rect x="280" y="116" width="3" height="5" fill="#2a1a10"/>
+      <rect x="285" y="116" width="3" height="5" fill="#2a1a10"/>
+      <!-- Text labels -->
+      <text x="100" y="165" text-anchor="middle" fill="#ff6633" font-size="9" font-family="sans-serif">FOME</text>
+      <text x="200" y="165" text-anchor="middle" fill="#ff4400" font-size="9" font-family="sans-serif">PESTE NEGRA 1348</text>
+      <text x="300" y="165" text-anchor="middle" fill="#cc3300" font-size="9" font-family="sans-serif">GUERRAS</text>
+      <!-- Rat (pest symbol) -->
+      <ellipse cx="200" cy="120" rx="15" ry="8" fill="#3a2a20"/>
+      <ellipse cx="212" cy="118" rx="7" ry="6" fill="#3a2a20"/>
+      <circle cx="216" cy="116" r="1.5" fill="#ff0000"/>
+      <path d="M185 118 Q175 110 170 120" stroke="#3a2a20" stroke-width="2" fill="none"/>
+      <!-- Sword -->
+      <line x1="320" y1="60" x2="340" y2="140" stroke="#8a9bb0" stroke-width="3"/>
+      <rect x="312" y="88" width="24" height="4" fill="#6a7a90" rx="1"/>
+      <circle cx="330" cy="60" r="5" fill="#c8a878"/>
+      <!-- Flame animation at bottom -->
+      <ellipse cx="200" cy="145" rx="180" ry="8" fill="#ff4500" opacity="0.1">
+        <animate attributeName="rx" values="180;200;170;190;180" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.1;0.2;0.08;0.15;0.1" dur="2s" repeatCount="indefinite"/>
+      </ellipse>
+    </svg>
+  </div>
+ 
+  <div class="g-card reveal" data-emoji="☠">
+    <div class="g-card-header"><span class="g-emoji">☠️</span><div><div class="g-title">Parte 1: A Europa estava literalmente a cair aos pedaços</div></div></div>
+    <p class="g-text">Imagina acordares e a Europa estar em <strong>colapso total</strong>. Fome? ✅ Pestes? ✅ Guerras? ✅ Era o pacote completo do século XIV. A <strong>Peste Negra de 1348</strong> chegou da Ásia nas pulgas dos ratos dos navios (nojento, sim) e matou <strong>um terço da população europeia e portuguesa</strong>. As cidades medievais eram um festival de lixo nas ruas, animais a circular livremente e zero esgotos. Basicamente um buffet para epidemias.</p>
+  </div>
+ 
+  <div class="g-card reveal">
+    <div class="g-card-header"><span class="g-emoji">👑</span><div><div class="g-title">Parte 2: D. Fernando estava obcecado com Castela <span class="g-drama">red flag</span></div></div></div>
+    <p class="g-text">O rei D. Fernando decidiu que queria o trono de Castela. Lutou de <strong>1369 a 1382</strong> — e perdeu. Três vezes. O país gastou fortunas, o povo ficou a pão e água, e D. Fernando voltou de mãos a abanar. As chamadas <strong>Guerras Fernandinas</strong> foram um desastre económico total. Mas o pior ainda estava por vir...</p>
+  </div>
+ 
+  <div class="g-card reveal">
+    <div class="g-card-header"><span class="g-emoji">💍</span><div><div class="g-title">Parte 3: O casamento mais polémico de Portugal <span class="g-drama">escândalo</span></div></div></div>
+    <p class="g-text">Para fazer as pazes com Castela, D. Fernando assinou o <strong>Tratado de Salvaterra de Magos (2 abril 1383)</strong> e prometeu a sua filha única, <strong>D. Beatriz</strong>, ao rei de Castela, D. João I. O acordo parecia inteligente: o filho deles herdaria Portugal mas a independência seria mantida. D. Leonor de Teles ficaria como regente até o herdeiro ter 14 anos. Parecia um plano inteligente. <em>Parecia.</em></p>
+  </div>
+ 
+  <!-- SVG: Assassinato do Conde Andeiro -->
+  <div class="illus-wrap reveal">
+    <svg viewBox="0 0 400 200" width="400" xmlns="http://www.w3.org/2000/svg">
+      <!-- Dark palace interior -->
+      <rect x="0" y="0" width="400" height="200" fill="#0a0704"/>
+      <!-- Arch -->
+      <path d="M50 200 L50 80 Q200 20 350 80 L350 200" fill="#1a1008" stroke="#2a1a0a" stroke-width="2"/>
+      <!-- Torches -->
+      <rect x="80" y="70" width="6" height="20" fill="#4a3020"/>
+      <ellipse cx="83" cy="68" rx="5" ry="8" fill="#ff6600" opacity="0.9">
+        <animate attributeName="ry" values="8;12;6;10;8" dur="1s" repeatCount="indefinite"/>
+      </ellipse>
+      <rect x="314" y="70" width="6" height="20" fill="#4a3020"/>
+      <ellipse cx="317" cy="68" rx="5" ry="8" fill="#ff6600" opacity="0.9">
+        <animate attributeName="ry" values="8;10;6;12;8" dur="1.3s" repeatCount="indefinite"/>
+      </ellipse>
+      <!-- Figure 1: D. João (attacker) -->
+      <circle cx="155" cy="100" r="14" fill="#2a3a5a"/>
+      <rect x="148" y="114" width="14" height="30" fill="#2a3a5a"/>
+      <!-- Crown on D. João -->
+      <path d="M148 95 L152 88 L155 94 L158 88 L162 95 Z" fill="#d4a017"/>
+      <!-- Sword arm -->
+      <line x1="162" y1="120" x2="195" y2="135" stroke="#8a9bb0" stroke-width="3"/>
+      <!-- Figure 2: Conde Andeiro (falling) -->
+      <circle cx="240" cy="115" r="13" fill="#3a2020"/>
+      <rect x="234" y="128" width="12" height="25" fill="#3a2020" transform="rotate(20 240 128)"/>
+      <!-- Blood drops -->
+      <circle cx="200" cy="138" r="3" fill="#cc0000" opacity="0.8"/>
+      <circle cx="207" cy="143" r="2" fill="#cc0000" opacity="0.6"/>
+      <circle cx="195" cy="145" r="2" fill="#cc0000" opacity="0.5"/>
+      <!-- Crowd at door -->
+      <circle cx="310" cy="145" r="8" fill="#1a2a3a"/>
+      <circle cx="325" cy="148" r="8" fill="#2a1a10"/>
+      <circle cx="340" cy="144" r="8" fill="#1a2a1a"/>
+      <!-- Text -->
+      <text x="200" y="185" text-anchor="middle" fill="#d4a017" font-size="10" font-family="sans-serif">6 DE DEZEMBRO DE 1383 · PAÇO DA RAINHA · LISBOA</text>
+    </svg>
+  </div>
+ 
+  <div class="g-card reveal">
+    <div class="g-card-header"><span class="g-emoji">🔪</span><div><div class="g-title">Parte 4: A rainha viúva e o seu conselheiro suspeito <span class="g-drama">traição</span></div></div></div>
+    <p class="g-text">D. Fernando morreu em outubro de 1383. A rainha <strong>D. Leonor de Teles</strong> ficou como regente — mas estava completamente nas mãos do <strong>Conde Andeiro</strong>, um nobre galego pró-castelhano. Ela ignorou o tratado e fez aclamar D. Beatriz como rainha. O povo entrou em pânico: Portugal ia ser devorado por Castela! Os grupos populares e a burguesia de Lisboa começaram a conspirar.</p>
+  </div>
+ 
+  <div class="g-card reveal">
+    <div class="g-card-header"><span class="g-emoji">💥</span><div><div class="g-title">Parte 5: O assassinato que mudou tudo <span class="g-drama">🚨 aconteceu mesmo</span></div></div></div>
+    <p class="g-text"><strong>6 de dezembro de 1383.</strong> D. João, Mestre de Avis (filho ilegítimo de D. Pedro I), invadiu o Paço da rainha com conspiradores e <strong>matou o Conde Andeiro</strong>. Álvaro Pais correu pelas ruas a gritar que o conde estava a matar o Mestre. O povo acorreu ao palácio em fúria. Quando D. João apareceu à janela <em>vivo</em>, a multidão explodiu em aclamações. Literalmente ninguém esperava este plot twist. Em minutos foi eleito <strong>Regedor e Defensor do Reino</strong>.</p>
+  </div>
+ 
+  <div class="g-card reveal">
+    <div class="g-card-header"><span class="g-emoji">🏃‍♀️</span><div><div class="g-title">Parte 6: D. Leonor fugiu a correr <span class="g-drama">bye!</span></div></div></div>
+    <p class="g-text">Com o Conde Andeiro morto e o povo a apoiar D. João, a rainha D. Leonor fugiu para <strong>Santarém</strong> e foi a correr pedir ajuda ao genro, o rei de Castela. Entretanto a revolução espalhava-se pelo país: <strong>Porto, Coimbra, Viseu, Évora, Silves</strong> todas apoiaram D. João. A burguesia financiou a guerra. Portugal estava unido — menos a alta nobreza e o alto clero que preferiam Castela.</p>
+  </div>
+ 
+  <!-- SVG: Batalha de Aljubarrota -->
+  <div class="illus-wrap reveal">
+    <svg viewBox="0 0 500 200" width="500" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="500" height="200" fill="#080c06"/>
+      <!-- Sky gradient -->
+      <defs>
+        <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#1a0c04"/>
+          <stop offset="100%" stop-color="#080c06"/>
+        </linearGradient>
+        <linearGradient id="sunG" cx="50%" cy="100%" r="50%">
+          <stop offset="0%" stop-color="#ff8800" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#ff4400" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <!-- Sun setting (enemy fighting into sun) -->
+      <circle cx="420" cy="80" r="30" fill="#ff6600" opacity="0.2"/>
+      <circle cx="420" cy="80" r="20" fill="#ff8800" opacity="0.3"/>
+      <!-- Ground -->
+      <rect x="0" y="155" width="500" height="45" fill="#1a1a0a"/>
+      <!-- Pit traps (covas do lobo) -->
+      <ellipse cx="250" cy="157" rx="12" ry="5" fill="#0a0a04"/>
+      <ellipse cx="270" cy="160" rx="10" ry="4" fill="#0a0a04"/>
+      <ellipse cx="230" cy="162" rx="11" ry="4" fill="#0a0a04"/>
+      <!-- Portuguese formation (square) left side -->
+      <rect x="30" y="110" width="120" height="50" fill="none" stroke="rgba(212,160,23,0.3)" stroke-width="1" stroke-dasharray="4"/>
+      <!-- Portuguese soldiers (simple figures) -->
+      <circle cx="50" cy="120" r="6" fill="#2a3a2a"/><rect x="47" y="126" width="6" height="12" fill="#2a3a2a"/>
+      <circle cx="70" cy="118" r="6" fill="#2a3a2a"/><rect x="67" y="124" width="6" height="12" fill="#2a3a2a"/>
+      <circle cx="90" cy="120" r="6" fill="#2a3a2a"/><rect x="87" y="126" width="6" height="12" fill="#2a3a2a"/>
+      <circle cx="110" cy="118" r="6" fill="#2a3a2a"/><rect x="107" y="124" width="6" height="12" fill="#2a3a2a"/>
+      <circle cx="130" cy="120" r="6" fill="#2a3a2a"/><rect x="127" y="126" width="6" height="12" fill="#2a3a2a"/>
+      <!-- D. Nuno in front -->
+      <circle cx="165" cy="115" r="8" fill="#1a3a2a"/>
+      <path d="M160 108 L165 100 L170 108 Z" fill="#d4a017"/>
+      <rect x="162" y="123" width="6" height="14" fill="#1a3a2a"/>
+      <line x1="170" y1="118" x2="200" y2="112" stroke="#8a9bb0" stroke-width="2"/>
+      <!-- Castilian cavalry (falling into pits) -->
+      <circle cx="310" cy="125" r="7" fill="#3a1a1a"/>
+      <rect x="307" y="132" width="6" height="14" fill="#3a1a1a" transform="rotate(45 310 138)"/>
+      <circle cx="340" cy="130" r="7" fill="#3a1a1a"/>
+      <rect x="337" y="137" width="6" height="14" fill="#3a1a1a" transform="rotate(30 340 144)"/>
+      <!-- Arrows in flight -->
+      <line x1="170" y1="110" x2="310" y2="120" stroke="#c8a878" stroke-width="1" opacity="0.5"/>
+      <line x1="170" y1="112" x2="325" y2="125" stroke="#c8a878" stroke-width="1" opacity="0.4"/>
+      <!-- Banner Portugal -->
+      <rect x="20" y="85" width="3" height="30" fill="#4a4a3a"/>
+      <rect x="23" y="85" width="20" height="12" fill="#1a3a5c"/>
+      <text x="24" y="94" fill="#fff" font-size="6" font-family="sans-serif">PT</text>
+      <!-- Banner Castela falling -->
+      <rect x="380" y="100" width="3" height="25" fill="#4a4a3a" transform="rotate(40 382 112)"/>
+      <rect x="383" y="95" width="18" height="10" fill="#8b0000" transform="rotate(40 392 100)"/>
+      <!-- Labels -->
+      <text x="90" y="175" text-anchor="middle" fill="#4a9a5a" font-size="8" font-family="sans-serif">PORTUGAL ~8.000</text>
+      <text x="350" y="175" text-anchor="middle" fill="#cc3333" font-size="8" font-family="sans-serif">CASTELA ~32.000</text>
+      <text x="250" y="192" text-anchor="middle" fill="#d4a017" font-size="9" font-family="sans-serif">⚔ BATALHA DE ALJUBARROTA · 14 AGOSTO 1385 · 30 MINUTOS</text>
+    </svg>
+  </div>
+ 
+  <div class="g-card reveal">
+    <div class="g-card-header"><span class="g-emoji">⚔️</span><div><div class="g-title">Parte 7: Castela invadiu (duas vezes!) <span class="g-drama">sem vergonha</span></div></div></div>
+    <p class="g-text">Os castelhanos entraram com exército enorme. <strong>Batalha dos Atoleiros (6 abril 1384)</strong>: D. Nuno Álvares Pereira usou terreno pantanoso e a tática do quadrado — vitória portuguesa! Depois Castela cercou Lisboa durante <strong>cinco meses</strong>. Com fome e peste, os lisboetas resistiram heroicamente. No final foi a <strong>própria Peste</strong> que obrigou os castelhanos a retirar. Ironia cósmica.</p>
+  </div>
+ 
+  <div class="g-card reveal">
+    <div class="g-card-header"><span class="g-emoji">👨‍⚖️</span><div><div class="g-title">Parte 8: O advogado que salvou Portugal <span class="g-drama">inesperado</span></div></div></div>
+    <p class="g-text">Nas <strong>Cortes de Coimbra (março-abril 1385)</strong>, o jurista <strong>Dr. João das Regras</strong> fez o discurso da sua vida. Argumentou que D. João Mestre de Avis era legítimo (pertencia à família real) e o único que defendia verdadeiramente a independência de Portugal. A corte concordou. <strong>6 de abril de 1385</strong>: D. João I aclamado rei. Começa a <strong>Dinastia de Avis</strong>.</p>
+  </div>
+ 
+  <div class="g-card reveal">
+    <div class="g-card-header"><span class="g-emoji">🏆</span><div><div class="g-title">Parte 9: Aljubarrota — 8.000 vs 32.000 <span class="g-drama">épico</span></div></div></div>
+    <p class="g-text">Castela, furiosa, invadiu de novo. <strong>32.000 soldados</strong> contra <strong>8.000 portugueses</strong>. D. Nuno escolheu o planalto de São Jorge, cavou <strong>covas do lobo</strong> (buracos disfarçados) e pôs os castelhanos a lutar contra o sol poente. Os cavaleiros não viram os buracos e começaram a cair. A tática do quadrado fez o resto. <strong>A batalha durou 30 minutos.</strong> A bandeira de Castela caiu. Portugal era livre.</p>
+  </div>
+ 
+  <div class="g-card reveal">
+    <div class="g-card-header"><span class="g-emoji">🤝</span><div><div class="g-title">Epílogo: O amor eterno entre Portugal e Inglaterra <span class="g-drama">alliance forever</span></div></div></div>
+    <p class="g-text">D. João I assinou o <strong>Tratado de Windsor (1386)</strong> com Inglaterra — a aliança mais antiga da Europa ainda ativa! Em 1387 casou com <strong>D. Filipa de Lencastre</strong>, neta do rei inglês. Os seus filhos foram tão extraordinários que os chamaram a <em>"Ínclita Geração"</em>. E mandou construir o <strong>Mosteiro da Batalha</strong> em estilo gótico para eternizar a vitória. Que final de temporada.</p>
+  </div>
+</div>
+</section>
+ 
+<!-- F1 -->
+<section class="sec" id="f1" style="background:#080808;border-top:3px solid #e8002d;border-bottom:3px solid #e8002d;">
+<div class="sec-inner">
+  <div class="sec-header reveal">
+    <div class="sec-tag">🏎 RACE ANALYSIS</div>
+    <h2 class="sec-title" style="color:#fff">Portugal 1383: Season Review</h2>
+    <p class="sec-sub" style="color:#666">A temporada mais intensa da história — análise de F1</p>
+  </div>
+  <div class="f1-card reveal"><div class="f1-lap">PRÉ-TEMPORADA · SÉC. XIV</div><div class="f1-title">🔴 CONDIÇÕES DE PISTA: CAÓTICAS</div><p class="f1-text">Antes de começar a corrida, as condições eram impossíveis. <strong>Fome, Peste Negra e guerras</strong> devastaram a Europa. A Peste Negra de 1348 eliminou <strong>um terço dos pilotos do grid</strong>. D. Fernando tentou uma estratégia agressiva — atacar Castela. Três pit stops depois, saiu com o carro destruído e o tesouro vazio.</p></div>
+  <div class="f1-card reveal"><div class="f1-lap">VOLTA 1 · OUTUBRO 1383</div><div class="f1-title">⚡ SAFETY CAR — MORTE DO LÍDER</div><p class="f1-text">D. Fernando abandona a corrida (faleceu). Gestão passa para <strong>D. Leonor de Teles</strong> — que recebe ordens do pit lane castelhano via <strong>Conde Andeiro</strong>. A estratégia favorece o adversário. Os adeptos estão furiosos.</p></div>
+  <div class="f1-card reveal"><div class="f1-lap">VOLTA 2 · 6 DEZ 1383</div><div class="f1-title">🚨 INCIDENTE: NEUTRALIZAÇÃO DO ANDEIRO</div><p class="f1-text"><strong>D. João, Mestre de Avis</strong> — wildcard inesperado — entra em pit lane, elimina o engenheiro adversário e aparece à janela. Os adeptos entram em delírio. É eleito <strong>Regedor e Defensor do Reino</strong> em minutos. D. Leonor abandona o paddock para Santarém.</p></div>
+  <div class="f1-card reveal"><div class="f1-lap">VOLTA 3 · ABRIL 1384</div><div class="f1-title">🏁 ATOLEIROS — ROUND 1</div><p class="f1-text"><strong>D. Nuno Álvares Pereira</strong> — o melhor piloto do grid português — escolhe pista molhada e lamacenta. Os castelhanos, habituados a corridas em seco, derrapam completamente. <strong>Vitória portuguesa.</strong> Primeira utilização da tática do "quadrado" no livro de estratégias.</p></div>
+  <div class="f1-card reveal"><div class="f1-lap">VOLTA 4 · MAI–SET 1384</div><div class="f1-title">🔴 BANDEIRA VERMELHA — CERCO A LISBOA</div><p class="f1-text">Castela para a corrida: bloqueia Lisboa por terra e mar durante <strong>cinco meses</strong>. Sem combustível (comida), com o motor a avariar (peste). No final é a <strong>Peste que abandona o pit lane castelhano</strong>. Portugal sobrevive à penalidade mais injusta do calendário.</p></div>
+  <div class="f1-card reveal"><div class="f1-lap">VOLTA 5 · ABRIL 1385</div><div class="f1-title">👨‍💼 CORTES DE COIMBRA — ASSEMBLEIA DE STEWARDS</div><p class="f1-text">Os comissários (Cortes de Coimbra) reúnem-se. O <strong>advogado João das Regras</strong> apresenta o recurso mais bem argumentado da história. <strong>Decisão unânime</strong>: D. João I é o novo campeão. Começa a Dinastia de Avis.</p></div>
+  <div class="f1-card reveal"><div class="f1-lap">CORRIDA FINAL · 14 AGO 1385</div><div class="f1-title">🏆 ALJUBARROTA — GRANDE PRÉMIO DA INDEPENDÊNCIA</div><p class="f1-text">Confronto definitivo. <strong>32.000 castelhanos + aliados franceses</strong> vs <strong>8.000 portugueses + arqueiros ingleses</strong>. D. Nuno instala <strong>covas do lobo</strong> e aponta os cavaleiros inimigos para o sol poente. Cavalaria castelhana cai literalmente nos buracos. Corrida terminada em <strong>30 minutos</strong>. Bandeira de Castela no chão.</p></div>
+  <div class="f1-podium reveal">
+    <div class="pod"><div class="pod-pos p1">1</div><div class="pod-name">D. JOÃO I</div><div class="pod-team">Equipa Avis · Portugal</div></div>
+    <div class="pod"><div class="pod-pos p2">MVP</div><div class="pod-name">D. NUNO ÁLVARES</div><div class="pod-team">Condestável · Estrategista Chefe</div></div>
+    <div class="pod"><div class="pod-pos p3">DNF</div><div class="pod-name">CASTELA</div><div class="pod-team">Desqualificada · Invasão ilegal</div></div>
+  </div>
+</div>
+</section>
+ 
+<!-- TIMELINE -->
+<section class="sec" id="timeline" style="background:linear-gradient(180deg,#080c08 0%,#0a0704 100%);">
+<div class="sec-inner">
+  <div class="sec-header reveal">
+    <div class="sec-tag" style="color:var(--gold);background:rgba(212,160,23,0.1);border:1px solid rgba(212,160,23,0.3);">📅 CRONOLOGIA</div>
+    <h2 class="sec-title gold-glow">Linha do Tempo</h2>
+    <p class="sec-sub">Os momentos que definiram Portugal</p>
+  </div>
+  <div class="tl">
+    <div class="tl-item"><div class="tl-dot" style="background:var(--fire);color:var(--fire)"></div><div class="tl-date">1348</div><div class="tl-title">Peste Negra chega a Portugal</div><div class="tl-text">Matou cerca de um terço da população europeia e portuguesa. Veio da Ásia pelas pulgas dos ratos nos navios.</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:#cc3333;color:#cc3333"></div><div class="tl-date">1369–1382</div><div class="tl-title">Guerras Fernandinas</div><div class="tl-text">D. Fernando tentou conquistar o trono de Castela — e perdeu, esgotando o tesouro real e agravando a crise.</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--gold);color:var(--gold)"></div><div class="tl-date">2 Abr 1383</div><div class="tl-title">Tratado de Salvaterra de Magos</div><div class="tl-text">D. Beatriz casa com D. João I de Castela. Condições para preservar a independência de Portugal após morte de D. Fernando.</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--blood);color:var(--blood)"></div><div class="tl-date">22 Out 1383</div><div class="tl-title">Morte de D. Fernando</div><div class="tl-text">Início da crise de sucessão. D. Leonor de Teles assume a regência sob influência do Conde Andeiro.</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--fire);color:var(--fire)"></div><div class="tl-date">6 Dez 1383</div><div class="tl-title">⚡ Assassinato do Conde Andeiro</div><div class="tl-text">D. João, Mestre de Avis, mata o Conde Andeiro. O povo de Lisboa aclama-o Regedor e Defensor do Reino.</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--green);color:var(--green)"></div><div class="tl-date">6 Abr 1384</div><div class="tl-title">Batalha dos Atoleiros</div><div class="tl-text">D. Nuno Álvares Pereira derrota os castelhanos com a tática do quadrado em terreno pantanoso.</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:#cc3333;color:#cc3333"></div><div class="tl-date">Mai–Set 1384</div><div class="tl-title">Cerco a Lisboa</div><div class="tl-text">Castela cerca Lisboa durante cinco meses. A Peste obriga os castelhanos a levantar o cerco e retirar.</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--gold);color:var(--gold)"></div><div class="tl-date">6 Abr 1385</div><div class="tl-title">⭐ Cortes de Coimbra — D. João I aclamado rei</div><div class="tl-text">João das Regras defende D. João. Aclamado rei de Portugal, iniciando a Dinastia de Avis.</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--fire);color:var(--fire)"></div><div class="tl-date">14 Ago 1385</div><div class="tl-title">🏆 BATALHA DE ALJUBARROTA</div><div class="tl-text">8.000 portugueses vencem 32.000 castelhanos. A batalha durou ~30 minutos. Independência de Portugal confirmada.</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--green);color:var(--green)"></div><div class="tl-date">Out 1385</div><div class="tl-title">Batalha de Valverde</div><div class="tl-text">D. Nuno entra em Castela e vence, consolidando a segurança de Portugal.</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--steel);color:var(--steel)"></div><div class="tl-date">1386</div><div class="tl-title">Tratado de Windsor</div><div class="tl-text">Aliança entre Portugal e Inglaterra — a mais antiga aliança diplomática europeia ainda em vigor.</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--gold);color:var(--gold)"></div><div class="tl-date">1387</div><div class="tl-title">Casamento com D. Filipa de Lencastre</div><div class="tl-text">Reforça a aliança com Inglaterra. Os seus filhos serão chamados a "Ínclita Geração".</div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:var(--green);color:var(--green)"></div><div class="tl-date">1411</div><div class="tl-title">Tratado de Paz com Castela</div><div class="tl-text">Castela reconhece finalmente a independência de Portugal.</div></div>
+  </div>
+</div>
+</section>
+ 
+<!-- QUIZ -->
+<section class="sec" id="quiz" style="background:linear-gradient(180deg,#060c08 0%,#080c06 100%);">
+<div class="sec-inner">
+  <div class="sec-header reveal">
+    <div class="sec-tag">🧠 TESTA OS TEUS CONHECIMENTOS</div>
+    <h2 class="sec-title">Quiz por Tema</h2>
+    <p class="sec-sub">Navega pelas perguntas com as setas — deslizam como cards</p>
+  </div>
+  <div class="quiz-tabs">
+    <button class="qtab active" onclick="switchQuiz('causas',this)">⚡ As Causas</button>
+    <button class="qtab" onclick="switchQuiz('crise',this)">👑 Crise Dinástica</button>
+    <button class="qtab" onclick="switchQuiz('batalhas',this)">⚔️ As Batalhas</button>
+    <button class="qtab" onclick="switchQuiz('depois',this)">🏆 Depois da Vitória</button>
+  </div>
+  <div id="quiz-container"></div>
+</div>
+</section>
+ 
+ 
+ 
+<footer>⚔ HGP · 5.º ANO · SUBDOMÍNIO C2 · PORTUGAL NO SÉCULO XIV · CRISE DE 1383–1385 ⚔</footer>
+ 
+<script>
+// ===== PARTICLES =====
+(function(){
+  const container = document.getElementById('particles');
+  const colors = ['#ff4500','#ff6b35','#d4a017','#ff8800','#ff2200'];
+  for(let i=0;i<40;i++){
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random()*4+1;
+    p.style.cssText = `width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};left:${Math.random()*100}%;animation-duration:${Math.random()*15+8}s;animation-delay:${Math.random()*10}s;`;
+    container.appendChild(p);
+  }
+})();
+ 
+// ===== SCROLL ANIMATIONS =====
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+    }
+  });
+},{threshold:0.1});
+document.querySelectorAll('.reveal,.g-card,.tl-item,.illus-wrap').forEach(el=>observer.observe(el));
+ 
+// ===== QUIZ DATA =====
+const quizData = {
+  causas: [
+    {q:"Quais foram as três grandes calamidades do século XIV europeu?",opts:["Guerras, terremotos e cheias","Fome, pestes e guerras","Seca, frio e invasões","Pestes, revoltas e piratas"],a:1,fb:"✅ Correto! As três calamidades eram <strong>Fome, Pestes e Guerras</strong> — o pacote completo que devastou a Europa no século XIV."},
+    {q:"Como chegou a Peste Negra à Europa?",opts:["Através de soldados da guerra","Pelo vento vindo da Ásia","Pelas pulgas dos ratos nos navios vindos da Ásia","Pela água dos rios contaminados"],a:2,fb:"✅ Exato! A Peste Negra veio da Ásia através das <strong>pulgas dos ratos que viajavam nos navios</strong> mercantes."},
+    {q:"Em que ano chegou a Peste Negra à Europa e que proporção da população matou?",opts:["1300 — metade da população","1348 — cerca de um terço","1383 — um quinto","1370 — dois terços"],a:1,fb:"✅ Correto! A Peste Negra chegou em <strong>1348</strong> e matou <strong>um terço da população europeia e portuguesa</strong>."},
+    {q:"O que provocou o Êxodo Rural nas cidades medievais?",opts:["O fim das guerras e a busca de riqueza","As pessoas iam para a cidade à procura de vida melhor","As pestes que destruíam as aldeias","As ordens dos reis para habitar as cidades"],a:1,fb:"✅ Certo! O Êxodo Rural foi a <strong>migração de pessoas do campo para a cidade</strong> à procura de uma vida melhor, o que também contribuiu para a superlotação e falta de higiene."},
+    {q:"Qual foi o principal erro estratégico de D. Fernando que agravou a crise?",opts:["Recusar cultivar cereais","Expulsar os comerciantes","Fazer as Guerras Fernandinas para conquistar Castela","Ignorar as revoltas do povo"],a:2,fb:"✅ Exato! As <strong>Guerras Fernandinas (1369–1382)</strong> para conquistar Castela esgotaram o tesouro e agravaram a crise económica portuguesa."},
+    {q:"Por que razão as cidades medievais eram focos de epidemias?",opts:["Tinham muitos hospitais cheios de doentes","Estavam próximas de pântanos","Eram sujas, sem esgotos, com lixo nas ruas e animais a circular","As casas eram muito pequenas e escuras"],a:2,fb:"✅ Correto! As cidades medievais tinham <strong>ruas sujas, sem esgotos, sem água canalizada</strong>, e animais como cães, porcos e galinhas conviviam com as pessoas — condições ideais para epidemias."},
+    {q:"Qual foi a guerra europeia mais importante do século XIV que envolveu Inglaterra e França?",opts:["Guerra das Duas Rosas","Guerra dos Cem Anos","Guerra de Reconquista","Guerra dos Sete Anos"],a:1,fb:"✅ Correto! A <strong>Guerra dos Cem Anos</strong> entre Inglaterra e França foi a maior guerra europeia do século XIV."},
+    {q:"O que causou a quebra na produção de alimentos em Portugal no século XIV?",opts:["Guerras no Alentejo","Expulsão dos agricultores","Anos de muita chuva e frio que afetaram as colheitas","Invasão de insetos nas plantações"],a:2,fb:"✅ Exato! Os <strong>anos de muita chuva e frio</strong> provocaram uma quebra na produção de cereais e outros alimentos, causando fome e aumento de preços."},
+  ],
+  crise: [
+    {q:"O que definiu o Tratado de Salvaterra de Magos?",opts:["A paz definitiva com Castela","O casamento de D. Beatriz com o rei de Castela e condições de sucessão","A aliança militar com Inglaterra","A doação de terras à Igreja"],a:1,fb:"✅ Certo! O tratado definia o <strong>casamento de D. Beatriz com D. João I de Castela</strong>, estabelecendo que o filho deles herdaria Portugal mas a independência seria mantida."},
+    {q:"Quem era o Conde Andeiro e qual o seu papel?",opts:["General português que defendeu Lisboa","Jurista que apoiou D. João","Nobre galego pró-castelhano que influenciava D. Leonor de Teles","Embaixador de Castela em Lisboa"],a:2,fb:"✅ Correto! <strong>João Fernandes Andeiro</strong> era um nobre galego que influenciava D. Leonor de Teles em favor de Castela."},
+    {q:"Quem era D. João, Mestre de Avis?",opts:["Filho legítimo de D. Fernando","Filho ilegítimo de D. Pedro I e meio irmão de D. Fernando","Nobre castelhano","Primo de D. Beatriz"],a:1,fb:"✅ Exato! D. João era <strong>filho ilegítimo de D. Pedro I</strong> e portanto meio irmão de D. Fernando — o que lhe dava direitos ao trono."},
+    {q:"Qual dos grupos sociais apoiava D. Beatriz (a favor de Castela)?",opts:["Povo e burguesia","A alta nobreza e o alto clero","Os comerciantes do Porto","Os camponeses e artesãos"],a:1,fb:"✅ Correto! A <strong>alta nobreza e o alto clero</strong> apoiavam D. Beatriz, enquanto o povo, a burguesia e a baixa nobreza apoiavam D. João."},
+    {q:"O que aconteceu em 6 de dezembro de 1383 no Paço da rainha?",opts:["D. Leonor assinou um tratado com Castela","D. João matou o Conde Andeiro e foi aclamado pelo povo","D. Beatriz foi coroada rainha de Portugal","Os castelhanos cercaram o palácio"],a:1,fb:"✅ Exato! <strong>D. João, Mestre de Avis</strong>, entrou no Paço e matou o Conde Andeiro. O povo de Lisboa acorreu e aclamou-o <strong>Regedor e Defensor do Reino</strong>."},
+    {q:"Quem foi Álvaro Pais e qual o seu papel na revolução?",opts:["Um general que liderou as batalhas","Um membro da burguesia que incentivou D. João a agir e ajudou a espalhar o boato","O jurista que defendeu D. João nas Cortes","O governador de Santarém"],a:1,fb:"✅ Correto! <strong>Álvaro Pais</strong> era um membro da burguesia que conspirou contra D. Leonor e Andeiro, incentivou D. João a agir, e correu pelas ruas a espalhar a notícia."},
+    {q:"O que fez D. Leonor de Teles depois da morte do Conde Andeiro?",opts:["Aceitou D. João como regedor","Fugiu para Santarém e pediu auxílio ao rei de Castela","Entregou o trono a D. Beatriz diretamente","Fechou-se no castelo de Lisboa"],a:1,fb:"✅ Certo! Com o Conde Andeiro morto, D. Leonor <strong>fugiu para Santarém</strong> e pediu auxílio ao rei de Castela, D. João I, seu genro."},
+    {q:"Quem foi o Dr. João das Regras e qual a sua importância?",opts:["O médico que tratou D. João I durante a guerra","O jurista que nas Cortes de Coimbra argumentou a favor da legitimidade de D. João","O general que liderou a batalha dos Atoleiros","O embaixador que negociou o Tratado de Windsor"],a:1,fb:"✅ Exato! <strong>João das Regras</strong> era um jurista cujo discurso nas Cortes de Coimbra foi fundamental para a aclamação de D. João I como rei de Portugal."},
+    {q:"Em que data foi D. João I aclamado rei nas Cortes de Coimbra?",opts:["6 de dezembro de 1383","14 de agosto de 1385","6 de abril de 1385","2 de abril de 1383"],a:2,fb:"✅ Correto! D. João I foi aclamado rei nas Cortes de Coimbra a <strong>6 de abril de 1385</strong>, iniciando a Dinastia de Avis."},
+    {q:"Que cidades apoiaram D. João, Mestre de Avis, durante a revolução?",opts:["Apenas Lisboa","Porto e Braga","Porto, Coimbra, Viseu, Évora e Silves","Apenas as cidades do Algarve"],a:2,fb:"✅ Correto! Para além de Lisboa, <strong>Porto, Coimbra, Viseu, Évora e Silves</strong> apoiaram D. João na sua causa pela independência de Portugal."},
+  ],
+  batalhas: [
+    {q:"Que tática usou D. Nuno na Batalha dos Atoleiros?",opts:["Ataque surpresa ao nascer do sol","Terreno pantanoso e tática do quadrado","Uso de arqueiros ingleses","Cerco à cidade castelhana"],a:1,fb:"✅ Correto! D. Nuno escolheu <strong>terreno pantanoso</strong> e usou a inovadora <strong>tática do quadrado</strong>, dificultando enormemente a cavalaria castelhana."},
+    {q:"Quanto tempo durou o cerco castelhano a Lisboa em 1384?",opts:["Duas semanas","Um mês","Cerca de cinco meses","Um ano completo"],a:2,fb:"✅ Exato! O cerco durou <strong>cerca de cinco meses</strong> — de maio a setembro de 1384 — e só terminou porque a Peste atingiu o exército castelhano."},
+    {q:"Qual a proporção de forças na Batalha de Aljubarrota?",opts:["20.000 vs 20.000","15.000 vs 25.000","~8.000 portugueses vs ~32.000 castelhanos","5.000 vs 10.000"],a:2,fb:"✅ Exato! Portugal tinha <strong>~8.000 soldados</strong> (incluindo arqueiros ingleses) contra os <strong>~32.000</strong> de Castela e França. Uma vitória épica!"},
+    {q:"Quanto tempo durou a Batalha de Aljubarrota?",opts:["Dois dias","Um dia inteiro","Três horas","Cerca de 30 minutos"],a:3,fb:"✅ Correto! A Batalha de Aljubarrota durou apenas <strong>cerca de 30 minutos</strong> — uma das batalhas mais rápidas e decisivas da história de Portugal."},
+    {q:"O que eram as 'covas do lobo' usadas em Aljubarrota?",opts:["Torres de vigia disfarçadas","Buracos disfarçados no terreno para derrubar a cavalaria","Trincheiras para os arqueiros","Armadilhas com fogo"],a:1,fb:"✅ Exato! As <strong>covas do lobo</strong> eram buracos disfarçados cavados no campo de batalha. A cavalaria castelhana, lutando contra o sol, não as viu e caiu nelas."},
+    {q:"Quais eram os aliados de Portugal e de Castela em Aljubarrota?",opts:["Portugal com França, Castela com Inglaterra","Portugal com Inglaterra, Castela com França","Portugal sozinho, Castela com Aragão","Portugal com Roma, Castela com França"],a:1,fb:"✅ Correto! <strong>Portugal</strong> teve como aliada a <strong>Inglaterra</strong> (arqueiros), enquanto <strong>Castela</strong> teve como aliada a <strong>França</strong>."},
+    {q:"Por que razão o terreno escolhido para Aljubarrota foi vantajoso para Portugal?",opts:["Era próximo de Lisboa facilitando reforços","Era um planalto estreito rodeado por dois rios, limitando o exército inimigo","Era alto e facilitava os arqueiros","Era coberto de floresta dificultando a cavalaria"],a:1,fb:"✅ Certo! O <strong>planalto estreito de São Jorge</strong>, rodeado por dois rios, impedia Castela de usar toda a sua superioridade numérica — os soldados ficavam apertados e desorganizados."},
+    {q:"O que significou a queda da bandeira de Castela na Batalha de Aljubarrota?",opts:["O início de uma trégua temporária","O sinal de derrota de Castela","A captura do rei castelhano","O fim das negociações de paz"],a:1,fb:"✅ Correto! A <strong>queda da bandeira de Castela</strong> era o sinal convencional de derrota — marcou o momento em que Castela reconheceu ter perdido a batalha."},
+    {q:"Que aconteceu depois de Aljubarrota — os portugueses foram a Castela?",opts:["Não, ficaram em Portugal à espera","Sim, D. Nuno entrou em Castela e venceu a Batalha de Valverde","Sim, mas foram derrotados em Castela","Não, assinaram logo a paz"],a:1,fb:"✅ Correto! Em outubro de 1385, <strong>D. Nuno Álvares Pereira entrou em Castela e venceu a Batalha de Valverde</strong>, reforçando ainda mais a posição de Portugal."},
+    {q:"Quando foi a Batalha dos Atoleiros e quem a comandou pelo lado português?",opts:["14 agosto 1385 — D. João I","6 abril 1384 — D. Nuno Álvares Pereira","2 abril 1383 — Álvaro Pais","6 dezembro 1383 — D. João Mestre de Avis"],a:1,fb:"✅ Exato! A Batalha dos Atoleiros foi a <strong>6 de abril de 1384</strong>, comandada por <strong>D. Nuno Álvares Pereira</strong>, que venceu com a tática do quadrado em terreno pantanoso."},
+  ],
+  depois: [
+    {q:"Qual o nome do tratado de aliança com Inglaterra em 1386?",opts:["Tratado de Lisboa","Tratado de Aljubarrota","Tratado de Windsor","Tratado de Coimbra"],a:2,fb:"✅ Correto! O <strong>Tratado de Windsor (1386)</strong> é a aliança mais antiga da Europa ainda em vigor, entre Portugal e Inglaterra."},
+    {q:"Com quem casou D. João I para reforçar a aliança com Inglaterra?",opts:["D. Beatriz de Castela","D. Leonor de Teles","D. Filipa de Lencastre","D. Isabel de Aragão"],a:2,fb:"✅ Exato! <strong>D. Filipa de Lencastre</strong> era neta do rei inglês. O casamento em 1387 reforçou a aliança luso-britânica."},
+    {q:"Qual monumento foi construído para comemorar Aljubarrota?",opts:["Torre de Belém","Castelo de São Jorge","Mosteiro de Santa Maria da Vitória (Mosteiro da Batalha)","Convento de Cristo em Tomar"],a:2,fb:"✅ Correto! O <strong>Mosteiro da Batalha (Santa Maria da Vitória)</strong> foi construído em estilo gótico por D. João I para comemorar a vitória de Aljubarrota."},
+    {q:"Em que ano Castela assinou a paz reconhecendo a independência de Portugal?",opts:["1385 — logo após Aljubarrota","1387 — após o casamento","1400 — início do século XV","1411 — após a morte de D. Beatriz"],a:3,fb:"✅ Exato! Só em <strong>1411</strong>, após a morte de D. Beatriz, é que Castela assinou um tratado de paz reconhecendo definitivamente a independência de Portugal."},
+    {q:"O que aconteceu à alta nobreza que tinha apoiado D. Beatriz após a vitória de D. João I?",opts:["Foram executados","Foram perdoados sem consequências","Perderam privilégios e terras","Fugiram para Castela em massa"],a:2,fb:"✅ Correto! Os <strong>apoiantes de D. Beatriz perderam privilégios e terras</strong>. Em contrapartida, os apoiantes de D. João I foram recompensados com terras, títulos e cargos."},
+    {q:"Qual foi a 'Ínclita Geração'?",opts:["Os generais que venceram Aljubarrota","Os juristas das Cortes de Coimbra","Os filhos de D. João I e D. Filipa de Lencastre","Os burgueses que financiaram a guerra"],a:2,fb:"✅ Exato! A <strong>'Ínclita Geração'</strong> foi o nome dado aos filhos de D. João I e D. Filipa de Lencastre, considerados excecionalmente talentosos — entre eles o Infante D. Henrique (o Navegador)."},
+    {q:"Que nome recebeu a nova dinastia iniciada por D. João I?",opts:["Dinastia de Borgonha","Dinastia de Aviz","Dinastia de Avis","Dinastia de Bragança"],a:2,fb:"✅ Correto! D. João I iniciou a <strong>Dinastia de Avis</strong> — chamada assim porque D. João era Mestre da Ordem Militar de Avis antes de ser rei."},
+    {q:"Como D. João I consolidou o apoio do povo após ser aclamado rei?",opts:["Reduziu todos os impostos permanentemente","Reuniu frequentemente as Cortes para ouvir os problemas do povo","Distribuiu terras a todos os camponeses","Expulsou toda a alta nobreza do reino"],a:1,fb:"✅ Certo! D. João I concedeu ao povo <strong>reuniões frequentes nas Cortes</strong> para ouvir os seus problemas, criando uma relação de confiança entre a monarquia e o povo."},
+    {q:"Qual foi a importância do Tratado de Windsor para Portugal?",opts:["Deu a Portugal território em Inglaterra","Garantiu apoio militar e relações comerciais, fortalecendo Portugal na Europa","Permitiu a Portugal conquistar Castela","Uniu Portugal e Inglaterra num só reino"],a:1,fb:"✅ Correto! O Tratado de Windsor garantiu a Portugal <strong>apoio militar e relações comerciais</strong>, fortalecendo a sua posição na Europa e afastando definitivamente a ameaça castelhana."},
+    {q:"Em que estilo arquitetónico foi construído o Mosteiro da Batalha?",opts:["Românico","Renascentista","Gótico","Barroco"],a:2,fb:"✅ Exato! O Mosteiro da Batalha foi construído no <strong>estilo gótico</strong>, um dos exemplares mais magníficos desta arquitetura em Portugal."},
+  ]
+};
+ 
+ 
+// ===== QUIZ SLIDER =====
+let currentQuiz = 'causas';
+let quizState = {};
+Object.keys(quizData).forEach(function(k){ quizState[k] = {current:0, answers:{}}; });
+ 
+function switchQuiz(name, btn){
+  currentQuiz = name;
+  document.querySelectorAll('.qtab').forEach(function(t){ t.classList.remove('active'); });
+  btn.classList.add('active');
+  renderQuiz();
+}
+ 
+function renderQuiz(){
+  const data = quizData[currentQuiz];
+  const state = quizState[currentQuiz];
+  const total = data.length;
+  const container = document.getElementById('quiz-container');
+ 
+  // Build wrapper
+  const wrap = document.createElement('div');
+  wrap.className = 'quiz-slider-wrap';
+ 
+  const slider = document.createElement('div');
+  slider.className = 'quiz-slider';
+  slider.id = 'qs';
+  slider.style.display = 'flex';
+  slider.style.transition = 'transform 0.5s cubic-bezier(0.4,0,0.2,1)';
+  slider.style.transform = 'translateX(-' + (state.current * 100) + '%)';
+ 
+  data.forEach(function(q, i){
+    const ans = state.answers[i];
+    const slide = document.createElement('div');
+    slide.className = 'q-slide';
+    slide.style.minWidth = '100%';
+    slide.style.padding = '0.25rem';
+ 
+    const card = document.createElement('div');
+    card.className = 'q-card';
+ 
+    const progressBar = document.createElement('div');
+    progressBar.className = 'q-progress-bar';
+    progressBar.style.width = ((i+1)/total*100) + '%';
+    card.appendChild(progressBar);
+ 
+    const num = document.createElement('div');
+    num.className = 'q-num';
+    num.textContent = 'PERGUNTA ' + (i+1) + ' DE ' + total;
+    card.appendChild(num);
+ 
+    const qtext = document.createElement('div');
+    qtext.className = 'q-text';
+    qtext.textContent = q.q;
+    card.appendChild(qtext);
+ 
+    const opts = document.createElement('div');
+    opts.className = 'options';
+    q.opts.forEach(function(opt, j){
+      const o = document.createElement('div');
+      o.className = 'option';
+      if(ans !== undefined){
+        if(j === q.a) o.className += ' correct disabled';
+        else if(j === ans) o.className += ' wrong disabled';
+        else o.className += ' disabled';
+      }
+      o.innerHTML = '<span class="opt-letter">' + 'ABCD'[j] + '</span>' + opt;
+      (function(qi, oi){ o.addEventListener('click', function(){ answerQ(qi, oi); }); })(i, j);
+      opts.appendChild(o);
+    });
+    card.appendChild(opts);
+ 
+    if(ans !== undefined){
+      const fb = document.createElement('div');
+      fb.className = 'q-feedback show ' + (ans === q.a ? 'fb-c' : 'fb-w');
+      fb.innerHTML = (ans === q.a ? q.fb : '❌ Errado! ' + q.fb);
+      card.appendChild(fb);
+    }
+ 
+    slide.appendChild(card);
+    slider.appendChild(slide);
+  });
+ 
+  wrap.appendChild(slider);
+ 
+  // Navigation
+  const nav = document.createElement('div');
+  nav.className = 'quiz-nav';
+ 
+  const prevBtn = document.createElement('button');
+  prevBtn.className = 'quiz-nav-btn';
+  prevBtn.textContent = '← ANTERIOR';
+  prevBtn.disabled = state.current === 0;
+  prevBtn.addEventListener('click', function(){ moveQ(-1); });
+  nav.appendChild(prevBtn);
+ 
+  const dots = document.createElement('div');
+  dots.className = 'quiz-dots';
+  data.forEach(function(_, i){
+    const dot = document.createElement('div');
+    const ans = state.answers[i];
+    dot.className = 'qdot' + (state.current === i ? ' active' : '') + (ans !== undefined ? (ans === data[i].a ? ' answered-c' : ' answered-w') : '');
+    (function(idx){ dot.addEventListener('click', function(){ goQ(idx); }); })(i);
+    dots.appendChild(dot);
+  });
+  nav.appendChild(dots);
+ 
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'quiz-nav-btn';
+  nextBtn.textContent = 'SEGUINTE →';
+  nextBtn.disabled = state.current === total - 1;
+  nextBtn.addEventListener('click', function(){ moveQ(1); });
+  nav.appendChild(nextBtn);
+ 
+  container.innerHTML = '';
+  container.appendChild(wrap);
+  container.appendChild(nav);
+ 
+  // Score panel
+  const answered = Object.keys(state.answers).length;
+  if(answered === total){
+    const correct = data.filter(function(q, i){ return state.answers[i] === q.a; }).length;
+    const pct = Math.round(correct/total*100);
+    const msg = pct===100 ? '🏆 Perfeito! Mestre de História!' : pct>=80 ? '⭐ Excelente! Quase perfeito!' : pct>=60 ? '👍 Bom trabalho! Continua a estudar!' : '📚 Precisa de mais estudo — tenta de novo!';
+    const panel = document.createElement('div');
+    panel.className = 'quiz-score-panel show';
+    panel.innerHTML = '<div class="score-big">' + correct + '/' + total + '</div><p class="score-msg">' + msg + '</p><button class="btn-reset" onclick="resetQ()">🔄 TENTAR DE NOVO</button>';
+    container.appendChild(panel);
+  }
+}
+ 
+function answerQ(qi, oi){
+  const state = quizState[currentQuiz];
+  if(state.answers[qi] !== undefined) return;
+  state.answers[qi] = oi;
+  renderQuiz();
+  const data = quizData[currentQuiz];
+  if(qi < data.length - 1){
+    setTimeout(function(){ state.current = qi + 1; renderQuiz(); }, 900);
+  }
+}
+function moveQ(dir){
+  const state = quizState[currentQuiz];
+  const total = quizData[currentQuiz].length;
+  state.current = Math.max(0, Math.min(total - 1, state.current + dir));
+  renderQuiz();
+}
+function goQ(i){ quizState[currentQuiz].current = i; renderQuiz(); }
+function resetQ(){ quizState[currentQuiz] = {current:0, answers:{}}; renderQuiz(); }
+ 
+renderQuiz();
+ 
+</script>
+</body>
+</html>
