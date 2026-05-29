@@ -404,6 +404,95 @@ body {
 .progress-bar-wrap { background: rgba(0,0,0,0.08); border-radius: 99px; height: 6px; margin-bottom: 0.3rem; }
 .progress-bar-fill { height: 100%; border-radius: 99px; background: var(--rust); transition: width 0.4s; }
 
+/* ——— HISTÓRIA / STORYTELLING ——— */
+.story-wrap { max-width: 720px; margin: 0 auto; }
+.story-chapter {
+  margin-bottom: 3rem;
+  position: relative;
+}
+.story-chapter-label {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--rust); margin-bottom: 0.4rem;
+}
+.story-chapter h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem; font-weight: 900;
+  line-height: 1.25; margin-bottom: 1.25rem; color: var(--ink);
+}
+.story-chapter h3 em { color: var(--rust); font-style: italic; }
+.story-body p {
+  font-size: 1rem; line-height: 1.85; color: #3a3028;
+  margin-bottom: 1.1rem;
+}
+.story-body p strong { color: var(--ink); font-weight: 700; }
+.story-body p em { font-style: italic; color: #5a4030; }
+.story-pull {
+  border-left: 4px solid var(--gold);
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  background: linear-gradient(135deg, #fffbee, #fff8e0);
+  border-radius: 0 12px 12px 0;
+}
+.story-pull p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; font-style: italic;
+  color: #5a3a00; line-height: 1.6; margin: 0;
+}
+.story-divider {
+  display: flex; align-items: center; gap: 1rem;
+  margin: 2.5rem 0; color: #ccc;
+}
+.story-divider::before, .story-divider::after {
+  content: ''; flex: 1;
+  height: 1px; background: linear-gradient(to right, transparent, #d0c8bc);
+}
+.story-divider::after {
+  background: linear-gradient(to left, transparent, #d0c8bc);
+}
+.story-divider span { font-size: 1.2rem; }
+.story-concept {
+  background: white; border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.07);
+  padding: 1rem 1.25rem; margin: 1rem 0;
+  display: flex; gap: 1rem; align-items: flex-start;
+}
+.story-concept-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 0.1rem; }
+.story-concept-body { flex: 1; }
+.story-concept-title { font-weight: 700; font-size: 0.9rem; color: var(--ink); margin-bottom: 0.3rem; }
+.story-concept-text { font-size: 0.88rem; line-height: 1.65; color: #555; }
+.story-number-list {
+  counter-reset: story-counter;
+  list-style: none; padding: 0; margin: 1rem 0;
+}
+.story-number-list li {
+  counter-increment: story-counter;
+  display: flex; gap: 0.85rem; align-items: flex-start;
+  margin-bottom: 0.65rem; font-size: 0.92rem; line-height: 1.65; color: #3a3028;
+}
+.story-number-list li::before {
+  content: counter(story-counter);
+  background: var(--ink); color: white;
+  width: 22px; height: 22px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 700; flex-shrink: 0; margin-top: 0.15rem;
+}
+.story-tag-inline {
+  display: inline-block; background: var(--warm);
+  border-radius: 6px; padding: 1px 7px;
+  font-size: 0.78rem; font-weight: 600; color: var(--rust);
+  vertical-align: middle;
+}
+.story-ending {
+  background: var(--ink); color: var(--cream);
+  border-radius: 20px; padding: 2.5rem 2rem; margin-top: 3rem; text-align: center;
+}
+.story-ending h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem; font-weight: 900; margin-bottom: 1rem;
+  color: var(--gold);
+}
+.story-ending p { font-size: 0.95rem; line-height: 1.8; opacity: 0.85; max-width: 520px; margin: 0 auto; }
+
 /* ——— RESPONSIVE ——— */
 @media (max-width: 600px) {
   .cards-grid { grid-template-columns: 1fr; }
@@ -435,6 +524,7 @@ body {
   <button class="nav-btn" onclick="showTab('quiz')">🎯 Quiz</button>
   <button class="nav-btn" onclick="showTab('fofoca')">🔥 Fofoca</button>
   <button class="nav-btn" onclick="showTab('temas')">⚡ Temas-Chave</button>
+  <button class="nav-btn" onclick="showTab('historia')">📖 A História</button>
 </nav>
 
 <main class="main">
@@ -1082,6 +1172,178 @@ body {
   </div>
 </section>
 
+<!-- ════════════════════════════════════════════════
+     HISTÓRIA — STORYTELLING
+════════════════════════════════════════════════ -->
+<section class="section" id="historia">
+  <h2 class="section-title">📖 A <span>História</span> das Relações Públicas</h2>
+  <p class="section-subtitle">Toda a matéria contada de forma seguida — como uma história com personagens, conflitos e reviravoltas</p>
+
+  <div class="story-wrap">
+
+    <!-- ── CAPÍTULO 1 ── -->
+    <div class="story-chapter">
+      <div class="story-chapter-label">Capítulo 1</div>
+      <h3>O Mundo Mudou. As Organizações <em>Ainda Não Tinham Percebido.</em></h3>
+      <div class="story-body">
+        <p>Imagina uma empresa nos anos 1980. O director-geral toma decisões atrás de portas fechadas. Os trabalhadores chegam às oito, saem às cinco, e a comunicação flui num único sentido: de cima para baixo. Os clientes não têm voz. A sociedade? Nem sequer entra na equação. Era uma lógica simples: produz, vende, lucra. Repete.</p>
+        <p>Mas algo começou a mudar. A globalização acelerou. As cidades cresceram. As pessoas tornaram-se mais móveis, mais educadas, mais conscientes dos seus direitos. E então chegou a Internet — e com ela, a <strong>transição brutal</strong> de que fala o Prof. Brandão: passámos do isolamento comunitário para uma vivência múltipla e cosmopolita, onde qualquer trabalhador descontente podia partilhar a sua história com o mundo inteiro em segundos.</p>
+        <p>De repente, a velha lógica já não funcionava. As organizações descobriram, muitas vezes da pior forma possível, que existiam numa <strong>relação triangular</strong> com a sociedade: eram simultaneamente parte da <em>Sociedade da Comunicação</em> (onde o activo é o emissor), da <em>Sociedade da Informação</em> (onde o activo é o receptor), e da <em>Sociedade da Comutação</em> — essa terceira dimensão onde o que domina são as <em>aparências</em>, a criatividade gerada na interacção entre ambos os pólos.</p>
+        <div class="story-pull"><p>"As Organizações, por um lado com os seus colaboradores e, por outro, com os seus clientes — determinam-se mutuamente. Por isso, em ambos os casos têm de espelhar a realidade empresarial."</p></div>
+        <p>É aqui que entram as Relações Públicas. Não como departamento de maquilhagem da realidade — mas como uma <strong>ferramenta humana para benefício humano</strong>, nas palavras do Professor. Uma função de gestão que estuda as influências, as opiniões e as dinâmicas que se efectuam na empresa e para fora dela. Que serve de barómetro entre a instituição e os seus públicos. Que, acima de tudo, <em>ouve</em>.</p>
+      </div>
+    </div>
+
+    <div class="story-divider"><span>✦</span></div>
+
+    <!-- ── CAPÍTULO 2 ── -->
+    <div class="story-chapter">
+      <div class="story-chapter-label">Capítulo 2</div>
+      <h3>Quatro Modelos, Quatro <em>Filosofias de Poder</em></h3>
+      <div class="story-body">
+        <p>Não existe uma única forma de fazer Relações Públicas. Existem, pelo menos, quatro — e a que uma organização escolhe diz tudo sobre como ela vê o mundo e as pessoas que a rodeiam.</p>
+        <p>James Grunig e Todd Hunt passaram anos a estudar como as organizações realmente praticavam as RP, e chegaram a uma taxonomia que se tornou a base de toda a teoria moderna. Quatro modelos, ordenados do mais primitivo ao mais sofisticado.</p>
+
+        <div class="story-concept">
+          <div class="story-concept-icon">📣</div>
+          <div class="story-concept-body">
+            <div class="story-concept-title">1.º Modelo — Agente de Imprensa <span class="story-tag-inline">Propaganda</span></div>
+            <div class="story-concept-text">A organização fala. O público ouve. Ponto. O único objectivo é conseguir <em>publicity</em> favorável — aparecer nos media de forma positiva, sem se preocupar muito com a verdade nem com o que o público pensa de facto. É comunicação unidireccional na sua forma mais pura.</div>
+          </div>
+        </div>
+
+        <div class="story-concept">
+          <div class="story-concept-icon">📰</div>
+          <div class="story-concept-body">
+            <div class="story-concept-title">2.º Modelo — Informação Pública <span class="story-tag-inline">Ivy Lee</span></div>
+            <div class="story-concept-text">Um passo à frente: agora a informação é fidedigna — mas continua a ser apenas favorável. Os profissionais de RP funcionam como "jornalistas residentes". Ainda é um monólogo. Ainda é assimétrico. A organização não muda — tenta mudar o comportamento dos outros.</div>
+          </div>
+        </div>
+
+        <div class="story-concept">
+          <div class="story-concept-icon">🔬</div>
+          <div class="story-concept-body">
+            <div class="story-concept-title">3.º Modelo — Assimétrico Bidireccional <span class="story-tag-inline">Bernays</span></div>
+            <div class="story-concept-text">Agora há pesquisa. A organização investiga o que os públicos pensam — mas para usar esse conhecimento como arma de persuasão. O diálogo existe, mas é dominado pela organização. É sofisticado, mas ainda está ao serviço da manipulação.</div>
+          </div>
+        </div>
+
+        <div class="story-concept">
+          <div class="story-concept-icon">⚖️</div>
+          <div class="story-concept-body">
+            <div class="story-concept-title">4.º Modelo — Simétrico Bidireccional <span class="story-tag-inline">Ideal · Excelência</span></div>
+            <div class="story-concept-text">A finalidade não é persuadir — é <strong>compreender mutuamente</strong>. Os profissionais de RP são mediadores. A comunicação flui em ambos os sentidos com efeitos equilibrados. A organização está genuinamente disposta a mudar o seu comportamento. Este é o modelo ideal, a teoria de excelência, o que Grunig e a sua esposa Larissa descrevem como a teoria normativa de como as RP <em>devem</em> ser praticadas.</div>
+          </div>
+        </div>
+
+        <p>Há um detalhe importante que o Professor Brandão sublinha: na prática, combinar o 3.º com o 4.º modelo é o caminho mais eficaz. A pesquisa e a persuasão do 3.º, aliadas à abertura genuína e ao diálogo do 4.º — juntos, permitem a verdadeira eficácia organizacional.</p>
+
+        <p>E depois há a <strong>Escola Crítica</strong>, que chegou nos anos 80 e 90 para perturbar o consenso. Académicos como L'Etang e Holtzhausen questionaram: será que o modelo simétrico é mesmo possível? Será que as organizações alguma vez estão verdadeiramente dispostas a mudar? A perspectiva pós-modernista vai mais longe — abraça o <em>dissenso</em> como legítimo, como "pluralidade discursiva e ideológica", recusando a ideia de que o objetivo das RP deve ser sempre o consenso. É uma visão desconfortável, mas honesta.</p>
+      </div>
+    </div>
+
+    <div class="story-divider"><span>✦</span></div>
+
+    <!-- ── CAPÍTULO 3 ── -->
+    <div class="story-chapter">
+      <div class="story-chapter-label">Capítulo 3</div>
+      <h3>A Questão de Quem <em>Tu És</em> — e de Quem os Outros Acham que És</h3>
+      <div class="story-body">
+        <p>Há uma tensão fundamental em qualquer organização, e ela existe há séculos: a diferença entre <em>o que somos</em> e <em>o que os outros pensam que somos</em>. Esta tensão tem nome, e as RP vivem no seu epicentro.</p>
+        <p><strong>Identidade</strong> é o que a organização é, faz e diz. É um conceito de dentro para fora — "emissor", nas palavras de Kapferer. Engloba a história da empresa, os seus valores, as suas crenças, o seu "código genético". Para que seja rigorosa, uma identidade organizacional precisa de satisfazer três critérios: definir o carácter central da empresa (o foco irredutível da sua existência), as características que a distinguem de todas as outras, e as características que garantem permanência e coerência ao longo do tempo.</p>
+        <p><strong>Imagem</strong> é o que se passa na mente dos públicos. É um conceito de fora para dentro — "receptor". É a identidade filtrada pela percepção, pela experiência, pelos rumores, pelas notícias. Uma empresa pode ter a melhor identidade do mundo; se a imagem percepcionada pelos clientes for outra, é a imagem que vence.</p>
+        <p><strong>Reputação</strong> — e este é o conceito mais poderoso dos três — é o activo intangível que resulta da interacção entre identidade e imagem ao longo do tempo, mediada pela confiança e pela transparência. É o "capital reputacional" de que fala Fombrun: o activo que não aparece no balanço mas que determina se os clientes ficam, se os colaboradores se orgulham de onde trabalham, se os investidores confiam.</p>
+        <div class="story-pull"><p>"A imagem distingue-se da identidade, pois enquanto a imagem é o que se passa na mente dos públicos, a identidade é o que a organização é, faz e diz."</p></div>
+        <p>Mas aqui entra o perigo mais silencioso de todos: a <strong>dissonância</strong>. Quando os públicos percepcionam que o que a organização diz não corresponde ao que faz, a reacção não é apenas de desapontamento — é de condenação moral. Effron e os seus co-autores chamam-lhe hipocrisia, e distinguem-na da simples inautenticidade: a hipocrisia não é sobre parecer diferente do que se é — é sobre defender uma posição moral da qual, convenientemente, se beneficia. Na era das redes sociais, onde cada contradição é documentada e partilhada em segundos, esta dissonância pode destruir décadas de reputação construída.</p>
+        <p>É por isso que o trabalho das RP é mais do que comunicação: é garantir que a narrativa da organização seja <strong>condizente com a sua prática discursiva</strong>. Não apenas com as "legítimas aspirações de uma melhor opinião publicada" — mas com a realidade vivida por quem está dentro e por quem observa de fora.</p>
+      </div>
+    </div>
+
+    <div class="story-divider"><span>✦</span></div>
+
+    <!-- ── CAPÍTULO 4 ── -->
+    <div class="story-chapter">
+      <div class="story-chapter-label">Capítulo 4</div>
+      <h3>Não São Só "Públicos". São <em>Partes Interessadas</em>.</h3>
+      <div class="story-body">
+        <p>Durante muito tempo, as empresas viveram num modelo simples: accionistas, clientes, fornecedores, colaboradores. Eram esses os "públicos" que importavam. O resto — a comunidade local, o Governo, os concorrentes, a sociedade civil — era paisagem.</p>
+        <p>Edward Freeman chegou e mudou tudo com uma palavra: <strong>stakeholder</strong>. A definição que toda a gente cita, mas que poucos realmente exploram na sua radicalidade: <em>"grupo ou indivíduo que pode afectar ou é afectado pelo cumprimento da finalidade e objectivos da organização."</em> Notem o verbo <em>afectar</em> nos dois sentidos. Não é apenas quem a empresa impacta — é também quem pode impactar a empresa.</p>
+        <p>Esta visão criou uma lógica nova: em vez de "troca", falamos de <em>colaboração</em>. Em vez de gerir públicos, gerimos relações de interdependência. A empresa não existe num vácuo — existe numa teia de relações com actores que têm interesses legítimos, e ignorá-los não os faz desaparecer; apenas garante que se tornem adversários em vez de aliados.</p>
+        <p>Grunig e Repper acrescentaram uma camada de sofisticação: nem todos os stakeholders são iguais. Existem os <strong>não-públicos</strong> (que não reconhecem qualquer envolvimento com a organização), os <strong>públicos latentes</strong> (que têm potencial de envolvimento mas estão adormecidos por constrangimentos), os <strong>públicos conscientes</strong> (que reconhecem o envolvimento mas ainda não comunicam por iniciativa própria) e os <strong>públicos activos</strong> — esses são os que precisam de atenção imediata, porque estão mobilizados, estão a comunicar, e os seus constrangimentos estão a desaparecer.</p>
+        <p>E então chegou 2021, e Kim e Grunig — filho do mesmo Grunig — identificaram um fenómeno novo que complica tudo: a <strong>prisão cognitiva</strong>. Na era digital, os algoritmos das redes sociais criam câmaras de eco que aprisionam os públicos em conclusões predefinidas. O resultado é a <em>inércia epistémica</em>: mesmo um público esforçado e diligente fica incapaz de evoluir no seu conhecimento porque o sistema em que existe reforça continuamente as mesmas crenças. Para os profissionais de RP, isto é a fronteira mais difícil: como comunicar com alguém que está cognitivamente preso?</p>
+      </div>
+    </div>
+
+    <div class="story-divider"><span>✦</span></div>
+
+    <!-- ── CAPÍTULO 5 ── -->
+    <div class="story-chapter">
+      <div class="story-chapter-label">Capítulo 5</div>
+      <h3>A Ética Não É um Departamento. É o <em>ADN</em>.</h3>
+      <div class="story-body">
+        <p>Há uma ilusão comum nas organizações: a de que basta escrever um belo código de ética, publicá-lo no site e distribuir brochuras pelos colaboradores para que a empresa seja ética. O Professor Brandão é implacável neste ponto: <em>"Falar de Ética Empresarial não se pode resumir a acções de Comunicação e Marketing junto dos stakeholders, mas sim, deve ser um modo de ser na organização, e não, de apenas querer parecer."</em></p>
+        <p>O crescimento de uma organização mede-se, claro, pela sua sobrevivência a longo prazo, pelo crescimento sustentado, pela rentabilidade, pela capacidade de inovar e pelos seus processos de decisão. Mas Brandão insiste num sexto indicador, frequentemente esquecido: a <strong>avaliação das necessidades e contribuições dos seus Stakeholders</strong>, que envolve uma Ética de Responsabilidade. Os outros cinco são insuficientes sem este.</p>
+        <p>A cultura organizacional é o terreno onde a ética cresce — ou murcha. Schein identificou três níveis: o <em>visível</em> (vestuário, disposição física, comportamentos observáveis), o de <em>maior consciência</em> (os valores e normas que as pessoas articulam conscientemente) e o <em>invisível</em> (os pressupostos básicos que toda a gente toma como verdade e que determinam, sem que ninguém perceba, as percepções e os comportamentos de toda a organização). É neste terceiro nível — o mais difícil de mudar — que as culturas organizacionais verdadeiramente vivem.</p>
+        <div class="story-pull"><p>"Cometer erros éticos são mais difíceis de serem desfeitos do que qualquer outro erro, pois não podem ser desfeitos com a mesma facilidade — deixando danos, muitas vezes irreparáveis, na reputação das organizações."</p></div>
+        <p>E quando a ética se estende para fora da organização, chega a <strong>Responsabilidade Social Empresarial</strong>. Howard Bowen, em 1957, foi o primeiro a dizer aquilo que parecia óbvio mas que o mundo empresarial resistia a ouvir: as empresas têm obrigação de prosseguir políticas que sejam desejáveis para os objectivos e valores da sociedade — para lá da maximização do lucro. Bowen é o "pai" da RSE, e a sua herança está hoje nos 17 Objectivos de Desenvolvimento Sustentável da ONU e nos sete pilares do Instituto Ethos, que organizam a responsabilidade empresarial em dimensões como o público interno, o meio ambiente, os fornecedores, a comunidade e o governo.</p>
+        <p>A forma mais recente e controversa desta responsabilidade social chama-se <strong>Corporate Political Advocacy</strong> — empresas que tomam posição pública em questões políticas e sociais. O Ben & Jerry's a apoiar o Black Lives Matter. A Gillette a falar de masculinidade tóxica. O Lidl a inverter estereótipos de género nos seus brinquedos de Natal. O Santander a pintar o logo com as cores da bandeira LGBTQ+. Cada uma destas decisões gerou amor e ódio em simultâneo — porque o CPA funciona assim: cria aprovação e aquisição nos que apoiam a posição, e desaprovação e boicote nos que se opõem. A condição para que funcione? Três critérios simples mas exigentes: <em>consistência</em> (a causa deve ser coerente com os valores da empresa), <em>plausibilidade</em> (deve ser um compromisso de longo prazo, não uma acção de oportunidade) e <em>autenticidade</em> (mais acções concretas do que palavras bonitas).</p>
+      </div>
+    </div>
+
+    <div class="story-divider"><span>✦</span></div>
+
+    <!-- ── CAPÍTULO 6 ── -->
+    <div class="story-chapter">
+      <div class="story-chapter-label">Capítulo 6</div>
+      <h3>Por Dentro: a Batalha <em>Invisível</em> da Comunicação Interna</h3>
+      <div class="story-body">
+        <p>Há uma ironia cruel nas organizações: as mesmas empresas que investem fortunas em comunicação externa — campanhas, relações com a imprensa, redes sociais — frequentemente ignoram a comunicação com as pessoas que estão dentro de casa. E depois ficam surpreendidas quando os colaboradores sabem das notícias da empresa pelo jornal.</p>
+        <p>Vítor Almeida define a comunicação interna com uma precisão cirúrgica: é simultaneamente uma <strong>necessidade</strong> (porque é determinante na coordenação das actividades), uma <strong>crença</strong> (porque é portadora de soluções) e uma <strong>vontade</strong> (porque tem de ser pensada e adequada às características de cada empresa). Não é um nice-to-have. É estrutural.</p>
+        <p>Bilhim identificou quatro funções da comunicação nas organizações: controlo do comportamento, motivação dos colaboradores, satisfação da necessidade de afiliação e identificação, e fornecimento de informação para a tomada de decisão. Brandão acrescenta uma quinta, que é a mais reveladora de todas: que a informação disponibilizada vá ao encontro das <em>necessidades e expectativas</em> dos colaboradores. Não apenas do que a gestão quer comunicar — do que as pessoas precisam de ouvir.</p>
+        <p>A comunicação interna flui em três direcções. A <strong>descendente</strong> — do poder para o interior — é a mais natural e a mais praticada. A <strong>ascendente</strong> — das pessoas para a gestão — é a mais valiosa e a mais negligenciada: é onde vivem as ideias, as sugestões, os alertas precoces. E a <strong>horizontal</strong> — entre unidades e departamentos ao mesmo nível hierárquico — é a que cria sinergias e evita que a mão direita não saiba o que a esquerda faz.</p>
+        <p>E quando a comunicação falha, há razões específicas para isso. Thayer, em 1979, catalogou cinco tipos de barreiras: as <em>organizacionais</em> (relacionadas com a estrutura e as relações de poder), as <em>interpessoais</em> (os choques de valores e as atitudes antagónicas), as <em>individuais</em> (os hábitos de pensamento e as inaptidões comunicativas de cada pessoa), as <em>económicas, geográficas e temporais</em> (o custo, a distância, a falta de tempo adequado) e as de <em>canal e meios</em> (usar o canal errado para a mensagem errada). Cada barreira tem a sua cura — mas todas exigem, primeiro, que a gestão queira mesmo ouvir.</p>
+        <div class="story-pull"><p>"Não comunicar é comunicar negativamente. As empresas que dispõem de um adequado programa de comunicação interna têm maior facilidade na comunicação externa."</p></div>
+      </div>
+    </div>
+
+    <div class="story-divider"><span>✦</span></div>
+
+    <!-- ── CAPÍTULO 7 ── -->
+    <div class="story-chapter">
+      <div class="story-chapter-label">Capítulo 7</div>
+      <h3>Publicidade Institucional, Lobbying e o <em>Dia em que Tudo Corre Mal</em></h3>
+      <div class="story-body">
+        <p>As Relações Públicas não existem apenas no quotidiano sereno de uma organização bem gerida. Têm também fronteiras — com o Marketing, com o poder político, e com o caos.</p>
+        <p>A fronteira com o Marketing é, por vezes, nebulosa, mas a distinção é clara: o <strong>Marketing</strong> é uma função de linha, centrada nos clientes, que converte investimento em rendimento. As <strong>RP</strong> são uma função de staff, centrada em todos os públicos e partes interessadas, que gerem a reputação e a imagem institucional. A Publicidade Institucional pertence ao mundo das RP — não serve para vender produtos, serve para criar e reforçar <em>postura</em>: um capital de confiança, de credibilidade e de transparência que sustenta a longevidade organizacional.</p>
+        <p>A fronteira com o poder político chama-se <strong>Lobbying</strong>. É a prática de persuadir ou pressionar os poderes públicos na defesa dos interesses da organização — e existe numa zona cinzenta entre a legitimidade democrática e o abuso de influência. Lampreia é claro: para ser legítimo, o lobbying tem de respeitar a lei, ter ética, ter transparência e ter bom senso. Quando cruza estas linhas, deixa de ser lobbying e torna-se em corrupção.</p>
+        <p>E depois há as crises. Nenhuma organização está imune — a questão não é <em>se</em> vai acontecer, mas <em>quando</em> e <em>quão preparada</em> a organização estará. Fearn-Banks identificou cinco fases que toda a crise atravessa: a <strong>detecção</strong> (o momento em que a organização percebe que algo está a correr mal), a <strong>preparação e prevenção</strong> (o trabalho proactivo antes da crise rebentar), a <strong>contenção</strong> (travar os danos enquanto a crise está activa), a <strong>recuperação</strong> (o esforço de regressar à normalidade) e as <strong>lições aprendidas</strong> (o momento crítico de avaliar o que aconteceu e garantir que não se repete).</p>
+        <p>Lampreia distingue dois tipos de crise: as <em>previsíveis</em> (crises económicas, reestruturações, alterações legais — para as quais é possível preparar planos antecipados) e as <em>imprevisíveis</em> (catástrofes, acidentes, sabotagens — as mais difíceis de gerir). A regra de ouro, em ambos os casos, é a mesma: uma organização pro-activa, com planos de prevenção sólidos e com porta-vozes bem preparados, sofre sempre menos danos do que uma organização que é apanhada de surpresa.</p>
+      </div>
+    </div>
+
+    <div class="story-divider"><span>✦</span></div>
+
+    <!-- ── EPÍLOGO ── -->
+    <div class="story-chapter">
+      <div class="story-chapter-label">Epílogo</div>
+      <h3>O Que Significa, Afinal, <em>Fazer Bem</em> as Relações Públicas?</h3>
+      <div class="story-body">
+        <p>Depois de sete capítulos, chegamos ao coração da questão. O que são, verdadeiramente, as Relações Públicas?</p>
+        <p>Não são spin. Não são maquilhagem. Não são o departamento que trata de press releases e conferências de imprensa. São — ou devem ser — a consciência comunicacional de uma organização.</p>
+        <p>São a função que garante que quando a empresa diz que valoriza os seus colaboradores, eles realmente sentem esse valor. Que quando diz ser sustentável, as suas práticas confirmam essa afirmação. Que quando enfrenta uma crise, não entra em pânico mas activa um plano cuidadosamente pensado. Que quando alguém de fora quer saber o que a empresa representa, há uma identidade clara, coerente e autêntica para mostrar.</p>
+        <p>A definição clássica que o Professor Brandão cita é, na sua sobriedade, perfeita: as RP são um <em>"conjunto de métodos de análise de situação e detecção de tendências, bem como de avaliação dos respectivos reflexos na Instituição — como auxiliar do diagnóstico necessário à tomada de decisão."</em></p>
+        <p>Mas se tivéssemos de resumir tudo numa frase, seria esta, também sua: as organizações são construídas <strong>por pessoas e para pessoas</strong>. Tudo o resto — os modelos, os princípios, os pilares, as listas — são instrumentos ao serviço desta verdade fundamental.</p>
+      </div>
+    </div>
+
+    <div class="story-ending">
+      <h3>📌 O que levar para o exame</h3>
+      <p>Os 4 modelos de Grunig (e a que fase histórica corresponde cada um) · O triângulo identidade–imagem–reputação · A definição de stakeholder de Freeman · As 4 categorias de públicos · Os 7 pilares da RSE · As 4 virtudes da Governança Corporativa · As 5 funções da comunicação (Bilhim + Brandão) · As 5 barreiras de Thayer · As 5 fases de crise de Fearn-Banks · Os 3 critérios do CPA</p>
+    </div>
+
+  </div>
+</section>
+
 </main>
 
 <script>
@@ -1090,7 +1352,7 @@ function showTab(id) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  const idx = ['resumos','esquemas','flashcards','quiz','fofoca','temas'].indexOf(id);
+  const idx = ['resumos','esquemas','flashcards','quiz','fofoca','temas','historia'].indexOf(id);
   document.querySelectorAll('.nav-btn')[idx].classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
 }
