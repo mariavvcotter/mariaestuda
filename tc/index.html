@@ -56,9 +56,6 @@ body {
 .shell {
   position: relative;
   z-index: 1;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 1rem 2rem 4rem;
 }
 
 /* HERO */
@@ -136,7 +133,7 @@ body {
 /* SECTIONS */
 .section { display: block; padding-top: 0; }
 .main-panel { display: none; }
-.main-panel.active { display: block; }
+.main-panel.active { display: block; padding: 1.5rem 2.5rem 4rem; max-width: 1100px; margin: 0 auto; }
 
 /* SECTION HEADER */
 .section-label {
@@ -626,7 +623,7 @@ body {
   opacity: 1;
 }
 .subpanel { display: none; }
-.subpanel.active { display: block; }
+.subpanel.active { display: block; min-height: 200px; }
 
 /* FUTEBOL / F1 NARRATIVE */
 .narrative-wrap {
@@ -1123,6 +1120,169 @@ body {
 .sort-feedback.ok { background: var(--correct-bg); color: #14532d; border: 1px solid #bbf7d0; }
 .sort-feedback.err { background: var(--wrong-bg); color: #7f1d1d; border: 1px solid #fecaca; }
 .sort-set-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+
+
+/* ===== FLASHCARDS ===== */
+.fc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.fc-counter {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.fc-filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.fc-pill {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+  background: white;
+  color: var(--navy);
+  transition: all 0.18s;
+  opacity: 0.55;
+}
+.fc-pill:hover { opacity: 1; }
+.fc-pill.active { background: var(--navy); color: white; border-color: var(--navy); opacity: 1; }
+
+.fc-scene {
+  width: 100%;
+  min-height: 260px;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+.fc-card {
+  width: 100%;
+  min-height: 260px;
+  position: relative;
+  border-radius: 20px;
+}
+.fc-face {
+  width: 100%;
+  min-height: 260px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  overflow: hidden;
+  transition: opacity 0.25s ease;
+}
+.fc-face-front {
+  background: white;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 8px 40px rgba(192,132,252,0.15);
+  position: relative;
+}
+.fc-face-front::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--soft-purple), var(--soft-pink), var(--soft-blue));
+  border-radius: 20px 20px 0 0;
+}
+.fc-face-back {
+  background: linear-gradient(135deg, #1a1756 0%, #2d2a7a 100%);
+  box-shadow: 0 8px 40px rgba(26,23,86,0.25);
+  display: none;
+}
+.fc-card.flipped .fc-face-front { display: none; }
+.fc-card.flipped .fc-face-back { display: flex; }
+.fc-theory-tag {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+.fc-face-back .fc-theory-tag {
+  color: rgba(255,255,255,0.4);
+}
+.fc-question {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+.fc-answer {
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(0.88rem, 1.5vw, 1.05rem);
+  color: white;
+  line-height: 1.7;
+  opacity: 0.92;
+}
+.fc-hint {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  opacity: 0.4;
+  font-style: italic;
+}
+.fc-hint-front { color: var(--navy); }
+.fc-hint-back { color: white; }
+.fc-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.fc-btn {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 12px;
+  padding: 0.75rem 1.6rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.fc-btn-prev { background: rgba(26,23,86,0.07); color: var(--navy); }
+.fc-btn-prev:hover { background: rgba(26,23,86,0.13); }
+.fc-btn-flip { background: var(--navy); color: white; }
+.fc-btn-flip:hover { background: var(--navy2); transform: translateY(-2px); }
+.fc-btn-next { background: rgba(26,23,86,0.07); color: var(--navy); }
+.fc-btn-next:hover { background: rgba(26,23,86,0.13); }
+.fc-progress-wrap {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+}
+.fc-pip {
+  height: 3px;
+  flex: 1;
+  min-width: 6px;
+  border-radius: 2px;
+  background: rgba(26,23,86,0.1);
+  transition: background 0.3s;
+}
+.fc-pip.seen { background: var(--soft-purple); }
+.fc-pip.current { background: var(--navy); }
 
 </style>
 </head>
@@ -1680,12 +1840,11 @@ body {
     <div class="subtab-bar">
       <button class="subtab-btn active" onclick="showSub('exercicios','sub-fillinblank',this)">✏️ Fill in the Blank</button>
       <button class="subtab-btn" onclick="showSub('exercicios','sub-quiz',this)">🧠 Quiz</button>
-      <button class="subtab-btn" onclick="showSub('exercicios','sub-correspondencias',this)">🔗 Correspondências</button>
-      <button class="subtab-btn" onclick="showSub('exercicios','sub-ordenar',this)">🔢 Ordenar</button>
+      <button class="subtab-btn" onclick="showSub('exercicios','sub-flashcards',this)">🃏 Flashcards</button>
     </div>
 
     <!-- SUB: FILL IN THE BLANK -->
-    <div class="subpanel active" id="sub-fillinblank">
+    <div class="subpanel active" id="sub-fillinblank" style="display:block">
   <div class="section" id="fillinblank">
     <div id="fib-area">
       <div class="fib-progress">
@@ -1716,7 +1875,7 @@ body {
     </div><!-- end #sub-fillinblank -->
 
     <!-- SUB: QUIZ -->
-    <div class="subpanel" id="sub-quiz">
+    <div class="subpanel" id="sub-quiz" style="display:none">
       <div id="quiz-inner"><div class="quiz-filter-wrap">
       <div class="quiz-filter-label">Filtrar por teoria</div>
       <div class="filter-pills" id="filter-pills">
@@ -1759,52 +1918,38 @@ body {
     </div>
       </div><!-- end #sub-quiz -->
 
-    <!-- SUB: CORRESPONDENCIAS -->
-    <div class="subpanel" id="sub-correspondencias">
-  <div class="section" id="correspondencias">
-    <div class="match-set-tabs" id="match-tabs"></div>
-    <div class="match-score-row">
-      <span class="match-score-badge" id="match-score-badge">✓ 0 / 8</span>
-      <button class="match-reset-btn" onclick="resetMatch()">↺ Recomeçar</button>
-    </div>
-    <div id="match-instruction" style="font-size:0.88rem;color:var(--muted);margin-bottom:1.25rem;line-height:1.6;">Clica num conceito da coluna esquerda e depois na definição correspondente à direita.</div>
-    <div class="match-grid" id="match-grid">
-      <div>
-        <div class="match-col-title">Conceito / Autor</div>
-        <div class="match-col" id="match-left"></div>
-      </div>
-      <div>
-        <div class="match-col-title">Definição</div>
-        <div class="match-col" id="match-right"></div>
-      </div>
-    </div>
-    <div class="feedback-box" id="match-feedback"></div>
-  </div><!-- end #correspondencias -->
-    </div><!-- end #sub-correspondencias -->
 
-    <!-- SUB: ORDENAR -->
-    <div class="subpanel" id="sub-ordenar">
-  <div class="section" id="ordenar">
-    <div class="sort-set-tabs" id="sort-tabs"></div>
-    <div class="sort-card" id="sort-card">
-      <div class="sort-instruction" id="sort-instruction">Arrasta para ordenar</div>
-      <div class="sort-question" id="sort-question"></div>
-      <div class="sort-items" id="sort-items"></div>
-      <div class="sort-feedback" id="sort-feedback"></div>
-      <div style="margin-top:1rem;">
-        <button class="sort-check-btn" id="sort-check" onclick="checkSort()">Verificar ✓</button>
-        <button class="sort-next-btn" id="sort-next" onclick="nextSort()">Próxima →</button>
+
+    <!-- SUB: FLASHCARDS -->
+    <div class="subpanel" id="sub-flashcards" style="display:none">
+      <div id="fc-area">
+        <div class="fc-header">
+          <span class="fc-counter" id="fc-counter">1 / 37</span>
+          <div class="fc-filter-pills" id="fc-pills"></div>
+        </div>
+        <div class="fc-progress-wrap" id="fc-progress"></div>
+        <div class="fc-scene" onclick="flipCard()">
+          <div class="fc-card" id="fc-card">
+            <div class="fc-face fc-face-front">
+              <div class="fc-theory-tag" id="fc-front-tag">McLuhan</div>
+              <div class="fc-question" id="fc-question">O que significa 'o meio é a mensagem'?</div>
+              <span class="fc-hint fc-hint-front">clica para ver a resposta</span>
+            </div>
+            <div class="fc-face fc-face-back">
+              <div class="fc-theory-tag" id="fc-back-tag">McLuhan</div>
+              <div class="fc-answer" id="fc-answer"></div>
+              <span class="fc-hint fc-hint-back">clica para voltar à pergunta</span>
+            </div>
+          </div>
+        </div>
+        <div class="fc-controls">
+          <button class="fc-btn fc-btn-prev" onclick="fcPrev()">← Anterior</button>
+          <button class="fc-btn fc-btn-flip" onclick="flipCard()">↻ Virar</button>
+          <button class="fc-btn fc-btn-next" onclick="fcNext()">Próximo →</button>
+        </div>
       </div>
-    </div>
-    <div class="results-screen" id="sort-results">
-      <div style="font-family:'Syne',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;">Resultado</div>
-      <div class="results-score" id="sort-final-score">0</div>
-      <div class="results-label" id="sort-results-label">questões ordenadas</div>
-      <div class="results-msg" id="sort-final-msg"></div>
-      <button class="restart-btn" onclick="restartSort()">Tentar Novamente ↺</button>
-    </div>
-  </div><!-- end #ordenar -->
-    </div><!-- end #sub-ordenar -->
+    </div><!-- end #sub-flashcards -->
+
   </div><!-- end #exercicios -->
 
 </div>
@@ -1832,28 +1977,32 @@ function showMain(id, btn) {
     el.classList.add('active');
     btn.classList.add('active');
     // Init the first active subpanel
-    if (id === 'exercicios') { requestAnimationFrame(() => { fibInitialized = false; initFib(); }); }
+    if (id === 'exercicios') { fibInitialized = false; initFib(); }
     if (id === 'historias') { /* just display */ }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } catch(e) { console.error('showMain error:', e); }
 }
 
 function showSub(parentId, subId, btn) {
-  try {
-    const parent = document.getElementById(parentId);
-    parent.querySelectorAll('.subpanel').forEach(p => p.classList.remove('active'));
-    parent.querySelectorAll('.subtab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(subId).classList.add('active');
-    btn.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    // Init after DOM update
-    requestAnimationFrame(() => {
-      if (subId === 'sub-quiz') { quizInitialized=false; initQuiz(); }
-      if (subId === 'sub-fillinblank') { fibInitialized=false; initFib(); }
-      if (subId === 'sub-correspondencias') initMatch();
-      if (subId === 'sub-ordenar') initSort();
-    });
-  } catch(e) { console.error('showSub error:', e); }
+  // Hide all subpanels in this parent
+  var allSubs = ['sub-fofocas','sub-blog','sub-futebol','sub-f1',
+                 'sub-fillinblank','sub-quiz','sub-flashcards'];
+  allSubs.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  // Hide all subtab buttons in parent
+  var parent = document.getElementById(parentId);
+  if (parent) parent.querySelectorAll('.subtab-btn').forEach(function(b){ b.classList.remove('active'); });
+  // Show target
+  var target = document.getElementById(subId);
+  if (target) target.style.display = 'block';
+  if (btn) btn.classList.add('active');
+  // Init content
+  if (subId === 'sub-quiz') { quizInitialized=false; initQuiz(); }
+  if (subId === 'sub-fillinblank') { fibInitialized=false; initFib(); }
+  if (subId === 'sub-flashcards') { initFlashcards(); }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function showSection(id, btn) {
@@ -2281,6 +2430,42 @@ const MATCH_SETS = [
       { left:"Alone Together", right:"Turkle — conectados mas isolados" },
       { left:"Commodification", right:"van Dijck — transformação de relações sociais em produto" }
     ]
+  },
+  { title:"Media Quente vs Frio",
+    pairs:[
+      { left:"Rádio", right:"Meio quente — alta definição, baixa participação" },
+      { left:"Televisão", right:"Meio frio — baixa definição, alta participação" },
+      { left:"Cinema", right:"Meio quente — experiência imersiva, recetor passivo" },
+      { left:"Telefone", right:"Meio frio — exige resposta ativa do recetor" },
+      { left:"Fotografia", right:"Meio quente — imagem detalhada, sem ambiguidade" },
+      { left:"Banda desenhada", right:"Meio frio — pouco detalhe, leitor completa mentalmente" },
+      { left:"Conferência presencial", right:"Meio quente — informação completa, pouco envolvimento" },
+      { left:"Seminário interativo", right:"Meio frio — participação ativa necessária" }
+    ]
+  },
+  { title:"Autores & Conceitos-chave",
+    pairs:[
+      { left:"Media Logic", right:"Hjarvard — regras dos media que colonizam outras instituições" },
+      { left:"Behavioral Surplus", right:"Zuboff — dados além do necessário para o serviço" },
+      { left:"Prosumer", right:"Jenkins — produtor e consumidor em simultâneo" },
+      { left:"Autocomunicação de Massa", right:"Castells — qualquer um pode ser emissor global" },
+      { left:"Alone Together", right:"Turkle — conectados digitalmente mas isolados presencialmente" },
+      { left:"Aldeia Global", right:"McLuhan — reconexão tribal pela eletricidade" },
+      { left:"Hipermodernidade", right:"Lipovetsky — modernidade levada ao extremo" },
+      { left:"Domesticação", right:"Silverstone — integração da tecnologia na vida doméstica" }
+    ]
+  },
+  { title:"Críticas & Contra-argumentos",
+    pairs:[
+      { left:"Tapscott é demasiado otimista", right:"Ignora cyberbullying, desinformação e desigualdades digitais" },
+      { left:"McLuhan é determinista", right:"Ignora o papel dos utilizadores e das práticas culturais" },
+      { left:"Zuboff não propõe soluções claras", right:"O diagnóstico é poderoso mas as alternativas ficam vagas" },
+      { left:"Jenkins romantiza os fãs", right:"Ignora que o poder corporativo ainda domina as narrativas" },
+      { left:"Hjarvard ignora resistência", right:"Nem todas as instituições se submetem à media logic igualmente" },
+      { left:"Turkle é nostálgica", right:"Idealiza a conversa presencial como sempre superior ao digital" },
+      { left:"Castells é demasiado abstrato", right:"O conceito de rede é tão amplo que explica tudo e nada" },
+      { left:"Luhmann é inacessível", right:"A teoria dos sistemas é hermética e difícil de aplicar empiricamente" }
+    ]
   }
 ];
 
@@ -2319,6 +2504,7 @@ function loadMatchSet(idx) {
 }
 
 function renderMatch() {
+  if (!document.getElementById('match-score-badge')) return;
   document.getElementById('match-score-badge').textContent = `✓ ${matchMatched} / ${matchPairs.length}`;
   document.getElementById('match-feedback').className = 'feedback-box';
 
@@ -2397,7 +2583,7 @@ const SORT_SETS = [
     title:"Processos & Fases",
     questions:[
       {
-        q:"Ordena as 4 fases da domesticação de Silverstone:",
+        q:"Ordena as 4 fases da domesticação de Silverstone (1.ª → última):",
         items:["Conversão — exibir como símbolo de identidade","Objetificação — posicionar no espaço doméstico","Incorporação — integrar na rotina diária","Apropriação — trazer a tecnologia para casa"],
         correct:[3,1,2,0],
         exp:"A ordem é: Apropriação → Objetificação → Incorporação → Conversão."
@@ -2406,13 +2592,25 @@ const SORT_SETS = [
         q:"Ordena os 3 processos de plataformização de van Dijck (do mais fundamental ao mais visível):",
         items:["Selection — algoritmos decidem o que é visível","Commodification — relações tornam-se produtos","Dataification — tudo se torna dado"],
         correct:[2,1,0],
-        exp:"Primeiro tudo vira dado (dataification), depois esse dado é transformado em produto (commodification), e finalmente algoritmos selecionam o que é visível (selection)."
+        exp:"Primeiro tudo vira dado (dataification), depois esse dado é produto (commodification), e finalmente algoritmos selecionam o que é visível (selection)."
       },
       {
-        q:"Ordena as normas da Net Gen de Tapscott por ordem de importância que ele atribui (1.º = mais fundamental):",
+        q:"Ordena as normas da Net Gen de Tapscott (1.ª = mais fundamental):",
         items:["Speed — velocidade e resposta imediata","Freedom — liberdade de escolha","Collaboration — cooperação entre pares","Customization — personalização"],
         correct:[1,3,2,0],
         exp:"Tapscott coloca Freedom como norma mais fundamental, seguida de Customization, Collaboration e Speed."
+      },
+      {
+        q:"Ordena os media na escala hot → cold de McLuhan (mais quente primeiro):",
+        items:["Telefone","Rádio","Televisão","Cinema"],
+        correct:[1,3,0,2],
+        exp:"Rádio (mais quente) → Cinema → Telefone → Televisão (mais fria, exige mais participação)."
+      },
+      {
+        q:"Ordena as fases do capitalismo de vigilância de Zuboff (mais básica → final):",
+        items:["Venda de certeza sobre comportamentos futuros","Extração de excedente comportamental","Construção de modelos preditivos","Recolha de dados de comportamento"],
+        correct:[3,1,2,0],
+        exp:"Dados → Excedente comportamental → Modelos preditivos → Mercados de futuros comportamentais."
       }
     ]
   },
@@ -2420,16 +2618,22 @@ const SORT_SETS = [
     title:"Autores por Data",
     questions:[
       {
-        q:"Ordena os autores por data de publicação da obra principal (mais antiga primeiro):",
+        q:"Ordena os autores por data da obra principal (mais antiga primeiro):",
         items:["Zuboff — The Age of Surveillance Capitalism (2019)","McLuhan — Understanding Media (1964)","Jenkins — Convergence Culture (2006)","Hjarvard — The Mediatization of Society (2008)"],
         correct:[1,2,3,0],
         exp:"1964 (McLuhan) → 2006 (Jenkins) → 2008 (Hjarvard) → 2019 (Zuboff)."
       },
       {
         q:"Ordena os autores por data da obra principal (mais antiga primeiro):",
-        items:["Tapscott — Grown Up Digital (2009)","Silverstone — Television and Everyday Life (1994)","Castells — Communication Power (2009)","Turkle — Alone Together (2011)"],
-        correct:[1,0,2,3],
-        exp:"1994 (Silverstone) → 2009 (Tapscott = Castells, mesma data) → 2011 (Turkle)."
+        items:["Tapscott — Grown Up Digital (2009)","Silverstone — Television and Everyday Life (1994)","van Dijck — The Platform Society (2013)","Turkle — Alone Together (2011)"],
+        correct:[1,0,3,2],
+        exp:"1994 (Silverstone) → 2009 (Tapscott) → 2011 (Turkle) → 2013 (van Dijck)."
+      },
+      {
+        q:"Ordena os autores por data da obra principal (mais antiga primeiro):",
+        items:["Jenkins — Convergence Culture (2006)","Luhmann — Die Realität der Massenmedien (1996)","Castells — Communication Power (2009)","Lipovetsky — Le Bonheur Paradoxal (2006)"],
+        correct:[1,0,3,2],
+        exp:"1996 (Luhmann) → 2006 (Jenkins = Lipovetsky) → 2009 (Castells)."
       }
     ]
   },
@@ -2437,41 +2641,55 @@ const SORT_SETS = [
     title:"Lógica Conceptual",
     questions:[
       {
-        q:"Ordena os conceitos de Zuboff do mais básico ao mais abrangente:",
-        items:["Mercados de futuros comportamentais","Excedente comportamental","Capitalismo de vigilância","Dados de comportamento do utilizador"],
-        correct:[3,1,2,0],
-        exp:"Dados → Excedente comportamental (o que sobra do serviço) → Capitalismo de vigilância (o modelo) → Mercados de futuros comportamentais (o produto final)."
-      },
-      {
         q:"Ordena os níveis de poder de Castells do mais local ao mais estrutural:",
-        items:["Programador de rede — define os objetivos da rede","Nó da rede — elemento conectado","Comutador — conecta redes diferentes","Rede — conjunto de nós interligados"],
+        items:["Programador de rede — define os objetivos da rede","Nó da rede — elemento conectado","Switch — conecta redes diferentes","Rede — conjunto de nós interligados"],
         correct:[1,3,2,0],
-        exp:"Nó → Rede → Comutador → Programador. O programador tem o poder mais estrutural ao definir quem entra e com que objetivos."
+        exp:"Nó → Rede → Switch → Programador. O programador tem o poder mais estrutural."
       },
       {
-        q:"Ordena os media na escala hot→cold de McLuhan (mais quente primeiro):",
-        items:["Telefone","Rádio","Televisão","Cinema"],
-        correct:[1,3,0,2],
-        exp:"Rádio (mais quente) → Cinema → Telefone → Televisão (mais frio, mais participação)."
+        q:"Ordena as etapas da mediatização de Hjarvard (do início ao resultado final):",
+        items:["Instituições adaptam formato e ritmo à media logic","Surgimento de media como instituição semi-independente","Todas as esferas sociais dependem dos media para visibilidade","Media logic torna-se o padrão de funcionamento social"],
+        correct:[1,0,3,2],
+        exp:"Media tornam-se instituição → Instituições adaptam-se → Media logic define o padrão → Dependência total."
+      },
+      {
+        q:"Ordena os conceitos de McLuhan da escala mais micro à mais macro:",
+        items:["Aldeia Global — reconexão tribal planetária","Extensão — tecnologia amplia sentido humano","Era Elétrica — época da velocidade instantânea","Medium — canal que formata a mensagem"],
+        correct:[3,1,2,0],
+        exp:"Medium → Extensão → Era Elétrica → Aldeia Global. Do conceito mais básico ao efeito civilizacional mais amplo."
+      },
+      {
+        q:"Ordena as etapas do processo de domesticação tecnológica de Silverstone:",
+        items:["A tecnologia torna-se invisível na rotina","A família decide onde colocar o dispositivo","A tecnologia é exibida para o exterior como símbolo","A família compra e traz o dispositivo para casa"],
+        correct:[3,1,0,2],
+        exp:"Compra e apropriação → Objetificação (posicionamento) → Incorporação (invisibilidade) → Conversão (exibição identitária)."
       }
     ]
   },
-
-  // TAPSCOTT extra (3→4 total)
-  { theory:"Tapscott", q:"Segundo Tapscott, qual é a principal diferença entre a Net Generation e as gerações anteriores face à autoridade?", opts:["A Net Gen é mais respeitosa da autoridade do que as gerações anteriores","A Net Gen questiona a autoridade e exige justificação em vez de aceitar hierarquias sem explicação","A Net Gen é mais conformista por ter crescido numa era de segurança digital","A Net Gen rejeita qualquer forma de liderança ou organização"], ans:1, exp:"Tapscott vê na Net Gen uma geração que cresce a verificar informação online e por isso questiona a autoridade que não justifica as suas decisões." },
-  { theory:"Tapscott", q:"O que Tapscott defende como consequência da Net Generation para o modelo educativo?", opts:["A educação online deve substituir completamente a sala de aula presencial","O modelo de 'broadcast pedagogy' (professor transmite, aluno recebe passivamente) deve ser substituído por aprendizagem colaborativa e personalizada","Os jovens digitais aprendem melhor sozinhos, sem professores","A educação deve focar-se exclusivamente em competências tecnológicas"], ans:1, exp:"Tapscott critica o modelo de transmissão passiva e defende que a Net Gen aprende melhor através da colaboração, descoberta e personalização." },
-
-  // LIPOVETSKY extra (3→4 total)
-  { theory:"Lipovetsky", q:"O que Lipovetsky entende por 'segunda revolução individualista' na hipermodernidade?", opts:["A revolução digital que tornou cada pessoa um produtor de conteúdo","A intensificação do individualismo para além da primeira modernidade — mais liberdade, mais mobilidade, mais reflexividade, mas também mais ansiedade e instabilidade","A rejeição dos valores coletivos em favor do egoísmo consumista","A revolução das redes sociais que criou a cultura do 'eu'"], ans:1, exp:"A segunda revolução individualista de Lipovetsky é a hipermodernidade: o individualismo modernista levado ao extremo, com mais liberdade mas também mais incerteza e compulsão." },
-
-  // LUHMANN extra (2→3 total)
-  { theory:"Luhmann", q:"Como Luhmann distingue os 'media de difusão' dos 'media de interação'?", opts:["Os media de difusão são digitais; os media de interação são analógicos","Os media de difusão (TV, imprensa) separam emissor de recetor e permitem comunicação sem presença; os media de interação pressupõem copresença e feedback imediato","Os media de difusão são mais confiáveis; os media de interação são mais manipuláveis","Os media de difusão têm mais audiência; os media de interação são mais profundos"], ans:1, exp:"Para Luhmann, a distinção fundamental é a presença: media de difusão eliminam a copresença e permitem comunicação em escala; media de interação pressupõem presença mútua." },
-
-  // SILVERSTONE extra (2→4 total)
-      // CASTELLS extra (6→8 total)
-      // TURKLE extra (6→8 total)  
-      // VAN DIJCK extra (6→8 total)
-    ];
+  {
+    title:"Causa & Efeito",
+    questions:[
+      {
+        q:"Ordena a cadeia causal da lógica do capitalismo de vigilância (1.º = causa, último = efeito):",
+        items:["Anunciantes compram predições comportamentais","Google descobre que dados residuais têm valor preditivo","Comportamento humano é modificado em escala","Modelos de machine learning processam o excedente"],
+        correct:[1,3,0,2],
+        exp:"Descoberta do valor → Processamento de dados → Venda de predições → Modificação do comportamento."
+      },
+      {
+        q:"Ordena a sequência da cultura da convergência de Jenkins (do ponto de partida ao resultado):",
+        items:["Fãs co-criam e expandem universos narrativos","Empresas criam storytelling transmedia","Audiências migram entre plataformas","Inteligência coletiva emerge como força cultural"],
+        correct:[1,2,0,3],
+        exp:"Empresas criam transmedia → Audiências migram → Fãs co-criam → Inteligência coletiva como resultado."
+      },
+      {
+        q:"Ordena a sequência do paradoxo de Turkle (do início ao resultado):",
+        items:["Solidão aumenta apesar da hiperconexão","Tecnologias de conexão são adotadas massivamente","Preferência por texto substitui a conversa real","A vulnerabilidade da conversa real é evitada"],
+        correct:[1,3,2,0],
+        exp:"Adoção massiva → Evitar vulnerabilidade → Substituição por texto → Solidão paradoxal."
+      }
+    ]
+  }
+];
 
 let sortSetIdx = 0;
 let sortQIdx = 0;
@@ -2504,6 +2722,7 @@ function loadSortSet(idx) {
 }
 
 function renderSort() {
+  if (!document.getElementById('sort-question')) return;
   sortAnswered = false;
   const qs = SORT_SETS[sortSetIdx].questions;
   const q = qs[sortQIdx];
@@ -2578,6 +2797,159 @@ function restartSort() {
   document.getElementById('sort-results').classList.remove('show');
   document.getElementById('sort-card').style.display = '';
   loadSortSet(sortSetIdx);
+}
+
+
+/* ===== FLASHCARDS ===== */
+const FC_DATA = [
+  // McLuhan
+  { theory:"McLuhan", q:"O que significa 'o meio é a mensagem'?", a:"O verdadeiro conteúdo de qualquer medium não é a mensagem que transmite, mas o próprio medium em si — a sua forma molda a consciência e a sociedade independentemente do conteúdo." },
+  { theory:"McLuhan", q:"O que é um meio 'quente' vs. meio 'frio'?", a:"Meio quente: alta definição, baixa participação (ex: rádio, cinema). Meio frio: baixa definição, exige participação activa do receptor para completar a experiência (ex: televisão, telefone)." },
+  { theory:"McLuhan", q:"O que é a 'aldeia global'?", a:"A reconexão tribal da humanidade à escala planetária através dos media eléctricos — a velocidade eléctrica elimina espaço e tempo, recriando o envolvimento total da aldeia tribal." },
+  { theory:"McLuhan", q:"Como McLuhan vê os media como 'extensões do homem'?", a:"Cada tecnologia prolonga ou amplia uma capacidade humana: a roda é extensão do pé, a roupa da pele, a televisão do sistema nervoso central." },
+  { theory:"McLuhan", q:"O que distingue a 'Galáxia de Gutenberg' da era eléctrica?", a:"A imprensa criou o homem moderno, individual, linear e visual. A electricidade reverteu esse processo, reactivando o envolvimento sensorial colectivo e tribal." },
+  { theory:"McLuhan", q:"Por que Kennedy ganhou o debate televisivo de 1960?", a:"Era um político 'frio' — sereno, adequado ao medium televisivo. Nixon era 'quente' demais para o ecrã (tenso, suado), não se adequava ao meio frio da televisão." },
+
+  // Hjarvard
+  { theory:"Hjarvard", q:"O que é mediatização?", a:"Processo histórico e estrutural pelo qual instituições sociais (política, religião, família) se tornam progressivamente dependentes da lógica dos media para a sua existência e relevância." },
+  { theory:"Hjarvard", q:"Como se distingue 'mediatização' de 'mediação'?", a:"Mediação é um acto pontual de usar um medium para comunicar. Mediatização é um processo estrutural de longa duração em que as próprias instituições se transformam segundo a lógica mediática." },
+  { theory:"Hjarvard", q:"O que é a 'media logic'?", a:"O conjunto de regras, formatos, ritmos e valores dos media que as outras instituições adoptam para garantir visibilidade — o que é telegénico, o que gera engagement, o que é notícia." },
+  { theory:"Hjarvard", q:"Como a política se mediatiza segundo Hjarvard?", a:"Os líderes políticos adaptam-se ao formato televisivo: a imagem, o sound-bite e a performance substituem progressivamente a substância — quem não domina o medium torna-se irrelevante." },
+
+  // Jenkins
+  { theory:"Jenkins", q:"O que é a 'cultura da convergência'?", a:"O fluxo de conteúdos por múltiplas plataformas, a cooperação entre indústrias mediáticas e o comportamento migratório dos públicos que circulam e co-criam sentido." },
+  { theory:"Jenkins", q:"O que é storytelling transmedia?", a:"Dispersar diferentes partes de uma narrativa por diferentes meios, cada um contribuindo algo único para o universo — não é adaptação, é expansão. O universo Marvel é o exemplo paradigmático." },
+  { theory:"Jenkins", q:"O que é o 'prosumer'?", a:"O consumidor que também produz conteúdo — fã que escreve fanfics, cria memes, produz análises. A fronteira entre produtor e consumidor dissolve-se na cultura participativa." },
+  { theory:"Jenkins", q:"De quem Jenkins adaptou o conceito de 'inteligência colectiva'?", a:"De Pierre Lévy — o que nenhum de nós sabe individualmente, todos sabemos em conjunto. As comunidades de fãs funcionam como grupos de inteligência colectiva." },
+  { theory:"Jenkins", q:"Qual a diferença entre 'interactividade' e 'participação'?", a:"Interactividade é uma propriedade tecnológica do sistema. Participação é uma prática cultural e social — acontece nas práticas dos utilizadores, independentemente do que a tecnologia permite formalmente." },
+
+  // Zuboff
+  { theory:"Zuboff", q:"O que é o 'capitalismo de vigilância'?", a:"Uma nova forma económica em que o comportamento humano é a matéria-prima: dados comportamentais são extraídos, processados e vendidos como predições sobre acções futuras." },
+  { theory:"Zuboff", q:"O que é o 'behavioral surplus' (excedente comportamental)?", a:"Os dados recolhidos para além do necessário para o serviço digital — o 'lixo' comportamental que o Google descobriu ter imenso valor preditivo para anunciantes." },
+  { theory:"Zuboff", q:"Qual é o produto final do capitalismo de vigilância?", a:"Certeza sobre comportamentos futuros — não produtos, mas predições sobre o que as pessoas farão. É o mercado de futuros comportamentais humanos." },
+  { theory:"Zuboff", q:"Como a Street View exemplifica o capitalismo de vigilância?", a:"O Google fotografou o mundo inteiro sem pedir autorização e capturou dados de redes Wi-Fi não protegidas — lógica de extração: o que existe pode ser mapeado e capturado sem consentimento." },
+  { theory:"Zuboff", q:"Porque é que a regulação anti-monopólio é insuficiente?", a:"Mais concorrentes a praticar capitalismo de vigilância não resolve — o problema é o modelo de extracção em si, não a concentração de mercado." },
+
+  // Castells
+  { theory:"Castells", q:"Como é exercido o poder na sociedade em rede?", a:"Por quem programa as redes (define objectivos e valores) e por quem faz o switching entre redes (conecta ou desliga actores estratégicos)." },
+  { theory:"Castells", q:"O que é a 'autocomunicação de massa'?", a:"A capacidade de qualquer indivíduo se tornar emissor global via internet, sem intermediário institucional — cada pessoa pode criar e disseminar mensagens para audiências potencialmente globais." },
+  { theory:"Castells", q:"O que é o contrapoder em Castells?", a:"Quando actores excluídos pelo poder dominante criam as suas próprias redes para desafiar as redes estabelecidas — a Primavera Árabe e o Occupy são exemplos paradigmáticos." },
+
+  // Turkle
+  { theory:"Turkle", q:"O que significa 'Alone Together'?", a:"O paradoxo da conectividade digital: estamos constantemente ligados uns aos outros mas cada vez mais sós — a presença física é substituída pela conexão gerida e controlável." },
+  { theory:"Turkle", q:"Por que preferimos texto a chamada telefónica?", a:"O texto permite editar, controlar e apagar — elimina a imprevisibilidade e vulnerabilidade da conversa real. Trocamos a riqueza da presença pelo conforto do controlo." },
+  { theory:"Turkle", q:"Qual é a preocupação de Turkle com robôs de companhia?", a:"Estamos a substituir a vulnerabilidade e reciprocidade das relações humanas genuínas por simulacros confortáveis — aceitamos que idosos sejam 'cuidados' por máquinas que simulam empatia." },
+
+  // van Dijck
+  { theory:"van Dijck", q:"O que é a 'Platform Society'?", a:"Uma sociedade em que plataformas digitais (Google, Facebook, Amazon) se tornaram infraestrutura de toda a vida social, mediando relações com a sua própria lógica de poder." },
+  { theory:"van Dijck", q:"Quais os 3 processos da plataformização?", a:"Dataification (tudo vira dado), Commodification (tudo vira produto) e Selection (algoritmos decidem o que é visível). Transformam relações humanas em mercadoria." },
+  { theory:"van Dijck", q:"O que é 'engineered sociality'?", a:"As plataformas não facilitam apenas a sociabilidade — moldam-na activamente. Cada design choice, cada algoritmo, define o que conta como socializar e amplifica certos comportamentos." },
+
+  // Tapscott
+  { theory:"Tapscott", q:"Quem é a Net Generation?", a:"Os nascidos após 1977 que cresceram com a internet — nativos digitais que não separam online de offline, exigem liberdade, customização, colaboração e velocidade." },
+  { theory:"Tapscott", q:"O que é o 'broadcast pedagogy' que Tapscott critica?", a:"O modelo educativo em que o professor transmite passivamente e o aluno recebe — Tapscott defende substituí-lo por aprendizagem colaborativa, personalizada e participativa." },
+
+  // Lipovetsky
+  { theory:"Lipovetsky", q:"O que é a hipermodernidade?", a:"A intensificação paradoxal da modernidade — mais individualismo, mais consumo, mais liberdade, mais reflexividade — de forma compulsiva e ansiosa, sem destruir os valores modernos." },
+  { theory:"Lipovetsky", q:"Por que é a 'autenticidade de marca' uma contradição?", a:"Autenticidade genuína é não-calculada e espontânea. Uma marca que calcula estrategicamente como ser autêntica para vender mais está a instrumentalizar o que deveria ser espontâneo." },
+
+  // Luhmann
+  { theory:"Luhmann", q:"O que é a 'realidade de segunda ordem'?", a:"A sociedade não acede directamente à realidade — observa-se a si própria através dos media. O que os media noticiam existe; o que ignoram não existe para a consciência colectiva." },
+  { theory:"Luhmann", q:"Com que código binário operam os media de massa?", a:"Informação / não-informação — a selecção do que é notícia vs. o que não existe para a sociedade. Este código dá aos media um imenso poder de construção da realidade social." },
+
+  // Silverstone
+  { theory:"Silverstone", q:"O que é a 'domesticação' das tecnologias?", a:"O processo pelo qual tecnologias estranhas são integradas nas rotinas e identidade doméstica — apropriação, objetificação, incorporação e conversão — tornando-se invisíveis." },
+  { theory:"Silverstone", q:"Quais as 4 fases da domesticação?", a:"Apropriação (trazer para casa) → Objetificação (posicionar no espaço) → Incorporação (integrar na rotina) → Conversão (exibir como símbolo de identidade para o exterior)." },
+  { theory:"Silverstone", q:"O que é a 'segurança ontológica' em Silverstone?", a:"Os media domésticos contribuem para um sentimento de confiança e continuidade que ancora a identidade — a televisão como ritual que estrutura o tempo e o espaço doméstico." }
+];
+
+let fcData = [];
+let fcIdx = 0;
+let fcFilter = 'Todas';
+let fcInitialized = false;
+
+function initFlashcards() {
+  console.log('initFlashcards called, FC_DATA.length=', FC_DATA.length);
+  fcInitialized = true;
+  fcIdx = 0;
+  renderFcPills();
+  // reset pill to "Todas"
+  fcFilter = 'Todas';
+  fcData = [...FC_DATA].sort(() => Math.random() - 0.5);
+  renderFcCard();
+  // render pills separately to avoid double init
+  const pils = document.getElementById('fc-pills');
+  if (pils) {
+    const theories = ['Todas', ...new Set(FC_DATA.map(c => c.theory))];
+    pils.innerHTML = theories.map(t =>
+      `<button class="fc-pill ${t==='Todas'?'active':''}" onclick="applyFcFilter('${t}',this)">${t}</button>`
+    ).join('');
+  }
+}
+
+function renderFcPills() {
+  const theories = ['Todas', ...new Set(FC_DATA.map(c => c.theory))];
+  const container = document.getElementById('fc-pills');
+  if (!container) return;
+  container.innerHTML = theories.map(t =>
+    `<button class="fc-pill ${t==='Todas'?'active':''}" onclick="applyFcFilter('${t}',this)">${t}</button>`
+  ).join('');
+}
+
+function applyFcFilter(theory, btn) {
+  fcFilter = theory;
+  document.querySelectorAll('.fc-pill').forEach(p => p.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  else { const first = document.querySelector('.fc-pill'); if(first) first.classList.add('active'); }
+  fcData = theory === 'Todas' ? [...FC_DATA] : FC_DATA.filter(c => c.theory === theory);
+  fcData = fcData.sort(() => Math.random() - 0.5);
+  fcIdx = 0;
+  renderFcCard();
+}
+
+function renderFcCard() {
+  const card = document.getElementById('fc-card');
+  const q = fcData[fcIdx];
+  if (!card) { console.error('fc-card not found'); return; }
+  if (!q) { console.error('no flashcard data at idx', fcIdx, 'fcData.length=', fcData.length); return; }
+  console.log('renderFcCard: rendering', q.theory, q.q.substring(0,30));
+
+  card.classList.remove('flipped');
+
+  const ft = document.getElementById('fc-front-tag');
+  const bt = document.getElementById('fc-back-tag');
+  const fq = document.getElementById('fc-question');
+  const fa = document.getElementById('fc-answer');
+  const fc = document.getElementById('fc-counter');
+  if (!ft) { console.error('fc-front-tag not found'); return; }
+  ft.textContent = q.theory;
+  if (bt) bt.textContent = q.theory;
+  if (fq) fq.textContent = q.q;
+  if (fa) fa.textContent = q.a;
+  if (fc) fc.textContent = `${fcIdx + 1} / ${fcData.length}`;
+
+  // Progress pips
+  const prog = document.getElementById('fc-progress');
+  if (prog) {
+    prog.innerHTML = fcData.map((_, i) =>
+      `<div class="fc-pip ${i < fcIdx ? 'seen' : i === fcIdx ? 'current' : ''}"></div>`
+    ).join('');
+  }
+}
+
+function flipCard() {
+  const card = document.getElementById('fc-card');
+  if (!card) return;
+  card.classList.toggle('flipped');
+}
+
+function fcNext() {
+  if (fcIdx < fcData.length - 1) { fcIdx++; renderFcCard(); }
+  else { fcIdx = 0; fcData = fcData.sort(() => Math.random() - 0.5); renderFcCard(); }
+}
+
+function fcPrev() {
+  if (fcIdx > 0) { fcIdx--; renderFcCard(); }
 }
 
 </script>
