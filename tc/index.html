@@ -1127,7 +1127,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.6rem;
   flex-wrap: wrap;
   gap: 0.75rem;
 }
@@ -1163,29 +1163,27 @@ body {
 
 .fc-scene {
   width: 100%;
-  min-height: 260px;
   cursor: pointer;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   position: relative;
 }
 .fc-card {
   width: 100%;
-  min-height: 260px;
   position: relative;
-  border-radius: 20px;
+  border-radius: 16px;
 }
 .fc-face {
   width: 100%;
-  min-height: 260px;
-  border-radius: 20px;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 1.5rem;
   text-align: center;
   overflow: hidden;
   transition: opacity 0.25s ease;
+  min-height: 180px;
 }
 .fc-face-front {
   background: white;
@@ -1246,8 +1244,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.6rem;
   flex-wrap: wrap;
+  margin-top: 0.75rem;
 }
 .fc-btn {
   font-family: 'Syne', sans-serif;
@@ -1270,7 +1269,7 @@ body {
 .fc-progress-wrap {
   display: flex;
   gap: 3px;
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.6rem;
   flex-wrap: wrap;
 }
 .fc-pip {
@@ -1916,41 +1915,41 @@ body {
       <div class="results-msg" id="final-msg"></div>
       <button class="restart-btn" onclick="restartQuiz()">Tentar Novamente ↺</button>
     </div>
+    </div>
       </div><!-- end #sub-quiz -->
 
 
 
-    <!-- SUB: FLASHCARDS -->
-    <div class="subpanel" id="sub-flashcards" style="display:none">
-      <div id="fc-area">
-        <div class="fc-header">
-          <span class="fc-counter" id="fc-counter">1 / 37</span>
-          <div class="fc-filter-pills" id="fc-pills"></div>
-        </div>
-        <div class="fc-progress-wrap" id="fc-progress"></div>
-        <div class="fc-scene" onclick="flipCard()">
-          <div class="fc-card" id="fc-card">
-            <div class="fc-face fc-face-front">
-              <div class="fc-theory-tag" id="fc-front-tag">McLuhan</div>
-              <div class="fc-question" id="fc-question">O que significa 'o meio é a mensagem'?</div>
-              <span class="fc-hint fc-hint-front">clica para ver a resposta</span>
-            </div>
-            <div class="fc-face fc-face-back">
-              <div class="fc-theory-tag" id="fc-back-tag">McLuhan</div>
-              <div class="fc-answer" id="fc-answer"></div>
-              <span class="fc-hint fc-hint-back">clica para voltar à pergunta</span>
-            </div>
+
+
+
+    <!-- FLASHCARDS DIRECT -->
+    <div id="fc-direct" style="display:none;">
+      <div class="fc-header">
+        <span class="fc-counter" id="fc-counter">1 / 38</span>
+        <div class="fc-filter-pills" id="fc-pills"></div>
+      </div>
+      <div class="fc-progress-wrap" id="fc-progress"></div>
+      <div class="fc-scene" onclick="flipCard()">
+        <div class="fc-card" id="fc-card">
+          <div class="fc-face fc-face-front">
+            <div class="fc-theory-tag" id="fc-front-tag">McLuhan</div>
+            <div class="fc-question" id="fc-question">Clica para começar</div>
+            <span class="fc-hint fc-hint-front">clica para ver a resposta</span>
+          </div>
+          <div class="fc-face fc-face-back">
+            <div class="fc-theory-tag" id="fc-back-tag"></div>
+            <div class="fc-answer" id="fc-answer"></div>
+            <span class="fc-hint fc-hint-back">clica para voltar à pergunta</span>
           </div>
         </div>
-        <div class="fc-controls">
-          <button class="fc-btn fc-btn-prev" onclick="fcPrev()">← Anterior</button>
-          <button class="fc-btn fc-btn-flip" onclick="flipCard()">↻ Virar</button>
-          <button class="fc-btn fc-btn-next" onclick="fcNext()">Próximo →</button>
-        </div>
       </div>
-    </div><!-- end #sub-flashcards -->
-
-  </div><!-- end #exercicios -->
+      <div class="fc-controls">
+        <button class="fc-btn fc-btn-prev" onclick="fcPrev()">← Anterior</button>
+        <button class="fc-btn fc-btn-flip" onclick="flipCard()">↻ Virar</button>
+        <button class="fc-btn fc-btn-next" onclick="fcNext()">Próximo →</button>
+      </div>
+    </div><!-- end #exercicios -->
 
 </div>
 
@@ -1977,31 +1976,55 @@ function showMain(id, btn) {
     el.classList.add('active');
     btn.classList.add('active');
     // Init the first active subpanel
-    if (id === 'exercicios') { fibInitialized = false; initFib(); }
+    if (id === 'exercicios') {
+      // Show fib by default, hide others
+      var fib = document.getElementById('sub-fillinblank');
+      var qz = document.getElementById('sub-quiz');
+      var fc = document.getElementById('fc-direct');
+      if(fib) fib.style.display='block';
+      if(qz) qz.style.display='none';
+      if(fc) fc.style.display='none';
+      // Activate first tab button
+      var exPanel = document.getElementById('exercicios');
+      if(exPanel) {
+        exPanel.querySelectorAll('.subtab-btn').forEach(function(b,i){ b.classList.toggle('active', i===0); });
+      }
+      fibInitialized = false; initFib();
+    }
     if (id === 'historias') { /* just display */ }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } catch(e) { console.error('showMain error:', e); }
 }
 
 function showSub(parentId, subId, btn) {
-  // Hide all subpanels in this parent
-  var allSubs = ['sub-fofocas','sub-blog','sub-futebol','sub-f1',
-                 'sub-fillinblank','sub-quiz','sub-flashcards'];
-  allSubs.forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el) el.style.display = 'none';
-  });
-  // Hide all subtab buttons in parent
   var parent = document.getElementById(parentId);
-  if (parent) parent.querySelectorAll('.subtab-btn').forEach(function(b){ b.classList.remove('active'); });
-  // Show target
-  var target = document.getElementById(subId);
-  if (target) target.style.display = 'block';
+  if (!parent) return;
+  // Hide all subtab buttons
+  parent.querySelectorAll('.subtab-btn').forEach(function(b){ b.classList.remove('active'); });
   if (btn) btn.classList.add('active');
-  // Init content
-  if (subId === 'sub-quiz') { quizInitialized=false; initQuiz(); }
-  if (subId === 'sub-fillinblank') { fibInitialized=false; initFib(); }
-  if (subId === 'sub-flashcards') { initFlashcards(); }
+
+  if (parentId === 'exercicios') {
+    // Hide all exercise panels
+    var fib = document.getElementById('sub-fillinblank');
+    var qz = document.getElementById('sub-quiz');
+    var fc = document.getElementById('fc-direct');
+    if (fib) fib.style.display = 'none';
+    if (qz) qz.style.display = 'none';
+    if (fc) fc.style.display = 'none';
+    // Show the right one
+    if (subId === 'sub-fillinblank') { if(fib){fib.style.display='block';} fibInitialized=false; initFib(); }
+    if (subId === 'sub-quiz') { if(qz){qz.style.display='block';} quizInitialized=false; initQuiz(); }
+    if (subId === 'sub-flashcards') { if(fc){fc.style.display='block';} initFlashcards(); }
+  } else {
+    // Historias subpanels
+    var allSubs = ['sub-fofocas','sub-blog','sub-futebol','sub-f1'];
+    allSubs.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+    var target = document.getElementById(subId);
+    if (target) target.style.display = 'block';
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -2869,7 +2892,6 @@ let fcFilter = 'Todas';
 let fcInitialized = false;
 
 function initFlashcards() {
-  console.log('initFlashcards called, FC_DATA.length=', FC_DATA.length);
   fcInitialized = true;
   fcIdx = 0;
   renderFcPills();
@@ -2912,21 +2934,13 @@ function renderFcCard() {
   const q = fcData[fcIdx];
   if (!card) { console.error('fc-card not found'); return; }
   if (!q) { console.error('no flashcard data at idx', fcIdx, 'fcData.length=', fcData.length); return; }
-  console.log('renderFcCard: rendering', q.theory, q.q.substring(0,30));
-
   card.classList.remove('flipped');
 
-  const ft = document.getElementById('fc-front-tag');
-  const bt = document.getElementById('fc-back-tag');
-  const fq = document.getElementById('fc-question');
-  const fa = document.getElementById('fc-answer');
-  const fc = document.getElementById('fc-counter');
-  if (!ft) { console.error('fc-front-tag not found'); return; }
-  ft.textContent = q.theory;
-  if (bt) bt.textContent = q.theory;
-  if (fq) fq.textContent = q.q;
-  if (fa) fa.textContent = q.a;
-  if (fc) fc.textContent = `${fcIdx + 1} / ${fcData.length}`;
+  document.getElementById('fc-front-tag').textContent = q.theory;
+  document.getElementById('fc-back-tag').textContent = q.theory;
+  document.getElementById('fc-question').textContent = q.q;
+  document.getElementById('fc-answer').textContent = q.a;
+  document.getElementById('fc-counter').textContent = `${fcIdx + 1} / ${fcData.length}`;
 
   // Progress pips
   const prog = document.getElementById('fc-progress');
