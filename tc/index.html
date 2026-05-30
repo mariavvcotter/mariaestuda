@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plataforma de Estudo — Teorias dos Media</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --navy: #1a1756;
+  --navy2: #2d2a7a;
+  --soft-purple: #c084fc;
+  --soft-pink: #f472b6;
+  --soft-blue: #93c5fd;
+  --yellow-hl: #fef08a;
+  --yellow-hl2: #fde68a;
+  --text: #1a1756;
+  --muted: #6b7280;
+  --border: rgba(26,23,86,0.12);
+  --card-bg: rgba(255,255,255,0.85);
+  --tag-bg: #fef9c3;
+  --tag-border: #fde047;
+  --correct: #16a34a;
+  --wrong: #dc2626;
+  --correct-bg: #dcfce7;
+  --wrong-bg: #fee2e2;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* BLOBS */
+.blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: 0;
+}
+.blob-1 { width: 600px; height: 500px; background: radial-gradient(circle, #c084fc, #e879f9); top: -150px; left: -100px; }
+.blob-2 { width: 500px; height: 450px; background: radial-gradient(circle, #93c5fd, #a78bfa); top: 100px; right: -100px; }
+.blob-3 { width: 400px; height: 350px; background: radial-gradient(circle, #f9a8d4, #c084fc); bottom: 200px; left: 50%; transform: translateX(-50%); }
+
+/* LAYOUT */
+.shell {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem 6rem;
+}
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+}
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--navy);
+  line-height: 1.05;
+  max-width: 900px;
+}
+.hero-sub {
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-top: 2.5rem;
+  opacity: 0.6;
+}
+
+/* NAV */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0;
+}
+.nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+}
+.nav-btn {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--navy);
+  border: none;
+  background: none;
+  padding: 1.1rem 1.4rem;
+  cursor: pointer;
+  border-bottom: 2.5px solid transparent;
+  transition: border-color 0.2s, opacity 0.2s;
+  white-space: nowrap;
+  opacity: 0.55;
+}
+.nav-btn:hover { opacity: 1; }
+.nav-btn.active { border-bottom-color: var(--navy); opacity: 1; }
+
+/* SECTIONS */
+.section { display: none; padding-top: 3rem; }
+.section.active { display: block; }
+
+/* SECTION HEADER */
+.section-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--navy);
+  opacity: 0.45;
+  margin-bottom: 0.5rem;
+}
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--navy);
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  margin-bottom: 3rem;
+}
+
+/* THEORY CARDS — resumos */
+.theories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.theory-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.theory-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(192,132,252,0.2);
+}
+.theory-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--soft-purple), var(--soft-pink), var(--soft-blue));
+}
+.theory-author {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.35rem;
+}
+.theory-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--navy);
+  letter-spacing: 0.03em;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+.theory-body {
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: var(--navy);
+  opacity: 0.8;
+}
+.theory-tag {
+  display: inline-block;
+  margin-top: 1rem;
+  background: var(--tag-bg);
+  border: 1px solid var(--tag-border);
+  border-radius: 6px;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #713f12;
+}
+
+/* FOFOCAS */
+.gossip-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.gossip-item {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 1.25rem;
+  align-items: center;
+}
+.gossip-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--soft-purple);
+  opacity: 0.4;
+  line-height: 1;
+  text-align: center;
+}
+.gossip-content {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.75rem 2rem;
+  backdrop-filter: blur(10px);
+  min-width: 0;
+}
+.gossip-who {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+.gossip-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.9rem;
+}
+.gossip-text {
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--navy);
+  opacity: 0.82;
+}
+.gossip-text em {
+  background: var(--tag-bg);
+  border-radius: 4px;
+  padding: 0 4px;
+  font-style: normal;
+  font-weight: 500;
+  color: #854d0e;
+}
+.gossip-quote {
+  margin-top: 1.2rem;
+  border-left: 3px solid var(--soft-purple);
+  padding-left: 1rem;
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--navy2);
+  opacity: 0.7;
+}
+
+/* HISTÓRIA */
+.story-container {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.story-chapter {
+  margin-bottom: 3.5rem;
+}
+.story-ch-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--soft-purple);
+  margin-bottom: 0.4rem;
+}
+.story-ch-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.03em;
+}
+.story-text {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--navy);
+  opacity: 0.85;
+}
+.story-text + .story-text { margin-top: 1rem; }
+.story-highlight {
+  background: var(--tag-bg);
+  border-bottom: 2px solid var(--tag-border);
+  padding: 0 3px;
+  font-weight: 500;
+  color: #713f12;
+}
+.story-divider {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--soft-purple), var(--soft-pink));
+  margin: 2.5rem 0;
+  border-radius: 2px;
+}
+
+/* QUIZ */
+.quiz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.quiz-progress-wrap {
+  background: rgba(26,23,86,0.08);
+  border-radius: 100px;
+  height: 6px;
+  flex: 1;
+  min-width: 120px;
+  overflow: hidden;
+}
+.quiz-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--soft-purple), var(--soft-pink));
+  border-radius: 100px;
+  transition: width 0.4s ease;
+}
+.quiz-counter {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.quiz-score-display {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: var(--navy);
+  font-weight: 600;
+}
+.question-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  margin-bottom: 1.5rem;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+.question-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--soft-blue), var(--soft-purple), var(--soft-pink));
+}
+.question-theory-tag {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.8rem;
+}
+.question-text {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.45;
+  margin-bottom: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.option-btn {
+  text-align: left;
+  padding: 1rem 1.4rem;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  color: var(--navy);
+  line-height: 1.5;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+.option-btn:hover:not(:disabled) {
+  border-color: var(--soft-purple);
+  background: rgba(192,132,252,0.07);
+  transform: translateX(4px);
+}
+.option-btn:disabled { cursor: default; }
+.option-btn.correct { background: var(--correct-bg); border-color: var(--correct); color: var(--correct); }
+.option-btn.wrong { background: var(--wrong-bg); border-color: var(--wrong); color: var(--wrong); }
+.option-letter {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: rgba(26,23,86,0.07);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.option-btn.correct .option-letter { background: #bbf7d0; }
+.option-btn.wrong .option-letter { background: #fecaca; }
+.feedback-box {
+  margin-top: 1.5rem;
+  padding: 1.1rem 1.4rem;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  display: none;
+}
+.feedback-box.show { display: block; }
+.feedback-box.correct-fb { background: var(--correct-bg); color: #14532d; border: 1px solid #bbf7d0; }
+.feedback-box.wrong-fb { background: var(--wrong-bg); color: #7f1d1d; border: 1px solid #fecaca; }
+.next-btn {
+  margin-top: 1.5rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: white;
+  background: var(--navy);
+  border: none;
+  border-radius: 12px;
+  padding: 0.9rem 2rem;
+  cursor: pointer;
+  display: none;
+  transition: background 0.2s, transform 0.15s;
+}
+.next-btn.show { display: inline-block; }
+.next-btn:hover { background: var(--navy2); transform: translateY(-2px); }
+
+/* RESULTS */
+.results-screen {
+  text-align: center;
+  padding: 4rem 2rem;
+  display: none;
+}
+.results-screen.show { display: block; }
+.results-score {
+  font-family: 'Syne', sans-serif;
+  font-size: 6rem;
+  font-weight: 800;
+  color: var(--navy);
+  line-height: 1;
+}
+.results-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 3rem;
+}
+.results-msg {
+  font-size: 1.1rem;
+  color: var(--navy);
+  opacity: 0.75;
+  max-width: 500px;
+  margin: 0 auto 2rem;
+  line-height: 1.7;
+}
+.restart-btn {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: white;
+  background: var(--navy);
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2.5rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.restart-btn:hover { background: var(--navy2); }
+
+/* QUIZ FILTER */
+.quiz-filter-wrap {
+  margin-bottom: 2rem;
+}
+.quiz-filter-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+}
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.filter-pill {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  background: white;
+  color: var(--navy);
+  transition: all 0.18s;
+  opacity: 0.65;
+}
+.filter-pill:hover { opacity: 1; border-color: var(--soft-purple); }
+.filter-pill.active {
+  background: var(--navy);
+  color: white;
+  border-color: var(--navy);
+  opacity: 1;
+}
+.filter-pill.active-theory {
+  background: linear-gradient(135deg, #7c3aed, #db2777);
+  color: white;
+  border-color: transparent;
+  opacity: 1;
+}
+
+/* TIMELINE in story */
+.timeline-dot {
+  display: inline-block;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--soft-purple);
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+@media (max-width: 600px) {
+  .gossip-item { grid-template-columns: 40px 1fr; gap: 0.75rem; }
+  .gossip-num { font-size: 1.4rem; }
+  .question-text { font-size: 1rem; }
+  .theories-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <div style="font-family:'Syne',sans-serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--navy);opacity:0.4;margin-bottom:2rem;">Plataforma de Estudo</div>
+  <h1 class="hero-title">Teorias dos<br>Media &amp; Sociedade</h1>
+  <p class="hero-sub">McLuhan · Hjarvard · Jenkins · Zuboff · Castells · Turkle · van Dijck · Tapscott · Lipovetsky · Luhmann</p>
+  <button onclick="scrollToStudy()" style="margin-top:3rem;font-family:'Syne',sans-serif;font-size:0.78rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--navy);background:var(--tag-bg);border:1.5px solid var(--tag-border);border-radius:12px;padding:0.9rem 2.2rem;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">Começar a Estudar ↓</button>
+</div>
+
+<!-- NAV -->
+<nav class="nav" id="main-nav">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="showSection('resumos',this)">Resumos</button>
+    <button class="nav-btn" onclick="showSection('fofocas',this)">Fofocas</button>
+    <button class="nav-btn" onclick="showSection('historia',this)">A Grande História</button>
+    <button class="nav-btn" onclick="showSection('quiz',this)">Quiz · 80 Perguntas</button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="shell">
+
+  <!-- RESUMOS -->
+  <div class="section active" id="resumos">
+    <div class="section-label">Secção 01</div>
+    <h2 class="section-title">Resumos<br>das Teorias</h2>
+    <div class="theories-grid">
+
+      <div class="theory-card">
+        <div class="theory-author">Marshall McLuhan · 1964/1969</div>
+        <div class="theory-name">O Meio É a Mensagem</div>
+        <div class="theory-body">McLuhan argumenta que o verdadeiro conteúdo de qualquer meio de comunicação não é a mensagem que transmite, mas o próprio meio em si. Cada tecnologia é uma extensão do corpo humano: a roda é extensão do pé, o vestuário da pele, a TV do sistema nervoso central. Os media "quentes" (rádio, cinema) exigem pouca participação; os "frios" (TV, telefone) convidam à imersão e co-criação. A era elétrica reconecta a humanidade numa "aldeia global", reativando a consciência tribal.</div>
+        <span class="theory-tag">Medium Theory</span>
+      </div>
+
+      <div class="theory-card">
+        <div class="theory-author">Stig Hjarvard · 2008</div>
+        <div class="theory-name">Mediatização da Sociedade</div>
+        <div class="theory-body">A mediatização descreve o processo pelo qual instituições sociais (política, religião, família, desporto) se tornam progressivamente dependentes da lógica dos media. Os media deixam de ser apenas canais de transmissão e passam a ser uma instituição semi-independente com lógica própria — a "media logic" — que dita ritmos, formatos e valores às restantes esferas da vida social. Diferente de "mediação" (ato pontual), a mediatização é um processo estrutural e histórico de longa duração.</div>
+        <span class="theory-tag">Mediatização</span>
+      </div>
+
+      <div class="theory-card">
+        <div class="theory-author">Henry Jenkins · 2006</div>
+        <div class="theory-name">Cultura da Convergência</div>
+        <div class="theory-body">Jenkins propõe que a convergência não é apenas tecnológica (os dispositivos a fundirem-se), mas cultural: o fluxo de conteúdos por múltiplas plataformas, a cooperação entre indústrias mediáticas e o comportamento migratório dos públicos. A inteligência coletiva (Lévy) torna-se motor de participação. O storytelling transmedia dispersa narrativas por diferentes meios, cada um contribuindo com algo único. O consumidor passou de espetador passivo a produtor ativo — o "prosumer".</div>
+        <span class="theory-tag">Convergência · Participação</span>
+      </div>
+
+      <div class="theory-card">
+        <div class="theory-author">Shoshana Zuboff · 2019</div>
+        <div class="theory-name">Capitalismo de Vigilância</div>
+        <div class="theory-body">Zuboff identifica uma nova forma económica em que o comportamento humano é a matéria-prima. As empresas (Google, Meta) extraem "excedente comportamental" — dados para além do necessário para o serviço — e usam-no para construir modelos preditivos que vendem a anunciantes. A Street View do Google exemplifica a lógica de extração sem consentimento. O objetivo final não é vender produtos, mas modificar o comportamento humano em larga escala para garantir resultados preditos.</div>
+        <span class="theory-tag">Vigilância · Poder</span>
+      </div>
+
+      <div class="theory-card">
+        <div class="theory-author">Manuel Castells · 2009</div>
+        <div class="theory-name">Poder e Comunicação em Rede</div>
+        <div class="theory-body">Na sociedade em rede, o poder opera através de redes e é exercido por quem programa as redes (define objetivos) e por quem comuta entre redes (conecta ou desliga atores). A comunicação de massa é substituída pela autocomunicação de massa — cada indivíduo pode ser emissor global. Quem controla os "comutadores" de redes estratégicas (media, finanças, política) detém poder estrutural. O contrapoder emerge quando atores excluídos criam as suas próprias redes.</div>
+        <span class="theory-tag">Redes · Poder</span>
+      </div>
+
+      <div class="theory-card">
+        <div class="theory-author">Sherry Turkle · 2011</div>
+        <div class="theory-name">Alone Together (Sozinhos Juntos)</div>
+        <div class="theory-body">Turkle observa que a tecnologia promete conexão mas produz solidão. Estamos "juntos mas cada um no seu dispositivo". As pessoas preferem a frieza dos textos à imprevisibilidade das conversas. Os robots de companhia iludem a necessidade de relação genuína. A cultura da partilha constante nas redes cria uma performance identitária ansiosa. A "domesticação" da tecnologia significa que os dispositivos entram na esfera íntima e moldam emoções, expectativas e formas de amar.</div>
+        <span class="theory-tag">Intimidade · Tecnologia</span>
+      </div>
+
+      <div class="theory-card">
+        <div class="theory-author">José van Dijck · 2013</div>
+        <div class="theory-name">The Platform Society</div>
+        <div class="theory-body">Van Dijck analisa como plataformas como Facebook, Google e Amazon não são meras ferramentas neutras, mas infraestruturas que medeiam e moldam relações sociais. As plataformas têm uma "política da plataformização": dataification (tudo se torna dado), commodification (tudo se torna produto), e selection (algoritmos decidem o que é visível). O ecossistema de plataformas cria interdependências que dificultam a regulação e concentram poder em poucas corporações.</div>
+        <span class="theory-tag">Plataformas · Algoritmos</span>
+      </div>
+
+      <div class="theory-card">
+        <div class="theory-author">Don Tapscott · 2009</div>
+        <div class="theory-name">Grown Up Digital (Net Generation)</div>
+        <div class="theory-body">A geração nascida após 1977 (Net Generation ou "Millennials") cresceu com a internet e desenvolveu estilos cognitivos distintos: preferência pela liberdade de escolha, pela customização, pela colaboração e pela velocidade. São nativos digitais que não separam online de offline. Tapscott é otimista: esta geração tem potencial para transformar instituições (educação, trabalho, democracia) porque exige participação real e rejeita hierarquias rígidas.</div>
+        <span class="theory-tag">Gerações · Digital</span>
+      </div>
+
+      <div class="theory-card">
+        <div class="theory-author">Gilles Lipovetsky · 2004</div>
+        <div class="theory-name">A Sagração da Autenticidade</div>
+        <div class="theory-body">Na hipermodernidade, a autenticidade deixou de ser apenas um ideal moral individual para se tornar um imperativo de consumo e branding. Empresas, políticos e indivíduos nas redes sociais vendem "autenticidade" como produto. O "eu verdadeiro" tornou-se ferramenta de marketing. Lipovetsky vê uma contradição: quanto mais a autenticidade é performativa e estratégica, menos é genuína. A era das marcas pessoais instrumentaliza a ética da sinceridade.</div>
+        <span class="theory-tag">Autenticidade · Consumo</span>
+      </div>
+
+      <div class="theory-card">
+        <div class="theory-author">Niklas Luhmann · 1996</div>
+        <div class="theory-name">A Comunicação Artificial dos Media</div>
+        <div class="theory-body">Para Luhmann, os media de massa constroem a realidade social através da seleção de informação. A sociedade não tem centro — é um conjunto de sistemas funcionalmente diferenciados (economia, direito, política, ciência). Os media operam com o código informação/não-informação e criam "realidade de segunda ordem": a sociedade observa-se a si própria através dos media. A irritação que os media geram nos outros sistemas é o motor da evolução social.</div>
+        <span class="theory-tag">Sistemas · Realidade Social</span>
+      </div>
+
+      <div class="theory-card">
+        <div class="theory-author">Roger Silverstone · 1994</div>
+        <div class="theory-name">Domesticação dos Media</div>
+        <div class="theory-body">A domesticação descreve o processo pelo qual as tecnologias são integradas nas rotinas e valores domésticos e quotidianos. Não basta adotar uma tecnologia — ela precisa de ser "amansada", incorporada nos rituais familiares e tornada invisível. O processo passa pela apropriação (trazer para casa), objetificação (posicionamento no espaço), incorporação (integração na rotina) e conversão (exibição ao exterior como símbolo identitário).</div>
+        <span class="theory-tag">Rotinas · Lar · Identidade</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOFOCAS -->
+  <div class="section" id="fofocas">
+    <div class="section-label">Secção 02</div>
+    <h2 class="section-title">As Teorias<br>Contadas como<br>Fofocas</h2>
+    <div class="gossip-list">
+
+      <div class="gossip-item">
+        <div class="gossip-num">01</div>
+        <div class="gossip-content">
+          <div class="gossip-who">McLuhan · O Profeta da Aldeia Global</div>
+          <div class="gossip-title">Então ouvi dizer que o conteúdo não interessa nada!</div>
+          <div class="gossip-text">Sabes aquela coisa de ficares obcecada com o que o TikTok te mostra? Pois, <em>Marshall McLuhan</em> já em 1964 disse que o problema não é o que vês, mas o próprio TikTok em si. O meio transforma-te — ponto final. Ele dizia que a televisão estava a fazer toda a gente "tribal" outra vez, a recriar a aldeia. Imagina ele a ver os grupos de WhatsApp da família... teria razão e ficaria horrorizado ao mesmo tempo.</div>
+          <div class="gossip-quote">"Primeiro moldamos os nossos ferramentas, depois as ferramentas moldam-nos a nós."</div>
+        </div>
+      </div>
+
+      <div class="gossip-item">
+        <div class="gossip-num">02</div>
+        <div class="gossip-content">
+          <div class="gossip-who">Hjarvard · O Académico Escandinavo</div>
+          <div class="gossip-title">A política virou um reality show e ninguém percebeu porquê</div>
+          <div class="gossip-text">Conheces aquela sensação de que os políticos se tornaram todos youtubers? <em>Stig Hjarvard</em> tem uma teoria para isso: chamou-lhe mediatização. Não é que os media estejam a reportar o que acontece — é que as instituições (Igreja, Estado, família, escola) começaram a comportar-se segundo as regras dos media para serem noticiadas. A Igreja faz lives. Os professores fazem reels. O papa está no Instagram. Hjarvard diria: "Claro, a lógica mediática colonizou tudo."</div>
+          <div class="gossip-quote">"Os media tornaram-se uma instituição semi-independente que todas as outras têm de obedecer."</div>
+        </div>
+      </div>
+
+      <div class="gossip-item">
+        <div class="gossip-num">03</div>
+        <div class="gossip-content">
+          <div class="gossip-who">Jenkins · O Entusiasta da Participação</div>
+          <div class="gossip-title">Bué fandom, bué poder — ou não?</div>
+          <div class="gossip-text"><em>Henry Jenkins</em> é literalmente a pessoa que ia dizer "mas o fandom do Harry Potter é uma forma de resistência cultural!" — e não estaria errado. Ele viu as comunidades online, os fanfics, as teorias dos fãs, e disse: isto é inteligência coletiva, isto é poder. A convergência cultural não é só tecnologia a juntar-se — são as pessoas a circular entre plataformas e a co-criar sentido. A Disney ficou a tremer quando percebeu que os fãs tinham mais poder narrativo do que ela.</div>
+          <div class="gossip-quote">"A convergência não ocorre nos aparelhos — ocorre nos cérebros das pessoas."</div>
+        </div>
+      </div>
+
+      <div class="gossip-item">
+        <div class="gossip-num">04</div>
+        <div class="gossip-content">
+          <div class="gossip-who">Zuboff · A Académica Furiosa</div>
+          <div class="gossip-title">O Google sabe mais sobre ti do que a tua mãe</div>
+          <div class="gossip-text">Imagina que o teu comportamento — cada clique, cada pausa, cada pesquisa às 3h da manhã — é coletado, vendido e usado para te manipular. <em>Shoshana Zuboff</em> está furiosa com isso. Ela mostrou como o Google descobriu por acidente que os dados "lixo" dos utilizadores (o que ficava para além do necessário para o serviço) valiam fortunas como matéria-prima preditiva. E não pediu licença. A Street View foi capturar o mundo inteiro sem perguntar a ninguém.</div>
+          <div class="gossip-quote">"Se não estás no nosso mapa, não existes." — lógica do capitalismo de vigilância</div>
+        </div>
+      </div>
+
+      <div class="gossip-item">
+        <div class="gossip-num">05</div>
+        <div class="gossip-content">
+          <div class="gossip-who">Castells · O Sociólogo das Redes</div>
+          <div class="gossip-title">Quem controla os botões controla o mundo</div>
+          <div class="gossip-text"><em>Manuel Castells</em> observou que o poder já não está nos tanques nem nos parlamentos — está nos comutadores das redes. Quem liga e desliga conexões entre redes (financeiras, mediáticas, políticas) tem poder real. E o mais fascinante: ele viu que a internet criou a "autocomunicação de massa" — qualquer um pode ser emissor global. Os movimentos sociais (Primavera Árabe, Occupy) eram exatamente isso: gente comum a usar redes para contornar o poder estabelecido.</div>
+          <div class="gossip-quote">"O poder está na rede, mas também na capacidade de a reconfigurar."</div>
+        </div>
+      </div>
+
+      <div class="gossip-item">
+        <div class="gossip-num">06</div>
+        <div class="gossip-content">
+          <div class="gossip-who">Turkle · A Psicóloga Preocupada</div>
+          <div class="gossip-title">Estamos todos juntos mas completamente sozinhos</div>
+          <div class="gossip-text">Já estiveste num jantar de família em que toda a gente estava no telemóvel? <em>Sherry Turkle</em> passou anos a estudar exatamente isso — e ficou genuinamente assustada. Ela descobriu que preferimos os textos às chamadas porque podemos editar, controlar, apagar. A conversa real é aterrorizante porque é imprevisível. E os robots de companhia para idosos? Ela chora só de pensar. Estamos a substituir a vulnerabilidade humana por simulacros confortáveis.</div>
+          <div class="gossip-quote">"Temos medo de conversar. Por isso enviamos mensagens."</div>
+        </div>
+      </div>
+
+      <div class="gossip-item">
+        <div class="gossip-num">07</div>
+        <div class="gossip-content">
+          <div class="gossip-who">van Dijck · A Crítica das Plataformas</div>
+          <div class="gossip-title">O Facebook não é uma ferramenta — é uma infraestrutura de poder</div>
+          <div class="gossip-text"><em>José van Dijck</em> cansou-se das pessoas que dizem "o Facebook é neutro, a culpa é dos utilizadores". Não é verdade. A plataforma tem arquitetura, tem valores embutidos, tem modelos de negócio que moldam o que é visível, o que viraliza, o que desaparece. A dataification transforma amizades em dados, o algoritmo substitui o editor, e ninguém elegeu o Zuckerberg para decidir o que vês no teu feed. É poder sem mandato democrático.</div>
+          <div class="gossip-quote">"Plataformas não são neutras — são atores com agendas."</div>
+        </div>
+      </div>
+
+      <div class="gossip-item">
+        <div class="gossip-num">08</div>
+        <div class="gossip-content">
+          <div class="gossip-who">Tapscott · O Otimista Digital</div>
+          <div class="gossip-title">A geração que cresceu online vai mudar tudo — para melhor</div>
+          <div class="gossip-text"><em>Don Tapscott</em> é o avô entusiasmado que acha que os miúdos com telemóvel vão salvar a democracia. E tem argumentos: a Net Gen não aceita hierarquia, quer colaborar, quer personalizar tudo. Ele previu que iriam exigir educação diferente, trabalho diferente, política diferente. Alguns críticos acham-no ingénuo (ignora o cyberbullying, a desinformação), mas a sua visão de que os nativos digitais têm competências novas genuínas continua relevante.</div>
+          <div class="gossip-quote">"Esta geração não vai apenas usar a internet — vai reinventar o mundo com ela."</div>
+        </div>
+      </div>
+
+      <div class="gossip-item">
+        <div class="gossip-num">09</div>
+        <div class="gossip-content">
+          <div class="gossip-who">Lipovetsky · O Filósofo Francês</div>
+          <div class="gossip-title">Toda a gente quer ser "autêntica" — e isso é absolutamente falso</div>
+          <div class="gossip-text"><em>Gilles Lipovetsky</em> observou que vivemos numa era em que "ser autêntico" se tornou a maior farsa do marketing. As marcas vendem autenticidade. Os influencers vendem "a vida real" (com luz de estúdio). Os políticos vendem espontaneidade (ensaiada). Ele chama a isto hipermodernidade: a autenticidade, que era um valor ético sério (sê fiel a ti mesmo!), foi sequestrada e transformada em produto de consumo. Quanto mais autenticidade se vende, menos há.</div>
+          <div class="gossip-quote">"A autenticidade tornou-se um argumento de venda — o que é uma contradição nos termos."</div>
+        </div>
+      </div>
+
+      <div class="gossip-item">
+        <div class="gossip-num">10</div>
+        <div class="gossip-content">
+          <div class="gossip-who">Luhmann · O Teórico Inacessível</div>
+          <div class="gossip-title">A realidade é o que os media dizem que é — e mais nada</div>
+          <div class="gossip-text"><em>Niklas Luhmann</em> é o teórico que toda a gente cita e ninguém consegue explicar num jantar. Mas a ideia central é perturbadora: a sociedade não tem acesso direto à realidade — observa-se a si própria através dos media. Os media constroem a "realidade de segunda ordem". E como funcionam com o código informação/não-informação (o que é notícia vs. o que não existe), têm um poder imenso de construir o que a sociedade considera real, urgente, importante.</div>
+          <div class="gossip-quote">"O que os media não noticiam, para a sociedade simplesmente não existe."</div>
+        </div>
+      </div>
+
+      <div class="gossip-item">
+        <div class="gossip-num">11</div>
+        <div class="gossip-content">
+          <div class="gossip-who">Silverstone · O Etnógrafo Doméstico</div>
+          <div class="gossip-title">Como é que a TV deixou de ser estranha e passou a ser "nossa"?</div>
+          <div class="gossip-text"><em>Roger Silverstone</em> foi para casa das pessoas observar o que elas faziam com a televisão — e percebeu que a tecnologia não basta ser comprada: tem de ser domesticada. Tem de ganhar um lugar no espaço (onde fica a TV?), na rotina (quando a vemos?) e na identidade (o que diz de nós ter uma TV enorme?). Hoje aplicamos o mesmo processo ao smartphone: já nem reparamos que o temos na mão, que dorme connosco, que vai à casa de banho. Está completamente domesticado.</div>
+          <div class="gossip-quote">"A tecnologia só é poderosa quando se torna invisível na vida quotidiana."</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- HISTÓRIA -->
+  <div class="section" id="historia">
+    <div class="section-label">Secção 03</div>
+    <h2 class="section-title">A Grande<br>História dos<br>Media</h2>
+    <div class="story-container">
+
+      <div class="story-chapter">
+        <div class="story-ch-label">Capítulo I — A Aldeia que Nunca Desapareceu</div>
+        <div class="story-ch-title">McLuhan e o Nascimento da Consciência Elétrica</div>
+        <p class="story-text">Tudo começa com uma intuição radical de <span class="story-highlight">Marshall McLuhan</span> nos anos 1960: não é o que dizemos, mas como dizemos que transforma o mundo. O alfabeto fonético criou o homem individual, sequencial, visual — o sujeito da modernidade ocidental. A imprensa de Gutenberg acelerou esse processo durante 500 anos. Mas então chegou a eletricidade.</p>
+        <p class="story-text">Com o telégrafo, o rádio, a televisão e depois o computador, McLuhan viu a humanidade a reconectar o seu sistema nervoso central à escala planetária. A velocidade elétrica elimina o espaço e o tempo, recriando as condições de envolvimento total da aldeia tribal — mas agora à escala global. A "aldeia global" não era uma utopia: era um diagnóstico de que a tribalização estava de volta, com todas as suas paixões, conflitos e imersão sensorial.</p>
+        <p class="story-text">McLuhan distinguia ainda entre media "quentes" (alta definição, baixa participação, como o rádio e o cinema) e media "frios" (baixa definição, alta participação, como a televisão e o telefone). A televisão, ao contrário do que se pensa, não era um espetáculo — era um convite à imersão, ao envolvimento tátil e emocional. Esta diferença, dizia ele, explicava porque é que Kennedy ganhou o debate televisivo a Nixon: Kennedy era "frio", adequado ao medium; Nixon era "quente" demais para o ecrã.</p>
+      </div>
+
+      <div class="story-divider"></div>
+
+      <div class="story-chapter">
+        <div class="story-ch-label">Capítulo II — Quando as Instituições Renderam aos Media</div>
+        <div class="story-ch-title">Hjarvard e a Lógica que Colonizou Tudo</div>
+        <p class="story-text">Décadas depois, o dinamarquês <span class="story-highlight">Stig Hjarvard</span> observou o que McLuhan tinha pressentido: os media não eram apenas canais de transmissão — tinham-se tornado uma instituição autónoma com a sua própria lógica. E essa lógica estava a reconfigurar todas as outras instituições da sociedade.</p>
+        <p class="story-text">A mediatização não é o mesmo que mediação. Mediação é um ato — eu uso o telefone para falar com a minha mãe. Mediatização é um processo histórico e estrutural: as igrejas ensinam pela televisão, os partidos comunicam por tweets, as crianças aprendem por YouTube. As instituições adaptam os seus ritmos, formatos e valores à media logic — ao que é televisivo, ao que gera engagement, ao que é notícia — para garantir a sua visibilidade e relevância.</p>
+        <p class="story-text">Hjarvard via nisto tanto uma democratização (mais vozes) como um empobrecimento (as lógicas do espetáculo substituem a deliberação lenta e profunda). A religião mediatiza-se — o papa faz lives, as megaigrejas transmitem por streaming — mas ao fazê-lo transforma-se, adapta-se, perde algo da sua natureza original. A política já não se faz em câmaras fechadas: faz-se nos ecrãs. E o líder que não domina o "frio" televisivo de McLuhan está destinado à irrelevância.</p>
+      </div>
+
+      <div class="story-divider"></div>
+
+      <div class="story-chapter">
+        <div class="story-ch-label">Capítulo III — O Público Toma o Poder</div>
+        <div class="story-ch-title">Jenkins e a Convergência que Mudou os Fãs em Força Cultural</div>
+        <p class="story-text">Na viragem do milénio, <span class="story-highlight">Henry Jenkins</span> observou algo que as grandes corporações mediáticas não tinham previsto: os consumidores recusavam-se a ficar quietos. Os fãs de Star Wars escreviam as suas próprias histórias. Os espectadores de Survivor coordenavam-se online para adivinhar o vencedor antes da transmissão. As comunidades de fãs comportavam-se como arqueólogos culturais, caçadores de pistas, produtores de sentido.</p>
+        <p class="story-text">Jenkins chamou a isso <span class="story-highlight">cultura da convergência</span>: não apenas a fusão de dispositivos (o telemóvel que é câmara, rádio e computador), mas a fusão de papéis — o consumidor torna-se produtor, o espetador torna-se co-autor. A inteligência coletiva de Pierre Lévy tornava-se motor cultural: o que nenhum de nós sabe individualmente, todos sabemos em conjunto. E as plataformas digitais amplificavam essa inteligência coletiva.</p>
+        <p class="story-text">O storytelling transmedia era a nova lógica narrativa das corporações mais sofisticadas: não contar a mesma história em múltiplos meios, mas dispersar diferentes peças do puzzle por diferentes plataformas, cada uma contribuindo com algo único para a experiência total. O universo Marvel era o exemplo perfeito. Mas Jenkins tinha esperança política: se os fãs podiam organizar-se em torno de ficções, podiam também organizar-se em torno de causas reais.</p>
+      </div>
+
+      <div class="story-divider"></div>
+
+      <div class="story-chapter">
+        <div class="story-ch-label">Capítulo IV — A Geração que Nasceu Dentro da Rede</div>
+        <div class="story-ch-title">Tapscott e os Nativos que Mudariam o Mundo</div>
+        <p class="story-text">Enquanto Jenkins observava os adultos a tornarem-se participantes, <span class="story-highlight">Don Tapscott</span> olhava para os jovens que nunca tinham conhecido outro mundo. A Net Generation — nascidos depois de 1977, crescidos com a internet — tinha padrões cognitivos e sociais radicalmente diferentes das gerações anteriores. Não separavam online de offline, não aceitavam hierarquias sem justificação, exigiam personalização, colaboração e velocidade.</p>
+        <p class="story-text">Tapscott era genuinamente otimista, ao contrário de tantos outros observadores. Via nesta geração não uma ameaça mas uma força civilizacional: iriam reinventar a educação (do broadcast pedagogy para a aprendizagem colaborativa), o trabalho (das hierarquias rígidas para as redes de pares) e a democracia (da representação passiva para a participação activa). Eram imunes ao marketing tradicional porque tinham acesso à informação que lhes permitia detetar incongruências.</p>
+      </div>
+
+      <div class="story-divider"></div>
+
+      <div class="story-chapter">
+        <div class="story-ch-label">Capítulo V — A Solidão em Rede</div>
+        <div class="story-ch-title">Turkle e o Paradoxo da Conexão Perpétua</div>
+        <p class="story-text">Mas havia uma sombra neste mundo hiperconectado que <span class="story-highlight">Sherry Turkle</span>, psicóloga do MIT, registou com crescente preocupação. Os jovens que Tapscott celebrava estavam também profundamente sós. Estar sempre conectado não era o mesmo que estar verdadeiramente presente com alguém. A conversa real — imprevisível, vulnerável, incontrolável — estava a ser substituída pela mensagem gerida, pelo texto curado, pela apresentação de si sempre editável.</p>
+        <p class="story-text">Turkle documentou como a tecnologia entrou no espaço doméstico e transformou a intimidade — a domesticação de Silverstone tornada ansiedade. As crianças competiam com o telemóvel dos pais pela atenção. Os adolescentes sentiam ansiedade quando não podiam verificar as notificações. Havia um paradoxo central: as ferramentas concebidas para nos aproximar estavam a isolar-nos, a criar uma hiperestimulação que tornava a calma e a presença genuína difíceis de tolerar.</p>
+        <p class="story-text">A sua preocupação mais profunda era com o que estava a acontecer à capacidade de empatia: quando substituímos conversas por textos, perdemos os silêncios, os hesitações, o tom de voz — tudo o que torna outro ser humano real e complexo para nós.</p>
+      </div>
+
+      <div class="story-divider"></div>
+
+      <div class="story-chapter">
+        <div class="story-ch-label">Capítulo VI — As Plataformas Tomam o Poder</div>
+        <div class="story-ch-title">van Dijck, Zuboff e a Nova Ordem dos Dados</div>
+        <p class="story-text">Entretanto, <span class="story-highlight">José van Dijck</span> observava que as plataformas digitais não eram apenas ferramentas neutras que os utilizadores podiam usar como quisessem. Eram infraestruturas de poder com uma arquitetura de valores embutida. A dataification transformava relações humanas em dados processáveis; a commodification transformava esses dados em produtos comercializáveis; e a selection algorítmica decidia o que era visível, amplificado ou silenciado.</p>
+        <p class="story-text">E foi precisamente sobre esse processo de extração que <span class="story-highlight">Shoshana Zuboff</span> escreveu a análise mais devastadora. O Google descobriu por acidente — ao tentar melhorar a qualidade das pesquisas — que os dados comportamentais dos utilizadores (o que clicavam depois de uma pesquisa, quanto tempo ficavam, o que compravam) podiam prever comportamentos futuros com uma precisão comercialmente valiosa. Este "excedente comportamental" tornou-se a matéria-prima de uma nova economia.</p>
+        <p class="story-text">Zuboff chamou a este modelo capitalismo de vigilância: não é apenas que nos vigiam, é que usam essa vigilância para modificar os nossos comportamentos de formas que nunca consentiríamos conscientemente. O objetivo final do capitalismo de vigilância não é vender-nos produtos — é vender a certeza sobre o nosso comportamento futuro a quem quiser pagar por ela. É o mercado de futuros comportamentais humanos.</p>
+      </div>
+
+      <div class="story-divider"></div>
+
+      <div class="story-chapter">
+        <div class="story-ch-label">Capítulo VII — Poder, Redes e Contrapoder</div>
+        <div class="story-ch-title">Castells e a Política da Autocomunicação de Massa</div>
+        <p class="story-text"><span class="story-highlight">Manuel Castells</span> forneceu o mapa político desta nova paisagem. Na sociedade em rede, o poder já não é exercido através de hierarquias piramidais mas através do controlo de redes e das suas conexões. Quem programa a rede (define objetivos, valores, regras de inclusão/exclusão) e quem comuta entre redes diferentes detém poder estrutural. Estas novas formas de poder eram simultaneamente mais difusas e mais penetrantes do que as antigas.</p>
+        <p class="story-text">Mas Castells via também o contrapoder: a internet criara a autocomunicação de massa — a capacidade de qualquer ator, por mais marginal que fosse, de se tornar emissor global, de criar redes alternativas, de construir narrativas que contornassem os media estabelecidos. A Primavera Árabe, o movimento Occupy, os protestos em Hong Kong — eram todos exemplos de redes de contrapoder a usar as mesmas infraestruturas que o poder dominante usava para se manter.</p>
+      </div>
+
+      <div class="story-divider"></div>
+
+      <div class="story-chapter">
+        <div class="story-ch-label">Epílogo — A Autenticidade Vendida e a Realidade Construída</div>
+        <div class="story-ch-title">Lipovetsky, Luhmann e o Mundo Que Observa Através dos Media</div>
+        <p class="story-text">No final desta história, dois pensadores oferecem perspetivas complementares e perturbadoras. <span class="story-highlight">Gilles Lipovetsky</span> vê a hipermodernidade como a era em que os valores éticos — autenticidade, sinceridade, verdade — foram transformados em mercadorias. A "autenticidade" que cada marca, influencer e político vende é o sinal mais claro da sua corrupção. A performance da autenticidade é a forma mais sofisticada de inautenticidade.</p>
+        <p class="story-text">E <span class="story-highlight">Niklas Luhmann</span> fecha o círculo com uma observação sistémica: a sociedade moderna não tem acesso direto à realidade — observa-se a si própria através dos media. O que os media noticiam existe; o que ignoram não existe para a consciência coletiva. Os media constroem a "realidade de segunda ordem" que é a única realidade social que a maioria das pessoas conhece. Não como conspiração, mas como consequência inevitável da diferenciação funcional da sociedade moderna: há um sistema que produz informação, e todos os outros sistemas dependem dele para se orientar.</p>
+        <p class="story-text">Da aldeia global de McLuhan às plataformas de van Dijck, da mediatização de Hjarvard ao capitalismo de vigilância de Zuboff, passando pela convergência de Jenkins, pela solidão de Turkle, pelo poder de Castells, pelo otimismo de Tapscott e pela autenticidade mercantilizada de Lipovetsky — esta é a história de como os media deixaram de ser espelhos da sociedade para se tornarem a sua arquitetura fundamental.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="section" id="quiz">
+    <div class="section-label">Secção 04</div>
+    <h2 class="section-title">Quiz<br>80 Perguntas</h2>
+    <div class="quiz-filter-wrap">
+      <div class="quiz-filter-label">Filtrar por teoria</div>
+      <div class="filter-pills" id="filter-pills">
+        <button class="filter-pill active" data-theory="Todas" onclick="setFilter('Todas',this)">Todas (80)</button>
+        <button class="filter-pill" data-theory="McLuhan" onclick="setFilter('McLuhan',this)">McLuhan</button>
+        <button class="filter-pill" data-theory="Hjarvard" onclick="setFilter('Hjarvard',this)">Hjarvard</button>
+        <button class="filter-pill" data-theory="Jenkins" onclick="setFilter('Jenkins',this)">Jenkins</button>
+        <button class="filter-pill" data-theory="Zuboff" onclick="setFilter('Zuboff',this)">Zuboff</button>
+        <button class="filter-pill" data-theory="Castells" onclick="setFilter('Castells',this)">Castells</button>
+        <button class="filter-pill" data-theory="Turkle" onclick="setFilter('Turkle',this)">Turkle</button>
+        <button class="filter-pill" data-theory="van Dijck" onclick="setFilter('van Dijck',this)">van Dijck</button>
+        <button class="filter-pill" data-theory="Tapscott" onclick="setFilter('Tapscott',this)">Tapscott</button>
+        <button class="filter-pill" data-theory="Lipovetsky" onclick="setFilter('Lipovetsky',this)">Lipovetsky</button>
+        <button class="filter-pill" data-theory="Luhmann" onclick="setFilter('Luhmann',this)">Luhmann</button>
+        <button class="filter-pill" data-theory="Silverstone" onclick="setFilter('Silverstone',this)">Silverstone</button>
+      </div>
+    </div>
+    <div id="quiz-area">
+      <div class="quiz-header">
+        <span class="quiz-counter" id="q-counter">Pergunta 1 / 80</span>
+        <div class="quiz-progress-wrap">
+          <div class="quiz-progress-bar" id="q-bar" style="width:1.25%"></div>
+        </div>
+        <span class="quiz-score-display" id="q-score">Pontos: 0</span>
+      </div>
+      <div class="question-card" id="q-card">
+        <div class="question-theory-tag" id="q-tag"></div>
+        <div class="question-text" id="q-text"></div>
+        <div class="options-grid" id="q-options"></div>
+        <div class="feedback-box" id="q-feedback"></div>
+        <button class="next-btn" id="q-next" onclick="nextQuestion()">Próxima →</button>
+      </div>
+    </div>
+    <div class="results-screen" id="results">
+      <div style="font-family:'Syne',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;">Resultado Final</div>
+      <div class="results-score" id="final-score">0</div>
+      <div class="results-label" id="results-total">de 80 corretas</div>
+      <div class="results-msg" id="final-msg"></div>
+      <button class="restart-btn" onclick="restartQuiz()">Tentar Novamente ↺</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function scrollToStudy() {
+  document.getElementById('main-nav').scrollIntoView({ behavior: 'smooth' });
+}
+
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'quiz') initQuiz();
+  window.scrollTo({ top: document.getElementById('main-nav').offsetTop, behavior: 'smooth' });
+}
+
+/* ===== QUIZ ENGINE ===== */
+const ALL_QUESTIONS = [
+  // McLUHAN (1-14)
+  { theory:"McLuhan", q:"Para McLuhan, qual é o verdadeiro conteúdo de qualquer meio de comunicação?", opts:["O programa televisivo emitido","O próprio meio em si","A mensagem que o emissor pretende transmitir","O efeito nos espetadores"], ans:1, exp:"McLuhan afirma que 'o meio é a mensagem': é a natureza do meio, não o seu conteúdo, que produz mudança social." },
+  { theory:"McLuhan", q:"O que significa para McLuhan que a televisão é um meio 'frio'?", opts:["Tem fraca audiência","Exige alta participação e envolvimento do espetador","Tem baixa definição visual e pouca participação","Transmite conteúdo neutro sem carga emocional"], ans:2, exp:"Media 'frios' têm baixa definição e exigem que o espetador preencha os 'buracos', criando maior participação." },
+  { theory:"McLuhan", q:"O conceito de 'aldeia global' de McLuhan refere-se a:", opts:["A globalização económica do século XX","A reconexão tribal da humanidade através dos media elétricos","A criação de aldeia comunitárias digitais","O domínio cultural americano na comunicação global"], ans:1, exp:"A eletricidade reconecta o sistema nervoso humano à escala planetária, recriando as condições de envolvimento total da aldeia tribal." },
+  { theory:"McLuhan", q:"Segundo McLuhan, qual dos seguintes é um exemplo de meio 'quente'?", opts:["Telefone","Televisão","Rádio","Conversa face a face"], ans:2, exp:"O rádio é um meio quente: alta definição, baixa participação — o ouvinte recebe passivamente uma experiência sonora rica." },
+  { theory:"McLuhan", q:"O que significa a expressão de McLuhan: 'os media são extensões do homem'?", opts:["Os media substituem o trabalho humano","Cada tecnologia prolonga ou amplifica uma capacidade ou sentido humano","Os media criam versões digitais dos humanos","Os media são criados à imagem do homem"], ans:1, exp:"A roda é extensão do pé, a roupa da pele, a televisão do sistema nervoso central — cada meio amplia uma capacidade humana." },
+  { theory:"McLuhan", q:"Qual era a posição de McLuhan sobre o conteúdo dos media?", opts:["O conteúdo é irrelevante em absoluto","O conteúdo tem papel subordinado à forma do medium","O conteúdo é mais importante do que o medium","O conteúdo e o medium têm igual importância"], ans:1, exp:"McLuhan não ignorava o conteúdo, mas argumentava que desempenha papel subordinado — a forma do medium molda mais profundamente a consciência." },
+  { theory:"McLuhan", q:"De acordo com McLuhan, o que distinguia a 'era tipográfica' da 'era elétrica'?", opts:["A tipografia promovia sentidos equilibrados; a eletricidade privilegia a visão","A tipografia criou o sujeito individual, linear e visual; a eletricidade recria o envolvimento oral e tribal","A tipografia era oral; a eletricidade é escrita","A tipografia era democrática; a eletricidade é autoritária"], ans:1, exp:"A imprensa criou o homem moderno, individual e sequencial. A eletricidade reverte esse processo, reativando a participação sensorial coletiva." },
+  { theory:"McLuhan", q:"Por que razão McLuhan explicaria a vitória de Kennedy sobre Nixon no debate televisivo de 1960?", opts:["Kennedy tinha melhores propostas políticas","Kennedy era mais inteligente","Kennedy era um político 'frio', adequado ao medium televisivo; Nixon era 'quente' demais para a TV","Nixon recusou-se a debater com vigor"], ans:2, exp:"Kennedy, sereno e fotogénico, era adequado ao cool medium da televisão. Nixon, suado e tenso, era demasiado quente para o ecrã." },
+  { theory:"McLuhan", q:"O que McLuhan entendia por 'tetrad' dos media?", opts:["Os quatro canais de comunicação principais","Uma ferramenta analítica com quatro efeitos de cada medium: amplifica, obsoletiza, recupera e reverte","Os quatro períodos históricos da comunicação","Os quatro sentidos envolvidos na comunicação mediada"], ans:1, exp:"A tétrade examina o que qualquer medium amplifica, torna obsoleto, recupera do passado e no que se transforma se levado ao extremo." },
+  { theory:"McLuhan", q:"A 'Galáxia de Gutenberg', segundo McLuhan, representa:", opts:["A era dos media digitais","A civilização criada pelo alfabeto fonético e a imprensa, baseada na linearidade e no individualismo visual","A comunicação oral pré-literária","A era da televisão e dos media de massa"], ans:1, exp:"A Galáxia de Gutenberg é a era civilizacional criada pela impressão tipográfica — linear, individual, visual, lógica." },
+  { theory:"McLuhan", q:"O conceito de 'narcose' de Narciso em McLuhan refere-se a:", opts:["O fascínio pelos media de entretenimento","O modo como as pessoas se entorpecem e ficam inconscientes dos efeitos das tecnologias que usam","A beleza dos media visuais","A criação de identidades falsas online"], ans:1, exp:"McLuhan usava o mito de Narciso para explicar como as pessoas ficam hipnotizadas pelas suas próprias extensões tecnológicas sem as compreender." },
+  { theory:"McLuhan", q:"Segundo McLuhan, qual é o efeito principal da aceleração elétrica sobre o espaço e o tempo?", opts:["Aumenta a importância do espaço físico","Elimina o espaço e o tempo, criando uma implosão de simultaneidade","Cria novos fusos horários","Divide o mundo em zonas de acesso à comunicação"], ans:1, exp:"A velocidade elétrica colapsa espaço e tempo, tornando tudo simultâneo e criando uma implosão de consciência coletiva global." },
+  { theory:"McLuhan", q:"Qual das seguintes afirmações melhor resume a visão de McLuhan sobre a história da comunicação?", opts:["A história é linear e representa sempre progresso","A história da comunicação é uma série de transições entre diferentes organizações sensoriais da consciência humana","Os media são neutros — o que importa é quem os controla","A comunicação escrita é sempre superior à oral"], ans:1, exp:"Para McLuhan, cada novo medium reorganiza os sentidos e a consciência, criando uma nova forma de experiência humana e organização social." },
+  { theory:"McLuhan", q:"O que McLuhan quis dizer ao afirmar que o 'conteúdo de qualquer medium é sempre outro medium'?", opts:["Os media copiam-se uns aos outros sem inovar","O conteúdo de um medium é sempre um medium anterior que ele contém — a TV contém o cinema, o cinema contém o teatro","Os media são sempre inferiores às formas anteriores de comunicação","O conteúdo é indiferenciado em todos os media"], ans:1, exp:"A televisão contém filmes; o filme contém teatro; o teatro contém a narrativa oral. O medium envolve sempre outro medium como conteúdo." },
+
+  // HJARVARD (15-26)
+  { theory:"Hjarvard", q:"O que distingue 'mediação' de 'mediatização' segundo Hjarvard?", opts:["São sinónimos usados alternadamente","Mediação é um ato pontual de comunicação; mediatização é um processo histórico e estrutural de dependência crescente dos media","Mediação refere-se a media digitais; mediatização a media analógicos","Mediação é teórica; mediatização é empírica"], ans:1, exp:"Mediação é usar um medium para comunicar; mediatização é o processo pelo qual as instituições sociais se reorganizam segundo a lógica dos media." },
+  { theory:"Hjarvard", q:"O conceito de 'media logic' em Hjarvard refere-se a:", opts:["A lógica comercial das empresas de media","O conjunto de regras formais e informais dos media que influencia a forma da comunicação e das relações sociais","A lógica algorítmica das plataformas digitais","Os critérios de noticiabilidade dos jornalistas"], ans:1, exp:"A media logic inclui os formatos, ritmos, critérios de valor e modus operandi institucional que os media impõem às outras esferas sociais." },
+  { theory:"Hjarvard", q:"Segundo Hjarvard, a mediatização caracteriza principalmente:", opts:["Todas as sociedades em todos os períodos históricos","Sociedades modernas, industrializadas e principalmente ocidentais a partir do final do século XX","Apenas países com alta penetração da internet","Apenas democracias liberais com media livres"], ans:1, exp:"Hjarvard é explícito: a mediatização é um processo acelerado nas últimas décadas do século XX em sociedades ocidentais industrializadas." },
+  { theory:"Hjarvard", q:"Qual é a diferença entre a 'teoria da mediação' e a 'teoria da mediatização' segundo Hjarvard?", opts:["Não há diferença significativa","A mediatização analisa os efeitos estruturais dos media nas instituições; a mediação analisa atos de comunicação específicos","A mediação é mais recente do que a mediatização","A mediatização é uma teoria normativa; a mediação é descritiva"], ans:1, exp:"A mediatização foca nos processos de longa duração em que os media transformam instituições; a mediação foca nos atos comunicativos específicos." },
+  { theory:"Hjarvard", q:"A mediatização da religião, segundo Hjarvard, manifesta-se através de:", opts:["A extinção das práticas religiosas tradicionais","A adaptação das instituições religiosas às lógicas e formatos dos media para manter relevância","O uso da religião pelos media para fins comerciais","A substituição da religião pelos media como fonte de sentido"], ans:1, exp:"Igrejas fazem lives, televangelistas dominam a TV, o papa está no Instagram — as instituições religiosas adaptam-se à media logic para sobreviver." },
+  { theory:"Hjarvard", q:"O que Hjarvard identifica como consequência da mediatização da política?", opts:["Os políticos tornam-se mais honestos devido à transparência mediática","A substância política é substituída pela performance mediática e o escrutínio visual dos líderes","A política afasta-se dos media para manter independência","Os cidadãos tornam-se mais informados e participativos"], ans:1, exp:"A política mediatizada privilegia a imagem, o sound-bite, a performance televisiva — os líderes são avaliados pela adequação ao medium, não apenas pelas políticas." },
+  { theory:"Hjarvard", q:"Como Hjarvard relaciona mediatização com globalização?", opts:["São processos completamente independentes","A globalização pressupõe meios técnicos de comunicação à distância e é propulsionada pela mediatização","A mediatização é uma consequência da globalização económica","A globalização reduz a mediatização ao criar culturas locais resistentes"], ans:1, exp:"A globalização necessita de meios de comunicação à distância e institucionaliza a comunicação mediada em novos contextos, acelerando a mediatização." },
+  { theory:"Hjarvard", q:"Qual dos seguintes conceitos Hjarvard partilha com a 'medium theory' de McLuhan?", opts:["A ideia de que o conteúdo é irrelevante","O foco nos efeitos estruturais dos media além do conteúdo, e na formatação que diferentes media impõem","A divisão entre media quentes e frios","O conceito de aldeia global"], ans:1, exp:"Hjarvard reconhece a consonância com a medium theory no foco em como diferentes media formatam a comunicação e afetam relações interpessoais." },
+  { theory:"Hjarvard", q:"Segundo Hjarvard, a mediatização é um conceito:", opts:["Normativo — descreve como os media deveriam funcionar","Não-normativo — descreve um processo sem julgamento de valor positivo ou negativo","Positivo — descreve uma evolução benéfica da sociedade","Negativo — descreve um processo de degradação cultural"], ans:1, exp:"Hjarvard é explícito: a mediatização é um conceito descritivo/analítico, não implica julgamento sobre se o processo é bom ou mau." },
+  { theory:"Hjarvard", q:"Como Hjarvard diferencia mediatização de determinismo tecnológico?", opts:["Não diferencia — aceita o determinismo tecnológico","A mediatização considera a interação entre tecnologia e cultura, reconhecendo que a cultura também molda a tecnologia","A mediatização defende que a tecnologia não tem qualquer efeito","A mediatização é mais determinista do que as teorias tecnológicas"], ans:1, exp:"Ao contrário do determinismo tecnológico, a mediatização reconhece a interação bidirecional entre tecnologia e cultura." },
+  { theory:"Hjarvard", q:"O que Hjarvard chama de 'submissão à lógica mediática' nas instituições?", opts:["O financiamento das instituições pelos media","O processo pelo qual instituições adotam os valores, formatos e ritmos dos media para garantir visibilidade","A privatização dos media de serviço público","O controlo político sobre os conteúdos mediáticos"], ans:1, exp:"As instituições submetem-se à media logic adaptando os seus comportamentos, estruturas e objetivos para maximizar a cobertura mediática." },
+  { theory:"Hjarvard", q:"Segundo Hjarvard, que papel têm os media na sociedade moderna que não tinham nas sociedades pré-modernas?", opts:["Os media existiam sempre com o mesmo papel","Os media tornaram-se uma instituição semi-autónoma que media as relações entre outras instituições e entre instituições e indivíduos","Os media eram mais importantes nas sociedades pré-modernas","Os media têm hoje menos influência do que nas sociedades tradicionais"], ans:1, exp:"Os media modernos são uma instituição autónoma com lógica própria que serve de intermediário obrigatório entre todas as outras instituições sociais." },
+
+  // JENKINS (27-38)
+  { theory:"Jenkins", q:"O que Jenkins entende por 'cultura da convergência'?", opts:["A fusão tecnológica de dispositivos num único aparelho","O fluxo de conteúdos por múltiplas plataformas, a cooperação entre indústrias e o comportamento migratório dos públicos","A homogeneização cultural provocada pela globalização","A convergência de opiniões criada pelos media de massa"], ans:1, exp:"A convergência de Jenkins é cultural e social: acontece nas práticas dos utilizadores, na cooperação entre indústrias e na circulação de narrativas." },
+  { theory:"Jenkins", q:"O que é o 'storytelling transmedia' segundo Jenkins?", opts:["Contar a mesma história em múltiplos formatos","Dispersar diferentes partes de uma narrativa por diferentes meios, cada um contribuindo algo único para o universo narrativo total","Usar múltiplos atores para contar a mesma história","Traduzir histórias para diferentes línguas e culturas"], ans:1, exp:"No storytelling transmedia, cada plataforma expande o universo narrativo de forma única — não é adaptação, é expansão e dispersão de conteúdo." },
+  { theory:"Jenkins", q:"O conceito de 'inteligência coletiva' que Jenkins aplica aos media digitais foi originalmente formulado por:", opts:["Marshall McLuhan","Manuel Castells","Pierre Lévy","Shoshana Zuboff"], ans:2, exp:"Jenkins adaptou o conceito de inteligência coletiva de Pierre Lévy — o que nenhum de nós sabe individualmente, todos sabemos em conjunto." },
+  { theory:"Jenkins", q:"Segundo Jenkins, qual é a diferença entre 'consumidores' e a nova figura do 'prosumer'?", opts:["Os consumidores pagam; os prosumers não pagam","Os prosumers são consumidores que também produzem e co-criam conteúdo e sentido","Os prosumers são profissionais; os consumidores são amadores","Os prosumers usam apenas plataformas digitais; os consumidores usam media tradicionais"], ans:1, exp:"O prosumer (produtor + consumidor) é a figura emergente que não apenas consome conteúdo mas também o produz, remistura e dissemina." },
+  { theory:"Jenkins", q:"O que caracteriza as 'comunidades de fãs' na perspetiva de Jenkins?", opts:["São grupos passivos que apenas consomem conteúdo","São grupos ativos de inteligência coletiva que caçam, partilham e interpretam informação colaborativamente","São grupos que rejeitam os produtos culturais dominantes","São comunidades de criadores profissionais de conteúdo"], ans:1, exp:"As comunidades de fãs são grupos de inteligência coletiva: caçam pistas, partilham conhecimento e co-criam significado de forma colaborativa." },
+  { theory:"Jenkins", q:"Jenkins distingue entre 'interatividade' e 'participação'. Qual é a diferença?", opts:["São sinónimos — Jenkins usa os termos alternadamente","A interatividade é uma propriedade tecnológica dos sistemas; a participação é uma propriedade cultural e social","A interatividade é mais profunda do que a participação","A participação é tecnológica; a interatividade é social"], ans:1, exp:"A interatividade está no design do medium; a participação é uma prática social e cultural que transcende o que as tecnologias permitem formalmente." },
+  { theory:"Jenkins", q:"Segundo Jenkins, o que ameaça mais a cultura participativa?", opts:["O excesso de conteúdo online","A concentração do poder mediático em poucas corporações e o regime de direitos de autor corporativo","A falta de competências digitais dos utilizadores","A fragmentação das audiências em nichos isolados"], ans:1, exp:"Jenkins vê a concentração corporativa e os regimes de direitos de autor como os maiores obstáculos à cultura participativa." },
+  { theory:"Jenkins", q:"O universo Marvel é frequentemente citado por Jenkins como exemplo de:", opts:["Domínio corporativo excessivo sobre a narrativa popular","Storytelling transmedia — diferentes plataformas expandem o mesmo universo narrativo de formas únicas","Media quentes que excluem a participação dos fãs","Concentração mediática prejudicial à diversidade cultural"], ans:1, exp:"O universo Marvel distribui elementos narrativos por filmes, séries, banda desenhada e jogos, cada um com contributos únicos para o universo total." },
+  { theory:"Jenkins", q:"Para Jenkins, o que significa afirmar que 'a convergência ocorre nos cérebros das pessoas'?", opts:["As pessoas têm chips cerebrais que processam media","A convergência é primariamente cultural e cognitiva — as pessoas integram conteúdos de múltiplas plataformas nas suas cabeças","A convergência causa danos neurológicos","As pessoas pensam de forma mais rápida por causa dos media digitais"], ans:1, exp:"A convergência não é apenas tecnológica — é o processo mental e cultural pelos qual as pessoas integram e dão sentido a conteúdos de múltiplas origens." },
+  { theory:"Jenkins", q:"Jenkins descreve o que chama de 'política da utopia crítica' e 'política do pessimismo crítico' nos estudos de media. O que distingue estas posições?", opts:["A utopia crítica é otimista quanto ao poder dos consumidores; o pessimismo crítico foca na vitimização dos consumidores pelos media","A utopia crítica defende a regulação; o pessimismo critica todos os media","A utopia crítica é de esquerda; o pessimismo é de direita","A utopia crítica ignora o poder das corporações; o pessimismo é realista"], ans:0, exp:"Jenkins prefere a utopia crítica: foca no que podemos fazer com os media, sem ignorar o poder corporativo mas sem reduzir os consumidores a vítimas." },
+  { theory:"Jenkins", q:"O que é a 'adhocracia' que Jenkins menciona no contexto da Wikipédia e do software livre?", opts:["Uma forma de hierarquia rígida baseada em competência","Uma estrutura organizacional fluida e anti-hierárquica que se forma em torno de tarefas específicas e se dissolve quando a tarefa está concluída","Uma forma de democracia direta online","Um sistema de gestão corporativa descentralizado"], ans:1, exp:"A adhocracia é uma estrutura organizacional temporária, fluida e colaborativa — oposta à burocracia — que o movimento open source e a Wikipédia exemplificam." },
+  { theory:"Jenkins", q:"Segundo Jenkins, qual é o risco de uma reforma mediática focada apenas em combater a concentração corporativa?", opts:["Não há risco — é a única estratégia válida","Pode fazer-nos perder as oportunidades criadas pela cultura participativa emergente, que requer outras estratégias além do combate à concentração","Pode levar ao excesso de regulação estatal dos media","Pode eliminar o entretenimento popular como forma cultural legítima"], ans:1, exp:"Jenkins argumenta que o combate à concentração é necessário mas insuficiente — precisamos também de proteger e expandir a cultura participativa." },
+
+  // ZUBOFF (39-50)
+  { theory:"Zuboff", q:"O que Zuboff chama de 'excedente comportamental'?", opts:["Os dados necessários para fornecer um serviço digital","Os dados comportamentais coletados pelos utilizadores para além do que é necessário para o serviço — usados para construir modelos preditivos","O lucro excedente das empresas de tecnologia","Os dados que os utilizadores partilham voluntariamente nas redes sociais"], ans:1, exp:"O excedente comportamental é a matéria-prima do capitalismo de vigilância: dados 'residuais' capturados sem consentimento informado para fins preditivos." },
+  { theory:"Zuboff", q:"Qual o projeto do Google que Zuboff analisa como exemplo de extração sem consentimento?", opts:["Google Maps","Google Search","Google Street View","Google Chrome"], ans:2, exp:"A Street View fotografou o mundo inteiro sem pedir permissão e foi descoberta a capturar dados de redes Wi-Fi não protegidas — modelo de extração do capitalismo de vigilância." },
+  { theory:"Zuboff", q:"O objetivo final do capitalismo de vigilância, segundo Zuboff, não é vender produtos mas:", opts:["Maximizar a receita publicitária","Vender certeza sobre comportamentos futuros humanos a quem quiser pagar por essa certeza","Criar perfis de utilizadores para personalizar o serviço","Espionar cidadãos por conta de governos"], ans:1, exp:"Zuboff argumenta que o objetivo é o 'mercado de futuros comportamentais': vender predições sobre o que as pessoas farão, a anunciantes e outros." },
+  { theory:"Zuboff", q:"Segundo Zuboff, como o Android do Google serve a lógica do capitalismo de vigilância?", opts:["Cria receita direta através de vendas de hardware","Garante nova linha de abastecimento de excedente comportamental à medida que a navegação se torna móvel","Permite ao Google controlar os fabricantes de telemóveis","Cria um sistema operativo mais seguro para os utilizadores"], ans:1, exp:"O Android é a segunda grande linha de abastecimento de behavioral surplus do Google — garante que o movimento dos utilizadores para o mobile não interrompe a extração de dados." },
+  { theory:"Zuboff", q:"A expressão 'se não estás no nosso mapa, não existes' reflete que princípio do capitalismo de vigilância?", opts:["A importância do SEO para visibilidade online","A lógica de extração e colonização: o que não é capturado e mapeado não tem valor","A censura praticada pelas grandes plataformas digitais","A importância da reputação online para negócios"], ans:1, exp:"Zuboff usa a história da cartografia para mostrar que o capitalismo de vigilância mapeia e captura toda a experiência humana — o que escapa ao mapa não existe para o mercado." },
+  { theory:"Zuboff", q:"O que Zuboff entende por 'imperative de extração' no capitalismo de vigilância?", opts:["A necessidade legal de recolher dados dos utilizadores","A compulsão estrutural das empresas de vigilância para continuamente expandir as fontes de dados comportamentais","A obrigação de as empresas extraírem lucro para os acionistas","A necessidade tecnológica de extrair informação de grandes bases de dados"], ans:1, exp:"O imperativo de extração é a lógica inexorável do modelo de negócio: sem dados comportamentais contínuos e crescentes, o capitalismo de vigilância implode." },
+  { theory:"Zuboff", q:"Segundo Zuboff, como o capitalismo de vigilância se relaciona com o capitalismo financeiro do final do século XX?", opts:["São modelos completamente diferentes sem relação","Ambos envolvem uma migração de receitas dos produtos/serviços para formas mais abstratas de extração de valor","O capitalismo de vigilância é uma resposta ao fracasso do capitalismo financeiro","O capitalismo financeiro foi mais ético do que o capitalismo de vigilância"], ans:1, exp:"Tal como o capitalismo financeiro migrou das receitas de produtos para receitas especulativas, o capitalismo de vigilância migra para receitas de predição comportamental." },
+  { theory:"Zuboff", q:"Segundo Zuboff, por que razão a regulação antimonopólio é insuficiente para conter o capitalismo de vigilância?", opts:["Porque as empresas de tecnologia são demasiado poderosas politicamente","Porque a questão central não é o monopólio nos mercados mas a forma de extração de dados — que persistirá mesmo com mais concorrentes","Porque não existe vontade política para regular estas empresas","Porque a regulação nacional é ineficaz face a empresas globais"], ans:1, exp:"Zuboff argumenta que mais concorrentes a praticar capitalismo de vigilância não resolve o problema — o problema é o modelo de extração em si." },
+  { theory:"Zuboff", q:"O que Zuboff chama de 'mercados de futuros comportamentais'?", opts:["Bolsas de valores que antecipam tendências tecnológicas","Mercados onde se compram e vendem predições sobre comportamentos humanos futuros, baseadas em behavioral surplus","Plataformas de investimento em startups tecnológicas","Ferramentas de marketing que preveem tendências de consumo"], ans:1, exp:"Os mercados de futuros comportamentais são o produto central do capitalismo de vigilância: instrumentos que permitem comprar certeza sobre o que pessoas farão." },
+  { theory:"Zuboff", q:"Segundo Zuboff, qual é a política subjacente à insistência do Google na ativação obrigatória da localização?", opts:["Preocupações com a segurança dos utilizadores","A política autoritária do imperativo de extração — sem localização, perde-se uma fonte crucial de excedente comportamental","Uma estratégia de marketing para promover o Google Maps","Uma obrigação legal de garantir localização de emergência"], ans:1, exp:"A insistência na localização é a expressão da 'política autoritária do imperativo de extração' — recusar a desativação porque protege a linha de abastecimento de dados." },
+  { theory:"Zuboff", q:"Zuboff nasceu digital, mas o capitalismo de vigilância, segundo a autora:", opts:["Permanece confinado às empresas de tecnologia","Está a expandir-se para todos os setores da economia, aplicando a mesma lógica de extração em novos domínios","Está a ser revertido por regulação governamental eficaz","Aplica-se apenas a consumidores com baixa literacia digital"], ans:1, exp:"Zuboff argumenta que a lógica do capitalismo de vigilância é altamente adaptável e está a migrar de Silicon Valley para setores como seguros, saúde, educação e finanças." },
+
+  // CASTELLS (51-56)
+  { theory:"Castells", q:"Para Castells, o que distingue 'comunicação de massa' de 'autocomunicação de massa'?", opts:["A escala: a comunicação de massa é global; a autocomunicação é local","A autocomunicação de massa permite que qualquer ator envie mensagens potencialmente globais sem intermediário institucional","A autocomunicação é paga; a comunicação de massa é gratuita","A autocomunicação usa media digitais; a comunicação de massa usa media analógicos"], ans:1, exp:"A autocomunicação de massa é o potencial de cada indivíduo se tornar emissor global — sem passar por gatekeepers institucionais." },
+  { theory:"Castells", q:"Segundo Castells, como é exercido o poder na sociedade em rede?", opts:["Através de hierarquias institucionais formais","Por quem programa as redes (define objetivos) e por quem comuta entre redes (conecta ou desliga atores)","Através do controlo dos media de massa tradicionais","Por governos que regulam a infraestrutura digital"], ans:1, exp:"O poder em rede opera ao nível da programação (quem define os objetivos da rede) e da comutação (quem conecta ou desconecta redes entre si)." },
+  { theory:"Castells", q:"O conceito de 'contrapoder' em Castells refere-se a:", opts:["O poder dos estados contra as corporações","A capacidade de atores excluídos criarem as suas próprias redes para desafiar o poder dominante","A regulação dos media por organismos independentes","A resistência tecnológica às práticas de vigilância"], ans:1, exp:"O contrapoder emerge quando atores que o poder dominante exclui usam as mesmas ferramentas de rede para criar alternativas e desafiar as redes estabelecidas." },
+  { theory:"Castells", q:"Como Castells analisa movimentos como a Primavera Árabe ou o Occupy?", opts:["Como perturbações temporárias sem impacto estrutural","Como exemplos de contrapoder: autocomunicação de massa a criar redes que contornam o poder mediático e político estabelecido","Como manipulações orquestradas por potências estrangeiras","Como exemplos de populismo sem programa político claro"], ans:1, exp:"Castells vê estes movimentos como expressões paradigmáticas de contrapoder: redes de cidadãos a usar autocomunicação de massa para contestar o poder dominante." },
+  { theory:"Castells", q:"Para Castells, quem detém poder mais fundamental numa sociedade em rede?", opts:["Os que controlam mais capital financeiro","Os que detêm poder político formal","Os que programam as redes estratégicas (definem objetivos) e os que controlam os comutadores entre redes","Os que produzem mais conteúdo mediático"], ans:2, exp:"O poder mais profundo está em programar redes (definir quem entra, para quê, segundo que valores) e em controlar as conexões entre redes diferentes." },
+  { theory:"Castells", q:"O que Castells entende por 'redes' na sua teoria do poder?", opts:["Apenas redes informáticas e a internet","Qualquer conjunto de nós interligados — podem ser redes financeiras, políticas, mediáticas, criminosas ou de movimentos sociais","Apenas as grandes redes sociais digitais","As redes de relações pessoais e familiares"], ans:1, exp:"Para Castells, rede é qualquer conjunto de nós interligados. As redes estratégicas incluem finanças, media, política, tecnologia, criminalidade, etc." },
+
+  // TURKLE (57-62)
+  { theory:"Turkle", q:"O que Turkle descreve com o título 'Alone Together' (Sozinhos Juntos)?", opts:["O isolamento das populações rurais face às cidades","O paradoxo de estarmos constantemente conectados digitalmente mas cada vez mais sós em termos de presença genuína","A segregação social criada pelos media de massa","O isolamento dos idosos numa sociedade jovem e digital"], ans:1, exp:"O paradoxo central: as tecnologias de conexão criam uma forma de estar juntos que paradoxalmente aumenta o isolamento e substitui a presença genuína." },
+  { theory:"Turkle", q:"Por que razão Turkle observa que as pessoas preferem textos a chamadas telefónicas?", opts:["Os textos são mais baratos","O texto permite editar, controlar e apagar — evita a imprevisibilidade e vulnerabilidade da conversa real","Os textos são mais rápidos para comunicar informação básica","As chamadas perturbam a concentração no trabalho"], ans:1, exp:"Turkle documenta como o texto permite uma performance de self controlada, eliminando a ansiedade da conversa real, imprevisível e incontrolável." },
+  { theory:"Turkle", q:"Qual era a principal preocupação de Turkle com robots de companhia para idosos?", opts:["O custo elevado e a acessibilidade limitada","Estamos a substituir a vulnerabilidade e a reciprocidade das relações humanas genuínas por simulacros confortáveis","Os robots são tecnicamente insuficientes para a função","Os idosos não sabem usar tecnologia avançada"], ans:1, exp:"Turkle chora metaforicamente: estamos a aceitar que idosos sejam 'cuidados' por robots que simulam empatia, abdicando da obrigação humana de presença genuína." },
+  { theory:"Turkle", q:"Como Turkle caracteriza o efeito dos dispositivos digitais nas relações parentais?", opts:["Os pais tornam-se mais presentes porque estão em casa mais tempo","As crianças competem com os dispositivos pela atenção dos pais, sentindo-se preteridas em favor das máquinas","Os dispositivos facilitam a coordenação familiar","Os pais usam os dispositivos para monitorizar e proteger os filhos"], ans:1, exp:"Turkle documentou como crianças sentem que competem com o smartphone dos pais pela atenção — o que tem consequências no desenvolvimento emocional." },
+  { theory:"Turkle", q:"Qual é a preocupação central de Turkle relativamente à empatia na era digital?", opts:["As redes sociais criam empatia artificial e manipulável","Ao substituirmos conversas por textos, perdemos os elementos não-verbais que tornam o outro genuinamente real — com consequências para a capacidade empática","A internet expõe as pessoas a perspetivas tão diferentes que destroem a empatia","Os media digitais criam uma empatia de espetáculo sem ação real"], ans:1, exp:"A conversa real inclui silêncios, hesitações, tom de voz — sinais que desenvolvem empatia. O texto elimina esses sinais, empobrecendo a capacidade de reconhecer a complexidade do outro." },
+  { theory:"Turkle", q:"A 'domesticação' do smartphone, na perspetiva de Turkle, manifesta-se em:", opts:["O uso do smartphone exclusivamente dentro de casa","O smartphone tornou-se tão integrado nas rotinas e identidade que já não é percebido como estranho — dorme connosco, vai à casa de banho, está sempre presente","A personalização da interface do smartphone","O uso do smartphone para gerir a casa inteligente"], ans:1, exp:"O smartphone, completamente domesticado (no sentido de Silverstone), tornou-se extensão invisível do self — já não reparamos que o temos, tal como não reparamos que respiramos." },
+
+  // VAN DIJCK / PLATAFORMAS (63-68)
+  { theory:"van Dijck", q:"O que van Dijck entende por 'dataification' na plataforma society?", opts:["A transformação de serviços analógicos em serviços digitais","A transformação de todas as formas de interação social em dados processáveis e monetizáveis","O armazenamento de dados pessoais em plataformas de nuvem","A digitalização de documentos físicos em bases de dados"], ans:1, exp:"A dataification é o processo pelo qual as plataformas transformam amizades, preferências, comportamentos e emoções em dados estruturados com valor comercial." },
+  { theory:"van Dijck", q:"Segundo van Dijck, as plataformas digitais são:", opts:["Ferramentas neutras que refletem as vontades dos utilizadores","Infraestruturas com valores, lógicas e arquiteturas embutidas que moldam ativamente as interações sociais","Apenas intermediários técnicos sem poder próprio","Espaços públicos digitais equivalentes à praça pública"], ans:1, exp:"van Dijck insiste que plataformas não são neutras — têm arquitetura que favorece certos comportamentos, modelos de negócio que moldam o que é visível, e poder sem mandato democrático." },
+  { theory:"van Dijck", q:"O que van Dijck identifica como os três processos fundamentais da 'plataformização'?", opts:["Monetização, gamificação e personalização","Dataification (tudo é dado), commodification (tudo é produto) e selection (algoritmos decidem o que é visível)","Globalização, digitalização e mobilização","Privatização, concentração e monopolização"], ans:1, exp:"Os três processos da plataformização de van Dijck: dataification, commodification e selection algorítmica — transformam relações sociais em mercadoria." },
+  { theory:"van Dijck", q:"A crítica central de van Dijck ao Facebook é que:", opts:["Tem demasiados utilizadores e criou dependência excessiva","Exerce poder sobre o espaço público sem mandato democrático — decide o que é visível para mil milhões de pessoas sem que ninguém os tenha eleito","Não paga impostos suficientes nos países onde opera","Viola demasiado as leis de privacidade nacionais"], ans:1, exp:"van Dijck preocupa-se com o poder não-democrático: o algoritmo do Facebook decide o que é informação importante para mil milhões sem transparência ou accountability." },
+  { theory:"van Dijck", q:"Segundo van Dijck, o que caracteriza um 'ecossistema de plataformas'?", opts:["Um conjunto de aplicações de um único criador","A interdependência entre plataformas que cria barreiras à entrada, efeitos de rede e concentração de poder em poucas corporações","Uma plataforma que oferece múltiplos serviços integrados","Um mercado de plataformas competitivas que serve os utilizadores"], ans:1, exp:"O ecossistema de plataformas cria interdependências (o WhatsApp precisa de contas Facebook) que fortalecem o poder das grandes plataformas e dificultam a concorrência e a regulação." },
+  { theory:"van Dijck", q:"Por que van Dijck argumenta que a 'selection' algorítmica é uma forma de poder?", opts:["Porque os algoritmos cometem muitos erros e penalizam utilizadores injustamente","Porque decidir o que é visível — que notícias, que conteúdos, que pessoas — é uma forma de poder editorial sem a responsabilidade tradicional dos editores","Porque os algoritmos são secretos e as empresas não os explicam","Porque os algoritmos discriminam utilizadores por características demográficas"], ans:1, exp:"A selection algorítmica é poder editorial: determina o que existe na realidade percebida pelos utilizadores, sem a transparência e responsabilidade que os editores tradicionais tinham." },
+
+  // TAPSCOTT / LIPOVETSKY / LUHMANN / SILVERSTONE (69-80)
+  { theory:"Tapscott", q:"As 8 normas da Net Generation identificadas por Tapscott incluem:", opts:["Passividade, conformidade, dependência da autoridade e preferência por media analógicos","Liberdade, customização, colaboração, velocidade, entretenimento, integridade, inovação e interdependência","Individualismo, competição, desconfiança e preferência pelo trabalho independente","Conformismo de grupo, pensamento de rebanho e dependência tecnológica"], ans:1, exp:"Tapscott identificou 8 normas da Net Gen: freedom, customization, scrutiny, integrity, collaboration, entertainment, speed e innovation." },
+  { theory:"Tapscott", q:"Qual é a crítica mais frequente à tese otimista de Tapscott sobre a Net Generation?", opts:["Tapscott ignora completamente os aspetos positivos da internet","Ignora o cyberbullying, a desinformação, a dependência digital e as desigualdades de acesso que contradizem o seu otimismo","Tapscott sobrestima o interesse dos jovens pela política","Tapscott subestima a capacidade dos jovens de usar a internet criativamente"], ans:1, exp:"Os críticos de Tapscott apontam que o seu otimismo ignora a desinformação, o bullying, a dependência e as desigualdades que a geração digital também vive." },
+  { theory:"Lipovetsky", q:"O que Lipovetsky entende por 'hipermodernidade'?", opts:["A fase pós-moderna em que a razão é completamente abandonada","A intensificação paradoxal da modernidade — mais individualismo, mais consumo, mais mobilidade, mais reflexividade — sem a destruição dos valores modernos","O período histórico após a queda da URSS","Uma fase de rejeição da tecnologia em favor de valores tradicionais"], ans:1, exp:"A hipermodernidade não é pós-modernidade — é a modernidade levada ao extremo: mais liberdade, mais individualismo, mais consumo, mais reflexividade, de forma compulsiva." },
+  { theory:"Lipovetsky", q:"Por que é que para Lipovetsky a 'autenticidade de marca' é uma contradição nos termos?", opts:["As marcas são entidades legais, não pessoas, pelo que não podem ser autênticas","Autenticidade implica não-performatividade e espontaneidade; uma marca que 'vende autenticidade' está a performar estrategicamente o que deveria ser não-performativo","As marcas não têm valores genuínos, apenas interesses comerciais","A autenticidade é um conceito filosófico que não se aplica ao mundo dos negócios"], ans:1, exp:"Lipovetsky vê a contradição: autenticidade genuína é não-calculada, não-estratégica. Uma marca que calcula como ser autêntica para vender mais está a instrumentalizar o que devia ser espontâneo." },
+  { theory:"Lipovetsky", q:"Segundo Lipovetsky, o que caracteriza a evolução do conceito de autenticidade na modernidade?", opts:["A autenticidade sempre foi um valor comercial desde o início","Passou de um ideal moral individual e ético (sê fiel a ti mesmo) para um imperativo comercial e performativo (mostra que és autêntico para vender mais)","A autenticidade tornou-se menos importante na hipermodernidade","A autenticidade foi sempre associada ao consumo nas culturas ocidentais"], ans:1, exp:"A trajetória da autenticidade: de Rousseau e Sartre (ser fiel ao eu interior) para os influencers e o branding (performar autenticidade como estratégia de vendas)." },
+  { theory:"Luhmann", q:"O que Luhmann quer dizer quando afirma que os media de massa constroem 'realidade de segunda ordem'?", opts:["Os media criam realidades virtuais imersivas","A sociedade não acede diretamente à realidade mas observa-se a si própria através dos media, que constroem a realidade social percebida","Os media apresentam apenas versões secundárias e menos importantes dos eventos","A realidade mediática é sempre menos verdadeira do que a experiência direta"], ans:1, exp:"Para Luhmann, a realidade social que as pessoas conhecem é em grande parte construída pelos media — é uma realidade de segunda ordem, observada através do sistema mediático." },
+  { theory:"Luhmann", q:"Segundo Luhmann, com que código operam os media de massa?", opts:["Verdade/Falsidade","Poder/Não-poder","Informação/Não-informação (o que é notícia vs. o que não é noticiável)","Lucro/Não-lucro"], ans:2, exp:"Os media de massa operam com o código binário informação/não-informação — a seleção de o que é notícia vs. o que não existe para a consciência coletiva." },
+  { theory:"Silverstone", q:"O processo de 'domesticação' de uma tecnologia, segundo Silverstone, passa por que fases?", opts:["Compra, uso, abandono e substituição","Apropriação (trazer para casa), objetificação (posicionar no espaço), incorporação (integrar na rotina) e conversão (exibir como símbolo de identidade)","Descoberta, adoção, adaptação e naturalização","Inovação, difusão, saturação e obsolescência"], ans:1, exp:"As quatro fases da domesticação de Silverstone: apropriação, objetificação, incorporação e conversão — a tecnologia domesticada torna-se parte invisível da identidade e rotina." },
+  { theory:"Silverstone", q:"Por que Silverstone usa a metáfora 'domesticação' (de domesticar animais selvagens) para as tecnologias?", opts:["Porque as tecnologias são literalmente perigosas como animais selvagens","Porque as tecnologias chegam como 'algo estranho' e precisam de ser 'amansadas' — integradas na cultura doméstica, tornadas familiares e inofensivas","Porque as tecnologias se comportam de forma imprevisível como animais","Porque as tecnologias são criadas por empresas que as 'domesticam' para venda ao público"], ans:1, exp:"A metáfora captura o processo de transformar o tecnologicamente novo e estranho em algo familiar, controlado e integrado no tecido da vida doméstica." }
+];
+
+let shuffledQuestions = [];
+let currentQ = 0;
+let score = 0;
+let answered = false;
+let quizInitialized = false;
+let activeFilter = 'Todas';
+
+function initQuiz() {
+  if (quizInitialized) return;
+  quizInitialized = true;
+  shuffleAndStart();
+}
+
+function setFilter(theory, btn) {
+  activeFilter = theory;
+  document.querySelectorAll('.filter-pill').forEach(p => {
+    p.classList.remove('active','active-theory');
+  });
+  if (theory === 'Todas') {
+    btn.classList.add('active');
+  } else {
+    btn.classList.add('active-theory');
+  }
+  quizInitialized = false;
+  initQuiz();
+}
+
+function shuffleAndStart() {
+  const pool = activeFilter === 'Todas'
+    ? ALL_QUESTIONS
+    : ALL_QUESTIONS.filter(q => q.theory === activeFilter);
+  shuffledQuestions = [...pool].sort(() => Math.random() - 0.5);
+  currentQ = 0;
+  score = 0;
+  answered = false;
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('quiz-area').style.display = '';
+  // Update counter label
+  updateFilterCount();
+  renderQuestion();
+}
+
+function updateFilterCount() {
+  const total = shuffledQuestions.length;
+  document.getElementById('q-counter').textContent = `Pergunta 1 / ${total}`;
+  document.getElementById('q-bar').style.width = `${(1/total)*100}%`;
+  document.getElementById('q-score').textContent = `Pontos: 0`;
+}
+
+function renderQuestion() {
+  const total = shuffledQuestions.length;
+  const q = shuffledQuestions[currentQ];
+  document.getElementById('q-counter').textContent = `Pergunta ${currentQ + 1} / ${total}`;
+  document.getElementById('q-bar').style.width = `${((currentQ) / total) * 100}%`;
+  document.getElementById('q-score').textContent = `Pontos: ${score}`;
+  document.getElementById('q-tag').textContent = q.theory;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-feedback').className = 'feedback-box';
+  document.getElementById('q-feedback').textContent = '';
+  document.getElementById('q-next').className = 'next-btn';
+  answered = false;
+
+  const letters = ['A','B','C','D'];
+  const opts = document.getElementById('q-options');
+  opts.innerHTML = '';
+  // Shuffle options display
+  const indices = [0,1,2,3].sort(() => Math.random() - 0.5);
+  const correctDisplay = indices.indexOf(q.ans);
+  indices.forEach((origIdx, displayIdx) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.dataset.orig = origIdx;
+    btn.innerHTML = `<span class="option-letter">${letters[displayIdx]}</span>${q.opts[origIdx]}`;
+    btn.onclick = () => selectAnswer(origIdx, q.ans, q.exp);
+    opts.appendChild(btn);
+  });
+}
+
+function selectAnswer(chosen, correct, explanation) {
+  if (answered) return;
+  answered = true;
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(btn => {
+    btn.disabled = true;
+    const orig = parseInt(btn.dataset.orig);
+    if (orig === correct) btn.classList.add('correct');
+    else if (orig === chosen && chosen !== correct) btn.classList.add('wrong');
+  });
+  const fb = document.getElementById('q-feedback');
+  if (chosen === correct) {
+    score++;
+    fb.className = 'feedback-box correct-fb show';
+    fb.textContent = '✓ Correto! ' + explanation;
+  } else {
+    fb.className = 'feedback-box wrong-fb show';
+    fb.textContent = '✗ Incorreto. ' + explanation;
+  }
+  document.getElementById('q-score').textContent = `Pontos: ${score}`;
+  document.getElementById('q-next').className = 'next-btn show';
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= shuffledQuestions.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults() {
+  const total = shuffledQuestions.length;
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('results').classList.add('show');
+  document.getElementById('final-score').textContent = score;
+  document.getElementById('results-total').textContent = `de ${total} corretas`;
+  const pct = Math.round((score / total) * 100);
+  let msg = '';
+  if (pct >= 90) msg = 'Excelente! Dominas estas teorias como um verdadeiro académico dos media.';
+  else if (pct >= 75) msg = 'Muito bom! Tens uma sólida compreensão das teorias. Revê os erros para consolidar.';
+  else if (pct >= 55) msg = 'Bom progresso! Ainda há conceitos a aprofundar — volta às fofocas e à grande história.';
+  else msg = 'Continua a estudar! Consulta os resumos e a grande história — estas teorias ficam mais claras com repetição.';
+  document.getElementById('final-msg').textContent = msg;
+  document.getElementById('q-bar').style.width = '100%';
+}
+
+function restartQuiz() {
+  quizInitialized = false;
+  initQuiz();
+}
+</script>
+</body>
+</html>
