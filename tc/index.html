@@ -1260,7 +1260,7 @@ body {
           <div class="gossip-who">McLuhan · O Profeta da Aldeia Global</div>
           <div class="gossip-title">Então ouvi dizer que o conteúdo não interessa nada!</div>
           <div class="gossip-text">Sabes aquela coisa de ficares obcecada com o que o TikTok te mostra? Pois, <em>Marshall McLuhan</em> já em 1964 disse que o problema não é o que vês, mas o próprio TikTok em si. O meio transforma-te — ponto final. Ele dizia que a televisão estava a fazer toda a gente "tribal" outra vez, a recriar a aldeia. Imagina ele a ver os grupos de WhatsApp da família... teria razão e ficaria horrorizado ao mesmo tempo.</div>
-          <div class="gossip-quote">"Primeiro moldamos os nossos ferramentas, depois as ferramentas moldam-nos a nós."</div>
+          <div class="gossip-quote">"Primeiro moldamos as nossas ferramentas, depois as ferramentas moldam-nos a nós."</div>
         </div>
       </div>
 
@@ -1309,7 +1309,7 @@ body {
         <div class="gossip-content">
           <div class="gossip-who">Turkle · A Psicóloga Preocupada</div>
           <div class="gossip-title">Estamos todos juntos mas completamente sozinhos</div>
-          <div class="gossip-text">Já estiveste num jantar de família em que toda a gente estava no telemóvel? <em>Sherry Turkle</em> passou anos a estudar exatamente isso — e ficou genuinamente assustada. Ela descobriu que preferimos os textos às chamadas porque podemos editar, controlar, apagar. A conversa real é aterrorizante porque é imprevisível. E os robots de companhia para idosos? Ela chora só de pensar. Estamos a substituir a vulnerabilidade humana por simulacros confortáveis.</div>
+          <div class="gossip-text">Já estiveste num jantar de família em que toda a gente estava no telemóvel? <em>Sherry Turkle</em> passou anos a estudar exatamente isso — e ficou genuinamente assustada. Ela descobriu que preferimos os textos às chamadas porque podemos editar, controlar, apagar. A conversa real é aterrorizante porque é imprevisível. E os robôs de companhia para idosos? Ela chora só de pensar. Estamos a substituir a vulnerabilidade humana por simulacros confortáveis.</div>
           <div class="gossip-quote">"Temos medo de conversar. Por isso enviamos mensagens."</div>
         </div>
       </div>
@@ -1365,8 +1365,6 @@ body {
       </div>
 
     </div>
-  </div>
-
   </div><!-- end #fofocas -->
     </div><!-- end #sub-fofocas -->
 
@@ -1452,9 +1450,6 @@ body {
       </div>
 
     </div>
-  </div>
-
-
   </div><!-- end #historia -->
     </div><!-- end #sub-blog -->
 
@@ -1564,8 +1559,7 @@ body {
         <div class="nar-score-num">Teorias Críticas 3 – 1 Ingenuidade Tecnológica</div>
       </div>
     </div>
-  </div>
-
+    </div><!-- narrative-wrap -->
   </div><!-- end #futebol -->
     </div><!-- end #sub-futebol -->
 
@@ -1670,9 +1664,7 @@ body {
         <div style="font-size:1.1rem;font-weight:800;margin-bottom:0.3rem;">🥇 McLuhan · 🥈 Castells · 🥉 Zuboff</div>
         <div style="font-size:0.8rem;opacity:0.7;margin-top:0.4rem;">Melhor Volta: Silverstone · Prémio Fair Play: Jenkins</div>
       </div>
-    </div>
-  </div>
-
+    </div><!-- narrative-wrap -->
   </div><!-- end #f1 -->
     </div><!-- end #sub-f1 -->
   </div><!-- end #historias -->
@@ -1717,8 +1709,6 @@ body {
       <div class="results-msg" id="fib-final-msg"></div>
       <button class="restart-btn" onclick="restartFib()">Tentar Novamente ↺</button>
     </div>
-  </div>
-
   </div><!-- end #fillinblank -->
     </div><!-- end #sub-fillinblank -->
 
@@ -1764,8 +1754,7 @@ body {
       <div class="results-msg" id="final-msg"></div>
       <button class="restart-btn" onclick="restartQuiz()">Tentar Novamente ↺</button>
     </div>
-      </div>
-    </div><!-- end #sub-quiz -->
+      </div><!-- end #sub-quiz -->
 
     <!-- SUB: CORRESPONDENCIAS -->
     <div class="subpanel" id="sub-correspondencias">
@@ -1787,8 +1776,6 @@ body {
       </div>
     </div>
     <div class="feedback-box" id="match-feedback"></div>
-  </div>
-
   </div><!-- end #correspondencias -->
     </div><!-- end #sub-correspondencias -->
 
@@ -1813,8 +1800,6 @@ body {
       <div class="results-msg" id="sort-final-msg"></div>
       <button class="restart-btn" onclick="restartSort()">Tentar Novamente ↺</button>
     </div>
-  </div>
-
   </div><!-- end #ordenar -->
     </div><!-- end #sub-ordenar -->
   </div><!-- end #exercicios -->
@@ -2448,8 +2433,23 @@ const SORT_SETS = [
         exp:"Rádio (mais quente) → Cinema → Telefone → Televisão (mais frio, mais participação)."
       }
     ]
-  }
-];
+  },
+
+  // TAPSCOTT extra (3→4 total)
+  { theory:"Tapscott", q:"Segundo Tapscott, qual é a principal diferença entre a Net Generation e as gerações anteriores face à autoridade?", opts:["A Net Gen é mais respeitosa da autoridade do que as gerações anteriores","A Net Gen questiona a autoridade e exige justificação em vez de aceitar hierarquias sem explicação","A Net Gen é mais conformista por ter crescido numa era de segurança digital","A Net Gen rejeita qualquer forma de liderança ou organização"], ans:1, exp:"Tapscott vê na Net Gen uma geração que cresce a verificar informação online e por isso questiona a autoridade que não justifica as suas decisões." },
+  { theory:"Tapscott", q:"O que Tapscott defende como consequência da Net Generation para o modelo educativo?", opts:["A educação online deve substituir completamente a sala de aula presencial","O modelo de 'broadcast pedagogy' (professor transmite, aluno recebe passivamente) deve ser substituído por aprendizagem colaborativa e personalizada","Os jovens digitais aprendem melhor sozinhos, sem professores","A educação deve focar-se exclusivamente em competências tecnológicas"], ans:1, exp:"Tapscott critica o modelo de transmissão passiva e defende que a Net Gen aprende melhor através da colaboração, descoberta e personalização." },
+
+  // LIPOVETSKY extra (3→4 total)
+  { theory:"Lipovetsky", q:"O que Lipovetsky entende por 'segunda revolução individualista' na hipermodernidade?", opts:["A revolução digital que tornou cada pessoa um produtor de conteúdo","A intensificação do individualismo para além da primeira modernidade — mais liberdade, mais mobilidade, mais reflexividade, mas também mais ansiedade e instabilidade","A rejeição dos valores coletivos em favor do egoísmo consumista","A revolução das redes sociais que criou a cultura do 'eu'"], ans:1, exp:"A segunda revolução individualista de Lipovetsky é a hipermodernidade: o individualismo modernista levado ao extremo, com mais liberdade mas também mais incerteza e compulsão." },
+
+  // LUHMANN extra (2→3 total)
+  { theory:"Luhmann", q:"Como Luhmann distingue os 'media de difusão' dos 'media de interação'?", opts:["Os media de difusão são digitais; os media de interação são analógicos","Os media de difusão (TV, imprensa) separam emissor de recetor e permitem comunicação sem presença; os media de interação pressupõem copresença e feedback imediato","Os media de difusão são mais confiáveis; os media de interação são mais manipuláveis","Os media de difusão têm mais audiência; os media de interação são mais profundos"], ans:1, exp:"Para Luhmann, a distinção fundamental é a presença: media de difusão eliminam a copresença e permitem comunicação em escala; media de interação pressupõem presença mútua." },
+
+  // SILVERSTONE extra (2→4 total)
+      // CASTELLS extra (6→8 total)
+      // TURKLE extra (6→8 total)  
+      // VAN DIJCK extra (6→8 total)
+    ];
 
 let sortSetIdx = 0;
 let sortQIdx = 0;
