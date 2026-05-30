@@ -58,7 +58,7 @@ body {
   z-index: 1;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 0 2rem 6rem;
+  padding: 2.5rem 2rem 6rem;
 }
 
 /* HERO */
@@ -71,6 +71,7 @@ body {
   text-align: center;
   padding: 4rem 2rem;
 }
+.hero.hidden { display: none; }
 .hero-title {
   font-family: 'Syne', sans-serif;
   font-size: clamp(2.4rem, 6vw, 5rem);
@@ -134,7 +135,7 @@ body {
 
 /* SECTIONS */
 .section { display: block; padding-top: 0; }
-.main-panel { display: none; padding-top: 3rem; }
+.main-panel { display: none; }
 .main-panel.active { display: block; }
 
 /* SECTION HEADER */
@@ -149,13 +150,13 @@ body {
 }
 .section-title {
   font-family: 'Syne', sans-serif;
-  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
   font-weight: 800;
   text-transform: uppercase;
   color: var(--navy);
   letter-spacing: 0.04em;
   line-height: 1.1;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
 }
 
 /* THEORY CARDS — resumos */
@@ -1142,7 +1143,7 @@ body {
 <!-- NAV -->
 <nav class="nav" id="main-nav">
   <div class="nav-inner">
-    <button class="nav-btn active" onclick="showMain('resumos',this)">Resumos</button>
+    <button class="nav-btn" onclick="showMain('resumos',this)">Resumos</button>
     <button class="nav-btn" onclick="showMain('historias',this)">Histórias</button>
     <button class="nav-btn" onclick="showMain('exercicios',this)">Exercícios</button>
   </div>
@@ -1152,7 +1153,7 @@ body {
 <div class="shell">
 
   <!-- RESUMOS -->
-  <div class="main-panel active" id="resumos">
+  <div class="main-panel" id="resumos">
     <div class="section-label">Secção 01</div>
     <h2 class="section-title">Resumos<br>das Teorias</h2>
     <div class="theories-grid">
@@ -1239,9 +1240,10 @@ body {
 
   <!-- HISTORIAS CONTAINER -->
   <div class="main-panel" id="historias">
-    <div class="section-label">Histórias</div>
-    <h2 class="section-title">Conta a<br>História</h2>
-    <p style="font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--muted);margin-bottom:2rem;letter-spacing:0.02em;">— A matéria em formatos narrativos diferentes</p>
+    <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+      <h2 style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;text-transform:uppercase;color:var(--navy);letter-spacing:0.04em;">Histórias</h2>
+      <span style="font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--muted);">— A matéria em formatos narrativos diferentes</span>
+    </div>
     <div class="subtab-bar">
       <button class="subtab-btn active" onclick="showSub('historias','sub-fofocas',this)">💬 Fofoca</button>
       <button class="subtab-btn" onclick="showSub('historias','sub-blog',this)">✦ Post de Blog</button>
@@ -1671,9 +1673,10 @@ body {
 
   <!-- EXERCICIOS CONTAINER -->
   <div class="main-panel" id="exercicios">
-    <div class="section-label">Exercícios</div>
-    <h2 class="section-title">Exercícios<br>Interativos</h2>
-    <p style="font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--muted);margin-bottom:2rem;letter-spacing:0.02em;">— Pratica e consolida a matéria</p>
+    <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+      <h2 style="font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;text-transform:uppercase;color:var(--navy);letter-spacing:0.04em;">Exercícios</h2>
+      <span style="font-family:'DM Sans',sans-serif;font-size:0.88rem;color:var(--muted);">— Pratica e consolida a matéria</span>
+    </div>
     <div class="subtab-bar">
       <button class="subtab-btn active" onclick="showSub('exercicios','sub-fillinblank',this)">✏️ Fill in the Blank</button>
       <button class="subtab-btn" onclick="showSub('exercicios','sub-quiz',this)">🧠 Quiz</button>
@@ -1808,17 +1811,29 @@ body {
 
 <script>
 function scrollToStudy() {
-  document.getElementById('main-nav').scrollIntoView({ behavior: 'smooth' });
+  var hero = document.getElementById('hero');
+  if (hero) hero.classList.add('hidden');
+  // activate resumos
+  document.querySelectorAll('.main-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('resumos').classList.add('active');
+  document.querySelectorAll('.nav-btn')[0].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function showMain(id, btn) {
   try {
+    var hero = document.getElementById('hero');
+    if (hero) hero.classList.add('hidden');
     document.querySelectorAll('.main-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     var el = document.getElementById(id);
     if (!el) { console.error('showMain: no element with id='+id); return; }
     el.classList.add('active');
     btn.classList.add('active');
+    // Init the first active subpanel
+    if (id === 'exercicios') { requestAnimationFrame(() => { fibInitialized = false; initFib(); }); }
+    if (id === 'historias') { /* just display */ }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } catch(e) { console.error('showMain error:', e); }
 }
@@ -1830,11 +1845,14 @@ function showSub(parentId, subId, btn) {
     parent.querySelectorAll('.subtab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(subId).classList.add('active');
     btn.classList.add('active');
-    if (subId === 'sub-quiz') { quizInitialized=false; initQuiz(); }
-    if (subId === 'sub-fillinblank') { fibInitialized=false; initFib(); }
-    if (subId === 'sub-correspondencias') initMatch();
-    if (subId === 'sub-ordenar') initSort();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Init after DOM update
+    requestAnimationFrame(() => {
+      if (subId === 'sub-quiz') { quizInitialized=false; initQuiz(); }
+      if (subId === 'sub-fillinblank') { fibInitialized=false; initFib(); }
+      if (subId === 'sub-correspondencias') initMatch();
+      if (subId === 'sub-ordenar') initSort();
+    });
   } catch(e) { console.error('showSub error:', e); }
 }
 
@@ -2068,11 +2086,11 @@ function restartQuiz() {
   initQuiz();
 }
 
-// On load: ensure correct initial state
+// On load: hide all panels, show hero
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.main-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('resumos').classList.add('active');
-  document.querySelectorAll('.nav-btn')[0].classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  // Hero is shown by default (no hidden class)
 });
 
 /* ===== FILL IN THE BLANK ===== */
@@ -2156,6 +2174,7 @@ function initFib() {
 }
 
 function renderFib() {
+  try {
   fibAnswered = false;
   const total = fibData.length;
   const q = fibData[fibIdx];
@@ -2170,6 +2189,7 @@ function renderFib() {
   document.getElementById('fib-sentence').innerHTML =
     `${q.before} <span class="fib-blank"><input class="fib-input" id="fib-input" type="text" placeholder="..." autocomplete="off" onkeydown="if(event.key==='Enter')checkFib()"></span> ${q.after}`;
   setTimeout(()=>{ const el=document.getElementById('fib-input'); if(el) el.focus(); },80);
+  } catch(e) { console.error('renderFib error:', e); }
 }
 
 function showFibHint() {
@@ -2256,7 +2276,7 @@ const MATCH_SETS = [
       { left:"Hipermodernidade", right:"Lipovetsky — intensificação paradoxal da modernidade" },
       { left:"Realidade de 2ª Ordem", right:"Luhmann — sociedade observa-se via media" },
       { left:"Net Generation", right:"Tapscott — geração nascida após 1977 com a internet" },
-      { left:"Comutadores de Rede", right:"Castells — quem controla ligações entre redes tem poder" },
+      { left:"Switches de Rede", right:"Castells — quem controla as ligações entre redes tem poder" },
       { left:"Convergência Cultural", right:"Jenkins — fluxo de conteúdos por múltiplas plataformas" },
       { left:"Alone Together", right:"Turkle — conectados mas isolados" },
       { left:"Commodification", right:"van Dijck — transformação de relações sociais em produto" }
@@ -2273,8 +2293,10 @@ let matchRightOrder = [];
 let matchState = {}; // idx -> matched/wrong
 
 function initMatch() {
-  renderMatchTabs();
-  loadMatchSet(0);
+  try {
+    renderMatchTabs();
+    loadMatchSet(0);
+  } catch(e) { console.error('initMatch error:', e); }
 }
 
 function renderMatchTabs() {
@@ -2459,8 +2481,10 @@ let sortCurrentItems = [];
 let sortDragSrc = null;
 
 function initSort() {
-  renderSortTabs();
-  loadSortSet(0);
+  try {
+    renderSortTabs();
+    loadSortSet(0);
+  } catch(e) { console.error('initSort error:', e); }
 }
 
 function renderSortTabs() {
