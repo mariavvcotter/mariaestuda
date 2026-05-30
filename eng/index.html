@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Study Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=Instrument+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════ TOKENS ═══════════════ */
+:root {
+  --bg: #f5f0e8;
+  --surface: #fdfaf5;
+  --surface2: #f0ebe0;
+  --ink: #1c1510;
+  --ink2: #4a3f35;
+  --ink3: #8a7a6a;
+  --accent: #2d5f3f;       /* forest green */
+  --accent2: #c4440a;      /* rust */
+  --accent3: #1a4a7a;      /* navy */
+  --accent4: #7a3a6a;      /* plum */
+  --gold: #c8960a;
+  --border: rgba(0,0,0,0.09);
+  --border2: rgba(0,0,0,0.05);
+  --shadow: 0 2px 20px rgba(0,0,0,0.07);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+  --r: 14px;
+  --r-sm: 8px;
+  --ff-display: 'Fraunces', Georgia, serif;
+  --ff-body: 'Instrument Sans', sans-serif;
+  --ff-mono: 'DM Mono', monospace;
+}
+
+/* ═══════════════ RESET ═══════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--ff-body);
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ═══════════════ HERO ═══════════════ */
+.hero {
+  background: var(--ink);
+  color: #f5f0e8;
+  padding: 3.5rem 2rem 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 80% at 15% 60%, rgba(45,95,63,0.35) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 70% at 85% 30%, rgba(196,68,10,0.2) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 50% at 55% 80%, rgba(26,74,122,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-inner { position: relative; z-index: 1; }
+.hero-flag { font-size: 2.8rem; display: block; margin-bottom: 0.6rem; letter-spacing: 0.05em; }
+.hero h1 {
+  font-family: var(--ff-display);
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.hero h1 em { color: #7ecf9e; font-style: italic; }
+.hero-sub { margin-top: 0.75rem; opacity: 0.6; font-size: 0.92rem; }
+.hero-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 1.25rem; }
+.hero-pill {
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 999px; padding: 0.25rem 0.9rem; font-size: 0.78rem; font-weight: 500;
+}
+
+/* ═══════════════ NAV ═══════════════ */
+.nav-wrap {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.nav {
+  display: flex; align-items: stretch;
+  overflow-x: auto; scrollbar-width: none;
+  padding: 0 1rem;
+  max-width: 1200px; margin: 0 auto;
+}
+.nav::-webkit-scrollbar { display: none; }
+.nav-btn {
+  background: none; border: none; cursor: pointer;
+  font-family: var(--ff-body); font-size: 0.82rem; font-weight: 500;
+  padding: 0.9rem 0.95rem;
+  color: var(--ink3);
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.18s; white-space: nowrap;
+  display: flex; align-items: center; gap: 0.35rem;
+}
+.nav-btn:hover { color: var(--accent); }
+.nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.nav-btn.search-btn { margin-left: auto; color: var(--ink2); }
+.nav-btn.search-btn.active { color: var(--accent2); border-bottom-color: var(--accent2); }
+
+/* ═══════════════ SEARCH BAR ═══════════════ */
+.search-wrap {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 1.5rem;
+  display: none;
+  position: sticky; top: 45px; z-index: 99;
+}
+.search-wrap.open { display: block; animation: fadeUp 0.2s ease; }
+.search-row { display: flex; gap: 0.6rem; align-items: center; max-width: 680px; margin: 0 auto; }
+.search-input {
+  flex: 1; border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 0.6rem 1rem;
+  font-family: var(--ff-body); font-size: 0.9rem;
+  background: var(--bg); outline: none; transition: border-color 0.2s;
+}
+.search-input:focus { border-color: var(--accent); }
+.search-x { background: none; border: none; cursor: pointer; font-size: 1.1rem; color: var(--ink3); padding: 0.25rem; }
+.search-x:hover { color: var(--ink); }
+.search-results { max-width: 680px; margin: 0.75rem auto 0; max-height: 52vh; overflow-y: auto; }
+.search-empty { font-size: 0.85rem; color: var(--ink3); text-align: center; padding: 1rem 0; }
+.sr-item {
+  background: var(--bg); border: 1px solid var(--border2);
+  border-radius: 10px; padding: 0.7rem 1rem; margin-bottom: 0.45rem;
+  cursor: pointer; transition: all 0.15s;
+}
+.sr-item:hover { background: var(--surface); border-color: var(--accent); transform: translateX(3px); }
+.sr-section { font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--accent); margin-bottom: 0.2rem; }
+.sr-title { font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 0.2rem; }
+.sr-snip { font-size: 0.8rem; line-height: 1.5; color: var(--ink2); }
+.sr-snip mark { background: #fffab0; color: var(--ink); border-radius: 3px; padding: 0 2px; }
+.sr-count { font-size: 0.76rem; color: var(--ink3); margin-bottom: 0.5rem; }
+
+/* ═══════════════ MAIN ═══════════════ */
+.main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem; }
+.section { display: none; }
+.section.active { display: block; animation: fadeUp 0.28s ease; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* ═══════════════ SECTION HEADER ═══════════════ */
+.sh { margin-bottom: 2rem; }
+.sh h2 { font-family: var(--ff-display); font-size: 2rem; font-weight: 900; line-height: 1.1; }
+.sh h2 span { color: var(--accent2); font-style: italic; }
+.sh p { font-size: 0.9rem; color: var(--ink3); margin-top: 0.3rem; }
+
+/* ═══════════════ CARDS ═══════════════ */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.1rem; margin-bottom: 2rem; }
+.grid-3 { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+
+.card {
+  background: var(--surface); border-radius: var(--r);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow); padding: 1.4rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.card-tag {
+  font-size: 0.66rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.09em; margin-bottom: 0.5rem;
+}
+.card h3 { font-family: var(--ff-display); font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; line-height: 1.3; }
+.card p, .card li { font-size: 0.87rem; line-height: 1.7; color: var(--ink2); }
+.card ul { padding-left: 1.1rem; }
+.card li { margin-bottom: 0.2rem; }
+
+.c-green { border-top: 3px solid var(--accent); }
+.c-rust  { border-top: 3px solid var(--accent2); }
+.c-navy  { border-top: 3px solid var(--accent3); }
+.c-plum  { border-top: 3px solid var(--accent4); }
+.c-gold  { border-top: 3px solid var(--gold); }
+
+/* ═══════════════ GRAMMAR TABLES ═══════════════ */
+.grammar-box {
+  background: var(--surface); border-radius: var(--r);
+  border: 1px solid var(--border); box-shadow: var(--shadow);
+  padding: 1.75rem; margin-bottom: 1.5rem; overflow-x: auto;
+}
+.grammar-box h3 {
+  font-family: var(--ff-display); font-size: 1.25rem; font-weight: 700;
+  margin-bottom: 1.25rem; color: var(--ink);
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.gtable { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 0.75rem 0; }
+.gtable th {
+  background: var(--ink); color: #f5f0e8;
+  padding: 0.55rem 0.9rem; text-align: left; font-size: 0.78rem; font-weight: 600;
+}
+.gtable td { padding: 0.55rem 0.9rem; border-bottom: 1px solid var(--surface2); }
+.gtable tr:last-child td { border-bottom: none; }
+.gtable tr:nth-child(even) td { background: var(--bg); }
+.gtable td code {
+  font-family: var(--ff-mono); font-size: 0.83rem;
+  background: #e8f5ee; color: var(--accent); padding: 1px 6px; border-radius: 5px;
+}
+.gtable td .neg { background: #fce8e8; color: var(--accent2); }
+.gtable td .q   { background: #e8f0ff; color: var(--accent3); }
+
+.formula {
+  background: var(--ink); color: #f5f0e8;
+  border-radius: 10px; padding: 0.85rem 1.25rem;
+  font-family: var(--ff-mono); font-size: 0.9rem;
+  margin: 0.75rem 0; letter-spacing: 0.02em;
+}
+.formula .pos { color: #7ecf9e; }
+.formula .neg { color: #f5a07a; }
+.formula .q   { color: #90b8f8; }
+
+.rule-box {
+  background: linear-gradient(135deg, #edf7f0, #e0f5e8);
+  border: 1px solid #b0dfc0; border-radius: 10px;
+  padding: 0.85rem 1.1rem; margin: 0.75rem 0;
+  font-size: 0.85rem; line-height: 1.65; color: #1a4a2a;
+}
+.rule-box strong { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 0.3rem; }
+.warn-box {
+  background: linear-gradient(135deg, #fff5ee, #ffeee0);
+  border: 1px solid #f0c8a0; border-radius: 10px;
+  padding: 0.85rem 1.1rem; margin: 0.75rem 0;
+  font-size: 0.85rem; line-height: 1.65; color: #5a2a0a;
+}
+.warn-box strong { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent2); margin-bottom: 0.3rem; }
+
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+.compare-col { border-radius: 10px; padding: 1rem; }
+.compare-col h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.6rem; }
+.compare-col ul { font-size: 0.82rem; line-height: 1.65; padding-left: 1rem; color: var(--ink2); }
+.compare-col li { margin-bottom: 0.3rem; }
+.col-green { background: #edf7f0; border: 1px solid #b0dfc0; }
+.col-green h4 { color: var(--accent); }
+.col-blue  { background: #eef3ff; border: 1px solid #b0c8f0; }
+.col-blue  h4 { color: var(--accent3); }
+
+/* ═══════════════ VOCAB ═══════════════ */
+.vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.6rem; margin: 1rem 0; }
+.vocab-item {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 0.75rem 0.85rem;
+  transition: all 0.15s; cursor: default;
+}
+.vocab-item:hover { background: var(--surface2); transform: scale(1.02); }
+.vocab-en { font-weight: 600; font-size: 0.88rem; color: var(--ink); }
+.vocab-pt { font-size: 0.78rem; color: var(--ink3); margin-top: 0.15rem; }
+.vocab-ex { font-size: 0.75rem; color: var(--accent); font-style: italic; margin-top: 0.2rem; }
+
+.vocab-cat {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.09em; color: var(--ink3); margin: 1.25rem 0 0.6rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.vocab-cat::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ═══════════════ ADVERBS / FREQUENCY ═══════════════ */
+.freq-bar-wrap { margin: 1.25rem 0; }
+.freq-row {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin-bottom: 0.55rem;
+}
+.freq-label { font-weight: 600; font-size: 0.82rem; width: 90px; flex-shrink: 0; color: var(--ink); }
+.freq-pct { font-size: 0.75rem; color: var(--ink3); width: 38px; text-align: right; flex-shrink: 0; }
+.freq-track { flex: 1; height: 10px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
+.freq-fill { height: 100%; border-radius: 99px; background: var(--accent); transition: width 0.8s ease; }
+
+/* ═══════════════ FLASHCARDS ═══════════════ */
+.fc-wrap { max-width: 580px; margin: 0 auto; }
+.fc-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+.fc-prog { font-size: 0.82rem; color: var(--ink3); }
+.fc-cat-label {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; padding: 2px 8px; border-radius: 99px;
+  background: var(--accent); color: white;
+}
+.fc-pbar { background: var(--surface2); border-radius: 99px; height: 4px; margin-bottom: 0.75rem; }
+.fc-pfill { height: 100%; border-radius: 99px; background: var(--accent); transition: width 0.35s; }
+.fc-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 18px; min-height: 200px; padding: 2rem;
+  cursor: pointer; position: relative; box-shadow: var(--shadow);
+  transition: box-shadow 0.2s, border-color 0.2s;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  text-align: center;
+}
+.fc-card:hover { box-shadow: var(--shadow-lg); border-color: var(--accent); }
+.fc-side { width: 100%; }
+.fc-side.back { display: none; }
+.fc-card.revealed .fc-side.front { display: none; }
+.fc-card.revealed .fc-side.back { display: block; }
+.fc-card.revealed { border-color: var(--accent); background: linear-gradient(135deg, #f0faf4, #e8f8ee); }
+.fc-q { font-family: var(--ff-display); font-size: 1.2rem; font-weight: 700; line-height: 1.4; color: var(--ink); }
+.fc-type { font-size: 0.72rem; color: var(--ink3); margin-bottom: 0.5rem; }
+.fc-hint { font-size: 0.78rem; color: var(--ink3); margin-top: 1rem; }
+.fc-a { font-size: 0.92rem; line-height: 1.7; color: var(--ink2); }
+.fc-a code { font-family: var(--ff-mono); background: #e8f5ee; color: var(--accent); padding: 1px 5px; border-radius: 4px; font-size: 0.88rem; }
+.fc-a strong { color: var(--ink); }
+.fc-nav { display: flex; gap: 0.75rem; margin-top: 1rem; }
+.btn { padding: 0.6rem 1.5rem; border-radius: 99px; border: none; cursor: pointer; font-family: var(--ff-body); font-size: 0.88rem; font-weight: 600; transition: all 0.18s; }
+.btn-ghost { background: var(--surface2); color: var(--ink); }
+.btn-ghost:hover { background: var(--border); }
+.btn-solid { background: var(--ink); color: white; }
+.btn-solid:hover { background: var(--accent); }
+.fc-filter { display: flex; gap: 0.45rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.fc-filter-btn {
+  background: var(--surface2); border: 1.5px solid transparent;
+  border-radius: 99px; padding: 0.3rem 0.85rem;
+  font-size: 0.78rem; font-weight: 500; cursor: pointer; transition: all 0.15s;
+  color: var(--ink2);
+}
+.fc-filter-btn.on { background: var(--accent); color: white; border-color: var(--accent); }
+
+/* ═══════════════ QUIZ ═══════════════ */
+.quiz-wrap { max-width: 640px; margin: 0 auto; }
+.quiz-card {
+  background: var(--surface); border-radius: var(--r);
+  border: 1px solid var(--border); box-shadow: var(--shadow); padding: 1.75rem;
+}
+.quiz-num { font-size: 0.72rem; font-weight: 700; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+.quiz-pbar { background: var(--surface2); border-radius: 99px; height: 4px; margin-bottom: 0.85rem; }
+.quiz-pfill { height: 100%; border-radius: 99px; background: var(--accent2); transition: width 0.3s; }
+.quiz-q { font-family: var(--ff-display); font-size: 1.15rem; font-weight: 700; line-height: 1.45; margin-bottom: 1.25rem; color: var(--ink); }
+.quiz-opts { display: flex; flex-direction: column; gap: 0.55rem; }
+.quiz-opt {
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 0.75rem 1rem;
+  cursor: pointer; font-family: var(--ff-body); font-size: 0.9rem;
+  text-align: left; display: flex; gap: 0.75rem; align-items: center;
+  transition: all 0.18s; color: var(--ink);
+}
+.quiz-opt:hover:not(:disabled) { border-color: var(--accent3); background: #eef3ff; }
+.quiz-opt.correct { background: #edf7f0; border-color: var(--accent); color: #1a4a2a; }
+.quiz-opt.wrong   { background: #fce8e8; border-color: var(--accent2); color: #5a0a0a; }
+.quiz-opt .ol {
+  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+  background: var(--surface2); display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700;
+}
+.quiz-opt.correct .ol { background: var(--accent); color: white; }
+.quiz-opt.wrong   .ol { background: var(--accent2); color: white; }
+.quiz-exp {
+  background: var(--bg); border-left: 3px solid var(--accent3);
+  border-radius: 0 10px 10px 0; padding: 0.75rem 1rem;
+  font-size: 0.84rem; line-height: 1.6; color: var(--ink2);
+  margin-top: 0.85rem; display: none;
+}
+.quiz-exp.show { display: block; animation: fadeUp 0.25s; }
+.quiz-exp code { font-family: var(--ff-mono); background: #e8f0ff; color: var(--accent3); padding: 1px 5px; border-radius: 4px; font-size: 0.82rem; }
+.quiz-next { display: none; margin-top: 0.75rem; }
+.quiz-next.show { display: inline-flex; }
+.quiz-score {
+  background: var(--ink); color: #f5f0e8; border-radius: var(--r);
+  padding: 3rem 2rem; text-align: center; display: none;
+}
+.quiz-score.show { display: block; animation: fadeUp 0.35s; }
+.score-big { font-family: var(--ff-display); font-size: 4.5rem; font-weight: 900; color: #7ecf9e; line-height: 1; }
+.score-msg { font-size: 1rem; opacity: 0.75; margin: 0.75rem 0 1.5rem; }
+
+/* ═══════════════ FILL IN BLANKS ═══════════════ */
+.fib-wrap { max-width: 640px; margin: 0 auto; }
+.fib-card {
+  background: var(--surface); border-radius: var(--r);
+  border: 1px solid var(--border); box-shadow: var(--shadow);
+  padding: 1.75rem; margin-bottom: 1rem;
+}
+.fib-num { font-size: 0.72rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.fib-sentence { font-family: var(--ff-display); font-size: 1.1rem; line-height: 1.6; color: var(--ink); margin-bottom: 1rem; }
+.fib-input {
+  border: none; border-bottom: 2.5px solid var(--accent3);
+  background: transparent; font-family: var(--ff-body); font-size: 1rem;
+  padding: 2px 6px; outline: none; color: var(--ink);
+  min-width: 110px; transition: border-color 0.2s;
+  font-weight: 600;
+}
+.fib-input:focus { border-bottom-color: var(--accent); }
+.fib-input.correct { border-bottom-color: var(--accent); color: var(--accent); }
+.fib-input.wrong   { border-bottom-color: var(--accent2); color: var(--accent2); }
+.fib-hint { font-size: 0.8rem; color: var(--ink3); font-style: italic; margin-bottom: 0.75rem; }
+.fib-feedback { font-size: 0.84rem; margin-top: 0.5rem; display: none; line-height: 1.55; }
+.fib-feedback.show { display: block; }
+.fib-check-btn {
+  background: var(--accent3); color: white;
+  border: none; border-radius: 8px; padding: 0.5rem 1.2rem;
+  font-family: var(--ff-body); font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: background 0.15s;
+}
+.fib-check-btn:hover { background: var(--accent); }
+.fib-actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin-top: 0.75rem; }
+.fib-score-bar {
+  background: var(--surface); border-radius: var(--r);
+  border: 1px solid var(--border); padding: 1.25rem 1.5rem;
+  display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.fib-score-label { font-size: 0.82rem; color: var(--ink3); }
+.fib-score-num { font-family: var(--ff-display); font-size: 1.5rem; font-weight: 900; color: var(--accent); }
+.fib-reveal-btn {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 0.4rem 0.9rem;
+  font-family: var(--ff-body); font-size: 0.8rem; font-weight: 500;
+  cursor: pointer; color: var(--ink2); transition: all 0.15s;
+}
+.fib-reveal-btn:hover { background: var(--border); }
+
+/* ═══════════════ STORY ═══════════════ */
+.story-wrap { max-width: 680px; margin: 0 auto; }
+.story-chap { margin-bottom: 3rem; }
+.story-chap-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent2); margin-bottom: 0.35rem; }
+.story-chap h3 { font-family: var(--ff-display); font-size: 1.55rem; font-weight: 900; line-height: 1.2; margin-bottom: 1.1rem; }
+.story-chap h3 em { color: var(--accent); font-style: italic; }
+.story-body p { font-size: 0.97rem; line-height: 1.85; color: var(--ink2); margin-bottom: 1rem; }
+.story-body p strong { color: var(--ink); }
+.story-highlight {
+  background: var(--ink); color: #f5f0e8;
+  border-radius: 12px; padding: 1rem 1.35rem; margin: 1.25rem 0;
+  font-family: var(--ff-mono); font-size: 0.88rem; line-height: 1.8;
+}
+.story-highlight .ex { color: #7ecf9e; }
+.story-highlight .neg { color: #f5a07a; }
+.story-highlight .q { color: #90b8f8; }
+.story-pull {
+  border-left: 3px solid var(--gold); background: linear-gradient(135deg, #fffbee, #fff5d8);
+  border-radius: 0 12px 12px 0; padding: 1rem 1.4rem; margin: 1.25rem 0;
+}
+.story-pull p { font-family: var(--ff-display); font-size: 1.05rem; font-style: italic; color: #5a3a00 !important; margin: 0 !important; }
+.story-divider { text-align: center; margin: 2rem 0; color: var(--ink3); font-size: 1.1rem; letter-spacing: 0.3em; }
+.story-tag {
+  display: inline-block; font-size: 0.7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  padding: 2px 8px; border-radius: 5px; margin: 0 2px;
+  vertical-align: middle;
+}
+.st-g { background: #e0f5e8; color: var(--accent); }
+.st-r { background: #fce8e0; color: var(--accent2); }
+.st-b { background: #e8f0ff; color: var(--accent3); }
+
+/* ═══════════════ RESPONSIVE ═══════════════ */
+@media (max-width: 600px) {
+  .grid, .compare-grid { grid-template-columns: 1fr; }
+  .vocab-grid { grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); }
+  .hero h1 { font-size: 2rem; }
+  .fc-nav { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════ HERO ══════════════════════════════════ -->
+<header class="hero">
+  <div class="hero-inner">
+    <span class="hero-flag">🇬🇧</span>
+    <h1>English <em>Study</em> Platform</h1>
+    <p class="hero-sub">Grammar · Vocabulary · Exercises · Stories</p>
+    <div class="hero-pills">
+      <span class="hero-pill">Present Simple</span>
+      <span class="hero-pill">Present Continuous</span>
+      <span class="hero-pill">Adverbs of Frequency</span>
+      <span class="hero-pill">Quantity Words</span>
+      <span class="hero-pill">Adjectives</span>
+      <span class="hero-pill">House &amp; Home</span>
+      <span class="hero-pill">Daily Vocabulary</span>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════ NAV ══════════════════════════════════ -->
+<div class="nav-wrap">
+  <nav class="nav" id="nav">
+    <button class="nav-btn active"  onclick="go('grammar')">📐 Grammar</button>
+    <button class="nav-btn" onclick="go('vocab')">📖 Vocabulary</button>
+    <button class="nav-btn" onclick="go('flashcards')">🃏 Flashcards</button>
+    <button class="nav-btn" onclick="go('quiz')">🎯 Quiz</button>
+    <button class="nav-btn" onclick="go('exercises')">✏️ Exercises</button>
+    <button class="nav-btn" onclick="go('story')">📚 Story</button>
+    <button class="nav-btn search-btn" id="sb-toggle" onclick="toggleSearch()" title="Search (Ctrl+K)">🔍 Search</button>
+  </nav>
+</div>
+
+<!-- search bar -->
+<div class="search-wrap" id="search-wrap">
+  <div class="search-row">
+    <input class="search-input" id="s-input" type="text" placeholder='Search anything… "present simple", "house", "always", "plumber"' autocomplete="off" oninput="doSearch(this.value)" onkeydown="if(event.key==='Escape')closeSearch()">
+    <button class="search-x" onclick="closeSearch()">✕</button>
+  </div>
+  <div class="search-results" id="s-results"></div>
+</div>
+
+<main class="main">
+
+<!-- ══════════════════════════════════════════════════════
+     GRAMMAR
+══════════════════════════════════════════════════════ -->
+<section class="section active" id="grammar">
+<div class="sh"><h2>📐 <span>Grammar</span> Explained</h2><p>Present Simple · Present Continuous · Adverbs of Frequency · Quantity Words</p></div>
+
+<!-- ─── PRESENT SIMPLE ─── -->
+<div class="grammar-box">
+  <h3>🟢 Present Simple</h3>
+  <p style="font-size:.88rem;color:var(--ink2);margin-bottom:1rem">Use it for <strong>habits, routines, facts, and general truths</strong>.</p>
+
+  <div class="formula">
+    <span class="pos">✅ [Subject] + verb (base) &nbsp;→&nbsp; <em>She works every day.</em></span><br>
+    <span class="neg">❌ [Subject] + don't/doesn't + verb &nbsp;→&nbsp; <em>He doesn't smoke.</em></span><br>
+    <span class="q">❓ Do/Does + [Subject] + verb? &nbsp;→&nbsp; <em>Do you like coffee?</em></span>
+  </div>
+
+  <table class="gtable">
+    <thead><tr><th>Subject</th><th>Positive</th><th>Negative</th><th>Question</th></tr></thead>
+    <tbody>
+      <tr><td>I / You / We / They</td><td><code>work</code></td><td><code class="neg">don't work</code></td><td><code class="q">Do you work?</code></td></tr>
+      <tr><td>He / She / It</td><td><code>works</code></td><td><code class="neg">doesn't work</code></td><td><code class="q">Does she work?</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="rule-box">
+    <strong>⚠️ 3rd person singular (he/she/it) — spelling rules</strong>
+    Most verbs → add <strong>-s</strong>: work → works, eat → eats<br>
+    Verbs ending in -s, -sh, -ch, -x, -o → add <strong>-es</strong>: go → goes, watch → watches, fix → fixes<br>
+    Verbs ending in consonant + y → change y to <strong>-ies</strong>: study → studies, try → tries<br>
+    Irregular: have → <strong>has</strong>, be → <strong>is</strong>
+  </div>
+
+  <div class="rule-box">
+    <strong>📌 When to use Present Simple</strong>
+    • Habits &amp; routines: <em>I wake up at 7am. She drinks tea every morning.</em><br>
+    • Permanent situations: <em>He lives in London. I work at a hospital.</em><br>
+    • General truths &amp; facts: <em>Water boils at 100°C. The sun rises in the east.</em><br>
+    • Schedules &amp; timetables: <em>The train leaves at 8:15.</em><br>
+    • With adverbs of frequency: <em>She always brushes her teeth twice a day.</em>
+  </div>
+
+  <p style="font-size:.82rem;font-weight:600;margin:.75rem 0 .4rem;color:var(--ink)">Examples:</p>
+  <table class="gtable">
+    <thead><tr><th>✅ Positive</th><th>❌ Negative</th><th>❓ Question</th></tr></thead>
+    <tbody>
+      <tr><td>I <code>play</code> tennis on Sundays.</td><td>I <code class="neg">don't play</code> football.</td><td><code class="q">Do you play</code> tennis?</td></tr>
+      <tr><td>She <code>reads</code> every night.</td><td>She <code class="neg">doesn't read</code> magazines.</td><td><code class="q">Does she read</code> books?</td></tr>
+      <tr><td>They <code>study</code> English.</td><td>They <code class="neg">don't study</code> French.</td><td><code class="q">Do they study</code> hard?</td></tr>
+      <tr><td>He <code>goes</code> to the gym.</td><td>He <code class="neg">doesn't go</code> running.</td><td><code class="q">Does he go</code> often?</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ─── PRESENT CONTINUOUS ─── -->
+<div class="grammar-box">
+  <h3>🔵 Present Continuous</h3>
+  <p style="font-size:.88rem;color:var(--ink2);margin-bottom:1rem">Use it for actions <strong>happening right now</strong> or <strong>temporary situations</strong>.</p>
+
+  <div class="formula">
+    <span class="pos">✅ [Subject] + am/is/are + verb-ing &nbsp;→&nbsp; <em>She is working right now.</em></span><br>
+    <span class="neg">❌ [Subject] + am/is/are + not + verb-ing &nbsp;→&nbsp; <em>I'm not sleeping.</em></span><br>
+    <span class="q">❓ Am/Is/Are + [Subject] + verb-ing? &nbsp;→&nbsp; <em>Are you listening?</em></span>
+  </div>
+
+  <table class="gtable">
+    <thead><tr><th>Subject</th><th>Positive</th><th>Negative</th><th>Question</th></tr></thead>
+    <tbody>
+      <tr><td>I</td><td><code>I'm working</code></td><td><code class="neg">I'm not working</code></td><td><code class="q">Am I working?</code></td></tr>
+      <tr><td>He / She / It</td><td><code>She's working</code></td><td><code class="neg">She isn't working</code></td><td><code class="q">Is she working?</code></td></tr>
+      <tr><td>You / We / They</td><td><code>They're working</code></td><td><code class="neg">They aren't working</code></td><td><code class="q">Are they working?</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="rule-box">
+    <strong>⚠️ -ing spelling rules</strong>
+    Most verbs → add <strong>-ing</strong>: eat → eating, sleep → sleeping<br>
+    Verbs ending in -e → drop e, add <strong>-ing</strong>: make → making, write → writing<br>
+    Short verbs (CVC) → double final consonant + <strong>-ing</strong>: run → running, sit → sitting, swim → swimming<br>
+    Verbs ending in -ie → change to <strong>-ying</strong>: lie → lying, die → dying
+  </div>
+
+  <div class="warn-box">
+    <strong>🚫 Stative verbs — NEVER use with Present Continuous</strong>
+    These verbs describe states, not actions — they don't take -ing:<br>
+    <strong>Feelings:</strong> love, hate, like, want, need, prefer<br>
+    <strong>Thinking:</strong> know, believe, understand, think (= believe), remember, forget<br>
+    <strong>Senses:</strong> see, hear, smell, taste, seem, appear<br>
+    <strong>Possession:</strong> have (= own), own, belong, contain<br>
+    ❌ <em>I am knowing the answer.</em> &nbsp;✅ <em>I know the answer.</em>
+  </div>
+
+  <div class="compare-grid">
+    <div class="compare-col col-green">
+      <h4>🟢 Present Simple</h4>
+      <ul>
+        <li><em>I drink coffee every morning.</em> (habit)</li>
+        <li><em>She works at a school.</em> (permanent)</li>
+        <li><em>He always walks to work.</em> (routine)</li>
+        <li><em>They don't eat meat.</em> (general)</li>
+      </ul>
+    </div>
+    <div class="compare-col col-blue">
+      <h4>🔵 Present Continuous</h4>
+      <ul>
+        <li><em>I'm drinking coffee right now.</em> (now)</li>
+        <li><em>She's working from home this week.</em> (temporary)</li>
+        <li><em>He's walking to the station.</em> (now)</li>
+        <li><em>They're trying a vegan diet.</em> (temporary)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rule-box">
+    <strong>📌 Key time expressions</strong>
+    <strong>Present Simple:</strong> always, usually, often, sometimes, never, every day/week, on Mondays, twice a day<br>
+    <strong>Present Continuous:</strong> now, right now, at the moment, currently, today, this week, Look! Listen!
+  </div>
+</div>
+
+<!-- ─── ADVERBS OF FREQUENCY ─── -->
+<div class="grammar-box">
+  <h3>🎯 Adverbs of Frequency</h3>
+  <p style="font-size:.88rem;color:var(--ink2);margin-bottom:1rem">They tell us <strong>how often</strong> something happens. Used mainly with <strong>Present Simple</strong>.</p>
+
+  <div class="freq-bar-wrap">
+    <div class="freq-row"><span class="freq-label">always</span><div class="freq-track"><div class="freq-fill" style="width:100%;background:#2d5f3f"></div></div><span class="freq-pct">100%</span></div>
+    <div class="freq-row"><span class="freq-label">usually</span><div class="freq-track"><div class="freq-fill" style="width:80%;background:#3a7a50"></div></div><span class="freq-pct">~80%</span></div>
+    <div class="freq-row"><span class="freq-label">often</span><div class="freq-track"><div class="freq-fill" style="width:65%;background:#4a9464"></div></div><span class="freq-pct">~65%</span></div>
+    <div class="freq-row"><span class="freq-label">sometimes</span><div class="freq-track"><div class="freq-fill" style="width:40%;background:#c8960a"></div></div><span class="freq-pct">~40%</span></div>
+    <div class="freq-row"><span class="freq-label">rarely</span><div class="freq-track"><div class="freq-fill" style="width:15%;background:#c4640a"></div></div><span class="freq-pct">~15%</span></div>
+    <div class="freq-row"><span class="freq-label">never</span><div class="freq-track"><div class="freq-fill" style="width:2%;background:#c4440a"></div></div><span class="freq-pct">0%</span></div>
+  </div>
+
+  <div class="rule-box">
+    <strong>📌 Position Rules</strong>
+    <strong>Rule 1:</strong> Before the main verb → <em>I <u>always</u> eat breakfast. She <u>never</u> drinks coffee.</em><br>
+    <strong>Rule 2:</strong> After "to be" → <em>He is <u>always</u> late. They are <u>usually</u> on time.</em><br>
+    <strong>Rule 3:</strong> Sometimes can also go at the start or end → <em><u>Sometimes</u> I walk to work. I go to the gym <u>sometimes</u>.</em>
+  </div>
+
+  <table class="gtable">
+    <thead><tr><th>Adverb</th><th>Example sentence</th></tr></thead>
+    <tbody>
+      <tr><td><strong>always</strong></td><td><em>She always brushes her teeth before bed.</em></td></tr>
+      <tr><td><strong>usually</strong></td><td><em>I usually take the bus to work.</em></td></tr>
+      <tr><td><strong>often</strong></td><td><em>We often cook at home.</em></td></tr>
+      <tr><td><strong>sometimes</strong></td><td><em>He sometimes forgets his keys.</em></td></tr>
+      <tr><td><strong>rarely / seldom</strong></td><td><em>They rarely eat fast food.</em></td></tr>
+      <tr><td><strong>hardly ever</strong></td><td><em>I hardly ever watch TV.</em></td></tr>
+      <tr><td><strong>never</strong></td><td><em>She never drinks alcohol.</em></td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn-box">
+    <strong>⚠️ Never use "not" with "never", "rarely" or "hardly ever"</strong>
+    ❌ <em>I don't never eat meat.</em> &nbsp;✅ <em>I never eat meat.</em><br>
+    ❌ <em>She doesn't rarely go out.</em> &nbsp;✅ <em>She rarely goes out.</em>
+  </div>
+</div>
+
+<!-- ─── QUANTITY WORDS ─── -->
+<div class="grammar-box">
+  <h3>⚖️ Quantity Words</h3>
+  <p style="font-size:.88rem;color:var(--ink2);margin-bottom:1rem">These words tell us <strong>how much</strong> or <strong>how many</strong>. The choice depends on whether the noun is countable or uncountable.</p>
+
+  <table class="gtable">
+    <thead><tr><th>Word</th><th>Countable nouns</th><th>Uncountable nouns</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td><strong>many</strong></td><td>✅ Yes</td><td>❌ No</td><td><em>There are many chairs.</em></td></tr>
+      <tr><td><strong>much</strong></td><td>❌ No</td><td>✅ Yes</td><td><em>There isn't much water.</em></td></tr>
+      <tr><td><strong>a lot of / lots of</strong></td><td>✅ Yes</td><td>✅ Yes</td><td><em>She has a lot of friends / money.</em></td></tr>
+      <tr><td><strong>some</strong></td><td>✅ (affirmative)</td><td>✅ (affirmative)</td><td><em>I need some eggs / milk.</em></td></tr>
+      <tr><td><strong>any</strong></td><td>✅ (negative/question)</td><td>✅ (negative/question)</td><td><em>Is there any bread? / I don't have any eggs.</em></td></tr>
+      <tr><td><strong>a few</strong></td><td>✅ Yes</td><td>❌ No</td><td><em>I have a few questions.</em></td></tr>
+      <tr><td><strong>a little</strong></td><td>❌ No</td><td>✅ Yes</td><td><em>Can I have a little sugar?</em></td></tr>
+      <tr><td><strong>enough</strong></td><td>✅ Yes</td><td>✅ Yes</td><td><em>We have enough time / cups.</em></td></tr>
+      <tr><td><strong>too many</strong></td><td>✅ Yes</td><td>❌ No</td><td><em>There are too many people.</em></td></tr>
+      <tr><td><strong>too much</strong></td><td>❌ No</td><td>✅ Yes</td><td><em>I eat too much sugar.</em></td></tr>
+      <tr><td><strong>no</strong></td><td>✅ Yes</td><td>✅ Yes</td><td><em>There is no time / There are no seats.</em></td></tr>
+    </tbody>
+  </table>
+
+  <div class="rule-box">
+    <strong>📌 some vs. any — the key rule</strong>
+    Use <strong>some</strong> in: affirmative sentences + offers + requests<br>
+    → <em>I have some milk. Would you like some tea? Can I have some water?</em><br>
+    Use <strong>any</strong> in: negative sentences + questions<br>
+    → <em>I don't have any milk. Do you have any questions?</em>
+  </div>
+
+  <div class="rule-box">
+    <strong>📌 a few vs. a little — memory trick</strong>
+    <strong>a few</strong> = a small number (countable) → <em>a few books, a few minutes, a few friends</em><br>
+    <strong>a little</strong> = a small amount (uncountable) → <em>a little time, a little money, a little patience</em><br>
+    Both mean "not a lot, but enough" — they are positive in tone.<br>
+    <strong>few</strong> (without "a") = almost none → negative tone → <em>Few people understand this.</em>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     VOCABULARY
+══════════════════════════════════════════════════════ -->
+<section class="section" id="vocab">
+<div class="sh"><h2>📖 <span>Vocabulary</span></h2><p>Adjectives · House &amp; Home · Trades &amp; Jobs · Daily Life</p></div>
+
+<!-- ADJECTIVES -->
+<div class="grammar-box">
+  <h3>🎨 Adjectives — Describing People &amp; Things</h3>
+
+  <div class="vocab-cat">Personality &amp; Character</div>
+  <div class="vocab-grid">
+    <div class="vocab-item"><div class="vocab-en">friendly</div><div class="vocab-pt">simpático/a</div><div class="vocab-ex">She's very friendly.</div></div>
+    <div class="vocab-item"><div class="vocab-en">shy</div><div class="vocab-pt">tímido/a</div><div class="vocab-ex">He's a bit shy.</div></div>
+    <div class="vocab-item"><div class="vocab-en">confident</div><div class="vocab-pt">confiante</div><div class="vocab-ex">She speaks confidently.</div></div>
+    <div class="vocab-item"><div class="vocab-en">lazy</div><div class="vocab-pt">preguiçoso/a</div><div class="vocab-ex">He's quite lazy.</div></div>
+    <div class="vocab-item"><div class="vocab-en">hard-working</div><div class="vocab-pt">trabalhador/a</div><div class="vocab-ex">She's very hard-working.</div></div>
+    <div class="vocab-item"><div class="vocab-en">generous</div><div class="vocab-pt">generoso/a</div><div class="vocab-ex">He's very generous.</div></div>
+    <div class="vocab-item"><div class="vocab-en">selfish</div><div class="vocab-pt">egoísta</div><div class="vocab-ex">Don't be selfish.</div></div>
+    <div class="vocab-item"><div class="vocab-en">honest</div><div class="vocab-pt">honesto/a</div><div class="vocab-ex">An honest person.</div></div>
+    <div class="vocab-item"><div class="vocab-en">rude</div><div class="vocab-pt">mal-educado/a</div><div class="vocab-ex">That was rude!</div></div>
+    <div class="vocab-item"><div class="vocab-en">polite</div><div class="vocab-pt">educado/a</div><div class="vocab-ex">He's always polite.</div></div>
+    <div class="vocab-item"><div class="vocab-en">clever / smart</div><div class="vocab-pt">inteligente</div><div class="vocab-ex">She's very smart.</div></div>
+    <div class="vocab-item"><div class="vocab-en">funny</div><div class="vocab-pt">engraçado/a</div><div class="vocab-ex">He's so funny!</div></div>
+    <div class="vocab-item"><div class="vocab-en">serious</div><div class="vocab-pt">sério/a</div><div class="vocab-ex">She looks serious.</div></div>
+    <div class="vocab-item"><div class="vocab-en">patient</div><div class="vocab-pt">paciente</div><div class="vocab-ex">Teachers must be patient.</div></div>
+    <div class="vocab-item"><div class="vocab-en">stubborn</div><div class="vocab-pt">teimoso/a</div><div class="vocab-ex">He's very stubborn.</div></div>
+    <div class="vocab-item"><div class="vocab-en">kind</div><div class="vocab-pt">amável, gentil</div><div class="vocab-ex">She's always kind.</div></div>
+  </div>
+
+  <div class="vocab-cat">Appearance</div>
+  <div class="vocab-grid">
+    <div class="vocab-item"><div class="vocab-en">tall</div><div class="vocab-pt">alto/a</div><div class="vocab-ex">He's quite tall.</div></div>
+    <div class="vocab-item"><div class="vocab-en">short</div><div class="vocab-pt">baixo/a</div><div class="vocab-ex">She's a bit short.</div></div>
+    <div class="vocab-item"><div class="vocab-en">slim / thin</div><div class="vocab-pt">magro/a</div><div class="vocab-ex">She's very slim.</div></div>
+    <div class="vocab-item"><div class="vocab-en">overweight</div><div class="vocab-pt">acima do peso</div><div class="vocab-ex">The doctor said I'm overweight.</div></div>
+    <div class="vocab-item"><div class="vocab-en">curly</div><div class="vocab-pt">encaracolado</div><div class="vocab-ex">She has curly hair.</div></div>
+    <div class="vocab-item"><div class="vocab-en">straight</div><div class="vocab-pt">liso</div><div class="vocab-ex">He has straight hair.</div></div>
+    <div class="vocab-item"><div class="vocab-en">bald</div><div class="vocab-pt">careca</div><div class="vocab-ex">He's completely bald.</div></div>
+    <div class="vocab-item"><div class="vocab-en">elderly</div><div class="vocab-pt">idoso/a</div><div class="vocab-ex">An elderly gentleman.</div></div>
+    <div class="vocab-item"><div class="vocab-en">young</div><div class="vocab-pt">jovem</div><div class="vocab-ex">She looks very young.</div></div>
+    <div class="vocab-item"><div class="vocab-en">handsome</div><div class="vocab-pt">bonito (homem)</div><div class="vocab-ex">He's very handsome.</div></div>
+    <div class="vocab-item"><div class="vocab-en">pretty / beautiful</div><div class="vocab-pt">bonita (mulher)</div><div class="vocab-ex">She's very pretty.</div></div>
+    <div class="vocab-item"><div class="vocab-en">muscular</div><div class="vocab-pt">musculado/a</div><div class="vocab-ex">He's very muscular.</div></div>
+  </div>
+
+  <div class="vocab-cat">Feelings &amp; Emotions</div>
+  <div class="vocab-grid">
+    <div class="vocab-item"><div class="vocab-en">happy</div><div class="vocab-pt">feliz</div><div class="vocab-ex">I feel happy today.</div></div>
+    <div class="vocab-item"><div class="vocab-en">sad</div><div class="vocab-pt">triste</div><div class="vocab-ex">She looks sad.</div></div>
+    <div class="vocab-item"><div class="vocab-en">angry</div><div class="vocab-pt">zangado/a</div><div class="vocab-ex">He's really angry.</div></div>
+    <div class="vocab-item"><div class="vocab-en">scared / afraid</div><div class="vocab-pt">assustado/a</div><div class="vocab-ex">She's afraid of spiders.</div></div>
+    <div class="vocab-item"><div class="vocab-en">bored</div><div class="vocab-pt">entediado/a</div><div class="vocab-ex">I'm so bored.</div></div>
+    <div class="vocab-item"><div class="vocab-en">tired</div><div class="vocab-pt">cansado/a</div><div class="vocab-ex">I'm very tired.</div></div>
+    <div class="vocab-item"><div class="vocab-en">excited</div><div class="vocab-pt">entusiasmado/a</div><div class="vocab-ex">She's really excited!</div></div>
+    <div class="vocab-item"><div class="vocab-en">nervous</div><div class="vocab-pt">nervoso/a</div><div class="vocab-ex">He feels nervous.</div></div>
+    <div class="vocab-item"><div class="vocab-en">worried</div><div class="vocab-pt">preocupado/a</div><div class="vocab-ex">She looks worried.</div></div>
+    <div class="vocab-item"><div class="vocab-en">surprised</div><div class="vocab-pt">surpreendido/a</div><div class="vocab-ex">I'm so surprised!</div></div>
+    <div class="vocab-item"><div class="vocab-en">embarrassed</div><div class="vocab-pt">envergonhado/a</div><div class="vocab-ex">She felt embarrassed.</div></div>
+    <div class="vocab-item"><div class="vocab-en">relaxed</div><div class="vocab-pt">relaxado/a</div><div class="vocab-ex">I feel relaxed.</div></div>
+  </div>
+
+  <div class="vocab-cat">Useful Adjectives — Describing Things &amp; Places</div>
+  <div class="vocab-grid">
+    <div class="vocab-item"><div class="vocab-en">clean / dirty</div><div class="vocab-pt">limpo / sujo</div></div>
+    <div class="vocab-item"><div class="vocab-en">big / small</div><div class="vocab-pt">grande / pequeno</div></div>
+    <div class="vocab-item"><div class="vocab-en">new / old</div><div class="vocab-pt">novo / velho</div></div>
+    <div class="vocab-item"><div class="vocab-en">cheap / expensive</div><div class="vocab-pt">barato / caro</div></div>
+    <div class="vocab-item"><div class="vocab-en">easy / difficult</div><div class="vocab-pt">fácil / difícil</div></div>
+    <div class="vocab-item"><div class="vocab-en">fast / slow</div><div class="vocab-pt">rápido / lento</div></div>
+    <div class="vocab-item"><div class="vocab-en">loud / quiet</div><div class="vocab-pt">barulhento / silencioso</div></div>
+    <div class="vocab-item"><div class="vocab-en">safe / dangerous</div><div class="vocab-pt">seguro / perigoso</div></div>
+    <div class="vocab-item"><div class="vocab-en">comfortable</div><div class="vocab-pt">confortável</div></div>
+    <div class="vocab-item"><div class="vocab-en">broken</div><div class="vocab-pt">avariado, partido</div></div>
+    <div class="vocab-item"><div class="vocab-en">noisy</div><div class="vocab-pt">barulhento</div></div>
+    <div class="vocab-item"><div class="vocab-en">crowded</div><div class="vocab-pt">lotado, cheio</div></div>
+  </div>
+</div>
+
+<!-- HOUSE -->
+<div class="grammar-box">
+  <h3>🏠 House &amp; Home Vocabulary</h3>
+
+  <div class="vocab-cat">Rooms &amp; Areas</div>
+  <div class="vocab-grid">
+    <div class="vocab-item"><div class="vocab-en">living room</div><div class="vocab-pt">sala de estar</div></div>
+    <div class="vocab-item"><div class="vocab-en">kitchen</div><div class="vocab-pt">cozinha</div></div>
+    <div class="vocab-item"><div class="vocab-en">bedroom</div><div class="vocab-pt">quarto</div></div>
+    <div class="vocab-item"><div class="vocab-en">bathroom</div><div class="vocab-pt">casa de banho</div></div>
+    <div class="vocab-item"><div class="vocab-en">toilet</div><div class="vocab-pt">WC, casa de banho</div></div>
+    <div class="vocab-item"><div class="vocab-en">hallway</div><div class="vocab-pt">corredor, hall</div></div>
+    <div class="vocab-item"><div class="vocab-en">dining room</div><div class="vocab-pt">sala de jantar</div></div>
+    <div class="vocab-item"><div class="vocab-en">garage</div><div class="vocab-pt">garagem</div></div>
+    <div class="vocab-item"><div class="vocab-en">garden / yard</div><div class="vocab-pt">jardim / quintal</div></div>
+    <div class="vocab-item"><div class="vocab-en">basement</div><div class="vocab-pt">cave, porão</div></div>
+    <div class="vocab-item"><div class="vocab-en">attic</div><div class="vocab-pt">sótão</div></div>
+    <div class="vocab-item"><div class="vocab-en">balcony</div><div class="vocab-pt">varanda</div></div>
+    <div class="vocab-item"><div class="vocab-en">porch</div><div class="vocab-pt">alpendre</div></div>
+    <div class="vocab-item"><div class="vocab-en">study / office</div><div class="vocab-pt">escritório</div></div>
+    <div class="vocab-item"><div class="vocab-en">laundry room</div><div class="vocab-pt">lavandaria</div></div>
+    <div class="vocab-item"><div class="vocab-en">stairs / staircase</div><div class="vocab-pt">escadas</div></div>
+  </div>
+
+  <div class="vocab-cat">Furniture &amp; Objects</div>
+  <div class="vocab-grid">
+    <div class="vocab-item"><div class="vocab-en">sofa / couch</div><div class="vocab-pt">sofá</div></div>
+    <div class="vocab-item"><div class="vocab-en">armchair</div><div class="vocab-pt">cadeirão, poltrona</div></div>
+    <div class="vocab-item"><div class="vocab-en">coffee table</div><div class="vocab-pt">mesa de centro</div></div>
+    <div class="vocab-item"><div class="vocab-en">bookshelf</div><div class="vocab-pt">estante, prateleira</div></div>
+    <div class="vocab-item"><div class="vocab-en">wardrobe</div><div class="vocab-pt">guarda-roupa, roupeiro</div></div>
+    <div class="vocab-item"><div class="vocab-en">chest of drawers</div><div class="vocab-pt">cómoda</div></div>
+    <div class="vocab-item"><div class="vocab-en">bedside table</div><div class="vocab-pt">mesa-de-cabeceira</div></div>
+    <div class="vocab-item"><div class="vocab-en">curtains</div><div class="vocab-pt">cortinas</div></div>
+    <div class="vocab-item"><div class="vocab-en">blinds</div><div class="vocab-pt">estores</div></div>
+    <div class="vocab-item"><div class="vocab-en">rug / carpet</div><div class="vocab-pt">tapete / carpete</div></div>
+    <div class="vocab-item"><div class="vocab-en">mirror</div><div class="vocab-pt">espelho</div></div>
+    <div class="vocab-item"><div class="vocab-en">lamp</div><div class="vocab-pt">candeeiro, lâmpada</div></div>
+    <div class="vocab-item"><div class="vocab-en">fireplace</div><div class="vocab-pt">lareira</div></div>
+    <div class="vocab-item"><div class="vocab-en">ceiling</div><div class="vocab-pt">tecto</div></div>
+    <div class="vocab-item"><div class="vocab-en">floor</div><div class="vocab-pt">chão, piso</div></div>
+    <div class="vocab-item"><div class="vocab-en">wall</div><div class="vocab-pt">parede</div></div>
+  </div>
+
+  <div class="vocab-cat">Kitchen &amp; Bathroom</div>
+  <div class="vocab-grid">
+    <div class="vocab-item"><div class="vocab-en">sink</div><div class="vocab-pt">lava-loiça / lavatório</div></div>
+    <div class="vocab-item"><div class="vocab-en">tap / faucet</div><div class="vocab-pt">torneira</div></div>
+    <div class="vocab-item"><div class="vocab-en">oven</div><div class="vocab-pt">forno</div></div>
+    <div class="vocab-item"><div class="vocab-en">fridge</div><div class="vocab-pt">frigorífico</div></div>
+    <div class="vocab-item"><div class="vocab-en">microwave</div><div class="vocab-pt">microondas</div></div>
+    <div class="vocab-item"><div class="vocab-en">dishwasher</div><div class="vocab-pt">máquina da loiça</div></div>
+    <div class="vocab-item"><div class="vocab-en">washing machine</div><div class="vocab-pt">máquina de lavar</div></div>
+    <div class="vocab-item"><div class="vocab-en">kettle</div><div class="vocab-pt">chaleira</div></div>
+    <div class="vocab-item"><div class="vocab-en">shower</div><div class="vocab-pt">duche</div></div>
+    <div class="vocab-item"><div class="vocab-en">bath / bathtub</div><div class="vocab-pt">banheira</div></div>
+    <div class="vocab-item"><div class="vocab-en">towel</div><div class="vocab-pt">toalha</div></div>
+    <div class="vocab-item"><div class="vocab-en">drain</div><div class="vocab-pt">ralo, cano</div></div>
+    <div class="vocab-item"><div class="vocab-en">pipe</div><div class="vocab-pt">cano, tubo</div></div>
+    <div class="vocab-item"><div class="vocab-en">boiler</div><div class="vocab-pt">esquentador, caldeira</div></div>
+    <div class="vocab-item"><div class="vocab-en">plug / socket</div><div class="vocab-pt">ficha / tomada</div></div>
+    <div class="vocab-item"><div class="vocab-en">switch</div><div class="vocab-pt">interruptor</div></div>
+  </div>
+</div>
+
+<!-- TRADES -->
+<div class="grammar-box">
+  <h3>🔧 Trades, Jobs &amp; Around the House</h3>
+
+  <div class="vocab-cat">Tradespeople &amp; Their Work</div>
+  <div class="vocab-grid">
+    <div class="vocab-item"><div class="vocab-en">plumber</div><div class="vocab-pt">canalizador</div><div class="vocab-ex">The plumber fixed the pipe.</div></div>
+    <div class="vocab-item"><div class="vocab-en">electrician</div><div class="vocab-pt">eletricista</div><div class="vocab-ex">The electrician repaired the fuse box.</div></div>
+    <div class="vocab-item"><div class="vocab-en">carpenter</div><div class="vocab-pt">carpinteiro</div><div class="vocab-ex">A carpenter built the shelves.</div></div>
+    <div class="vocab-item"><div class="vocab-en">builder</div><div class="vocab-pt">construtor, pedreiro</div><div class="vocab-ex">The builder is renovating the house.</div></div>
+    <div class="vocab-item"><div class="vocab-en">painter &amp; decorator</div><div class="vocab-pt">pintor</div><div class="vocab-ex">The painter is painting the walls.</div></div>
+    <div class="vocab-item"><div class="vocab-en">locksmith</div><div class="vocab-pt">serralheiro, chaveiro</div><div class="vocab-ex">Call a locksmith — I lost my key!</div></div>
+    <div class="vocab-item"><div class="vocab-en">roofer</div><div class="vocab-pt">telhador</div><div class="vocab-ex">The roofer fixed the leak.</div></div>
+    <div class="vocab-item"><div class="vocab-en">glazier</div><div class="vocab-pt">vidraceiro</div><div class="vocab-ex">A glazier replaced the window.</div></div>
+    <div class="vocab-item"><div class="vocab-en">handyman</div><div class="vocab-pt">faz-tudo, mantenedor</div><div class="vocab-ex">We hired a handyman.</div></div>
+    <div class="vocab-item"><div class="vocab-en">gas engineer</div><div class="vocab-pt">técnico de gás</div><div class="vocab-ex">The gas engineer checked the boiler.</div></div>
+    <div class="vocab-item"><div class="vocab-en">cleaner</div><div class="vocab-pt">empregado/a de limpeza</div><div class="vocab-ex">The cleaner comes on Fridays.</div></div>
+    <div class="vocab-item"><div class="vocab-en">estate agent</div><div class="vocab-pt">agente imobiliário</div><div class="vocab-ex">The estate agent showed us the flat.</div></div>
+  </div>
+
+  <div class="vocab-cat">Common Verbs — House Problems &amp; Repairs</div>
+  <div class="vocab-grid">
+    <div class="vocab-item"><div class="vocab-en">fix / repair</div><div class="vocab-pt">arranjar, reparar</div></div>
+    <div class="vocab-item"><div class="vocab-en">leak</div><div class="vocab-pt">ter uma fuga, vazar</div></div>
+    <div class="vocab-item"><div class="vocab-en">block / clog</div><div class="vocab-pt">entupir, obstruir</div></div>
+    <div class="vocab-item"><div class="vocab-en">replace</div><div class="vocab-pt">substituir</div></div>
+    <div class="vocab-item"><div class="vocab-en">install</div><div class="vocab-pt">instalar</div></div>
+    <div class="vocab-item"><div class="vocab-en">renovate</div><div class="vocab-pt">renovar, remodelar</div></div>
+    <div class="vocab-item"><div class="vocab-en">decorate</div><div class="vocab-pt">decorar</div></div>
+    <div class="vocab-item"><div class="vocab-en">paint</div><div class="vocab-pt">pintar</div></div>
+    <div class="vocab-item"><div class="vocab-en">drill</div><div class="vocab-pt">perfurar, fazer furos</div></div>
+    <div class="vocab-item"><div class="vocab-en">plaster</div><div class="vocab-pt">rebocar, gessear</div></div>
+    <div class="vocab-item"><div class="vocab-en">tile</div><div class="vocab-pt">colocar azulejos</div></div>
+    <div class="vocab-item"><div class="vocab-en">rewire</div><div class="vocab-pt">refazer a instalação eléctrica</div></div>
+  </div>
+
+  <div class="vocab-cat">Common House Problems</div>
+  <div class="vocab-grid">
+    <div class="vocab-item"><div class="vocab-en">a leaky tap</div><div class="vocab-pt">torneira a pingar</div></div>
+    <div class="vocab-item"><div class="vocab-en">a blocked drain</div><div class="vocab-pt">cano entupido</div></div>
+    <div class="vocab-item"><div class="vocab-en">a broken boiler</div><div class="vocab-pt">caldeira avariada</div></div>
+    <div class="vocab-item"><div class="vocab-en">a power cut</div><div class="vocab-pt">corte de electricidade</div></div>
+    <div class="vocab-item"><div class="vocab-en">a blown fuse</div><div class="vocab-pt">fusível queimado</div></div>
+    <div class="vocab-item"><div class="vocab-en">damp / mould</div><div class="vocab-pt">humidade / bolor</div></div>
+    <div class="vocab-item"><div class="vocab-en">a cracked wall</div><div class="vocab-pt">parede com fissura</div></div>
+    <div class="vocab-item"><div class="vocab-en">a broken lock</div><div class="vocab-pt">fechadura partida</div></div>
+  </div>
+</div>
+
+<!-- DAILY ROUTINE -->
+<div class="grammar-box">
+  <h3>🗓️ Daily Routine Vocabulary</h3>
+
+  <div class="vocab-cat">Morning Routine</div>
+  <div class="vocab-grid">
+    <div class="vocab-item"><div class="vocab-en">wake up</div><div class="vocab-pt">acordar</div><div class="vocab-ex">I wake up at 7am.</div></div>
+    <div class="vocab-item"><div class="vocab-en">get up</div><div class="vocab-pt">levantar-se</div><div class="vocab-ex">I get up at 7:15.</div></div>
+    <div class="vocab-item"><div class="vocab-en">have a shower</div><div class="vocab-pt">tomar duche</div><div class="vocab-ex">She always has a shower.</div></div>
+    <div class="vocab-item"><div class="vocab-en">brush your teeth</div><div class="vocab-pt">lavar os dentes</div><div class="vocab-ex">Brush your teeth twice a day.</div></div>
+    <div class="vocab-item"><div class="vocab-en">get dressed</div><div class="vocab-pt">vestir-se</div><div class="vocab-ex">He gets dressed quickly.</div></div>
+    <div class="vocab-item"><div class="vocab-en">have breakfast</div><div class="vocab-pt">tomar o pequeno-almoço</div><div class="vocab-ex">Do you have breakfast every day?</div></div>
+    <div class="vocab-item"><div class="vocab-en">make coffee</div><div class="vocab-pt">fazer café</div><div class="vocab-ex">She makes coffee first.</div></div>
+    <div class="vocab-item"><div class="vocab-en">leave the house</div><div class="vocab-pt">sair de casa</div><div class="vocab-ex">I leave the house at 8.</div></div>
+  </div>
+
+  <div class="vocab-cat">Work &amp; Commute</div>
+  <div class="vocab-grid">
+    <div class="vocab-item"><div class="vocab-en">commute</div><div class="vocab-pt">deslocação casa-trabalho</div></div>
+    <div class="vocab-item"><div class="vocab-en">take the bus/train</div><div class="vocab-pt">apanhar o autocarro/comboio</div></div>
+    <div class="vocab-item"><div class="vocab-en">drive to work</div><div class="vocab-pt">ir de carro para o trabalho</div></div>
+    <div class="vocab-item"><div class="vocab-en">work from home</div><div class="vocab-pt">trabalhar em casa</div></div>
+    <div class="vocab-item"><div class="vocab-en">start work</div><div class="vocab-pt">começar a trabalhar</div></div>
+    <div class="vocab-item"><div class="vocab-en">have a meeting</div><div class="vocab-pt">ter uma reunião</div></div>
+    <div class="vocab-item"><div class="vocab-en">have lunch</div><div class="vocab-pt">almoçar</div></div>
+    <div class="vocab-item"><div class="vocab-en">finish work</div><div class="vocab-pt">acabar de trabalhar</div></div>
+  </div>
+
+  <div class="vocab-cat">Evening &amp; Night</div>
+  <div class="vocab-grid">
+    <div class="vocab-item"><div class="vocab-en">cook dinner</div><div class="vocab-pt">cozinhar o jantar</div></div>
+    <div class="vocab-item"><div class="vocab-en">have dinner</div><div class="vocab-pt">jantar</div></div>
+    <div class="vocab-item"><div class="vocab-en">do the washing up</div><div class="vocab-pt">lavar a loiça</div></div>
+    <div class="vocab-item"><div class="vocab-en">watch TV</div><div class="vocab-pt">ver televisão</div></div>
+    <div class="vocab-item"><div class="vocab-en">go for a walk</div><div class="vocab-pt">dar uma caminhada</div></div>
+    <div class="vocab-item"><div class="vocab-en">read a book</div><div class="vocab-pt">ler um livro</div></div>
+    <div class="vocab-item"><div class="vocab-en">go to bed</div><div class="vocab-pt">ir dormir</div></div>
+    <div class="vocab-item"><div class="vocab-en">fall asleep</div><div class="vocab-pt">adormecer</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     FLASHCARDS
+══════════════════════════════════════════════════════ -->
+<section class="section" id="flashcards">
+<div class="sh"><h2>🃏 <span>Flashcards</span></h2><p>Click the card to reveal the answer · Filter by topic</p></div>
+
+<div class="fc-filter" id="fc-filter">
+  <button class="fc-filter-btn on" onclick="setFC('all',this)">All</button>
+  <button class="fc-filter-btn" onclick="setFC('grammar',this)">Grammar</button>
+  <button class="fc-filter-btn" onclick="setFC('frequency',this)">Frequency</button>
+  <button class="fc-filter-btn" onclick="setFC('quantity',this)">Quantity</button>
+  <button class="fc-filter-btn" onclick="setFC('vocab',this)">Vocabulary</button>
+  <button class="fc-filter-btn" onclick="setFC('house',this)">House</button>
+  <button class="fc-filter-btn" onclick="setFC('trades',this)">Trades</button>
+</div>
+
+<div class="fc-wrap">
+  <div class="fc-meta">
+    <span class="fc-prog" id="fc-prog">1 / 30</span>
+    <span class="fc-cat-label" id="fc-cat-label">Grammar</span>
+  </div>
+  <div class="fc-pbar"><div class="fc-pfill" id="fc-pfill" style="width:3%"></div></div>
+  <div class="fc-card" id="fc-card" onclick="flipFC()">
+    <div class="fc-side front">
+      <div class="fc-type" id="fc-type">Grammar · Present Simple</div>
+      <div class="fc-q" id="fc-q">Question goes here</div>
+      <div class="fc-hint">👆 Click to reveal</div>
+    </div>
+    <div class="fc-side back">
+      <div class="fc-type" id="fc-type-back"></div>
+      <div class="fc-a" id="fc-a">Answer goes here</div>
+    </div>
+  </div>
+  <div class="fc-nav">
+    <button class="btn btn-ghost" onclick="fcMove(-1)">← Previous</button>
+    <button class="btn btn-solid" onclick="fcMove(1)">Next →</button>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     QUIZ
+══════════════════════════════════════════════════════ -->
+<section class="section" id="quiz">
+<div class="sh"><h2>🎯 <span>Quiz</span></h2><p>15 questions — grammar, vocabulary and frequency · All mixed together</p></div>
+<div class="quiz-wrap">
+  <div id="quiz-area">
+    <div class="quiz-card" id="quiz-card"></div>
+  </div>
+  <div class="quiz-score" id="quiz-score">
+    <div class="score-big" id="score-num"></div>
+    <div class="score-msg" id="score-msg"></div>
+    <button class="btn btn-solid" onclick="restartQuiz()">🔄 Try Again</button>
+  </div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     EXERCISES — FILL IN THE BLANKS
+══════════════════════════════════════════════════════ -->
+<section class="section" id="exercises">
+<div class="sh"><h2>✏️ <span>Exercises</span></h2><p>Fill in the blanks — type your answer and press Check</p></div>
+
+<div class="fib-wrap">
+  <div class="fib-score-bar">
+    <div class="fib-score-label">Score</div>
+    <div class="fib-score-num" id="fib-score">0 / 0</div>
+    <button class="fib-reveal-btn" onclick="resetFIB()">↺ Reset all</button>
+  </div>
+  <div id="fib-container"></div>
+</div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     STORY
+══════════════════════════════════════════════════════ -->
+<section class="section" id="story">
+<div class="sh"><h2>📚 <span>A Day in the Life</span></h2><p>A connected story using all the grammar and vocabulary — read it to see everything in context</p></div>
+
+<div class="story-wrap">
+  <div class="story-chap">
+    <div class="story-chap-label">Chapter 1</div>
+    <h3>Tom's <em>Morning Routine</em></h3>
+    <div class="story-body">
+      <p>Tom is a <strong>plumber</strong>. He <strong>wakes up</strong> every morning at 6:30. He <strong>always</strong> gets up immediately — he never stays in bed. He's one of those people. First, he <strong>has a shower</strong>, then he <strong>brushes his teeth</strong>. He's very careful about his teeth. Then he <strong>gets dressed</strong> in his work clothes — usually blue trousers and a grey shirt.</p>
+      <div class="story-highlight">
+        <span class="ex">✅ He wakes up at 6:30. (habit → Present Simple)</span><br>
+        <span class="ex">✅ He always gets up immediately. (adverb of frequency → before the verb)</span><br>
+        <span class="ex">✅ He never stays in bed. (never → before the verb, no "not" needed)</span>
+      </div>
+      <p>After getting dressed, Tom goes to the kitchen. He <strong>usually</strong> makes a strong coffee and eats some toast. Not much — just <strong>a little</strong> butter and some jam. He doesn't have <strong>much</strong> time in the morning, and there aren't <strong>many</strong> things he enjoys eating before 7am.</p>
+      <div class="story-highlight">
+        <span class="ex">✅ a little butter (butter = uncountable → a little)</span><br>
+        <span class="ex">✅ not much time (time = uncountable → much)</span><br>
+        <span class="ex">✅ not many things (things = countable → many)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="story-divider">· · ·</div>
+
+  <div class="story-chap">
+    <div class="story-chap-label">Chapter 2</div>
+    <h3>The <em>Kitchen Problem</em></h3>
+    <div class="story-body">
+      <p>At 7:30, Tom leaves the house. But today is different. His phone <strong>is ringing</strong>. It's Mrs. Davies from number 42. <em>"Tom! My kitchen sink is blocked and water <strong>is leaking</strong> everywhere! Can you come?"</em></p>
+      <div class="story-highlight">
+        <span class="ex">✅ His phone is ringing. (happening RIGHT NOW → Present Continuous)</span><br>
+        <span class="ex">✅ Water is leaking. (happening right now → Present Continuous)</span><br>
+        <span class="q">Note: "ring" is not a stative verb → we CAN use -ing form</span>
+      </div>
+      <p>Tom <strong>often</strong> gets calls like this. People always have problems with their pipes. He turns his van around and drives to Mrs. Davies' house. She <strong>is standing</strong> at the door, looking very worried. She looks <strong>nervous</strong> and <strong>stressed</strong>.</p>
+      <p>Tom walks in. He sees the problem immediately: the drain is <strong>blocked</strong>. There's <strong>too much</strong> grease in the pipe — someone has been pouring cooking oil down the sink. This <strong>always</strong> causes problems.</p>
+      <div class="story-highlight">
+        <span class="ex">✅ She is standing at the door. (in progress, right now)</span><br>
+        <span class="ex">✅ too much grease (grease = uncountable → too much)</span><br>
+        <span class="ex">✅ This always causes problems. (general truth → Present Simple)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="story-divider">· · ·</div>
+
+  <div class="story-chap">
+    <div class="story-chap-label">Chapter 3</div>
+    <h3>Tom <em>Gets to Work</em></h3>
+    <div class="story-body">
+      <p>Tom opens his toolbox. He has <strong>a few</strong> different tools for this type of job: a drain snake, a plunger, and some special cleaning fluid. He <strong>rarely</strong> uses chemicals — he prefers mechanical solutions. But today the blockage is <strong>too difficult</strong> for simple tools.</p>
+      <div class="story-highlight">
+        <span class="ex">✅ a few tools (tools = countable → a few)</span><br>
+        <span class="ex">✅ He rarely uses chemicals. (rarely → before the main verb)</span><br>
+        <span class="neg">❌ He doesn't rarely use chemicals. (WRONG — double negative!)</span>
+      </div>
+      <p>While Tom is working, Mrs. Davies is making tea. She <strong>usually</strong> offers tea to anyone who comes to her house. She <strong>is talking</strong> to her neighbour, Mr. Green, who is <strong>an electrician</strong>. Mr. Green <strong>sometimes</strong> helps Tom with jobs when a house needs both plumbing and electrical work.</p>
+      <div class="story-highlight">
+        <span class="ex">✅ While Tom is working ... (both temporary actions happening simultaneously)</span><br>
+        <span class="ex">✅ She is making tea. (right now)</span><br>
+        <span class="ex">✅ She usually offers tea. (habit → Present Simple)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="story-divider">· · ·</div>
+
+  <div class="story-chap">
+    <div class="story-chap-label">Chapter 4</div>
+    <h3>More <em>Than Just Plumbing</em></h3>
+    <div class="story-body">
+      <p>Mrs. Davies has quite a big house. There's a <strong>living room</strong>, a large <strong>kitchen</strong>, three <strong>bedrooms</strong>, two <strong>bathrooms</strong>, and a small <strong>study</strong>. She also has a beautiful <strong>garden</strong> and a <strong>garage</strong>. The house has <strong>enough</strong> space for a family, but she lives alone.</p>
+      <p>While Tom is fixing the sink, he notices something: the <strong>tap</strong> in the <strong>bathroom</strong> is also <strong>leaky</strong>. The <strong>boiler</strong> makes a strange noise. The <strong>curtains</strong> in the <strong>living room</strong> are <strong>dirty</strong>. The house needs <strong>a lot of</strong> work.</p>
+      <div class="story-highlight">
+        <span class="ex">✅ enough space (enough works with both countable and uncountable)</span><br>
+        <span class="ex">✅ a lot of work (work = uncountable → a lot of)</span><br>
+        <span class="q">Vocabulary: tap, boiler, curtains, bathroom, living room ← house vocabulary!</span>
+      </div>
+      <div class="story-pull"><p>"You don't need many tradespeople — you need the right ones." — Tom (probably)</p></div>
+      <p>Tom calls Mr. Green: <em>"Are you free this afternoon? I'm finishing here around 2pm. The boiler is making a strange noise and I think there's an electrical issue with the <strong>switch</strong> in the kitchen."</em></p>
+      <p>Mr. Green says he's <strong>usually</strong> free on Thursday afternoons. He <strong>doesn't often</strong> refuse extra work. He's a <strong>hard-working</strong>, <strong>friendly</strong> man — a bit <strong>quiet</strong> but always <strong>polite</strong>.</p>
+    </div>
+  </div>
+
+  <div class="story-divider">· · ·</div>
+
+  <div class="story-chap">
+    <div class="story-chap-label">Chapter 5</div>
+    <h3>The <em>End of the Day</em></h3>
+    <div class="story-body">
+      <p>By 4pm, Tom is <strong>tired</strong> but <strong>happy</strong>. The sink is fixed, the tap is repaired, and the boiler is running smoothly again. Mrs. Davies looks <strong>relieved</strong>. She <strong>always</strong> pays on time — she's one of his best customers.</p>
+      <p>Tom drives home. He <strong>rarely</strong> cooks on weekdays — he's usually too tired. He <strong>sometimes</strong> orders pizza, but today he has <strong>some</strong> pasta and vegetables in the fridge. He makes a simple dinner. He <strong>doesn't have</strong> much energy left.</p>
+      <div class="story-highlight">
+        <span class="ex">✅ He rarely cooks on weekdays. (habit + adverb of frequency)</span><br>
+        <span class="ex">✅ He sometimes orders pizza. (sometimes before the verb)</span><br>
+        <span class="ex">✅ He has some pasta. (affirmative → some)</span><br>
+        <span class="neg">✅ He doesn't have much energy. (negative + uncountable → much)</span>
+      </div>
+      <p>At 10pm, Tom <strong>goes to bed</strong>. He <strong>always</strong> reads a little before sleeping — usually <strong>a few</strong> pages of a thriller. He's <strong>never</strong> tired of reading. He <strong>falls asleep</strong> quickly. Tomorrow, he wakes up at 6:30 again.</p>
+      <div class="story-highlight">
+        <span class="ex">✅ a little before sleeping (a little → small amount, uncountable idea)</span><br>
+        <span class="ex">✅ a few pages (pages = countable → a few)</span><br>
+        <span class="ex">✅ He's never tired of reading. (never after "to be")</span>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+</main>
+
+<script>
+// ══════════════════════════════════════════════════════
+// TAB NAVIGATION
+// ══════════════════════════════════════════════════════
+const TABS = ['grammar','vocab','flashcards','quiz','exercises','story'];
+function go(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn:not(.search-btn)').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const i = TABS.indexOf(id);
+  document.querySelectorAll('.nav-btn:not(.search-btn)')[i].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  closeSearch();
+}
+
+// ══════════════════════════════════════════════════════
+// FLASHCARDS
+// ══════════════════════════════════════════════════════
+const ALL_FC = [
+  // GRAMMAR
+  { cat:'grammar', type:'Grammar · Present Simple', q:'What is the Present Simple used for?', a:'<strong>Habits & routines:</strong> I wake up at 7am.<br><strong>Permanent situations:</strong> She lives in London.<br><strong>General truths:</strong> Water boils at 100°C.<br><strong>Schedules:</strong> The train leaves at 9.' },
+  { cat:'grammar', type:'Grammar · Present Simple', q:'How do you form the 3rd person (he/she/it) in Present Simple?', a:'Add <code>-s</code> to most verbs: work → <code>works</code><br>Add <code>-es</code> after -s/-sh/-ch/-x/-o: go → <code>goes</code>, watch → <code>watches</code><br>Consonant + y → <code>-ies</code>: study → <code>studies</code><br>Irregular: have → <code>has</code>, be → <code>is</code>' },
+  { cat:'grammar', type:'Grammar · Present Simple', q:'How do you make a negative in Present Simple?', a:'Use <code>don\'t</code> (I/you/we/they) or <code>doesn\'t</code> (he/she/it) + base verb.<br><br>✅ <em>I <code>don\'t</code> eat meat.</em><br>✅ <em>She <code>doesn\'t</code> work on Sundays.</em>' },
+  { cat:'grammar', type:'Grammar · Present Simple', q:'How do you make a question in Present Simple?', a:'Use <code>Do</code> (I/you/we/they) or <code>Does</code> (he/she/it) + subject + base verb.<br><br>✅ <em><code>Do</code> you drink coffee?</em><br>✅ <em><code>Does</code> she live here?</em>' },
+  { cat:'grammar', type:'Grammar · Present Continuous', q:'What is the Present Continuous used for?', a:'<strong>Actions happening NOW:</strong> She is sleeping.<br><strong>Temporary situations:</strong> I\'m working from home this week.<br><strong>Key words:</strong> now, right now, at the moment, currently, Look! Listen!' },
+  { cat:'grammar', type:'Grammar · Present Continuous', q:'How do you form the Present Continuous?', a:'<code>Subject + am/is/are + verb-ing</code><br><br>I → <code>am working</code><br>He/She/It → <code>is working</code><br>You/We/They → <code>are working</code>' },
+  { cat:'grammar', type:'Grammar · Present Continuous', q:'What are stative verbs and why can\'t they use -ing?', a:'Stative verbs describe states, not actions. They don\'t take the continuous form.<br><br>Examples: <strong>know, understand, want, need, love, hate, have (own), see, hear, seem, believe</strong><br><br>❌ <em>I am knowing the answer.</em><br>✅ <em>I know the answer.</em>' },
+  { cat:'grammar', type:'Grammar · Contrast', q:'What is the difference? "I drink coffee" vs "I am drinking coffee"', a:'<em>"I drink coffee"</em> → <strong>Present Simple</strong> = it\'s a habit, I do this regularly.<br><br><em>"I am drinking coffee"</em> → <strong>Present Continuous</strong> = I am doing this right now, at this moment.' },
+  { cat:'grammar', type:'Grammar · -ing Spelling', q:'What are the -ing spelling rules for Present Continuous?', a:'Most verbs: add <code>-ing</code> → eating, sleeping<br>End in -e: drop e, add <code>-ing</code> → making, writing<br>Short CVC verbs: double consonant + <code>-ing</code> → running, sitting, swimming<br>End in -ie: → <code>-ying</code> → lying, dying' },
+  // FREQUENCY
+  { cat:'frequency', type:'Frequency · Adverbs', q:'Put these adverbs in order from most to least frequent: sometimes, never, often, usually, always, rarely', a:'100% → <strong>always</strong><br>~80% → <strong>usually</strong><br>~65% → <strong>often</strong><br>~40% → <strong>sometimes</strong><br>~15% → <strong>rarely / seldom</strong><br>~5% → <strong>hardly ever</strong><br>0% → <strong>never</strong>' },
+  { cat:'frequency', type:'Frequency · Position', q:'Where do adverbs of frequency go in a sentence?', a:'<strong>Rule 1:</strong> Before the main verb<br>→ <em>She <code>always</code> drinks tea.</em><br><br><strong>Rule 2:</strong> After "to be"<br>→ <em>He is <code>usually</code> late.</em><br><br><strong>Rule 3:</strong> "Sometimes" can also start/end a sentence<br>→ <em><code>Sometimes</code> I walk to work.</em>' },
+  { cat:'frequency', type:'Frequency · Common Mistakes', q:'Correct this sentence: "I don\'t never eat meat."', a:'❌ "I don\'t never eat meat." — WRONG (double negative)<br><br>✅ <strong>"I never eat meat."</strong><br>✅ <strong>"I don\'t eat meat."</strong><br><br>Never, rarely, and hardly ever already contain a negative meaning — don\'t add "not"!' },
+  // QUANTITY
+  { cat:'quantity', type:'Quantity · much/many', q:'When do you use "much" vs "many"?', a:'<code>many</code> → countable nouns (things you can count)<br>→ <em>many chairs, many questions, many people</em><br><br><code>much</code> → uncountable nouns (things you can\'t count)<br>→ <em>much water, much time, much money</em><br><br>Tip: Both mainly used in <strong>negatives and questions</strong>.' },
+  { cat:'quantity', type:'Quantity · some/any', q:'When do you use "some" vs "any"?', a:'<code>some</code> → affirmative sentences + offers + requests<br>→ <em>I have <code>some</code> milk. Would you like <code>some</code> tea?</em><br><br><code>any</code> → negative sentences + questions<br>→ <em>I don\'t have <code>any</code> milk. Do you have <code>any</code> questions?</em>' },
+  { cat:'quantity', type:'Quantity · a few/a little', q:'What is the difference between "a few" and "a little"?', a:'<code>a few</code> = small number → used with <strong>countable</strong> nouns<br>→ <em>a few books, a few minutes, a few people</em><br><br><code>a little</code> = small amount → used with <strong>uncountable</strong> nouns<br>→ <em>a little time, a little money, a little milk</em><br><br>Both are <strong>positive in tone</strong> (= not a lot, but enough).' },
+  { cat:'quantity', type:'Quantity · too much/too many', q:'When do you use "too much" vs "too many"?', a:'<code>too many</code> → countable nouns (more than needed)<br>→ <em>There are too many people in this room.</em><br><br><code>too much</code> → uncountable nouns (more than needed)<br>→ <em>I drink too much coffee.</em><br><br>Both express a <strong>negative idea</strong> — an excessive, unwanted amount.' },
+  { cat:'quantity', type:'Quantity · a lot of', q:'When do you use "a lot of" / "lots of"?', a:'<code>a lot of</code> and <code>lots of</code> work with <strong>both</strong> countable and uncountable nouns.<br><br>→ <em>She has a lot of <strong>friends</strong>.</em> (countable)<br>→ <em>I need a lot of <strong>time</strong>.</em> (uncountable)<br><br>Mainly used in <strong>positive sentences</strong>. In negatives/questions, prefer much/many.' },
+  // VOCAB
+  { cat:'vocab', type:'Vocabulary · Adjectives', q:'What is the difference between "bored" and "boring"?', a:'<code>bored</code> → how you feel → <em>I am <code>bored</code>.</em><br><code>boring</code> → what something is like → <em>This film is <code>boring</code>.</em><br><br>Same pattern:<br>tired / tiring · excited / exciting<br>scared / scary · surprised / surprising<br>embarrassed / embarrassing' },
+  { cat:'vocab', type:'Vocabulary · Adjectives', q:'Give the opposite of: happy / clean / expensive / easy / fast / old', a:'happy ↔ <strong>sad / unhappy</strong><br>clean ↔ <strong>dirty</strong><br>expensive ↔ <strong>cheap</strong><br>easy ↔ <strong>difficult / hard</strong><br>fast ↔ <strong>slow</strong><br>old ↔ <strong>new / young</strong>' },
+  { cat:'vocab', type:'Vocabulary · Feelings', q:'How do you feel when: your team wins / you have a difficult exam / it is your birthday?', a:'Team wins → <strong>excited, happy, delighted</strong><br>Difficult exam → <strong>nervous, stressed, worried</strong><br>Birthday → <strong>happy, excited, surprised</strong> (if it\'s a surprise party!)<br><br>Remember: "I feel + adjective" or "I am + adjective"' },
+  // HOUSE
+  { cat:'house', type:'House · Rooms', q:'Name 6 rooms in a typical house in English.', a:'1. <strong>living room</strong> — sala de estar<br>2. <strong>kitchen</strong> — cozinha<br>3. <strong>bedroom</strong> — quarto<br>4. <strong>bathroom</strong> — casa de banho<br>5. <strong>dining room</strong> — sala de jantar<br>6. <strong>hallway</strong> — corredor<br><br>Also: garage, garden, study, attic, basement' },
+  { cat:'house', type:'House · Vocabulary', q:'What is the difference: "sink" / "tap" / "drain" / "pipe"?', a:'<code>sink</code> — the basin (in kitchen or bathroom) where you wash things<br><code>tap (faucet)</code> — the thing you turn to get water<br><code>drain</code> — the hole where water flows out<br><code>pipe</code> — the tube that carries water through the walls<br><br><em>The plumber fixed the leaky tap and unblocked the drain.</em>' },
+  { cat:'house', type:'House · Vocabulary', q:'What is a "boiler" and who fixes it?', a:'A <code>boiler</code> is the machine that heats water and provides central heating in a house.<br><br>It is fixed by a <strong>gas engineer</strong> or sometimes a <strong>plumber</strong>.<br><br>Common problem: <em>"The boiler is broken — there\'s no hot water!"</em>' },
+  // TRADES
+  { cat:'trades', type:'Trades · Jobs', q:'What does each tradesperson do? plumber / electrician / carpenter / locksmith', a:'<strong>plumber</strong> → fixes pipes, taps, drains, boilers<br><strong>electrician</strong> → installs and repairs electrical wiring and sockets<br><strong>carpenter</strong> → works with wood — builds shelves, doors, furniture<br><strong>locksmith</strong> → fixes locks, makes keys, opens locked doors' },
+  { cat:'trades', type:'Trades · Vocabulary', q:'Complete: "The tap is ___. The drain is ___. There is ___ on the wall."', a:'The tap is <strong>leaky / dripping</strong>.<br>The drain is <strong>blocked / clogged</strong>.<br>There is <strong>damp / mould</strong> on the wall.<br><br>These are common house problems you describe to a tradesperson!' },
+  { cat:'trades', type:'Trades · Verbs', q:'Use these verbs in a sentence: fix / replace / install / renovate / leak', a:'<em>The plumber <strong>fixed</strong> the broken pipe.</em><br><em>We need to <strong>replace</strong> the old boiler.</em><br><em>Can you <strong>install</strong> a new dishwasher?</em><br><em>They are <strong>renovating</strong> the kitchen.</em><br><em>The roof is <strong>leaking</strong> — call a roofer!</em>' },
+];
+
+let fcActive = [...ALL_FC];
+let fcIdx = 0;
+
+function setFC(cat, btn) {
+  document.querySelectorAll('.fc-filter-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  fcActive = cat === 'all' ? [...ALL_FC] : ALL_FC.filter(c => c.cat === cat);
+  fcIdx = 0;
+  renderFC();
+}
+
+function renderFC() {
+  const c = fcActive[fcIdx];
+  document.getElementById('fc-q').textContent = c.q;
+  document.getElementById('fc-a').innerHTML = c.a;
+  document.getElementById('fc-type').textContent = c.type;
+  document.getElementById('fc-type-back').textContent = c.type;
+  document.getElementById('fc-cat-label').textContent = c.cat.charAt(0).toUpperCase() + c.cat.slice(1);
+  document.getElementById('fc-prog').textContent = `${fcIdx + 1} / ${fcActive.length}`;
+  document.getElementById('fc-pfill').style.width = `${Math.round((fcIdx + 1) / fcActive.length * 100)}%`;
+  const card = document.getElementById('fc-card');
+  card.classList.remove('revealed');
+}
+function flipFC() { document.getElementById('fc-card').classList.toggle('revealed'); }
+function fcMove(d) { fcIdx = (fcIdx + d + fcActive.length) % fcActive.length; renderFC(); }
+renderFC();
+
+// ══════════════════════════════════════════════════════
+// QUIZ
+// ══════════════════════════════════════════════════════
+const QUIZ = [
+  { q:'Choose the correct form: "She ___ to work every day."', opts:['go','going','goes','is go'], c:2, exp:'Present Simple, 3rd person singular (she) → add -s → <code>goes</code>. Note: go → goes (not gos) because it ends in -o.' },
+  { q:'Choose the correct form: "Look! The children ___ in the park."', opts:['play','plays','are playing','is playing'], c:2, exp:'The key word is "Look!" — this signals something happening RIGHT NOW → Present Continuous → <code>are playing</code> (they = plural → are).' },
+  { q:'"I ___ never ___ fast food." Choose the correct option.', opts:['don\'t / eat','do / eat','/ eat','am / eating'], c:2, exp:'"Never" already carries a negative meaning. You don\'t need "don\'t" or "do". Just: <code>I never eat</code> fast food. No auxiliary needed.' },
+  { q:'Which sentence is correct?', opts:['I am knowing the answer.','I am know the answer.','I know the answer.','I am knowed the answer.'], c:2, exp:'"Know" is a stative verb — it describes a mental state, not an action. Stative verbs CANNOT be used with -ing. → <code>I know the answer.</code>' },
+  { q:'Choose the correct quantity word: "There isn\'t ___ milk in the fridge."', opts:['many','a few','some','much'], c:3, exp:'Milk is uncountable. In a NEGATIVE sentence with an uncountable noun → use <code>much</code>. "Many" is for countable nouns. "A few" is for countable positives.' },
+  { q:'Choose the correct quantity word: "She has ___ good friends — about three or four."', opts:['a little','much','a few','any'], c:2, exp:'"Friends" is countable. The sentence is positive and means "a small number" → <code>a few</code>. "A little" is for uncountable nouns like water, time, money.' },
+  { q:'"Do you have ___ questions?" — Choose the correct word.', opts:['some','any','many a','a few of'], c:1, exp:'In QUESTIONS, use <code>any</code> with both countable and uncountable nouns. "Some" is mainly for affirmative sentences and offers/requests.' },
+  { q:'Where is the adverb correctly placed? "I / to work / walk / usually"', opts:['I walk to work usually.','I usually walk to work.','Usually I walk to work I.','I to work usually walk.'], c:1, exp:'Adverbs of frequency go BEFORE the main verb. Here the main verb is "walk" → <code>I usually walk to work.</code> "Sometimes" and "occasionally" can also go at the start or end.' },
+  { q:'Who do you call when your drain is blocked?', opts:['An electrician','A carpenter','A plumber','A glazier'], c:2, exp:'A <code>plumber</code> deals with water pipes, taps, drains, sinks and boilers. An electrician deals with wiring. A carpenter works with wood. A glazier replaces glass.' },
+  { q:'Choose the correct sentence about the kitchen:', opts:['The tap is leak.','The tap is leaking.','The tap leaking.','The tap are leaking.'], c:1, exp:'"The tap is leaking" → Present Continuous (something happening RIGHT NOW). Subject: "the tap" (singular) → <code>is</code>. Verb: leak + -ing → <code>leaking</code>.' },
+  { q:'Which adjective describes someone who works very hard?', opts:['lazy','shy','hard-working','selfish'], c:2, exp:'<code>hard-working</code> = someone who puts in a lot of effort and doesn\'t avoid work. Opposite: <code>lazy</code>. Other useful work adjectives: dedicated, motivated, diligent.' },
+  { q:'"There are ___ people at the party — it\'s very crowded!" Choose correctly.', opts:['too much','too many','a little','much'], c:1, exp:'"People" is countable. When there\'s an excessive/unwanted amount of something countable → <code>too many</code>. For uncountable nouns: <code>too much</code>. Example: too much noise / too many people.' },
+  { q:'What is a "wardrobe"?', opts:['A type of kitchen appliance','A large cupboard where you hang clothes','A small table beside a bed','The space under the stairs'], c:1, exp:'A <code>wardrobe</code> (guarda-roupa) is a large piece of furniture where you hang and store clothes. Also called a "closet" in American English.' },
+  { q:'Choose the correct form: "He ___ usually ___ TV before dinner."', opts:['is / watching','does / watches','/ watches','/ watching'], c:2, exp:'This is a habit → Present Simple. "Usually" tells us it\'s a routine. 3rd person singular (he) → <code>watches</code>. Adverb "usually" goes before the main verb: <code>He usually watches</code>.' },
+  { q:'Make this sentence negative: "She goes to the gym every day."', opts:['She not goes to the gym every day.','She doesn\'t go to the gym every day.','She don\'t go to the gym every day.','She isn\'t go to the gym every day.'], c:1, exp:'Present Simple negative: use <code>doesn\'t</code> for he/she/it + BASE verb (no -s). → <code>She doesn\'t go</code>. Common mistake: adding -s after doesn\'t: "She doesn\'t goes" → WRONG.' },
+];
+
+let qi = 0, qs = 0, qAnswered = false;
+
+function renderQuiz() {
+  document.getElementById('quiz-area').style.display = '';
+  document.getElementById('quiz-score').classList.remove('show');
+  const q = QUIZ[qi];
+  document.getElementById('quiz-card').innerHTML = `
+    <div class="quiz-num">Question ${qi+1} of ${QUIZ.length} · ${qs} correct</div>
+    <div class="quiz-pbar"><div class="quiz-pfill" style="width:${qi/QUIZ.length*100}%"></div></div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="quiz-opts">
+      ${q.opts.map((o,i)=>`<button class="quiz-opt" id="qo${i}" onclick="answerQ(${i})"><span class="ol">${'ABCD'[i]}</span>${o}</button>`).join('')}
+    </div>
+    <div class="quiz-exp" id="qexp">${q.exp}</div>
+    <button class="btn btn-solid quiz-next" id="qnext" onclick="nextQ()">${qi<QUIZ.length-1?'Next question →':'See result 🏆'}</button>
+  `;
+  qAnswered = false;
+}
+
+function answerQ(i) {
+  if (qAnswered) return; qAnswered = true;
+  const c = QUIZ[qi].c;
+  if (i === c) qs++;
+  document.querySelectorAll('.quiz-opt').forEach((b, idx) => {
+    b.disabled = true;
+    if (idx === c) b.classList.add('correct');
+    if (idx === i && i !== c) b.classList.add('wrong');
+  });
+  document.getElementById('qexp').classList.add('show');
+  document.getElementById('qnext').classList.add('show');
+}
+
+function nextQ() {
+  qi++;
+  if (qi >= QUIZ.length) {
+    document.getElementById('quiz-area').style.display = 'none';
+    const pct = Math.round(qs/QUIZ.length*100);
+    const msg = pct >= 80 ? '🎉 Excellent! You really know your grammar!' : pct >= 60 ? '👍 Good job! Review the ones you got wrong.' : '📖 Keep studying — you\'ll get there!';
+    document.getElementById('score-num').textContent = `${qs}/${QUIZ.length}`;
+    document.getElementById('score-msg').textContent = `${pct}% — ${msg}`;
+    document.getElementById('quiz-score').classList.add('show');
+  } else renderQuiz();
+}
+function restartQuiz() { qi = 0; qs = 0; qAnswered = false; renderQuiz(); }
+renderQuiz();
+
+// ══════════════════════════════════════════════════════
+// FILL IN THE BLANKS
+// ══════════════════════════════════════════════════════
+const FIBS = [
+  { topic:'Present Simple', before:'She', blank:'works', after:'in a hospital. (work)', hint:'3rd person singular — add -s' },
+  { topic:'Present Simple', before:'They', blank:"don't eat", after:'meat. (eat — negative)', hint:'Plural subject → don\'t + base verb' },
+  { topic:'Present Simple', before:'', blank:'Does he play', after:'tennis? (play — question)', hint:'Question with he/she/it → Does + subject + base verb?' },
+  { topic:'Present Continuous', before:'Look! The dog', blank:'is running', after:'across the garden. (run)', hint:'Happening now → is + verb-ing. Double the n!' },
+  { topic:'Present Continuous', before:'She', blank:"isn't watching", after:'TV right now. (watch — negative)', hint:'Negative continuous → isn\'t + verb-ing' },
+  { topic:'Present Continuous', before:'', blank:'Are they studying', after:'at the moment? (study — question)', hint:'Question → Are + subject + verb-ing?' },
+  { topic:'Adverbs of Frequency', before:'He', blank:'always brushes', after:'his teeth twice a day. (brush, always)', hint:'Adverb of frequency goes BEFORE the main verb' },
+  { topic:'Adverbs of Frequency', before:'She is', blank:'usually', after:'early for meetings. (usually)', hint:'After "to be", the adverb comes AFTER' },
+  { topic:'Adverbs of Frequency', before:'I', blank:'hardly ever', after:'watch horror films. (hardly ever)', hint:'This means almost never — no "not" needed' },
+  { topic:'Quantity', before:'There isn\'t', blank:'much', after:'sugar left. (sugar is uncountable)', hint:'Negative + uncountable noun → much' },
+  { topic:'Quantity', before:'She has', blank:'a few', after:'good ideas. (a small number)', hint:'Countable noun + small positive number → a few' },
+  { topic:'Quantity', before:'Can I have', blank:'some', after:'water, please? (request)', hint:'Offers and requests → some (not any)' },
+  { topic:'Quantity', before:'Do you have', blank:'any', after:'milk? (question)', hint:'Questions → any' },
+  { topic:'Quantity', before:'I eat', blank:'too much', after:'sugar — it\'s not healthy. (excessive, uncountable)', hint:'Excessive uncountable → too much' },
+  { topic:'Vocabulary', before:'The sink is blocked. Call a', blank:'plumber', after:'! (trades)', hint:'This person fixes pipes, taps, and drains' },
+  { topic:'Vocabulary', before:'The lights stopped working. We need an', blank:'electrician', after:'. (trades)', hint:'This person fixes electrical problems' },
+  { topic:'Vocabulary', before:'I sleep in my', blank:'bedroom', after:'and cook in my kitchen. (rooms)', hint:'The room where you sleep' },
+  { topic:'Vocabulary', before:'She\'s very', blank:'friendly', after:'— she always smiles at everyone. (personality)', hint:'Opposite of unfriendly / cold' },
+  { topic:'Vocabulary', before:'He looks', blank:'tired', after:'— he worked 12 hours today. (feeling)', hint:'You feel this when you need sleep' },
+  { topic:'Vocabulary', before:'The tap is', blank:'leaking', after:'— water is dripping on the floor. (house problem)', hint:'Present Continuous of "leak"' },
+];
+
+let fibCorrect = 0, fibTotal = 0;
+
+function renderFIB() {
+  const container = document.getElementById('fib-container');
+  container.innerHTML = FIBS.map((f, i) => `
+    <div class="fib-card" id="fib-${i}">
+      <div class="fib-num">${i+1} of ${FIBS.length} · <span style="color:var(--accent3)">${f.topic}</span></div>
+      <div class="fib-hint">${f.hint}</div>
+      <div class="fib-sentence">
+        ${f.before ? f.before + ' ' : ''}<input class="fib-input" id="fib-inp-${i}" type="text" placeholder="..." autocomplete="off" onkeydown="if(event.key==='Enter')checkFIB(${i})"> ${f.after}
+      </div>
+      <div class="fib-actions">
+        <button class="fib-check-btn" onclick="checkFIB(${i})">Check ✓</button>
+        <button class="fib-reveal-btn" onclick="revealFIB(${i})">Show answer</button>
+      </div>
+      <div class="fib-feedback" id="fib-fb-${i}"></div>
+    </div>
+  `).join('');
+  updateFibScore();
+}
+
+function normalise(s) { return s.trim().toLowerCase().replace(/['']/g,"'"); }
+
+function checkFIB(i) {
+  const inp = document.getElementById(`fib-inp-${i}`);
+  const fb = document.getElementById(`fib-fb-${i}`);
+  const correct = FIBS[i].blank;
+  const val = normalise(inp.value);
+  const expected = normalise(correct);
+  if (inp.dataset.checked) return;
+  inp.dataset.checked = '1';
+  if (val === expected) {
+    inp.classList.add('correct');
+    fb.innerHTML = '✅ <strong>Correct!</strong>';
+    fb.style.color = 'var(--accent)';
+    fibCorrect++;
+  } else {
+    inp.classList.add('wrong');
+    fb.innerHTML = `❌ <strong>Incorrect.</strong> The answer is: <strong style="color:var(--accent)">${correct}</strong>`;
+    fb.style.color = 'var(--accent2)';
+  }
+  fb.classList.add('show');
+  fibTotal++;
+  updateFibScore();
+}
+
+function revealFIB(i) {
+  const inp = document.getElementById(`fib-inp-${i}`);
+  if (inp.dataset.checked) return;
+  inp.value = FIBS[i].blank;
+  inp.dataset.checked = '1';
+  inp.classList.add('correct');
+  const fb = document.getElementById(`fib-fb-${i}`);
+  fb.innerHTML = `💡 Answer: <strong>${FIBS[i].blank}</strong>`;
+  fb.style.color = 'var(--ink3)';
+  fb.classList.add('show');
+  fibTotal++;
+  updateFibScore();
+}
+
+function updateFibScore() {
+  document.getElementById('fib-score').textContent = `${fibCorrect} / ${fibTotal} correct`;
+}
+
+function resetFIB() {
+  fibCorrect = 0; fibTotal = 0;
+  renderFIB();
+}
+renderFIB();
+
+// ══════════════════════════════════════════════════════
+// SEARCH
+// ══════════════════════════════════════════════════════
+const SIDX = [
+  // Grammar
+  {tab:'grammar',title:'Present Simple — Rules & Uses', text:'Present Simple habits routines facts general truths schedules wakes up works plays studies go goes watches tries has is third person singular add -s -es -ies don\'t doesn\'t base verb do does question negative'},
+  {tab:'grammar',title:'Present Continuous — Rules & Uses', text:'Present Continuous am is are verb-ing happening now right now at the moment currently temporary situation look listen stative verbs know love want have see hear believe running sitting swimming making writing lying dying'},
+  {tab:'grammar',title:'Stative Verbs — Never use -ing', text:'Stative verbs know understand want need love hate like prefer see hear smell taste seem appear have own belong contain believe think remember forget cannot use -ing form present continuous'},
+  {tab:'grammar',title:'Adverbs of Frequency — always usually often sometimes rarely never', text:'always usually often sometimes rarely seldom hardly ever never adverb frequency position before main verb after to be 100% 80% 65% 40% 15% 0% double negative never not'},
+  {tab:'grammar',title:'Quantity Words — much many some any a few a little', text:'much many some any a lot of lots of a few a little enough too much too many no countable uncountable affirmative negative question offer request sugar milk water time money chairs books friends'},
+  // Vocab
+  {tab:'vocab',title:'Personality Adjectives', text:'friendly shy confident lazy hard-working generous selfish honest rude polite clever smart funny serious patient stubborn kind personality character'},
+  {tab:'vocab',title:'Appearance Adjectives', text:'tall short slim thin overweight curly straight bald elderly young handsome pretty beautiful muscular appearance describe people'},
+  {tab:'vocab',title:'Feelings and Emotions Adjectives', text:'happy sad angry scared afraid bored tired excited nervous worried surprised embarrassed relaxed feelings emotions adjectives'},
+  {tab:'vocab',title:'House Rooms and Areas', text:'living room kitchen bedroom bathroom toilet hallway dining room garage garden yard basement attic balcony porch study office laundry room stairs staircase rooms house'},
+  {tab:'vocab',title:'House Furniture and Objects', text:'sofa couch armchair coffee table bookshelf wardrobe chest of drawers bedside table curtains blinds rug carpet mirror lamp fireplace ceiling floor wall furniture objects'},
+  {tab:'vocab',title:'Kitchen and Bathroom Vocabulary', text:'sink tap faucet oven fridge microwave dishwasher washing machine kettle shower bath bathtub towel drain pipe boiler plug socket switch kitchen bathroom'},
+  {tab:'vocab',title:'Tradespeople — plumber electrician carpenter', text:'plumber electrician carpenter builder painter decorator locksmith roofer glazier handyman gas engineer cleaner estate agent trades jobs fix repair leak block replace install renovate'},
+  {tab:'vocab',title:'House Problems — leaky broken blocked', text:'leaky tap blocked drain broken boiler power cut blown fuse damp mould cracked wall broken lock house problems repairs'},
+  {tab:'vocab',title:'Daily Routine Vocabulary', text:'wake up get up shower brush teeth get dressed have breakfast make coffee leave house commute bus train drive work meeting lunch finish cook dinner washing up watch TV walk read go to bed fall asleep daily routine'},
+  // Flashcards
+  {tab:'flashcards',title:'Flashcards — all topics', text:'flashcards present simple continuous adverbs frequency quantity vocabulary house trades feelings adjectives flip reveal answer'},
+  // Quiz
+  {tab:'quiz',title:'Quiz — Grammar and Vocabulary', text:'quiz questions multiple choice grammar vocabulary present simple continuous adverbs frequency much many some any a few a little trades house adjectives'},
+  // Exercises
+  {tab:'exercises',title:'Fill in the Blanks Exercises', text:'exercises fill blanks practice present simple continuous adverbs frequency quantity vocabulary house trades plumber electrician check answer'},
+  // Story
+  {tab:'story',title:'A Day in the Life — Story', text:'story Tom plumber morning routine kitchen problem sink blocked leaky tap boiler electrician Mr Green Mrs Davies house vocabulary adjectives adverbs frequency present simple continuous quantity words in context'},
+];
+
+let sOpen = false;
+function toggleSearch() {
+  sOpen = !sOpen;
+  const w = document.getElementById('search-wrap');
+  const b = document.getElementById('sb-toggle');
+  if (sOpen) {
+    w.classList.add('open');
+    b.classList.add('active');
+    setTimeout(() => document.getElementById('s-input').focus(), 50);
+  } else { closeSearch(); }
+}
+function closeSearch() {
+  sOpen = false;
+  document.getElementById('search-wrap').classList.remove('open');
+  document.getElementById('sb-toggle').classList.remove('active');
+  document.getElementById('s-input').value = '';
+  document.getElementById('s-results').innerHTML = '';
+}
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); toggleSearch(); }
+});
+
+const TLABELS = { grammar:'📐 Grammar', vocab:'📖 Vocabulary', flashcards:'🃏 Flashcards', quiz:'🎯 Quiz', exercises:'✏️ Exercises', story:'📚 Story' };
+
+function hl(text, q) {
+  const words = q.trim().split(/\s+/).filter(w => w.length > 1);
+  let r = text;
+  words.forEach(w => {
+    const re = new RegExp('(' + w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+    r = r.replace(re, '<mark>$1</mark>');
+  });
+  return r;
+}
+
+function snip(text, q, len=160) {
+  const w = q.trim().toLowerCase().split(/\s+/).filter(w=>w.length>1);
+  let best = 0;
+  w.forEach(word => { const i=text.toLowerCase().indexOf(word); if(i!==-1) best=Math.max(0,i-40); });
+  let s = text.slice(best, best+len);
+  if (best>0) s='…'+s;
+  if (best+len<text.length) s=s+'…';
+  return s;
+}
+
+function doSearch(query) {
+  const c = document.getElementById('s-results');
+  const q = query.trim().toLowerCase();
+  if (q.length < 2) { c.innerHTML = q.length===0?'':'<div class="search-empty">Type at least 2 characters…</div>'; return; }
+  const words = q.split(/\s+/).filter(w=>w.length>1);
+  const scored = SIDX.map(item => {
+    const hay = (item.title+' '+item.text).toLowerCase();
+    let score = 0;
+    words.forEach(w => {
+      if (item.title.toLowerCase().includes(w)) score += 4;
+      score += (hay.match(new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g'))||[]).length;
+    });
+    return { ...item, score };
+  }).filter(i=>i.score>0).sort((a,b)=>b.score-a.score).slice(0,10);
+
+  if (!scored.length) { c.innerHTML = `<div class="search-empty">No results for "<strong>${query}</strong>". Try different words.</div>`; return; }
+  c.innerHTML = `<div class="sr-count">${scored.length} result${scored.length!==1?'s':''} for "<strong>${query}</strong>"</div>` +
+    scored.map(item => `<div class="sr-item" onclick="go('${item.tab}');closeSearch()">
+      <div class="sr-section">${TLABELS[item.tab]||item.tab}</div>
+      <div class="sr-title">${hl(item.title,query)}</div>
+      <div class="sr-snip">${hl(snip(item.text,q),query)}</div>
+    </div>`).join('');
+}
+</script>
+</body>
+</html>
