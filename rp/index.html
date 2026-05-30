@@ -575,6 +575,338 @@ body {
   .gossip-card { flex-direction: column; }
   .models-grid { grid-template-columns: 1fr 1fr; }
 }
+
+/* ══════════════════════════════════
+   MODO FUTEBOL — NEON DARK
+══════════════════════════════════ */
+#futebol {
+  background: #060d0a;
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  min-height: 100vh;
+}
+.ft-stadium-header {
+  text-align: center;
+  padding: 2.5rem 1rem 2rem;
+  position: relative;
+}
+.ft-scoreboard {
+  background: #0a1a10;
+  border: 2px solid #00ff88;
+  border-radius: 16px;
+  padding: 1.25rem 2rem;
+  display: inline-block;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0 30px rgba(0,255,136,0.25), inset 0 0 20px rgba(0,255,136,0.05);
+}
+.ft-scoreboard-top {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em;
+  text-transform: uppercase; color: #00ff88; margin-bottom: 0.6rem;
+}
+.ft-score-row {
+  display: flex; align-items: center; gap: 1.5rem; justify-content: center;
+}
+.ft-team {
+  text-align: center;
+}
+.ft-team-name {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; color: #888; margin-bottom: 0.3rem;
+}
+.ft-team-score {
+  font-size: 3.5rem; font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  color: #00ff88;
+  text-shadow: 0 0 20px rgba(0,255,136,0.7), 0 0 40px rgba(0,255,136,0.3);
+  line-height: 1;
+}
+.ft-score-sep {
+  font-size: 2.5rem; font-weight: 900; color: #444;
+  padding-bottom: 0.3rem;
+}
+.ft-stadium-title {
+  color: white;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 40px rgba(0,255,136,0.2);
+  margin-bottom: 0.4rem;
+}
+.ft-stadium-title em { color: #00ff88; font-style: italic; }
+.ft-stadium-sub {
+  font-size: 0.82rem; color: #666; margin-bottom: 1.5rem;
+}
+/* pitch divider */
+.ft-pitch-line {
+  border: none;
+  border-top: 2px dashed #1a3a25;
+  margin: 2rem 0;
+  position: relative;
+}
+.ft-pitch-line::after {
+  content: '⚽';
+  position: absolute; top: -0.7rem; left: 50%;
+  transform: translateX(-50%);
+  background: #060d0a; padding: 0 0.5rem;
+  font-size: 1rem;
+}
+
+/* match report cards */
+.ft-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.ft-card {
+  background: #0a180f;
+  border: 1px solid #1a3a25;
+  border-radius: 14px;
+  padding: 1.3rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.ft-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  border-radius: 14px 14px 0 0;
+}
+.ft-card:hover {
+  border-color: #00ff88;
+  box-shadow: 0 0 20px rgba(0,255,136,0.12);
+}
+.ft-card.green::before  { background: linear-gradient(90deg, #00ff88, #00cc66); }
+.ft-card.yellow::before { background: linear-gradient(90deg, #ffdd00, #ffaa00); }
+.ft-card.red::before    { background: linear-gradient(90deg, #ff4444, #cc2200); }
+.ft-card.blue::before   { background: linear-gradient(90deg, #44aaff, #2266ff); }
+.ft-card.purple::before { background: linear-gradient(90deg, #cc44ff, #8800cc); }
+
+.ft-card-badge {
+  font-size: 0.62rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.12em; padding: 2px 8px; border-radius: 4px;
+  margin-bottom: 0.6rem; display: inline-block;
+}
+.ft-card.green  .ft-card-badge { background: rgba(0,255,136,0.15); color: #00ff88; }
+.ft-card.yellow .ft-card-badge { background: rgba(255,221,0,0.15);  color: #ffdd00; }
+.ft-card.red    .ft-card-badge { background: rgba(255,68,68,0.15);   color: #ff6666; }
+.ft-card.blue   .ft-card-badge { background: rgba(68,170,255,0.15);  color: #44aaff; }
+.ft-card.purple .ft-card-badge { background: rgba(204,68,255,0.15);  color: #cc44ff; }
+
+.ft-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem; font-weight: 800;
+  color: #e8f5ee; margin-bottom: 0.6rem; line-height: 1.3;
+}
+.ft-card p, .ft-card li {
+  font-size: 0.84rem; line-height: 1.7; color: #7a9a82;
+}
+.ft-card ul { padding-left: 1rem; }
+.ft-card li { margin-bottom: 0.2rem; }
+.ft-card li strong { color: #b0d8b8; }
+
+/* goal moments */
+.ft-goal {
+  background: #0d1f10;
+  border: 1px solid #00ff88;
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  display: flex; gap: 1.1rem; align-items: flex-start;
+  box-shadow: 0 0 15px rgba(0,255,136,0.1);
+}
+.ft-goal-icon { font-size: 1.8rem; flex-shrink: 0; }
+.ft-goal-body {}
+.ft-goal-label {
+  font-size: 0.62rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.1em; color: #00ff88; margin-bottom: 0.3rem;
+}
+.ft-goal-title { font-weight: 700; font-size: 0.95rem; color: #e8f5ee; margin-bottom: 0.3rem; }
+.ft-goal-text  { font-size: 0.84rem; line-height: 1.65; color: #7a9a82; }
+.ft-goal-text strong { color: #b0d8b8; }
+
+/* yellow/red cards */
+.ft-cards-section { margin: 1.5rem 0; }
+.ft-card-event {
+  display: flex; align-items: center; gap: 0.85rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  background: #0a180f;
+  border: 1px solid #1a3a25;
+}
+.ft-card-icon {
+  width: 28px; height: 38px; border-radius: 4px;
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 900;
+}
+.ft-card-icon.yellow-card { background: #ffd700; color: #000; }
+.ft-card-icon.red-card    { background: #ff2222; color: white; }
+.ft-card-event-text { font-size: 0.85rem; color: #b0d8b8; line-height: 1.5; }
+.ft-card-event-text strong { color: #e8f5ee; }
+
+/* player ratings */
+.ft-ratings { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 0.75rem; margin: 1rem 0; }
+.ft-player {
+  background: #0a180f; border: 1px solid #1a3a25;
+  border-radius: 12px; padding: 1rem; text-align: center;
+  transition: border-color 0.2s;
+}
+.ft-player:hover { border-color: #00ff88; }
+.ft-player-num {
+  font-size: 2rem; font-weight: 900; color: #00ff88;
+  text-shadow: 0 0 15px rgba(0,255,136,0.5);
+  line-height: 1;
+}
+.ft-player-name { font-size: 0.82rem; font-weight: 700; color: #e8f5ee; margin: 0.3rem 0 0.15rem; }
+.ft-player-pos  { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.ft-player-stat { font-size: 0.75rem; color: #7a9a82; line-height: 1.5; }
+
+/* tactics board */
+.ft-tactics {
+  background: #071510;
+  border: 1px solid #1a3a25;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+.ft-tactics-title {
+  font-size: 0.68rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.12em; color: #00ff88; margin-bottom: 1rem;
+}
+/* simulated pitch */
+.ft-pitch {
+  background: repeating-linear-gradient(
+    0deg,
+    #0a1f12 0px, #0a1f12 40px,
+    #091c10 40px, #091c10 80px
+  );
+  border: 2px solid #1a3a25;
+  border-radius: 10px;
+  padding: 1.5rem 1rem;
+  position: relative;
+}
+.ft-pitch::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 10%; right: 10%;
+  height: 1px;
+  background: #1a3a25;
+  transform: translateY(-50%);
+}
+.ft-formation {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  text-align: center;
+}
+.ft-pos-node {
+  background: rgba(0,255,136,0.12);
+  border: 1px solid rgba(0,255,136,0.3);
+  border-radius: 8px;
+  padding: 0.5rem 0.3rem;
+  font-size: 0.7rem;
+  color: #00ff88;
+  font-weight: 700;
+  cursor: default;
+  transition: all 0.2s;
+}
+.ft-pos-node:hover {
+  background: rgba(0,255,136,0.22);
+  box-shadow: 0 0 10px rgba(0,255,136,0.2);
+}
+.ft-pos-node .pos-name { font-size: 0.62rem; color: #4a8a5a; font-weight: 400; margin-top: 0.2rem; }
+
+/* commentary ticker */
+.ft-ticker {
+  background: #00ff88;
+  color: #060d0a;
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.78rem; font-weight: 700;
+  margin: 1.5rem 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ft-ticker-inner {
+  display: inline-block;
+  animation: ticker 22s linear infinite;
+}
+@keyframes ticker {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(-100%); }
+}
+
+/* section headers in football mode */
+.ft-section-header {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin: 2.5rem 0 1rem;
+}
+.ft-section-header .ft-min {
+  background: #0a1a10;
+  border: 1px solid #00ff88;
+  border-radius: 6px;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.7rem; font-weight: 800;
+  color: #00ff88; font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.ft-section-header h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-weight: 900;
+  color: #e8f5ee;
+}
+.ft-section-header h3 em { color: #00ff88; font-style: italic; }
+.ft-section-header::after {
+  content: '';
+  flex: 1; height: 1px;
+  background: linear-gradient(to right, #1a3a25, transparent);
+}
+
+/* half time whistle */
+.ft-halftime {
+  background: linear-gradient(135deg, #0d1f10, #071510);
+  border: 2px solid #ffdd00;
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  margin: 2rem 0;
+  box-shadow: 0 0 25px rgba(255,221,0,0.1);
+}
+.ft-halftime-label {
+  font-size: 0.65rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.15em; color: #ffdd00; margin-bottom: 0.5rem;
+}
+.ft-halftime h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem; font-weight: 900;
+  color: #e8f5ee; margin-bottom: 0.6rem;
+}
+.ft-halftime p {
+  font-size: 0.85rem; color: #7a9a82; line-height: 1.6;
+  max-width: 480px; margin: 0 auto;
+}
+
+/* final whistle */
+.ft-final {
+  background: linear-gradient(135deg, #0d2a15, #071810);
+  border: 2px solid #00ff88;
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  margin-top: 2.5rem;
+  box-shadow: 0 0 40px rgba(0,255,136,0.15);
+}
+.ft-final-label {
+  font-size: 0.65rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.2em; color: #00ff88; margin-bottom: 0.75rem;
+}
+.ft-final h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; font-weight: 900; color: #e8f5ee;
+  margin-bottom: 0.75rem;
+}
+.ft-final h3 em { color: #00ff88; }
+.ft-final p { font-size: 0.88rem; color: #7a9a82; line-height: 1.7; max-width: 540px; margin: 0 auto; }
 </style>
 </head>
 <body>
@@ -601,6 +933,7 @@ body {
   <button class="nav-btn" onclick="showTab('fofoca')">🔥 Fofoca</button>
   <button class="nav-btn" onclick="showTab('temas')">⚡ Temas-Chave</button>
   <button class="nav-btn" onclick="showTab('historia')">📖 A História</button>
+  <button class="nav-btn" onclick="showTab('futebol')" style="color:#00cc55">⚽ Modo Futebol</button>
   <button class="nav-search-btn" id="search-toggle-btn" onclick="toggleSearch()" title="Pesquisar (Ctrl+K)">🔍 Pesquisar</button>
 </nav>
 
@@ -1429,6 +1762,347 @@ body {
   </div>
 </section>
 
+<!-- ════════════════════════════════════════════════
+     MODO FUTEBOL ⚽
+════════════════════════════════════════════════ -->
+<section class="section" id="futebol">
+<div id="futebol">
+
+  <!-- SCOREBOARD -->
+  <div class="ft-stadium-header">
+    <div class="ft-scoreboard">
+      <div class="ft-scoreboard-top">🏟️ ESTÁDIO DA SEBENTA · ÉPOCA 2025/26</div>
+      <div class="ft-score-row">
+        <div class="ft-team">
+          <div class="ft-team-name">Teoria</div>
+          <div class="ft-team-score">4</div>
+        </div>
+        <div class="ft-score-sep">—</div>
+        <div class="ft-team">
+          <div class="ft-team-name">Prática</div>
+          <div class="ft-team-score">4</div>
+        </div>
+      </div>
+    </div>
+    <div class="ft-stadium-title">Relações <em>Públicas FC</em></div>
+    <div class="ft-stadium-sub">Relatório completo do jogo · Prof. Nuno Goulart Brandão · UCP/FCH</div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ft-ticker">
+    <span class="ft-ticker-inner">
+      ⚡ GRUNIG MARCA COM O SIMÉTRICO BIDIRECCIONAL! &nbsp;·&nbsp; 🟡 CARTÃO AMARELO: DISSONÂNCIA! &nbsp;·&nbsp; 🔴 CARTÃO VERMELHO PARA O GREENWASHING! &nbsp;·&nbsp; ⚽ BOWEN EMPATA COM RSE AO MINUTO 57! &nbsp;·&nbsp; 📣 FREEMAN NO BANCO COM OS STAKEHOLDERS &nbsp;·&nbsp; 🏆 RP FC vs. SILÊNCIO ORGANIZACIONAL — RESULTADO FINAL: 4-0 &nbsp;·&nbsp; 👟 BERNAYS ASSISTE GRUNIG NO 2.º GOLO!
+    </span>
+  </div>
+
+  <!-- ─── PRIMEIRA PARTE: FORMAÇÃO ─── -->
+  <div class="ft-section-header">
+    <span class="ft-min">1'</span>
+    <h3>A <em>Formação</em> — O que são as RP?</h3>
+  </div>
+
+  <div class="ft-tactics">
+    <div class="ft-tactics-title">📋 SISTEMA TÁCTICO 4-3-3 · Grunig & Brandão Formation</div>
+    <div class="ft-pitch">
+      <div class="ft-formation">
+        <div class="ft-pos-node">⬆️ Publicidade Inst.<div class="pos-name">Ponta de Lança</div></div>
+        <div class="ft-pos-node">⬆️ Lobbying<div class="pos-name">Ponta de Lança</div></div>
+        <div class="ft-pos-node">⬆️ Gestão de Crises<div class="pos-name">Extremo</div></div>
+        <div class="ft-pos-node">⬆️ Com. Interna<div class="pos-name">Extremo</div></div>
+
+        <div class="ft-pos-node">🔄 Identidade<div class="pos-name">Médio Centro</div></div>
+        <div class="ft-pos-node">🔄 Reputação<div class="pos-name">Médio Criativo</div></div>
+        <div class="ft-pos-node">🔄 Imagem<div class="pos-name">Médio Ala</div></div>
+        <div class="ft-pos-node">🔄 RSE<div class="pos-name">Médio Ala</div></div>
+
+        <div class="ft-pos-node">🛡️ Stakeholders<div class="pos-name">Defesa Central</div></div>
+        <div class="ft-pos-node">🛡️ Públicos<div class="pos-name">Defesa Central</div></div>
+        <div class="ft-pos-node">🛡️ Ética<div class="pos-name">Lateral Esq.</div></div>
+        <div class="ft-pos-node">🛡️ Cultura Org.<div class="pos-name">Lateral Dir.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ft-grid">
+    <div class="ft-card green">
+      <span class="ft-card-badge">Capitão de Equipa</span>
+      <h3>O que fazem as RP?</h3>
+      <p>As RP são a <strong>consciência comunicacional</strong> da organização. São uma responsabilidade de gestão centrada no diálogo permanente. Não são spin ou maquilhagem — são o árbitro entre a organização e os seus públicos.</p>
+    </div>
+    <div class="ft-card blue">
+      <span class="ft-card-badge">Escola Crítica · Banco de Suplentes</span>
+      <h3>Os anos 80/90 perturbam o consenso</h3>
+      <p>L'Etang e Holtzhausen entram em campo: será o modelo simétrico alguma vez possível? O pós-modernismo defende o <strong>dissenso</strong> como legítimo — a unanimidade não é obrigatória!</p>
+    </div>
+  </div>
+
+  <!-- ─── MINUTO 10': 4 MODELOS ─── -->
+  <div class="ft-section-header">
+    <span class="ft-min">10'</span>
+    <h3><em>GOLO!</em> — Os 4 Modelos de Grunig & Hunt</h3>
+  </div>
+
+  <div class="ft-goal">
+    <div class="ft-goal-icon">⚽</div>
+    <div class="ft-goal-body">
+      <div class="ft-goal-label">Modelo 1 · Press Agentry · Primórdios</div>
+      <div class="ft-goal-title">Propaganda sem vergonha</div>
+      <div class="ft-goal-text">Monólogo puro. Objetivo: publicity favorável a qualquer custo. Comunicação <strong>unidireccional</strong>. Não usa pesquisa. É como uma equipa que só sabe atacar sem ver a bola.</div>
+    </div>
+  </div>
+
+  <div class="ft-goal">
+    <div class="ft-goal-icon">⚽</div>
+    <div class="ft-goal-body">
+      <div class="ft-goal-label">Modelo 2 · Informação Pública · Ivy Lee (1906)</div>
+      <div class="ft-goal-title">O jornalista residente</div>
+      <div class="ft-goal-text">A informação agora é fidedigna — mas <em>apenas</em> a favorável. Ivy Lee como "jornalista da casa". Ainda <strong>assimétrico</strong>, ainda monólogo. Melhor que o 1.º, mas falta muito.</div>
+    </div>
+  </div>
+
+  <div class="ft-goal">
+    <div class="ft-goal-icon">⚽</div>
+    <div class="ft-goal-body">
+      <div class="ft-goal-label">Modelo 3 · Assimétrico Bidireccional · Bernays</div>
+      <div class="ft-goal-title">Pesquisa ao serviço da persuasão</div>
+      <div class="ft-goal-text">Agora há diálogo — mas a organização domina. Usa a pesquisa para <strong>persuadir</strong> os públicos a aceitarem o seu ponto de vista. Edward Bernays, sobrinho de Freud, é o treinador desta fase.</div>
+    </div>
+  </div>
+
+  <div class="ft-goal" style="border-color:#ffdd00;box-shadow:0 0 20px rgba(255,221,0,0.15)">
+    <div class="ft-goal-icon">🏆</div>
+    <div class="ft-goal-body">
+      <div class="ft-goal-label" style="color:#ffdd00">Modelo 4 · SIMÉTRICO BIDIRECCIONAL · Teoria de Excelência ⭐</div>
+      <div class="ft-goal-title" style="color:#ffdd00">O GOLO MAIS BONITO DO JOGO</div>
+      <div class="ft-goal-text">Compreensão mútua. RP como mediadores. Efeitos equilibrados entre organização e públicos. A organização está genuinamente disposta a mudar. Grunig & Larissa Grunig (1992): esta é a teoria normativa de como as RP <strong>devem</strong> ser praticadas. Na prática: combinar 3.º + 4.º é o caminho da excelência.</div>
+    </div>
+  </div>
+
+  <!-- ─── CARTÕES ─── -->
+  <div class="ft-section-header">
+    <span class="ft-min">25'</span>
+    <h3><em>Cartões</em> — Erros Que Custam Caro</h3>
+  </div>
+
+  <div class="ft-cards-section">
+    <div class="ft-card-event">
+      <div class="ft-card-icon yellow-card">🟡</div>
+      <div class="ft-card-event-text"><strong>Cartão Amarelo — Dissonância.</strong> A organização diz uma coisa e faz outra. Os públicos detectam, reagem negativamente. Aviso a sério. (Effron et al., 2018)</div>
+    </div>
+    <div class="ft-card-event">
+      <div class="ft-card-icon red-card">🔴</div>
+      <div class="ft-card-event-text"><strong>Cartão Vermelho — Hipocrisia.</strong> A organização defende uma posição moral de que beneficiou. É pior do que inautenticidade. Expulsão directa: danos irreparáveis na reputação.</div>
+    </div>
+    <div class="ft-card-event">
+      <div class="ft-card-icon red-card">🔴</div>
+      <div class="ft-card-event-text"><strong>Cartão Vermelho — Greenwashing.</strong> Fingir ser sustentável sem o ser. Weder, Einwiller & Eberwein (2019): na era dos utilizadores como produtores de conteúdo, é impossível esconder.</div>
+    </div>
+    <div class="ft-card-event">
+      <div class="ft-card-icon yellow-card">🟡</div>
+      <div class="ft-card-event-text"><strong>Cartão Amarelo — Prisão Cognitiva.</strong> Kim & Grunig (2021): públicos presos em câmaras de eco, incapazes de absorver nova informação. Inércia epistémica. O profissional de RP tem de perceber isto.</div>
+    </div>
+  </div>
+
+  <!-- ─── INTERVALO ─── -->
+  <div class="ft-halftime">
+    <div class="ft-halftime-label">🔔 Apito do Árbitro · INTERVALO</div>
+    <h3>Análise ao Intervalo</h3>
+    <p>Primeira parte: Grunig dominou o meio-campo com os 4 modelos. A defesa — Identidade, Imagem e Reputação — aguentou bem. Bernays fez a assistência mais importante. Próxima parte: Freeman, Bowen e a Comunicação Interna entram em campo.</p>
+  </div>
+
+  <!-- ─── SEGUNDA PARTE: IDENTIDADE ─── -->
+  <div class="ft-section-header">
+    <span class="ft-min">46'</span>
+    <h3>Identidade · Imagem · <em>Reputação</em></h3>
+  </div>
+
+  <div class="ft-grid">
+    <div class="ft-card green">
+      <span class="ft-card-badge">Defesa Central #1 · Identidade</span>
+      <h3>O que a organização É</h3>
+      <ul>
+        <li>Conceito <strong>emissor</strong> (definido pela org.)</li>
+        <li>História, valores, crenças, "código genético"</li>
+        <li>3 critérios (Albert & Whetten): carácter central, distinção, permanência</li>
+      </ul>
+    </div>
+    <div class="ft-card blue">
+      <span class="ft-card-badge">Defesa Central #2 · Imagem</span>
+      <h3>O que os públicos PERCEBEM</h3>
+      <ul>
+        <li>Conceito <strong>receptor</strong> (definido pelos públicos)</li>
+        <li>Auto-imagem (interna) + imagem pública (externa)</li>
+        <li>Pode diferir radicalmente da identidade real</li>
+      </ul>
+    </div>
+    <div class="ft-card yellow">
+      <span class="ft-card-badge">Capitão da Defesa · Reputação ⭐</span>
+      <h3>O activo que vence o jogo</h3>
+      <ul>
+        <li>Activo <strong>intangível</strong> — não aparece no balanço</li>
+        <li>Gera por confiança + transparência (Fombrun, 1996)</li>
+        <li>Capital reputacional = vantagem competitiva</li>
+        <li>Condições: coerência, responsabilidade, credibilidade</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─── STAKEHOLDERS ─── -->
+  <div class="ft-section-header">
+    <span class="ft-min">57'</span>
+    <h3><em>GOLO!</em> Freeman Empata — Stakeholders</h3>
+  </div>
+
+  <div class="ft-goal">
+    <div class="ft-goal-icon">⚽</div>
+    <div class="ft-goal-body">
+      <div class="ft-goal-label">Freeman (2010) · Jogada de génio</div>
+      <div class="ft-goal-title">Stakeholder: quem pode afetar OU ser afetado</div>
+      <div class="ft-goal-text">"Grupo ou indivíduo que pode <strong>afectar ou é afectado</strong> pelo cumprimento da finalidade e objectivos da organização." Vai além dos tradicionais: inclui Governo, concorrentes, sociedade civil. A lógica muda de <em>troca</em> para <em>colaboração</em>.</div>
+    </div>
+  </div>
+
+  <div class="ft-ratings">
+    <div class="ft-player">
+      <div class="ft-player-num">1ª</div>
+      <div class="ft-player-name">Não-Públicos</div>
+      <div class="ft-player-pos">Bancada · Sem envolvimento</div>
+      <div class="ft-player-stat">Não reconhecem relação com a organização</div>
+    </div>
+    <div class="ft-player">
+      <div class="ft-player-num">2ª</div>
+      <div class="ft-player-name">Latentes</div>
+      <div class="ft-player-pos">Suplentes · Adormecidos</div>
+      <div class="ft-player-stat">Potencial alto, travados por constrangimentos</div>
+    </div>
+    <div class="ft-player">
+      <div class="ft-player-num">3ª</div>
+      <div class="ft-player-name">Conscientes</div>
+      <div class="ft-player-pos">A aquecer · Envolvimento crescente</div>
+      <div class="ft-player-stat">Reconhecem relação mas não comunicam ainda</div>
+    </div>
+    <div class="ft-player" style="border-color:#00ff88">
+      <div class="ft-player-num" style="color:#ffdd00">4ª</div>
+      <div class="ft-player-name">Activos ⚡</div>
+      <div class="ft-player-pos">Titular · Em campo já</div>
+      <div class="ft-player-stat">Alta percepção, eliminam constrangimentos, mobilizados</div>
+    </div>
+  </div>
+
+  <!-- ─── RSE ─── -->
+  <div class="ft-section-header">
+    <span class="ft-min">70'</span>
+    <h3>RSE · Ética · <em>Governança</em></h3>
+  </div>
+
+  <div class="ft-grid">
+    <div class="ft-card green">
+      <span class="ft-card-badge">Bowen (1957) · Pai da RSE</span>
+      <h3>Mais do que lucro</h3>
+      <p>Obrigação de prosseguir políticas desejáveis para a sociedade. Carroll (1999) chama-lhe o "pai". Hoje: 17 ODS da ONU, 7 pilares Instituto Ethos, modelo 3 domínios de Schwartz & Carroll.</p>
+    </div>
+    <div class="ft-card yellow">
+      <span class="ft-card-badge">4 Virtudes da Governança Corporativa</span>
+      <h3>O Código de Honra</h3>
+      <ul>
+        <li><strong>Equidade</strong> — tratamento justo</li>
+        <li><strong>Transparência</strong> — empresa translúcida</li>
+        <li><strong>Accountability</strong> — contas além do legal</li>
+        <li><strong>Responsabilidade Corporativa</strong> — assumir consequências</li>
+      </ul>
+    </div>
+    <div class="ft-card purple">
+      <span class="ft-card-badge">CPA · Jogada arriscada</span>
+      <h3>Corporate Political Advocacy</h3>
+      <p>Ben & Jerry's, Gillette, Lidl, Santander — empresas que entram na política. Regra de ouro: <strong>consistência + plausibilidade + autenticidade</strong>. Sem estes 3, parece oportunismo.</p>
+    </div>
+  </div>
+
+  <!-- ─── COMUNICAÇÃO INTERNA ─── -->
+  <div class="ft-section-header">
+    <span class="ft-min">80'</span>
+    <h3>Comunicação Interna — <em>O Balneário</em></h3>
+  </div>
+
+  <div class="ft-goal">
+    <div class="ft-goal-icon">🔊</div>
+    <div class="ft-goal-body">
+      <div class="ft-goal-label">Almeida (2000) · A lei do balneário</div>
+      <div class="ft-goal-title">"Não comunicar é comunicar negativamente."</div>
+      <div class="ft-goal-text">A comunicação interna é uma <strong>Necessidade</strong> (coordenação), uma <strong>Crença</strong> (portadora de soluções) e uma <strong>Vontade</strong> (tem de ser pensada). As empresas com boa comunicação interna têm mais facilidade na comunicação externa.</div>
+    </div>
+  </div>
+
+  <div class="ft-grid">
+    <div class="ft-card green">
+      <span class="ft-card-badge">5 Funções · Bilhim + Brandão</span>
+      <h3>O que a comunicação faz</h3>
+      <ul>
+        <li>Controlo do comportamento</li>
+        <li>Motivação dos colaboradores</li>
+        <li>Afiliação/identificação</li>
+        <li>Informação para decisão</li>
+        <li><strong>(Brandão) →</strong> ir ao encontro das necessidades dos colaboradores</li>
+      </ul>
+    </div>
+    <div class="ft-card red">
+      <span class="ft-card-badge">5 Barreiras · Thayer (1979)</span>
+      <h3>O que trava o passe</h3>
+      <ul>
+        <li>Organizacionais — estrutura e poder</li>
+        <li>Interpessoais — conflitos de valores</li>
+        <li>Individuais — hábitos e inaptidões</li>
+        <li>Eco/Geo/Temporais — custo, distância, tempo</li>
+        <li>Canal e Meios — canal errado para a mensagem</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─── CRISE ─── -->
+  <div class="ft-section-header">
+    <span class="ft-min">88'</span>
+    <h3>Gestão de Crises — <em>Tempo de Compensação</em></h3>
+  </div>
+
+  <div class="ft-grid">
+    <div class="ft-card yellow">
+      <span class="ft-card-badge">Fearn-Banks · 5 Fases</span>
+      <h3>O Plano de Emergência</h3>
+      <ul>
+        <li><strong>Detecção</strong> — algo está a correr mal</li>
+        <li><strong>Prevenção</strong> — agir antes que rebente</li>
+        <li><strong>Contenção</strong> — travar os danos</li>
+        <li><strong>Recuperação</strong> — voltar à normalidade</li>
+        <li><strong>Lições</strong> — o que aprendemos</li>
+      </ul>
+    </div>
+    <div class="ft-card blue">
+      <span class="ft-card-badge">Lampreia · 2 Tipos</span>
+      <h3>Previsível vs. Imprevisível</h3>
+      <p><strong>Previsível:</strong> crises económicas, reestruturações, alterações legais. Dá para preparar.</p>
+      <p style="margin-top:.5rem"><strong>Imprevisível:</strong> catástrofes, acidentes, sabotagens. A mais difícil. Mas também precisa de plano.</p>
+    </div>
+  </div>
+
+  <!-- ─── APITO FINAL ─── -->
+  <div class="ft-pitch-line"></div>
+
+  <div class="ft-final">
+    <div class="ft-final-label">⏱️ 90+3' · APITO FINAL</div>
+    <h3>RP FC <em>4 — 4</em> Silêncio Organizacional</h3>
+    <p>Um jogo épico. A teoria ganhou quando os 4 Modelos de Grunig marcaram logo na 1.ª parte. A prática respondeu com Freeman, Bowen e a Comunicação Interna. No final, quem decide é a <strong>autenticidade</strong>: a organização que alinha identidade, imagem e reputação vence sempre. Boa sorte no exame — tens o plantel completo.</p>
+  </div>
+
+  <!-- segundo ticker no rodapé -->
+  <div class="ft-ticker" style="margin-top:1.5rem">
+    <span class="ft-ticker-inner" style="animation-duration:30s;animation-delay:-10s">
+      📋 FORMAÇÃO: Grunig · Freeman · Bowen · Bernays · Thayer · Schein · Fombrun · Effron · Lampreia · Fearn-Banks · Almeida &nbsp;·&nbsp; 🎯 GOLOS: 4 Modelos · Triângulo Identidade-Imagem-Reputação · Stakeholders · RSE · Com. Interna &nbsp;·&nbsp; 🟡 AVISOS: Dissonância · Greenwashing · CPA sem autenticidade &nbsp;·&nbsp; 🔴 EXPULSÃO: Hipocrisia
+    </span>
+  </div>
+
+</div>
+</section>
+
 </main>
 
 <script>
@@ -1437,7 +2111,7 @@ function showTab(id) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  const idx = ['resumos','esquemas','flashcards','quiz','fofoca','temas','historia'].indexOf(id);
+  const idx = ['resumos','esquemas','flashcards','quiz','fofoca','temas','historia','futebol'].indexOf(id);
   document.querySelectorAll('.nav-btn')[idx].classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
 }
