@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EconoSL – Plataforma de Estudo | Economia A</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap');
+
+  :root {
+    --red: #E20020;
+    --dark-red: #9B0015;
+    --gold: #C8A84B;
+    --black: #0D0D0D;
+    --off-white: #F5F0E8;
+    --light-grey: #E8E4DB;
+    --mid-grey: #B5B0A5;
+    --purple-accent: #7B68A0;
+    --green: #2D8A4E;
+    --paper: #FDFAF4;
+    --grid-line: rgba(123,104,160,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--paper);
+    color: var(--black);
+    min-height: 100vh;
+    background-image: 
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: var(--black);
+    color: white;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+  .header-stripe {
+    height: 5px;
+    background: repeating-linear-gradient(90deg, var(--red) 0, var(--red) 20px, var(--gold) 20px, var(--gold) 40px);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 24px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-eagle {
+    font-size: 32px;
+    filter: drop-shadow(0 0 8px var(--red));
+  }
+  .logo-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: white;
+    line-height: 1;
+  }
+  .logo-sub {
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    display: block;
+    margin-top: 2px;
+  }
+  .benfica-tag {
+    background: var(--red);
+    color: white;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 4px 12px;
+    border-radius: 2px;
+  }
+
+  /* ─── NAV TABS ─── */
+  nav {
+    background: #1a1a1a;
+    border-top: 1px solid #333;
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--mid-grey);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    letter-spacing: 2px;
+    padding: 12px 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .tab-btn:hover { color: white; }
+  .tab-btn.active {
+    color: var(--gold);
+    border-bottom-color: var(--red);
+  }
+
+  /* ─── MAIN ─── */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 20px;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ─── UNIT SELECTOR ─── */
+  .unit-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+  .unit-pill {
+    background: white;
+    border: 2px solid var(--light-grey);
+    color: var(--black);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .unit-pill:hover { border-color: var(--purple-accent); color: var(--purple-accent); }
+  .unit-pill.active { background: var(--black); border-color: var(--black); color: var(--gold); }
+
+  /* ─── PAGE TITLE ─── */
+  .page-title {
+    border-left: 5px solid var(--red);
+    padding-left: 16px;
+    margin-bottom: 24px;
+  }
+  .page-title h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 2px;
+    color: var(--black);
+    line-height: 1;
+  }
+  .page-title p {
+    font-size: 13px;
+    color: var(--mid-grey);
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  /* ─── SUMMARY BOX (normal) ─── */
+  .summary-card {
+    background: white;
+    border: 1px solid var(--light-grey);
+    border-top: 4px solid var(--purple-accent);
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .summary-card h3 {
+    font-family: 'Merriweather', serif;
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 16px;
+    color: var(--black);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .summary-card h3 .tag {
+    background: var(--purple-accent);
+    color: white;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+  .summary-card p, .summary-card li { 
+    font-size: 15px; 
+    line-height: 1.75; 
+    color: #333;
+    margin-bottom: 8px;
+  }
+  .summary-card ul { padding-left: 20px; }
+  .formula-box {
+    background: var(--light-grey);
+    border-left: 4px solid var(--purple-accent);
+    padding: 12px 18px;
+    font-family: 'Merriweather', serif;
+    font-size: 14px;
+    font-style: italic;
+    margin: 16px 0;
+    color: var(--black);
+  }
+  .highlight { background: rgba(200,168,75,0.25); padding: 2px 4px; }
+
+  /* ─── FOOTBALL MODE ─── */
+  .football-card {
+    background: #0a1f0a;
+    border: 2px solid #2D8A4E;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .football-card::before {
+    content: '⚽';
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 40px;
+    opacity: 0.15;
+  }
+  .football-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .football-card p {
+    color: #c8e6c9;
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 12px;
+  }
+  .football-card .benfica-cheer {
+    background: var(--red);
+    color: white;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    padding: 6px 14px;
+    display: inline-block;
+    margin-top: 8px;
+  }
+  .pitch-box {
+    border: 2px dashed #2D8A4E;
+    padding: 12px 16px;
+    margin: 12px 0;
+    color: #81c784;
+    font-style: italic;
+    font-size: 14px;
+  }
+
+  /* ─── NEWSPAPER MODE ─── */
+  .newspaper-card {
+    background: var(--off-white);
+    border: 1px solid #ccc;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .newspaper-dateline {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 6px;
+  }
+  .newspaper-card h3 {
+    font-family: 'Merriweather', serif;
+    font-size: 22px;
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 12px;
+    border-bottom: 2px solid var(--black);
+    padding-bottom: 10px;
+  }
+  .newspaper-card p {
+    font-family: 'Merriweather', serif;
+    font-size: 14px;
+    line-height: 1.85;
+    margin-bottom: 14px;
+    column-count: 2;
+    column-gap: 24px;
+    text-align: justify;
+    hyphens: auto;
+  }
+  .newspaper-card .real-example {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 12px 16px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    column-count: 1;
+  }
+  .newspaper-card .real-example strong { color: var(--red); }
+
+  /* ─── FLASHCARDS ─── */
+  .flashcard-area {
+    perspective: 1000px;
+    max-width: 600px;
+    margin: 0 auto 32px;
+  }
+  .flashcard {
+    width: 100%;
+    height: 280px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+  }
+  .flashcard.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 32px;
+    text-align: center;
+  }
+  .card-front {
+    background: var(--black);
+    border: 3px solid var(--red);
+    color: white;
+  }
+  .card-front .card-unit {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .card-front .card-question {
+    font-family: 'Merriweather', serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .card-back {
+    background: white;
+    border: 3px solid var(--purple-accent);
+    transform: rotateY(180deg);
+    color: var(--black);
+  }
+  .card-back .card-answer {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #333;
+  }
+  .card-back .card-formula {
+    font-family: 'Merriweather', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--purple-accent);
+    margin-top: 12px;
+    padding: 8px;
+    border-top: 1px solid var(--light-grey);
+  }
+  .flip-hint {
+    text-align: center;
+    font-size: 12px;
+    color: var(--mid-grey);
+    margin-top: -16px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+  .card-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  .card-nav button {
+    background: var(--black);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .card-nav button:hover { background: var(--red); }
+  .card-counter {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--mid-grey);
+    letter-spacing: 2px;
+    min-width: 80px;
+    text-align: center;
+  }
+  .progress-bar-wrap {
+    background: var(--light-grey);
+    height: 4px;
+    margin-bottom: 28px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .progress-bar {
+    height: 4px;
+    background: var(--red);
+    transition: width 0.3s;
+  }
+
+  /* ─── QUIZ ─── */
+  .quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .quiz-score-badge {
+    background: var(--black);
+    color: var(--gold);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    padding: 8px 16px;
+  }
+  .quiz-question-card {
+    background: white;
+    border: 1px solid var(--light-grey);
+    border-top: 4px solid var(--red);
+    padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+  .quiz-question-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+  .quiz-question-text {
+    font-family: 'Merriweather', serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    color: var(--black);
+  }
+  .quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .quiz-option {
+    background: var(--paper);
+    border: 2px solid var(--light-grey);
+    padding: 12px 18px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    font-family: 'Source Sans 3', sans-serif;
+    color: var(--black);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .quiz-option:hover:not(:disabled) { border-color: var(--purple-accent); background: white; }
+  .quiz-option .opt-letter {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: var(--mid-grey);
+    min-width: 20px;
+    letter-spacing: 1px;
+  }
+  .quiz-option.correct { border-color: var(--green); background: #e8f5e9; }
+  .quiz-option.correct .opt-letter { color: var(--green); }
+  .quiz-option.wrong { border-color: var(--red); background: #fde8e8; }
+  .quiz-option.wrong .opt-letter { color: var(--red); }
+  .quiz-option:disabled { cursor: default; }
+  .quiz-explanation {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: #f0f4ff;
+    border-left: 4px solid var(--purple-accent);
+    font-size: 13px;
+    line-height: 1.6;
+    color: #444;
+    display: none;
+  }
+  .quiz-explanation.show { display: block; }
+  .quiz-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 28px;
+    gap: 16px;
+  }
+  .btn-primary {
+    background: var(--red);
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--dark-red); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--black);
+    border: 2px solid var(--black);
+    padding: 10px 22px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: var(--black); color: white; }
+  .results-box {
+    background: var(--black);
+    color: white;
+    padding: 40px;
+    text-align: center;
+    display: none;
+  }
+  .results-box.show { display: block; }
+  .results-score {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .results-msg {
+    font-size: 16px;
+    color: #ccc;
+    margin-top: 8px;
+    font-style: italic;
+  }
+  .results-verdict {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 3px;
+    margin: 16px 0;
+  }
+
+  /* ─── CHEAT SHEET ─── */
+  .formula-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .formula-tile {
+    background: white;
+    border: 1px solid var(--light-grey);
+    border-top: 3px solid var(--gold);
+    padding: 20px;
+  }
+  .formula-tile h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 2px;
+    color: var(--black);
+    margin-bottom: 8px;
+  }
+  .formula-tile .formula {
+    font-family: 'Merriweather', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--purple-accent);
+    background: #f8f5ff;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    border-radius: 2px;
+  }
+  .formula-tile p {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  /* ─── MODE TOGGLE ─── */
+  .mode-toggle {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .mode-btn {
+    background: white;
+    border: 2px solid var(--light-grey);
+    padding: 8px 18px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .mode-btn:hover { border-color: var(--black); }
+  .mode-btn.active { background: var(--black); color: var(--gold); border-color: var(--black); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    .newspaper-card p { column-count: 1; }
+    .formula-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section.active { animation: fadeIn 0.3s ease; }
+
+  .badge-correct::after { content: ' ✓'; color: var(--green); font-weight: bold; }
+  .badge-wrong::after { content: ' ✗'; color: var(--red); font-weight: bold; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-stripe"></div>
+  <div class="header-inner">
+    <div class="logo">
+      <span class="logo-eagle">🦅</span>
+      <div>
+        <div class="logo-text">EconoSL</div>
+        <span class="logo-sub">Economia A · Preparação para Exame</span>
+      </div>
+    </div>
+    <span class="benfica-tag">🔴 Glória Eterna ao Benfica 🔴</span>
+  </div>
+  <nav>
+    <button class="tab-btn active" onclick="showSection('resumos')">📚 Resumos</button>
+    <button class="tab-btn" onclick="showSection('futebol')">⚽ Modo Futebol</button>
+    <button class="tab-btn" onclick="showSection('jornal')">📰 Jornal Económico</button>
+    <button class="tab-btn" onclick="showSection('flashcards')">🃏 Flashcards</button>
+    <button class="tab-btn" onclick="showSection('quiz')">🏆 Quiz</button>
+    <button class="tab-btn" onclick="showSection('formulas')">📐 Formulário</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- RESUMOS NORMAIS -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div id="resumos" class="section active">
+  <div class="page-title">
+    <h2>Resumos da Matéria</h2>
+    <p>Conteúdo organizado por unidade · estilo académico</p>
+  </div>
+  <div class="unit-bar" id="resumos-units"></div>
+  <div id="resumos-content"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- MODO FUTEBOL (BENFICA) -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div id="futebol" class="section">
+  <div class="page-title">
+    <h2>Modo Futebol ⚽</h2>
+    <p>Economia explicada com o Benfica · A Luz ilumina o conhecimento</p>
+  </div>
+  <div class="unit-bar" id="futebol-units"></div>
+  <div id="futebol-content"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- JORNAL ECONÓMICO -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div id="jornal" class="section">
+  <div class="page-title">
+    <h2>Jornal Económico</h2>
+    <p>Matéria contada como manchetes de jornal · com exemplos reais</p>
+  </div>
+  <div class="unit-bar" id="jornal-units"></div>
+  <div id="jornal-content"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- FLASHCARDS -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div id="flashcards" class="section">
+  <div class="page-title">
+    <h2>Flashcards</h2>
+    <p>Clica no cartão para ver a resposta · usa as setas para avançar</p>
+  </div>
+  <div class="unit-bar" id="flash-units"></div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="flash-progress"></div></div>
+  <div class="flashcard-area">
+    <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <div class="card-face card-front">
+        <div class="card-unit" id="card-unit-label"></div>
+        <div class="card-question" id="card-question">Seleciona uma unidade acima</div>
+      </div>
+      <div class="card-face card-back">
+        <div class="card-answer" id="card-answer"></div>
+        <div class="card-formula" id="card-formula"></div>
+      </div>
+    </div>
+  </div>
+  <p class="flip-hint">↑ CLICA PARA VIRAR</p>
+  <div class="card-nav">
+    <button onclick="prevCard()">← ANTERIOR</button>
+    <span class="card-counter" id="card-counter">0 / 0</span>
+    <button onclick="nextCard()">PRÓXIMO →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- QUIZ -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div id="quiz" class="section">
+  <div class="page-title">
+    <h2>Quiz · Escolha Múltipla</h2>
+    <p>+20 perguntas por unidade · tipo exame nacional</p>
+  </div>
+  <div class="unit-bar" id="quiz-units"></div>
+  <div class="quiz-header">
+    <div id="quiz-status" style="font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--mid-grey);">Seleciona uma unidade para começar</div>
+    <div class="quiz-score-badge">🏆 <span id="quiz-score-display">0/0</span></div>
+  </div>
+  <div id="quiz-question-area"></div>
+  <div class="quiz-controls" id="quiz-controls" style="display:none;">
+    <button class="btn-secondary" onclick="restartQuiz()">↺ RECOMEÇAR</button>
+    <button class="btn-primary" id="next-q-btn" onclick="nextQuestion()" style="display:none;">PRÓXIMA →</button>
+  </div>
+  <div class="results-box" id="results-box">
+    <div class="results-score" id="results-score">0%</div>
+    <div class="results-verdict" id="results-verdict"></div>
+    <div class="results-msg" id="results-msg"></div>
+    <button class="btn-primary" onclick="restartQuiz()" style="margin-top:24px;">↺ TENTAR OUTRA VEZ</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- FORMULÁRIO -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div id="formulas" class="section">
+  <div class="page-title">
+    <h2>Formulário Completo</h2>
+    <p>Todas as fórmulas e definições para o exame</p>
+  </div>
+  <div id="formula-content"></div>
+</div>
+
+</main>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// DATA STORE
+// ═══════════════════════════════════════════════════════════════════
+
+const UNITS = [
+  { id:'u1', label:'U1 – Atividade Económica' },
+  { id:'u2', label:'U2 – Circuito Económico' },
+  { id:'u3', label:'U3 – Produção' },
+  { id:'u4', label:'U4 – Mercado e Preços' },
+  { id:'u6', label:'U6 – Rendimentos' },
+  { id:'u9', label:'U9 – Contabilidade Nacional' },
+  { id:'u10', label:'U10 – Balança de Pagamentos' },
+  { id:'u11', label:'U11 – Estado e Políticas' },
+  { id:'u12', label:'U12 – União Europeia' },
+];
+
+// ─── RESUMOS ───────────────────────────────────────────────────────
+const RESUMOS = {
+  u1: `
+    <div class="summary-card">
+      <h3>A Atividade Económica <span class="tag">CONCEITOS BASE</span></h3>
+      <p>A <strong>atividade económica</strong> é o conjunto de ações realizadas pelos agentes económicos com o objetivo de satisfazer necessidades humanas que são ilimitadas, utilizando recursos que são escassos.</p>
+      <p><strong>Necessidade económica</strong>: estado de carência que os indivíduos procuram superar através do consumo de bens e serviços. São <span class="highlight">ilimitadas, progressivas e renascentes</span>.</p>
+      <p><strong>Bem económico</strong>: bem pelo qual <em>é</em> necessário dispêndio de moeda, pois existe escassez. Opõe-se ao <strong>bem livre</strong> (ar, luz solar), que não tem preço.</p>
+      <ul>
+        <li><strong>Bens materiais</strong> vs. <strong>Serviços</strong></li>
+        <li><strong>Bens de consumo</strong> vs. <strong>Bens de produção (capital)</strong></li>
+        <li><strong>Bens substitutos</strong>: substituem-se (manteiga/margarina)</li>
+        <li><strong>Bens complementares</strong>: usam-se juntos (carro/gasolina)</li>
+      </ul>
+    </div>
+    <div class="summary-card">
+      <h3>Agentes Económicos <span class="tag">CIRCUITO</span></h3>
+      <ul>
+        <li><strong>Famílias</strong>: consomem e fornecem fatores de produção</li>
+        <li><strong>Empresas não financeiras</strong>: produzem bens e serviços</li>
+        <li><strong>Instituições financeiras</strong>: prestam serviços financeiros</li>
+        <li><strong>Estado/Adm. Pública</strong>: presta serviços coletivos e redistribui rendimento</li>
+        <li><strong>Resto do Mundo</strong>: troca bens, serviços e capitais</li>
+      </ul>
+      <div class="formula-box">Produto = Rendimento = Despesa (identidade macroeconómica fundamental)</div>
+    </div>`,
+
+  u2: `
+    <div class="summary-card">
+      <h3>O Circuito Económico <span class="tag">FLUXOS</span></h3>
+      <p>O circuito económico representa os fluxos entre os agentes económicos: <strong>fluxos reais</strong> (bens, serviços, trabalho) e <strong>fluxos monetários</strong> (pagamentos, rendimentos).</p>
+      <p><strong>Fluxo real</strong>: movimentação de bens/serviços/fatores de produção.<br>
+         <strong>Fluxo monetário</strong>: contrapartida em dinheiro do fluxo real.</p>
+      <ul>
+        <li>Famílias → cedem trabalho → Empresas</li>
+        <li>Empresas → pagam salários → Famílias</li>
+        <li>Famílias → compram bens → Empresas</li>
+        <li>Estado → cobra impostos / paga transferências</li>
+        <li>Resto do Mundo → exportações/importações</li>
+      </ul>
+    </div>`,
+
+  u3: `
+    <div class="summary-card">
+      <h3>Produção de Bens e Serviços <span class="tag">U3</span></h3>
+      <p><strong>Produção</strong>: atividade do Homem sobre a Natureza com vista à obtenção de bens e serviços para satisfazer necessidades, destinados ao mercado, com trabalho remunerado.</p>
+      <p><strong>Fatores de produção</strong>: Trabalho (T), Capital (K) e Recursos Naturais.</p>
+      <ul>
+        <li><strong>Setor Primário</strong>: agricultura, pesca, silvicultura, indústrias extrativas</li>
+        <li><strong>Setor Secundário</strong>: indústrias transformadoras ligeiras e pesadas</li>
+        <li><strong>Setor Terciário</strong>: comércio, bancos, transportes, saúde, educação</li>
+      </ul>
+      <div class="formula-box">VAB = Valor da Produção − Consumos Intermédios</div>
+      <p>A escolha da técnica de produção depende dos preços relativos dos fatores: o empresário minimiza custos combinando Trabalho e Capital.</p>
+    </div>
+    <div class="summary-card">
+      <h3>Custos de Produção <span class="tag">ANÁLISE</span></h3>
+      <ul>
+        <li><strong>Custo Total</strong> = Custo Fixo + Custo Variável</li>
+        <li><strong>Custo Médio</strong> = Custo Total / Quantidade</li>
+        <li><strong>Custo Marginal</strong>: acréscimo de custo por unidade adicional produzida</li>
+      </ul>
+      <div class="formula-box">Lucro = Receita Total − Custo Total</div>
+    </div>`,
+
+  u4: `
+    <div class="summary-card">
+      <h3>Mercado e Preços <span class="tag">U4</span></h3>
+      <p><strong>Mercado</strong>: espaço (físico ou virtual) onde se encontram oferta e procura e se formam os preços.</p>
+      <p><strong>Lei da Procura</strong>: quando o preço sobe, a quantidade procurada diminui (relação inversa).</p>
+      <p><strong>Lei da Oferta</strong>: quando o preço sobe, a quantidade oferecida aumenta (relação direta).</p>
+      <div class="formula-box">Equilíbrio: Qd = Qs → Preço de equilíbrio (P*)</div>
+      <p><strong>Excesso de procura</strong> (Qd > Qs): pressão para subida dos preços.<br>
+         <strong>Excesso de oferta</strong> (Qs > Qd): pressão para descida dos preços.</p>
+    </div>
+    <div class="summary-card">
+      <h3>Elasticidades <span class="tag">CÁLCULOS</span></h3>
+      <div class="formula-box">Elasticidade-Preço da Procura (Ep) = (ΔQ/Q) ÷ (ΔP/P)</div>
+      <ul>
+        <li>|Ep| > 1 → Procura elástica (bens de luxo)</li>
+        <li>|Ep| < 1 → Procura inelástica (bens essenciais)</li>
+        <li>|Ep| = 1 → Procura unitária</li>
+        <li>|Ep| = 0 → Perfeitamente inelástica</li>
+        <li>|Ep| = ∞ → Perfeitamente elástica</li>
+      </ul>
+      <div class="formula-box">Taxa de cobertura = (Exportações / Importações) × 100</div>
+    </div>`,
+
+  u6: `
+    <div class="summary-card">
+      <h3>Rendimentos e Distribuição <span class="tag">U6</span></h3>
+      <p><strong>Rendimento primário</strong>: remuneração dos fatores de produção (salário, lucro, renda, juro).<br>
+         <strong>Rendimento secundário</strong>: redistribuição pelo Estado (pensões, subsídios, impostos).</p>
+      <div class="formula-box">RDP = Rendimentos Primários + Transferências − Impostos − Contribuições SS</div>
+      <p><strong>Salário real</strong> = Salário nominal / IPC × 100 — mede o poder de compra real.</p>
+      <p><strong>Curva de Lorenz</strong>: representa a distribuição do rendimento. Quanto mais afastada da bissetriz, maior a desigualdade.</p>
+      <div class="formula-box">Índice de GINI = Área entre a bissetriz e a Curva de Lorenz / Área total abaixo da bissetriz</div>
+      <ul>
+        <li>GINI = 0 → Igualdade perfeita</li>
+        <li>GINI = 1 → Desigualdade máxima</li>
+      </ul>
+    </div>`,
+
+  u9: `
+    <div class="summary-card">
+      <h3>Contabilidade Nacional <span class="tag">U9</span></h3>
+      <p>A Contabilidade Nacional mede a atividade económica através de agregados macroeconómicos. As 3 óticas são equivalentes: <strong>Produto = Rendimento = Despesa</strong>.</p>
+      <div class="formula-box">PIB pm = Σ VAB + Impostos Indiretos Líquidos de Subsídios</div>
+      <div class="formula-box">PIB pm = C + I + G + (X − M) [Ótica da Despesa]</div>
+      <div class="formula-box">PNB = PIB pm + SRRM (Saldo Rendimentos Resto do Mundo)</div>
+      <div class="formula-box">PIB real = (PIB nominal / Deflator) × 100</div>
+      <ul>
+        <li><strong>PIL</strong> = PIB − Amortizações</li>
+        <li><strong>PIB a custo de fatores</strong> = PIB pm − Impostos indiretos + Subsídios</li>
+        <li><strong>PIB per capita</strong> = PIB / População</li>
+      </ul>
+      <p><strong>Limitações do PIB</strong>: não mede bem-estar, não contabiliza economia informal, não considera externalidades nem distribuição do rendimento.</p>
+    </div>`,
+
+  u10: `
+    <div class="summary-card">
+      <h3>Balança de Pagamentos <span class="tag">U10</span></h3>
+      <p>Regista todos os <strong>fluxos económicos</strong> entre residentes e não residentes num período. Divide-se em 3 balanças:</p>
+      <div class="formula-box">Saldo = Crédito (entrada de divisas) − Débito (saída de divisas)</div>
+      <ul>
+        <li><strong>Défice</strong>: Débito > Crédito</li>
+        <li><strong>Nulo</strong>: Débito = Crédito</li>
+        <li><strong>Superavit</strong>: Crédito > Débito</li>
+      </ul>
+      <div class="formula-box">Saldo global = Balança Corrente + Balança Capital + Balança Financeira = 0</div>
+      <p>Como o saldo global tem de ser <strong>nulo</strong>, calcula-se residualmente a rubrica <strong>«Erros e Omissões»</strong>.</p>
+    </div>
+    <div class="summary-card">
+      <h3>Balança Corrente <span class="tag">COMPONENTES</span></h3>
+      <ul>
+        <li><strong>Balança de Bens</strong>: matérias-primas, bens de equipamento</li>
+        <li><strong>Balança de Serviços</strong>: turismo, transportes, seguros, patentes</li>
+        <li><strong>Balança de Rendimentos</strong>: rendimentos do trabalho e capital (primários)</li>
+        <li><strong>Balança de Transferências Correntes</strong>: transferências públicas e privadas (secundários)</li>
+      </ul>
+      <div class="formula-box">Taxa de cobertura = (Exportações / Importações) × 100</div>
+    </div>
+    <div class="summary-card">
+      <h3>Balança Financeira e Taxas de Câmbio <span class="tag">AVANÇADO</span></h3>
+      <p>A <strong>Balança Financeira</strong> regista mudanças de titularidade de ativos/passivos financeiros: investimento direto, carteira, derivados financeiros e ativos de reserva.</p>
+      <p><strong>Regra fundamental</strong>: Balança Financeira tem sinal contrário ao saldo conjunto das Balanças Corrente e de Capital.</p>
+      <ul>
+        <li>Saldo Financeiro negativo → economia com <strong>capacidade</strong> de financiamento</li>
+        <li>Saldo Financeiro positivo → economia com <strong>necessidade</strong> de financiamento</li>
+      </ul>
+      <div class="formula-box">Desvalorização: moeda compra menos → importações ficam mais caras, exportações mais baratas</div>
+    </div>`,
+
+  u11: `
+    <div class="summary-card">
+      <h3>Intervenção do Estado <span class="tag">U11</span></h3>
+      <p>O Estado intervém na economia para garantir <strong>eficiência, equidade e estabilidade</strong>.</p>
+      <ul>
+        <li><strong>Setor Público Administrativo (SPA)</strong>: Adm. Central, Regional, Local, Segurança Social</li>
+        <li><strong>Setor Público Empresarial (SPE)</strong>: empresas públicas e participadas</li>
+      </ul>
+      <div class="formula-box">Saldo Orçamental = Receitas Públicas − Despesas Públicas</div>
+    </div>
+    <div class="summary-card">
+      <h3>Políticas Económicas <span class="tag">INSTRUMENTOS</span></h3>
+      <p><strong>Política Monetária</strong> (BCE): controla oferta de moeda e inflação. Instrumentos: taxa de juro, open market, reservas legais, limites de crédito.</p>
+      <p><strong>Política Orçamental</strong>: controla despesa pública e impostos. Objetivos: pleno emprego, controlo da inflação, crescimento do PIB.</p>
+      <div class="formula-box">PIB = C + I + G + X − M</div>
+      <p><strong>Política Fiscal</strong>: impostos e benefícios fiscais → redistribuição do rendimento.<br>
+         <strong>Política de Rendimentos e Preços</strong>: controlo de salários e preços.</p>
+    </div>`,
+
+  u12: `
+    <div class="summary-card">
+      <h3>União Europeia e UEM <span class="tag">U12</span></h3>
+      <p>A <strong>União Económica e Monetária (UEM)</strong> é a fase mais avançada da integração europeia. Os países da zona euro partilham moeda única (€) e política monetária centralizada no BCE.</p>
+      <p><strong>Critérios de convergência (Maastricht)</strong>:</p>
+      <ul>
+        <li>Inflação ≤ média 3 melhores países + 1,5 pp</li>
+        <li>Taxa de juro ≤ média 3 melhores + 2 pp</li>
+        <li>Défice orçamental ≤ 3% do PIB</li>
+        <li>Dívida pública ≤ 60% do PIB</li>
+        <li>Taxa de câmbio estável (2 anos no MEE)</li>
+      </ul>
+      <div class="formula-box">Pacto de Estabilidade e Crescimento: défice < 3% PIB; dívida < 60% PIB</div>
+    </div>`
+};
+
+// ─── FUTEBOL ───────────────────────────────────────────────────────
+const FUTEBOL = {
+  u1: `
+    <div class="football-card">
+      <h3>⚽ NECESSIDADES E BENS – O PLANTEL DO BENFICA</h3>
+      <p>Imagina que o Benfica é a Economia e o adeptos somos nós, as <strong>Famílias</strong>. O nosso treinador precisa de 11 jogadores em campo (necessidades a satisfazer), mas o orçamento (recursos) é limitado. É por isso que existe <strong>escassez económica</strong>.</p>
+      <div class="pitch-box">🏟️ Bem livre = o ar que se respira na Luz (de borla, sem preço). Bem económico = o bilhete para entrar no Estádio (tens de pagar!).</div>
+      <p>Os <strong>bens substitutos</strong> são como o Orkun Kökçü e o Florentino: um substitui o outro no meio-campo. Os <strong>bens complementares</strong> são como as chuteiras e as meias de futebol: não funciona um sem o outro!</p>
+      <span class="benfica-cheer">🔴 SL BENFICA – CAMPEÃO SEMPRE! 🔴</span>
+    </div>`,
+
+  u2: `
+    <div class="football-card">
+      <h3>⚽ O CIRCUITO ECONÓMICO – O JOGO DO BENFICA</h3>
+      <p>O circuito económico é como um jogo do Benfica: há sempre <strong>fluxos de bola</strong> (fluxos reais) e <strong>fluxos de dinheiro</strong> (fluxos monetários) a circularem.</p>
+      <div class="pitch-box">🏟️ As Famílias são os jogadores (fornecem trabalho). As Empresas são o clube (pagam salários, produzem resultados). O Estado é a UEFA (cobra taxas/impostos e distribui prémios/transferências). O Resto do Mundo são os adversários europeus (importações e exportações).</div>
+      <p>Quando o Benfica vende Di María ao PSG (exportação), entram divisas. Quando compra Ángel Di María de volta (importação), saem divisas.</p>
+      <span class="benfica-cheer">🔴 A ÁGUIA VOA ALTO – IGUAL À ECONOMIA PORTUGUESA! 🔴</span>
+    </div>`,
+
+  u3: `
+    <div class="football-card">
+      <h3>⚽ PRODUÇÃO – O PROCESSO DE FORMAÇÃO DO BENFICA</h3>
+      <p>A academia do Benfica em Seixal é o melhor exemplo de <strong>processo produtivo</strong>: leva-se matéria-prima bruta (jovens talentos) e transforma-se em produto final (jogadores como João Félix e Renato Sanches).</p>
+      <div class="pitch-box">🏟️ Fatores de Produção = Trabalho (jogadores e treinadores) + Capital (estádio, campos, equipamento) + Recursos Naturais (terrenos). VAB do Benfica = Receitas de transferências − Custos de formação e contratação.</div>
+      <p>O <strong>setor primário</strong> seria a relva dos campos (relvados naturais!). O <strong>setor secundário</strong> é a fabrica de equipamentos do Benfica. O <strong>setor terciário</strong> é o Sport Lisboa e Benfica SAD a vender bilhetes, merchandising e direitos televisivos!</p>
+      <span class="benfica-cheer">🔴 FORMADOS NA ACADEMIA, CAMPEÕES NO MUNDO! 🔴</span>
+    </div>`,
+
+  u4: `
+    <div class="football-card">
+      <h3>⚽ MERCADO E PREÇOS – O MERCADO DE TRANSFERÊNCIAS</h3>
+      <p>O mercado de transferências é o melhor exemplo de oferta e procura! Quando muitos clubes querem o mesmo jogador (excesso de procura), o preço sobe às alturas. Quando ninguém quer um jogador (excesso de oferta), o preço cai.</p>
+      <div class="pitch-box">🏟️ Enzo Fernández custou 121 milhões ao Chelsea – máximo excesso de procura! Benfica comprou bem barato e vendeu pelo quíntuplo: isto é otimização da curva de oferta!</div>
+      <p>A <strong>elasticidade-preço</strong> dos bilhetes do Benfica para o clássico é muito inelástica: mesmo que o preço suba, os adeptos vão sempre (é um bem quase essencial para nós!). Para o jogo com o Farense, é mais elástica: se o preço subir, as bancadas ficam mais vazias.</p>
+      <span class="benfica-cheer">🔴 O BENFICA SABE NEGOCIAR – E VÓS TAMBÉM SABEM ECONOMIA! 🔴</span>
+    </div>`,
+
+  u6: `
+    <div class="football-card">
+      <h3>⚽ RENDIMENTOS – OS SALÁRIOS DA LUZ</h3>
+      <p>Os jogadores do Benfica recebem <strong>rendimentos do trabalho</strong> (salários). Os acionistas do clube recebem <strong>rendimentos do capital</strong> (lucros e dividendos). O técnico da academia tem um salário mais baixo – é a <strong>desigualdade na distribuição primária</strong>.</p>
+      <div class="pitch-box">🏟️ Curva de Lorenz do balneário: se só o avançado ganhar 20x mais que o guarda-redes da equipa B, a curva está muito afastada da bissetriz. O Estado (FPF/FIFA) redistribui através de solidarity payments para os clubes mais pequenos.</div>
+      <p>O <strong>salário real</strong> do Jonathan Risco depende da inflação: se ganhar 1.000€/mês mas a inflação for alta, o poder de compra real diminui mesmo sem o salário nominal baixar.</p>
+      <span class="benfica-cheer">🔴 GLORIA ETERNA A QUEM DISTRIBUI BEM O RENDIMENTO! 🔴</span>
+    </div>`,
+
+  u9: `
+    <div class="football-card">
+      <h3>⚽ CONTABILIDADE NACIONAL – OS RELATÓRIOS DA LIGA</h3>
+      <p>O PIB é como a tabela classificativa: resume a performance de toda a economia num número. Mas atenção – tal como dois clubes com 50 pontos podem ter trajectórias muito diferentes, dois países com PIB semelhante podem ter realidades completamente distintas!</p>
+      <div class="pitch-box">🏟️ Ótica do Produto = somar o VAB de todos os "clubes" (setores) da economia. Ótica da Despesa = somar o que todos gastam (C + I + G + X − M). Ótica do Rendimento = somar o que todos recebem. O resultado tem de ser igual – como o total de golos marcados = total de golos sofridos em toda a liga!</div>
+      <p>O <strong>PIB real</strong> é como comparar pontos eliminando o efeito do calendário (inflação): o deflator é o árbitro que garante comparações justas entre épocas.</p>
+      <span class="benfica-cheer">🔴 38 TITULOS – UMA ECONOMIA DE CAMPEÕES! 🔴</span>
+    </div>`,
+
+  u10: `
+    <div class="football-card">
+      <h3>⚽ BALANÇA DE PAGAMENTOS – O BALANCETE DE TRANSFERÊNCIAS</h3>
+      <p>A Balança de Pagamentos é como o balancete de transferências do Benfica: regista tudo o que entrou (crédito) e saiu (débito) do clube com o estrangeiro. O saldo tem de fechar sempre a zero!</p>
+      <div class="pitch-box">🏟️ Balança de Bens = venda/compra de equipamentos e camisolas. Balança de Serviços = receitas de jogos na Europa (turismo = aficionados que vêm à Luz). Balança Financeira = investimento de fundos árabes no Benfica ou empréstimos.</div>
+      <p>Se Portugal tiver <strong>défice na Balança Corrente</strong> (como às vezes acontece), significa que está a gastar mais no exterior do que a receber: é como o Benfica a comprar sempre mais caro do que vende nas transferências – insustentável a longo prazo!</p>
+      <p>A <strong>desvalorização da moeda</strong> é como o Benfica baixar os preços dos bilhetes em euros para atrair mais turistas estrangeiros: exportações ficam mais baratas e aumentam!</p>
+      <span class="benfica-cheer">🔴 EQUILIBRIO NA BALANÇA – COMO NA MESA DOS CAMPEÕES! 🔴</span>
+    </div>`,
+
+  u11: `
+    <div class="football-card">
+      <h3>⚽ POLÍTICAS ECONÓMICAS – O TREINADOR DO PAÍS</h3>
+      <p>O Governo é o treinador da economia nacional. Quando a equipa (economia) está mal, usa instrumentos táticos para a corrigir.</p>
+      <div class="pitch-box">🏟️ Política Monetária = BCE decide a taxa de juro (é como a UEFA a fixar as regras do jogo). Portugal, desde que entrou no euro, já não decide a sua política monetária – tal como um clube da liga não pode inventar regras novas sozinho! Política Orçamental = o Governo decide quanto gasta (despesa pública) e quanto cobra (impostos) – este ainda é o instrumento disponível!</div>
+      <p><strong>Política expansionista</strong>: o treinador tira o defesa central (imposto) e mete um avançado (despesa pública) – o ataque (economia) acelera mas pode ficar mais vulnerável (inflação/défice). <strong>Política contracionista</strong>: faz o contrário para travar a inflação.</p>
+      <span class="benfica-cheer">🔴 BRUNO LAGE OU KEYNES? TÁTICAS QUE MUDAM JOGOS! 🔴</span>
+    </div>`,
+
+  u12: `
+    <div class="football-card">
+      <h3>⚽ UNIÃO EUROPEIA – A CHAMPIONS LEAGUE DA ECONOMIA</h3>
+      <p>A UE é como a Champions League: para jogar, tens de cumprir critérios de qualificação (critérios de Maastricht). Não chegas à fase de grupos (zona euro) sem respeitar as regras!</p>
+      <div class="pitch-box">🏟️ Critérios de acesso à zona euro (zona Champions): inflação controlada, taxa de juro baixa, défice < 3% do PIB e dívida < 60% do PIB. Portugal entrou em 1999 e desde aí joga na Champions todos os anos – quase como o Benfica!</div>
+      <p>O <strong>BCE</strong> é como o VAR: intervém quando há irregularidades monetárias e as regras têm de ser iguais para todos os países da zona euro. Mas ao contrário do Benfica, que tem o seu próprio treinador, Portugal perdeu autonomia na política monetária quando aderiu ao euro.</p>
+      <span class="benfica-cheer">🔴 PORTUGAL NA EUROPA – BENFICA NA EUROPA – CAMPEÕES! 🔴</span>
+    </div>`
+};
+
+// ─── JORNAL ────────────────────────────────────────────────────────
+const JORNAL = {
+  u1: `
+    <div class="newspaper-card">
+      <div class="newspaper-dateline">Economia · Terça-feira, 2024</div>
+      <h3>Escassez de Habitação em Lisboa Demonstra a Lei Fundamental da Economia: Necessidades Superam Recursos</h3>
+      <p>A crise da habitação em Lisboa é um caso de manual de escassez económica. A procura por apartamentos (necessidade económica ilimitada) ultrapassa largamente a oferta disponível (recursos escassos), fazendo disparar os preços para valores históricos. Segundo dados do INE, o custo médio por m² em Lisboa ultrapassou 4.500€ em 2024, tornando a habitação um bem económico cada vez mais inacessível. Os bens substitutos — como morar no Barreiro ou Almada — ganharam popularidade, mas mantêm-se como imperfeitos substitutos para quem trabalha no centro. Os bens complementares à habitação, como os transportes públicos, também viram a procura aumentar, confirmando a lei da complementaridade.</p>
+      <div class="real-example">📌 <strong>Exemplo Real:</strong> Em 2023, Portugal tinha 740.000 habitações vagas, mas a maioria concentrava-se no interior — os recursos existem, mas <em>onde</em> são necessários é que há escassez. Esta é a distribuição assimétrica dos recursos que a Economia estuda.</div>
+    </div>`,
+
+  u3: `
+    <div class="newspaper-card">
+      <div class="newspaper-dateline">Industria · Relatório Especial</div>
+      <h3>Portugal Aposta no Setor Terciário: Turismo Vale Mais do que a Industria Transformadora</h3>
+      <p>Pela primeira vez na história, o setor dos serviços representa mais de 75% do VAB português, segundo dados do INE 2023. O turismo (Balança de Serviços), com 24 milhões de turistas internacionais em 2023, gerou receitas superiores a 24 mil milhões de euros — superando largamente o contributo do setor secundário tradicional. Esta terciarização da economia, prevista por Colin Clark já em 1940, transformou completamente a estrutura produtiva nacional. O setor primário, que empregava 50% da população em 1960, representa hoje menos de 4% do emprego. As indústrias capital-intensivas do setor secundário continuam a perder peso relativo face aos serviços work-intensive do terciário.</p>
+      <div class="real-example">📌 <strong>Exemplo Real:</strong> A fábrica Renault em Setúbal (setor secundário, capital-intensivo) emprega ~4.500 pessoas. A plataforma de turismo Airbnb em Portugal, setor terciário, move mais de 3 mil milhões de euros por ano com muito menos capital físico.</div>
+    </div>`,
+
+  u4: `
+    <div class="newspaper-card">
+      <div class="newspaper-dateline">Mercados · Análise</div>
+      <h3>Crash do Mercado Imobiliário ou Correção? Oferta e Procura Explicam a Turbulência</h3>
+      <p>A subida das taxas de juro pelo BCE desde 2022 provocou uma contração da procura habitacional em Portugal, com uma queda de 21% nas transações imobiliárias em 2023. Este é um exemplo claro da lei da procura em ação: quando o preço de acesso ao crédito (juro) sobe, a procura por habitação desce. A elasticidade-preço da procura por habitação revelou-se moderada — as famílias adaptaram-se, mas muitas continuaram a comprar, revelando que a habitação é um bem semi-inelástico. Bens substitutos como o arrendamento registaram aumentos de 15-25% nas principais cidades, demonstrando como choques de oferta e procura se transmitem entre mercados relacionados.</p>
+      <div class="real-example">📌 <strong>Exemplo Real:</strong> BCE subiu taxa de 0% para 4,5% entre 2022-2023. Uma prestação de 200.000€ a 30 anos passou de ~750€/mês para ~1.200€/mês. Resultado: equilíbrio de mercado deslocou-se para menor quantidade transacionada a preços ligeiramente inferiores.</div>
+    </div>`,
+
+  u6: `
+    <div class="newspaper-card">
+      <div class="newspaper-dateline">Sociedade · Desigualdade</div>
+      <h3>Portugal com Segundo Maior Índice de GINI da UE: Redistribuição Falha no Combate à Desigualdade</h3>
+      <p>Portugal apresenta um dos índices de GINI mais elevados da União Europeia, situando-se em 0,33 segundo dados do Eurostat 2023, apenas atrás da Bulgária. Este valor indica que, apesar da redistribuição secundária pelo Estado através de impostos e transferências sociais, a desigualdade na distribuição de rendimentos permanece estruturalmente elevada. O ratio S80/S20 — que mede o rendimento dos 20% mais ricos face aos 20% mais pobres — é de 5,2 em Portugal, acima da média europeia de 4,8. A redistribuição vertical através do IRS progressivo e as transferências horizontais para famílias carenciadas não têm sido suficientes para corrigir as assimetrias da repartição primária, potenciada pela elevada dispersão salarial.</p>
+      <div class="real-example">📌 <strong>Exemplo Real:</strong> O salário mínimo nacional em 2024 é de 820€. O CEO médio de uma empresa do PSI-20 recebe 15.000-50.000€/mês. Esta dispersão traduz-se diretamente na curvatura da Curva de Lorenz portuguesa.</div>
+    </div>`,
+
+  u9: `
+    <div class="newspaper-card">
+      <div class="newspaper-dateline">Macroeconomia · Flash</div>
+      <h3>PIB Português Cresceu 2,3% em 2023 — Mas o PIB Real Conta a Verdadeira História</h3>
+      <p>O INE anunciou que o PIB nominal de Portugal cresceu 7,1% em 2023. No entanto, com uma inflação de 4,3% (medida pelo deflator do PIB), o crescimento real da economia ficou em apenas 2,3%. Esta distinção entre PIB a preços correntes e PIB a preços constantes é fundamental para evitar ilusões estatísticas: um país pode ter PIB nominal a crescer apenas devido à inflação, sem que a produção real aumente. Portugal utilizou o método das três óticas — produção, despesa e rendimento — para apurar estes valores, todas chegando ao mesmo resultado graças à identidade macroeconómica fundamental. O turismo (setor terciário) foi o maior contribuinte para o crescimento, com o Valor Acrescentado Bruto do setor a crescer 6%.</p>
+      <div class="real-example">📌 <strong>Fórmula Aplicada:</strong> PIB real 2023 = (PIB nominal 2023 / Deflator 2023) × 100 = (270.000M€ / 117,2) × 100 = 230.000M€. Taxa crescimento real = (230.000 − 225.000) / 225.000 × 100 = 2,2%</div>
+    </div>`,
+
+  u10: `
+    <div class="newspaper-card">
+      <div class="newspaper-dateline">Comércio Internacional · Análise</div>
+      <h3>Balança Corrente Portuguesa Regista Superavit pelo Segundo Ano Consecutivo — Turismo é o Motor</h3>
+      <p>Portugal registou um saldo positivo na Balança Corrente de cerca de 1.500 milhões de euros em 2023, invertendo uma tendência histórica de défices. O turismo, que contribui para a Balança de Serviços com créditos superiores a 24 mil milhões de euros, foi o principal responsável por este resultado histórico. A Balança de Bens continua deficitária — Portugal importa mais bens do que exporta —, mas o superavit nos Serviços, Rendimentos e Transferências mais do que compensa. Este resultado implica que a Balança Financeira, por imperativo contabilístico (saldo global = 0), deve ter um saldo negativo equivalente, significando que Portugal tem capacidade de financiamento face ao exterior.</p>
+      <div class="real-example">📌 <strong>Exemplo Real:</strong> Portugal exporta vinho, cortiça e veículos (bens); importa petróleo, tecnologia e cereais. Taxa de cobertura das exportações sobre importações ≈ 78%. O gap é compensado pelas receitas do turismo na Balança de Serviços.</div>
+    </div>`,
+
+  u11: `
+    <div class="newspaper-card">
+      <div class="newspaper-dateline">Finanças Públicas · Urgente</div>
+      <h3>Portugal Reduz Défice para 1,2% do PIB: Política Orçamental Contracionista Dá Resultados</h3>
+      <p>Portugal registou em 2023 um saldo orçamental de −1,2% do PIB, bem abaixo do limite de 3% imposto pelo Pacto de Estabilidade e Crescimento. Esta consolidação foi alcançada através de uma combinação de redução da despesa pública e aumento das receitas fiscais impulsionado pelo crescimento económico. A política orçamental contracionista, que visa evitar pressões inflacionistas, implicou um menor efeito multiplicador do investimento público no curto prazo. Paralelamente, o BCE manteve uma política monetária restritiva com taxas elevadas, reforçando o efeito contracionista sobre a procura agregada. O saldo primário (excluindo juros) foi positivo em 2,1% do PIB, permitindo reduzir a dívida pública de 124% para cerca de 102% do PIB.</p>
+      <div class="real-example">📌 <strong>Mecanismo:</strong> Aumento dos impostos (IRS, IRC) → diminuição do RDP → queda do consumo privado → menor crescimento do PIB no curto prazo, mas maior sustentabilidade fiscal a médio prazo. Este é o trade-off central da política orçamental.</div>
+    </div>`,
+
+  u12: `
+    <div class="newspaper-card">
+      <div class="newspaper-dateline">Europa · Integração</div>
+      <h3>25 Anos do Euro: Portugal Avalia Ganhos e Perdas de Ter Abandonado o Escudo</h3>
+      <p>Em 1999, Portugal aderiu à União Económica e Monetária, cumprindo os critérios de Maastricht e abandonando o escudo. Vinte e cinco anos depois, o balanço é misto: ganhamos estabilidade cambial, taxas de juro mais baixas e acesso ao maior mercado único do mundo. Perdemos, porém, a soberania monetária e cambial — já não podemos desvalorizar o euro para corrigir défices na Balança Corrente, nem fixar a nossa própria taxa de juro. Desde 2022, o BCE sobe as taxas para combater a inflação alemã, mesmo que Portugal tenha realidades distintas. Esta assimetria de ciclos económicos é o maior desafio da convergência real europeia, que exige que os países se aproximem em termos de PIB per capita, estrutura produtiva e produtividade.</p>
+      <div class="real-example">📌 <strong>Dado Real:</strong> PIB per capita de Portugal em PPC: 78% da média UE-27 em 2023, acima dos 70% de 1999 mas ainda abaixo da média. A convergência real é mais lenta que a convergência nominal — o grande paradoxo da UEM.</div>
+    </div>`
+};
+
+// ─── FLASHCARDS ────────────────────────────────────────────────────
+const FLASHCARDS = {
+  u1: [
+    {q:'O que é uma necessidade económica?', a:'Estado de carência que o indivíduo procura superar através do consumo de bens e serviços. São ilimitadas, progressivas e renascentes.'},
+    {q:'Diferença entre bem livre e bem económico', a:'Bem livre: não tem preço, não é escasso (ex: ar). Bem económico: tem preço porque é escasso e requer dispêndio de moeda.'},
+    {q:'O que são bens substitutos?', a:'Bens que se podem substituir na satisfação de uma necessidade. Ex: manteiga e margarina. Se o preço de um sobe, a procura do outro aumenta.', f:'Elasticidade cruzada > 0'},
+    {q:'O que são bens complementares?', a:'Bens que se usam em conjunto — a utilização de um implica a utilização do outro. Ex: carro e gasolina, papel e caneta.', f:'Elasticidade cruzada < 0'},
+    {q:'Quais são os 5 agentes económicos?', a:'1) Famílias, 2) Empresas não financeiras, 3) Instituições financeiras, 4) Estado/Adm. Pública, 5) Resto do Mundo'},
+  ],
+  u3: [
+    {q:'O que é o VAB?', a:'Valor Acrescentado Bruto: valor que cada empresa/setor acrescenta ao valor dos seus inputs (consumos intermédios) no processo de produção.', f:'VAB = Produção Total − Consumos Intermédios'},
+    {q:'Setores de atividade económica (Colin Clark)', a:'Primário: recursos naturais (pesca, agricultura). Secundário: indústria transformadora. Terciário: serviços (comércio, saúde, educação).'},
+    {q:'O que é o processo produtivo?', a:'Sequência de etapas através das quais as matérias-primas são transformadas em produtos finais, de forma repetida e organizada.'},
+    {q:'Fatores de produção', a:'Trabalho (T): atividade humana remunerada. Capital (K): meios de produção fabricados. Recursos Naturais: elementos da natureza.'},
+    {q:'Lucro económico', a:'Diferença entre a receita total obtida pela venda da produção e o custo total de produção (incluindo custos ocultos/oportunidade).', f:'Lucro = RT − CT'},
+  ],
+  u4: [
+    {q:'Lei da Procura', a:'Existe uma relação inversa entre o preço de um bem e a quantidade procurada: quando o preço sobe, a quantidade procurada diminui (ceteris paribus).'},
+    {q:'Lei da Oferta', a:'Existe uma relação direta entre o preço de um bem e a quantidade oferecida: quando o preço sobe, os produtores estão dispostos a produzir mais.'},
+    {q:'O que é o equilíbrio de mercado?', a:'Ponto em que a quantidade procurada iguala a quantidade oferecida. Determina o preço de equilíbrio (P*) e a quantidade de equilíbrio (Q*).', f:'Qd = Qs → P*'},
+    {q:'Elasticidade-preço da procura', a:'Mede a sensibilidade da quantidade procurada a variações de preço. |Ep|>1: elástica. |Ep|<1: inelástica. |Ep|=0: perfeitamente inelástica.', f:'Ep = (ΔQ/Q) ÷ (ΔP/P)'},
+    {q:'Taxa de cobertura das exportações', a:'Percentagem das importações coberta pelas exportações. Indica a competitividade externa do país.', f:'TC = (Exportações / Importações) × 100'},
+  ],
+  u6: [
+    {q:'Diferença entre salário nominal e salário real', a:'Salário nominal: valor monetário pago. Salário real: poder de compra efetivo, ajustado à inflação.', f:'Salário Real = (Salário Nominal / IPC) × 100'},
+    {q:'O que mede o Índice de GINI?', a:'Grau de concentração (desigualdade) na distribuição do rendimento. Varia entre 0 (igualdade perfeita) e 1 (desigualdade máxima).'},
+    {q:'O que é a Curva de Lorenz?', a:'Curva que representa a distribuição acumulada do rendimento pela população. Quanto mais afastada da bissetriz dos 45°, maior a desigualdade.'},
+    {q:'Rendimento disponível dos particulares (RDP)', a:'Rendimento que as famílias têm disponível para consumir e poupar, após impostos e contribuições.', f:'RDP = Rend. Primários + Transferências − Impostos − Contribuições SS'},
+    {q:'Redistribuição vertical vs. horizontal', a:'Vertical: reduz desigualdades via IRS progressivo. Horizontal: transferências correntes para famílias carenciadas (prestações sociais).'},
+  ],
+  u9: [
+    {q:'Três óticas de cálculo do PIB', a:'1) Ótica do Produto: soma dos VAB. 2) Ótica da Despesa: C+I+G+X−M. 3) Ótica do Rendimento: soma das remunerações dos fatores. Resultado = igual!'},
+    {q:'PIB vs. PNB', a:'PIB: produção em território nacional (residentes e não residentes). PNB: produção de residentes nacionais (dentro e fora do território).', f:'PNB = PIB + SRRM (Saldo Rendimentos Resto do Mundo)'},
+    {q:'PIB real vs. PIB nominal', a:'PIB nominal: a preços correntes (inclui inflação). PIB real (preços constantes): elimina o efeito da inflação usando um ano base.', f:'PIB real = (PIB nominal / Deflator) × 100'},
+    {q:'Limitações do PIB como indicador de bem-estar', a:'Não mede economia informal, não considera distribuição do rendimento, ignora externalidades negativas (poluição), não distingue tipo de bens produzidos.'},
+    {q:'PIL e PIB cf', a:'PIL = PIB − Amortizações. PIBcf = PIBpm − Impostos indiretos + Subsídios (elimina distorções fiscais para ver custo real de produção).'},
+  ],
+  u10: [
+    {q:'O que é a Balança de Pagamentos?', a:'Documento contabilístico que regista todos os fluxos económicos entre residentes e não residentes de um país num determinado período.', f:'Saldo global = BC + BK + BF = 0'},
+    {q:'Balança Corrente: componentes', a:'1) Balança de Bens. 2) Balança de Serviços. 3) Balança de Rendimentos (primários). 4) Balança de Transferências Correntes (secundários).'},
+    {q:'O que são "Erros e Omissões"?', a:'Rubrica residual calculada para garantir que o saldo global da Balança de Pagamentos seja contabilisticamente nulo (diferenças estatísticas).'},
+    {q:'Capacidade vs. necessidade de financiamento', a:'Se saldo BC+BK > 0: economia tem capacidade de financiamento (BF negativo). Se saldo BC+BK < 0: necessidade de financiamento (BF positivo).'},
+    {q:'Efeito da desvalorização da moeda', a:'Moeda nacional compra menos moeda estrangeira → importações ficam mais caras (diminuem) → exportações ficam mais baratas para o exterior (aumentam) → corrige défice.'},
+    {q:'Balança de Capital: componentes', a:'Transferências de capital (fundos europeus, perdão de dívida) e aquisição/cedência de ativos não produzidos não financeiros (patentes, terrenos).'},
+  ],
+  u11: [
+    {q:'Objetivos da política orçamental', a:'Controlar a inflação, atingir pleno emprego, redistribuir o rendimento e incrementar o PIB. Instrumentos: impostos (diretos e indiretos), consumo público, subsídios, transferências sociais.'},
+    {q:'Política monetária: objetivos e quem decide', a:'Objetivo principal: estabilidade de preços (inflação próxima de 2%). Quem decide: BCE (Banco Central Europeu), de forma independente para toda a zona euro.'},
+    {q:'Política fiscal vs. política orçamental', a:'Política fiscal: foca-se em impostos e benefícios fiscais (equidade). Política orçamental: engloba tanto receitas como despesas públicas (estabilização macroeconómica).'},
+    {q:'Multiplicador orçamental', a:'Um aumento da despesa pública tem impacto direto no PIB E impacto indireto via aumento do RDP → mais consumo privado → mais crescimento do PIB.', f:'PIB = C + I + G + X − M'},
+    {q:'Estado liberal vs. Estado intervencionista', a:'Liberal: não intervém, apenas define quadro jurídico. Intervencionista (pós-1929): intervém para corrigir falhas de mercado e garantir bem-estar social.'},
+  ],
+  u12: [
+    {q:'Critérios de convergência de Maastricht', a:'1) Inflação ≤ média 3 melhores + 1,5pp. 2) Taxa juro ≤ média 3 melhores + 2pp. 3) Défice ≤ 3% PIB. 4) Dívida ≤ 60% PIB. 5) Taxa de câmbio estável (2 anos no MEE).'},
+    {q:'O que é o Pacto de Estabilidade e Crescimento?', a:'Acordo que estabelece que os países da zona euro devem manter défice orçamental abaixo de 3% do PIB e dívida pública abaixo de 60% do PIB.'},
+    {q:'Convergência nominal vs. real', a:'Nominal: cumprimento dos critérios de Maastricht (inflação, juro, défice, câmbio). Real: aproximação dos níveis de vida (PIB per capita, produtividade).'},
+    {q:'Consequências da UEM para Portugal', a:'Perdeu autonomia nas políticas monetária e cambial (BCE decide). Ganhou: estabilidade cambial, taxas de juro convergentes, acesso ao mercado único.'},
+    {q:'Por que a política orçamental ganhou mais importância na UEM?', a:'Como os países perderam a política monetária (BCE) e cambial (euro fixo), a política orçamental tornou-se o único instrumento de estabilização dos ciclos económicos nacionais.'},
+  ],
+};
+
+// ─── QUIZ QUESTIONS ────────────────────────────────────────────────
+const QUIZ = {
+  u1: [
+    {q:'Qual é a característica fundamental dos recursos económicos?', opts:['São ilimitados','São escassos','São gratuitos','São renováveis'], ans:1, exp:'Os recursos económicos são escassos por natureza, ao contrário das necessidades humanas que são ilimitadas. Esta contradição é a base da Ciência Económica.'},
+    {q:'Um bem pelo qual não é necessário qualquer pagamento chama-se:', opts:['Bem económico','Bem de produção','Bem livre','Bem substituto'], ans:2, exp:'Bem livre é aquele que não requer dispêndio de moeda para ser utilizado (ex: ar, luz solar), pois não é escasso.'},
+    {q:'A manteiga e a margarina são exemplos de:', opts:['Bens complementares','Bens substitutos','Bens de produção','Bens inferiores'], ans:1, exp:'São bens substitutos porque se podem substituir na satisfação da mesma necessidade (barrar o pão). Se o preço da manteiga sobe, a procura por margarina aumenta.'},
+    {q:'As chuteiras e meias de futebol são exemplos de:', opts:['Bens substitutos','Bens de luxo','Bens complementares','Bens giffen'], ans:2, exp:'São bens complementares porque a utilização de um implica a utilização do outro (complementaridade horizontal).'},
+    {q:'O agente económico cuja função principal é consumir é:', opts:['As empresas','O Estado','As famílias','As instituições financeiras'], ans:2, exp:'As famílias têm como função económica principal o consumo, sendo também fornecedoras de fatores de produção (trabalho, capital).'},
+    {q:'Qual agente económico tem como função principal redistribuir o rendimento?', opts:['Empresas não financeiras','Resto do Mundo','Famílias','Estado/Administração Pública'], ans:3, exp:'O Estado/Administração Pública presta serviços coletivos e redistribui o rendimento através de políticas fiscais e sociais.'},
+    {q:'As necessidades económicas são:', opts:['Limitadas e decrescentes','Ilimitadas e renascentes','Limitadas e fixas','Saciáveis e permanentes'], ans:1, exp:'As necessidades económicas são ilimitadas, progressivas (evoluem com o nível de vida) e renascentes (ressurgem após satisfação temporária).'},
+    {q:'O que distingue um bem económico de um bem livre?', opts:['O peso físico','A existência de escassez e preço','A durabilidade','A origem natural'], ans:1, exp:'O bem económico tem preço porque é escasso — a escassez obriga a fazer escolhas e a pagar para aceder ao bem.'},
+    {q:'A atividade económica resolve o problema fundamental de:', opts:['Distribuição geográfica','Escassez vs. necessidades ilimitadas','Gestão do tempo','Administração pública'], ans:1, exp:'A Economia existe para resolver o problema da escassez: como alocar recursos limitados para satisfazer necessidades ilimitadas.'},
+    {q:'Bens de consumo são diferentes de bens de capital porque:', opts:['Os bens de capital são mais caros','Os bens de consumo satisfazem necessidades diretamente; os de capital são usados na produção','Os bens de capital são importados','Os bens de consumo são duráveis'], ans:1, exp:'Bens de consumo satisfazem diretamente necessidades humanas. Bens de capital (bens de produção) são utilizados no processo produtivo para criar outros bens.'},
+    {q:'Qual das seguintes opções é um exemplo de bem livre?', opts:['Água engarrafada','Eletricidade','Ar atmosférico','Gasolina'], ans:2, exp:'O ar atmosférico é um bem livre porque existe em abundância e não requer pagamento para ser utilizado.'},
+    {q:'O que são necessidades coletivas?', opts:['Necessidades de grupos empresariais','Necessidades sentidas por toda a sociedade e satisfeitas pelos poderes públicos','Necessidades de importação','Necessidades de grupos desportivos'], ans:1, exp:'Necessidades coletivas são as da sociedade no seu todo (segurança, saúde pública, defesa), satisfeitas pelo Estado através de bens e serviços públicos.'},
+    {q:'O papel do Resto do Mundo na economia é:', opts:['Redistribuir rendimento','Financiar o Estado','Trocar bens, serviços e capitais com os residentes','Controlar os preços'], ans:2, exp:'O Resto do Mundo representa todos os agentes não residentes com quem a economia troca bens, serviços, capital e rendimentos.'},
+    {q:'A escassez económica é uma condição:', opts:['Temporária que desaparece com o crescimento','Universal e permanente em todas as economias','Apenas dos países subdesenvolvidos','Resultante de má gestão pública'], ans:1, exp:'A escassez é uma condição universal: em qualquer nível de desenvolvimento, os recursos são sempre finitos face a necessidades ilimitadas.'},
+    {q:'Qual é a identidade macroeconómica fundamental?', opts:['PIB = PIB + Amortizações','Produto = Rendimento = Despesa','Oferta = Procura + Estado','Importações = Exportações'], ans:1, exp:'A identidade Produto = Rendimento = Despesa é uma das pedras angulares da macroeconomia: o que se produz gera rendimento que é gasto.'},
+    {q:'Uma caneta e papel são exemplos de complementaridade:', opts:['Vertical (bens de produção)','Horizontal (bens de consumo)','Diagonal (bens de luxo)','Assimétrica (bens inferiores)'], ans:1, exp:'Complementaridade horizontal: bens de consumo que se usam juntos simultaneamente. Complementaridade vertical seria entre bens de produção (computador + eletricidade).'},
+    {q:'O carvão como combustível e o gás natural são:', opts:['Bens complementares','Bens inferiores','Bens substitutos','Bens de capital'], ans:2, exp:'O carvão e o gás natural são bens substitutos: podem ser usados para o mesmo fim (gerar energia/calor), substituindo-se mutuamente.'},
+    {q:'As instituições financeiras têm como função principal:', opts:['Consumir bens públicos','Prestar serviços financeiros e financiar a atividade económica','Exportar capitais','Redistribuir o rendimento'], ans:1, exp:'As instituições financeiras (bancos, seguradoras) prestam serviços financeiros e financiam a atividade económica através do crédito e da mobilização de poupanças.'},
+    {q:'A utilidade de um bem económico é:', opts:['O seu preço no mercado','A sua raridade','A sua aptidão para satisfazer necessidades dos indivíduos','O seu custo de produção'], ans:2, exp:'Utilidade é a aptidão de um bem para satisfazer alguma necessidade humana. Não deve ser confundida com preço ou raridade.'},
+    {q:'O problema económico fundamental surge porque:', opts:['Os governos são incompetentes','Os recursos são ilimitados mas as necessidades são escassas','Os recursos são escassos face a necessidades ilimitadas','O mercado não funciona bem'], ans:2, exp:'O problema económico fundamental é a contradição entre recursos escassos (limitados) e necessidades ilimitadas. É esta tensão que torna necessária a Economia.'},
+  ],
+
+  u9: [
+    {q:'O que mede o PIB?', opts:['O rendimento das famílias','O valor dos bens e serviços finais produzidos num território num período','As exportações do país','A riqueza acumulada da nação'], ans:1, exp:'O PIB (Produto Interno Bruto) mede o valor de todos os bens e serviços finais produzidos em território nacional num dado período (geralmente 1 ano).'},
+    {q:'Qual a diferença entre PIB e PNB?', opts:['PIB inclui amortizações; PNB não','PIB usa critério de territorialidade; PNB usa critério de residência','PIB é real; PNB é nominal','São iguais'], ans:1, exp:'PIB usa critério de territorialidade (produção em território nacional). PNB usa critério de residência (produção dos residentes nacionais, onde quer que seja).'},
+    {q:'A fórmula do PIB pela ótica da despesa é:', opts:['C + I + G + X − M','C − I + G − X','VAB + Impostos − Subsídios','Rendimentos + Lucros + Rendas'], ans:0, exp:'PIB = Consumo privado (C) + Investimento (I) + Consumo público/Despesa Estado (G) + Exportações (X) − Importações (M).'},
+    {q:'O deflator do PIB é equivalente a:', opts:['Taxa de juro','Taxa de câmbio','IPC (Índice de Preços no Consumidor)','Taxa de desemprego'], ans:2, exp:'O deflator do PIB é o IPC (ou um índice de preços geral), usado para converter o PIB nominal em PIB real, eliminando o efeito da inflação.'},
+    {q:'VAB = ?', opts:['Valor Total das Exportações','Valor da Produção menos Consumos Intermédios','PIB menos Amortizações','Receitas do Estado menos Despesas'], ans:1, exp:'VAB (Valor Acrescentado Bruto) = Produção Total − Consumos Intermédios. Representa o valor efetivamente criado por cada unidade produtiva.'},
+    {q:'O PIL obtém-se a partir do PIB por:', opts:['Adição do SRRM','Subtração das amortizações','Adição dos impostos indiretos','Subtração das importações'], ans:1, exp:'PIL (Produto Interno Líquido) = PIB − Amortizações. As amortizações representam o consumo de capital fixo (desgaste dos equipamentos).'},
+    {q:'Se o PIB nominal cresce 8% e a inflação é 5%, o crescimento real do PIB é de:', opts:['13%','3%','−3%','8%'], ans:1, exp:'Taxa de crescimento real ≈ crescimento nominal − inflação = 8% − 5% = 3%. Para maior precisão usa-se: PIB real = (PIB nominal/Deflator)×100.'},
+    {q:'Qual das seguintes não é uma limitação do PIB como indicador de bem-estar?', opts:['Não considera a distribuição do rendimento','Não contabiliza a economia informal','Mede com exatidão a qualidade de vida','Ignora externalidades negativas'], ans:2, exp:'O PIB não mede com exatidão a qualidade de vida. Todas as outras opções são limitações reais: ignora desigualdade, economia informal e externalidades.'},
+    {q:'A identidade Produto = Rendimento = Despesa significa que:', opts:['Toda a produção é consumida','O que se produz gera rendimento que é despendido, de forma circular','PIB = PNB = PIL','Os três cálculos dão sempre zero'], ans:1, exp:'Esta identidade fundamental mostra o circuito macroeconómico: produção → distribui-se como rendimento → é gasta, fechando o circuito.'},
+    {q:'PIBcf (custo de fatores) difere do PIBpm (preços de mercado) porque:', opts:['O PIBcf exclui amortizações','O PIBpm inclui o SRRM','O PIBpm inclui impostos indiretos líquidos que o PIBcf exclui','São sempre iguais'], ans:2, exp:'PIBpm = PIBcf + Impostos indiretos líquidos de subsídios. O PIBcf reflete apenas os custos dos fatores de produção, sem distorções fiscais.'},
+    {q:'Qual das seguintes atividades NÃO está incluída no cálculo oficial do PIB?', opts:['Produção de automóveis','Serviços de saúde pública','Trabalho doméstico não remunerado','Construção de infraestruturas'], ans:2, exp:'O trabalho doméstico não remunerado (cozinhar, limpar em casa) não está incluído no PIB porque não passa pelo mercado. É uma das principais limitações do indicador.'},
+    {q:'O SRRM (Saldo de Rendimentos com o Resto do Mundo) serve para:', opts:['Calcular as exportações líquidas','Converter PIB em PNB (ou vice-versa)','Medir o défice orçamental','Calcular o PIB real'], ans:1, exp:'PNB = PIB + SRRM. O SRRM corrige o PIB adicionando os rendimentos recebidos do exterior e subtraindo os enviados para o exterior.'},
+    {q:'Qual a fórmula correta do PIBpm pela ótica do produto?', opts:['PIBpm = Σ VAB + Impostos Indiretos Líquidos de Subsídios','PIBpm = C + I + G','PIBpm = Σ Rendimentos − Amortizações','PIBpm = PNB − SRRM'], ans:0, exp:'PIBpm = Σ VAB (de todos os ramos de atividade) + Impostos Indiretos Líquidos de Subsídios sobre produtos e importação.'},
+    {q:'PIB per capita é calculado dividindo o PIB por:', opts:['Número de empresas','Número de trabalhadores','População total','PIB do ano anterior'], ans:2, exp:'PIB per capita = PIB / População total. É usado para comparar níveis de vida entre países com populações diferentes.'},
+    {q:'Preços constantes são utilizados para:', opts:['Calcular o PIB nominal','Eliminar o efeito da inflação e obter valores reais','Medir a competitividade internacional','Calcular as amortizações'], ans:1, exp:'Preços constantes (de um ano base) eliminam o efeito inflacionário, permitindo comparar a produção real entre períodos diferentes.'},
+    {q:'O Produto Nacional Líquido (PNL) obtém-se por:', opts:['PNB − Amortizações','PIB + SRRM','PIBpm − Impostos Indiretos','PIL + SRRM'], ans:0, exp:'PNL = PNB − Amortizações. É o indicador mais "puro" do rendimento nacional, descontando o desgaste do capital.'},
+    {q:'Quando a taxa de inflação é negativa, chamamos a esse fenómeno:', opts:['Deflação','Hiperinflação','Estagflação','Desinflação'], ans:0, exp:'Deflação é quando o nível geral de preços desce (inflação negativa). A desinflação é quando a inflação abranda mas continua positiva.'},
+    {q:'A taxa de crescimento real do PIB calcula-se como:', opts:['PIB nominal / Deflator','(PIB real t − PIB real t-1) / PIB real t-1 × 100','PIB t − PIB t-1','(PIB nominal − Inflação) / 100'], ans:1, exp:'Taxa crescimento real = [(PIB real ano atual − PIB real ano anterior) / PIB real ano anterior] × 100. Mede a evolução do volume de produção.'},
+    {q:'Qual dos seguintes indicadores mede melhor a comparação internacional do nível de vida?', opts:['PIB nominal total','PIB real per capita em PPC','PIL a preços correntes','PNB a preços de mercado'], ans:1, exp:'O PIB real per capita em PPC (Paridade do Poder de Compra) é o mais usado para comparações internacionais, pois ajusta às diferenças de preços entre países.'},
+    {q:'O "duplo cálculo" do PIB é evitado através de:', opts:['Usar apenas preços de mercado','Considerar apenas os produtos finais (ou o VAB de cada fase)','Excluir as importações','Usar preços constantes'], ans:1, exp:'Para evitar contar o mesmo valor várias vezes, o PIB conta apenas produtos finais OU soma o VAB de cada etapa produtiva (que é equivalente).'},
+    {q:'O que inclui a ótica do rendimento no cálculo do PIB?', opts:['Consumo + Investimento + Despesa pública','Soma do VAB de todos os setores','Remunerações do trabalho + rendimentos do capital + rendas + excedente bruto de exploração','Exportações − Importações'], ans:2, exp:'Pela ótica do rendimento, o PIB = soma das remunerações dos fatores de produção: salários (trabalho), lucros/dividendos (capital), rendas (terra/recursos naturais).'},
+  ],
+
+  u10: [
+    {q:'O que regista a Balança de Pagamentos?', opts:['Apenas as exportações e importações','Todos os fluxos económicos entre residentes e não residentes num período','O saldo orçamental do Estado','As reservas de ouro do Banco Central'], ans:1, exp:'A Balança de Pagamentos regista todos os fluxos económicos (reais e financeiros) entre residentes e não residentes de um país num dado período.'},
+    {q:'Qual é a fórmula do saldo de cada balança?', opts:['Saldo = Débito − Crédito','Saldo = Importações − Exportações','Saldo = Crédito − Débito','Saldo = Receitas − Despesas'], ans:2, exp:'Saldo = Crédito (entradas de divisas) − Débito (saídas de divisas). Um saldo positivo indica superavit; negativo indica défice.'},
+    {q:'O saldo contabilístico global da Balança de Pagamentos é:', opts:['Sempre positivo','Sempre negativo','Sempre nulo','Variável'], ans:2, exp:'O saldo global da Balança de Pagamentos tem de ser contabilisticamente nulo: BC + BK + BF = 0. Diferenças estatísticas são registadas em "Erros e Omissões".'},
+    {q:'Qual das seguintes NÃO faz parte da Balança Corrente?', opts:['Balança de bens','Balança de serviços','Balança de transferências de capital','Balança de rendimentos'], ans:2, exp:'As transferências de capital integram a Balança de Capital, não a Balança Corrente. A Corrente inclui: bens, serviços, rendimentos e transferências correntes.'},
+    {q:'O turismo é registado em que balança?', opts:['Balança de bens','Balança financeira','Balança de serviços','Balança de capital'], ans:2, exp:'O turismo (receitas e despesas com viagens internacionais) é registado na Balança de Serviços, dentro da Balança Corrente.'},
+    {q:'Se o saldo da Balança Financeira for negativo, a economia tem:', opts:['Necessidade de financiamento','Capacidade de financiamento','Equilíbrio orçamental','Défice comercial'], ans:1, exp:'Saldo BF negativo significa que a economia está a exportar capital (investindo no exterior), o que indica capacidade de financiamento — o saldo BC+BK é positivo.'},
+    {q:'A "taxa de cobertura" mede:', opts:['A percentagem de importações cobertas pelas exportações','A percentagem do défice coberta pelo FMI','O rácio dívida/PIB','A percentagem de inflação coberta pela política monetária'], ans:0, exp:'Taxa de cobertura = (Exportações / Importações) × 100. Indica em que percentagem as exportações financiam as importações.'},
+    {q:'Os fundos europeus recebidos por Portugal são registados em:', opts:['Balança de bens','Balança financeira','Balança de capital','Balança de rendimentos'], ans:2, exp:'Os fundos europeus (ex: FEDER, FSE) são transferências unilaterais de capital entre residentes e não residentes, registadas na Balança de Capital.'},
+    {q:'Uma desvalorização da moeda tende a:', opts:['Aumentar as importações e diminuir as exportações','Diminuir as importações e aumentar as exportações','Não ter efeito no comércio externo','Aumentar tanto as importações como as exportações'], ans:1, exp:'Desvalorização: moeda compra menos divisas → importações ficam mais caras (diminuem) → exportações ficam mais baratas para estrangeiros (aumentam) → corrige défice corrente.'},
+    {q:'O investimento direto estrangeiro é registado em que balança?', opts:['Balança corrente','Balança de capital','Balança financeira','Balança de serviços'], ans:2, exp:'O investimento direto estrangeiro implica mudança de titularidade de ativos financeiros, sendo registado na Balança Financeira.'},
+    {q:'Se Portugal tiver défice na Balança Corrente e de Capital, a Balança Financeira terá:', opts:['Saldo negativo','Saldo nulo','Saldo positivo','Saldo imprevisível'], ans:2, exp:'Como BC + BK + BF = 0, se BC + BK < 0 (défice), então BF > 0 (positivo). Sinal contrário ao saldo conjunto das outras duas balanças.'},
+    {q:'Os salários recebidos por trabalhadores portugueses a trabalhar no estrangeiro são registados em:', opts:['Balança de bens','Balança de rendimentos (corrente)','Balança financeira','Balança de capital'], ans:1, exp:'Os rendimentos do trabalho recebidos do exterior são rendimentos primários, registados na Balança de Rendimentos dentro da Balança Corrente.'},
+    {q:'A rubrica "Erros e Omissões" existe porque:', opts:['O Estado comete erros de gestão','O saldo global deve ser sempre nulo e há imprecisões estatísticas','As exportações são difíceis de medir','Os bancos não reportam corretamente'], ans:1, exp:'"Erros e Omissões" é uma rubrica residual, calculada para garantir que o saldo global da BP seja zero, compensando discrepâncias nas fontes estatísticas.'},
+    {q:'Em regime de câmbios fixos, para corrigir um défice, o Banco Central pode:', opts:['Aumentar os impostos','Decretar a desvalorização da moeda','Reduzir a taxa de juro','Aumentar a despesa pública'], ans:1, exp:'Em câmbios fixos, a taxa de câmbio é definida pelo Estado. Para corrigir um défice, o Banco Central pode decretar a desvalorização da moeda nacional.'},
+    {q:'A compra de ações de uma empresa portuguesa por um investidor francês é registada em:', opts:['Balança corrente (rendimentos)','Balança financeira (investimento em carteira)','Balança de capital','Balança de bens'], ans:1, exp:'A compra de ações implica mudança de titularidade de ativos financeiros (investimento em carteira), sendo registada na Balança Financeira.'},
+    {q:'O saldo da Balança Corrente traduz:', opts:['A dívida pública total do país','A situação de uma economia face ao Resto do Mundo','O nível de reservas cambiais','O crescimento do PIB'], ans:1, exp:'O saldo da Balança Corrente indica se a economia consegue gerar receitas suficientes para cobrir os encargos face ao exterior (posição credora ou devedora).'},
+    {q:'Em regime de câmbios flexíveis, as taxas de câmbio são determinadas por:', opts:['O Banco Central','O Governo','O mercado, sem intervenção do Estado','O FMI'], ans:2, exp:'Em câmbios flexíveis (flutuantes), as taxas de câmbio são determinadas livremente pelo mercado cambial, através da oferta e procura de divisas.'},
+    {q:'Qual das seguintes transações gera um crédito na Balança de Pagamentos de Portugal?', opts:['Um português compra um carro alemão','O Governo português paga juros a um banco britânico','Um turista brasileiro gasta dinheiro em Lisboa','Um investidor português compra obrigações espanholas'], ans:2, exp:'Um turista estrangeiro a gastar em Portugal gera uma entrada de divisas (crédito) na Balança de Serviços de Portugal.'},
+    {q:'O que são "ativos de reserva" na Balança Financeira?', opts:['Reservas de ouro e divisas do Banco Central','Títulos do Tesouro em mãos privadas','Depósitos bancários das famílias','Ações de empresas públicas'], ans:0, exp:'Ativos de reserva são ativos de não residentes na área do euro expressos em moeda de países fora desta área, detidos pelo Banco Central como reservas cambiais.'},
+    {q:'A Balança de Capital regista:', opts:['Compra e venda de ações em bolsa','Transferências unilaterais de capital e aquisição/cedência de ativos não produzidos não financeiros','Todos os empréstimos internacionais','Os dividendos pagos ao exterior'], ans:1, exp:'Balança de Capital: transferências de capital (fundos europeus, perdão de dívida) e aquisição/cedência de ativos não produzidos não financeiros (patentes, terrenos).'},
+  ],
+
+  u11: [
+    {q:'Qual é o principal objetivo da política monetária do BCE?', opts:['Atingir o pleno emprego','Reduzir a dívida pública','Manter a estabilidade de preços (inflação próxima de 2%)','Aumentar as exportações'], ans:2, exp:'O objetivo primordial do BCE é a estabilidade de preços: manter a inflação abaixo mas próxima de 2% a médio prazo na área do euro.'},
+    {q:'Quais são os instrumentos da política orçamental?', opts:['Taxa de juro e open market','Impostos diretos e indiretos, consumo público, subsídios, transferências sociais','Taxa de câmbio e reservas legais','Preços máximos e mínimos'], ans:1, exp:'A política orçamental utiliza: impostos (diretos e indiretos), subsídios, consumo público (despesa do Estado) e transferências sociais.'},
+    {q:'O saldo orçamental é calculado como:', opts:['PIB − Dívida Pública','Receitas Públicas − Despesas Públicas','Exportações − Importações','Rendimento − Consumo'], ans:1, exp:'Saldo Orçamental = Receitas Públicas − Despesas Públicas. Se positivo: superavit. Se negativo: défice. Se nulo: equilíbrio.'},
+    {q:'Uma política orçamental expansionista implica:', opts:['Aumento de impostos e redução da despesa','Redução de impostos e/ou aumento da despesa pública','Aumento da taxa de juro','Redução da oferta de moeda'], ans:1, exp:'Política expansionista: diminuição de impostos (aumenta RDP e consumo privado) e/ou aumento da despesa pública (G), impulsionando o PIB.'},
+    {q:'O "multiplicador orçamental" traduz o facto de:', opts:['Um euro de imposto gerar exatamente um euro de redução do PIB','O aumento da despesa pública ter um efeito total no PIB maior que o aumento inicial','A política monetária ser mais eficaz que a orçamental','Os impostos e despesa terem efeitos opostos que se cancelam'], ans:1, exp:'O multiplicador: um aumento de G aumenta diretamente o PIB, mas também gera rendimento adicional que se traduz em mais consumo e investimento privados.'},
+    {q:'Desde a adesão ao euro, Portugal perdeu autonomia sobre:', opts:['Política orçamental','Política fiscal','Política monetária e cambial','Política de emprego'], ans:2, exp:'Com a UEM, Portugal delegou a política monetária no BCE e adotou o euro, perdendo o instrumento cambial. Manteve apenas a política orçamental e fiscal.'},
+    {q:'A política contracionista visa principalmente:', opts:['Aumentar o desemprego','Controlar a inflação e reduzir o aquecimento da economia','Aumentar as exportações','Reduzir o PIB real'], ans:1, exp:'A política contracionista (aumento de impostos, redução de despesa ou aumento de juros) visa arrefecer a economia para controlar a inflação.'},
+    {q:'Operações de Open Market consistem em:', opts:['Controlo administrativo de preços','Compra e venda de títulos de dívida pública pelo Banco Central','Fixação de salários mínimos','Concessão de subsídios a empresas'], ans:1, exp:'Open Market: o BC compra títulos de dívida pública → cria moeda → aumenta oferta monetária. Vende títulos → retira moeda de circulação → contrai oferta.'},
+    {q:'A redistribuição vertical do rendimento é feita através de:', opts:['Transferências para famílias carenciadas','Aplicação de imposto progressivo sobre o rendimento (IRS)','Fixação de preços máximos','Redução de tarifas alfandegárias'], ans:1, exp:'Redistribuição vertical: aplica taxas mais altas a rendimentos mais elevados (IRS progressivo), reduzindo desigualdades na distribuição primária.'},
+    {q:'O Setor Público Empresarial (SPE) é constituído por:', opts:['Serviços da Administração Central','Segurança Social','Empresas públicas e participadas pelo Estado','Fundos autónomos'], ans:2, exp:'O SPE inclui empresas maioritariamente ou parcialmente detidas pelo Estado, que atuam no mercado produzindo bens e serviços com critérios empresariais.'},
+    {q:'Qual das seguintes é uma política ativa de emprego?', opts:['Subsídio de desemprego','Reformas antecipadas','Formação e requalificação profissional','Reduções do horário de trabalho obrigatórias'], ans:2, exp:'Políticas ativas: qualificam/requalificam desempregados para reinserção no mercado. Políticas passivas: garantem rendimento durante o desemprego (subsídio de desemprego).'},
+    {q:'A política fiscal tem como principal objetivo:', opts:['Controlar a inflação','Aumentar o PIB a curto prazo','Equidade na distribuição do rendimento e estabilidade','Reduzir o desemprego estrutural'], ans:2, exp:'A política fiscal foca-se em impostos e benefícios fiscais, visando a equidade (distribuição justa) e a estabilidade económica.'},
+    {q:'O Rendimento Disponível dos Particulares (RDP) inclui:', opts:['PIB − Amortizações','Rendimentos primários + Transferências − Impostos − Contribuições SS','Receitas públicas − Despesas públicas','Exportações − Importações'], ans:1, exp:'RDP = Rendimentos primários (salários, lucros) + Transferências do Estado − Impostos diretos − Contribuições para Segurança Social.'},
+    {q:'Uma subida da taxa de juro pelo BCE tem como efeito esperado:', opts:['Aumento do crédito e do consumo','Redução do investimento e arrefecimento da inflação','Desvalorização do euro','Aumento das exportações'], ans:1, exp:'Taxa de juro mais alta → crédito mais caro → menos investimento e consumo → menor procura agregada → pressão descendente sobre a inflação.'},
+    {q:'O Estado liberal distingue-se do Estado intervencionista porque:', opts:['O Estado liberal cobra mais impostos','O Estado liberal não intervém na atividade económica, apenas define o quadro jurídico','O Estado liberal tem mais empresas públicas','O Estado liberal é mais igualitário'], ans:1, exp:'Estado liberal: não intervém diretamente, apenas define o quadro legal. Surgiu crítica após a crise de 1929, que levou ao Estado intervencionista keynesiano.'},
+    {q:'O Orçamento de Estado serve para:', opts:['Gerir as reservas cambiais','Prever receitas e autorizar despesas públicas para o ano seguinte','Definir a taxa de juro','Controlar a inflação diretamente'], ans:1, exp:'O Orçamento de Estado é o documento que prevê receitas públicas e autoriza despesas públicas para o exercício seguinte, aprovado pela Assembleia da República.'},
+    {q:'Impostos diretos incidem sobre:', opts:['O consumo de bens e serviços','O rendimento e o património (IRS, IRC, IMI)','As importações','As transações financeiras'], ans:1, exp:'Impostos diretos incidem sobre o rendimento (IRS, IRC) e o património (IMI, IMT). Impostos indiretos incidem sobre o consumo (IVA, IEC).'},
+    {q:'A finalidade de "estabilidade" da intervenção do Estado refere-se a:', opts:['Estabilidade política','Redução das flutuações da atividade económica (ciclos económicos)','Manutenção do desemprego constante','Estabilidade dos preços do petróleo'], ans:1, exp:'Estabilidade: o Estado visa reduzir as flutuações cíclicas da economia, suavizando expansões e recessões para uma trajetória mais equilibrada.'},
+    {q:'O Pacto de Estabilidade e Crescimento exige que o défice orçamental seja:', opts:['Inferior a 1% do PIB','Inferior a 5% do PIB','Inferior a 3% do PIB','Inferior a 10% do PIB'], ans:2, exp:'O Pacto de Estabilidade e Crescimento fixa: défice orçamental < 3% do PIB e dívida pública < 60% do PIB. Regras fundamentais da disciplina orçamental na UEM.'},
+    {q:'Política de rendimentos e preços visa:', opts:['Aumentar os salários reais','Controlar salários e preços para combater a inflação e gerir a distribuição','Reduzir os lucros empresariais','Aumentar as exportações'], ans:1, exp:'Política de rendimentos e preços: fixa preços máximos/mínimos, controla aumentos salariais, para gerir a inflação e influenciar a distribuição do rendimento.'},
+  ],
+
+  u12: [
+    {q:'Quantos critérios de convergência de Maastricht existem?', opts:['3','4','5','6'], ans:2, exp:'São 5 critérios: 1) inflação, 2) taxa de juro, 3) défice orçamental, 4) dívida pública, 5) estabilidade da taxa de câmbio. Todos devem ser cumpridos para aderir ao euro.'},
+    {q:'O critério de inflação de Maastricht exige:', opts:['Inflação = 0%','Inflação ≤ média dos 3 países com inflação mais baixa + 1,5 pp','Inflação < 2%','Inflação ≤ média europeia'], ans:1, exp:'Critério da inflação: a taxa de inflação não deve exceder a média dos 3 países com inflação mais baixa da UE em mais de 1,5 pontos percentuais.'},
+    {q:'O Pacto de Estabilidade e Crescimento fixa o limite da dívida pública em:', opts:['40% do PIB','50% do PIB','60% do PIB','100% do PIB'], ans:2, exp:'O PEC estabelece: défice < 3% do PIB e dívida pública < 60% do PIB. Portugal aderiu ao euro em 1999 cumprindo estes critérios.'},
+    {q:'Convergência real refere-se a:', opts:['Cumprimento dos critérios de Maastricht','Aproximação dos PIB per capita e níveis de produtividade','Alinhamento das taxas de inflação','Eliminação dos défices orçamentais'], ans:1, exp:'Convergência real: aproximação dos níveis de vida (PIB per capita, produtividade) entre países membros. Diferente da convergência nominal (Maastricht).'},
+    {q:'Desde a adesão ao euro, Portugal passou a ter política monetária definida por:', opts:['Banco de Portugal','Ministério das Finanças','BCE (Banco Central Europeu)','FMI'], ans:2, exp:'Com a UEM, a política monetária passou a ser responsabilidade exclusiva do BCE, de forma independente e supranacional para toda a zona euro.'},
+    {q:'A criação da UEM implicou que os países:', opts:['Perdessem autonomia na política orçamental','Mantivessem moedas nacionais','Abdicassem de autonomia nas políticas monetária e cambial','Passassem a ter défice zero obrigatório'], ans:2, exp:'A UEM implicou a delegação das políticas monetária (BCE) e cambial (euro fixo). Os países mantiveram autonomia orçamental, sujeita ao PEC.'},
+    {q:'O MEE (Mecanismo Europeu de Estabilidade) serve para:', opts:['Fixar os salários mínimos europeus','Financiar países em dificuldades financeiras graves','Controlar a inflação na UE','Gerir as reservas de ouro europeias'], ans:1, exp:'O MEE é o "fundo de resgate" permanente da zona euro, criado para financiar países com graves dificuldades financeiras, com condicionalidades de ajustamento.'},
+    {q:'O critério da taxa de câmbio de Maastricht exige que a moeda:', opts:['Seja fixa há 5 anos','Permaneça estável no MEE durante 2 anos sem desvalorizações unilaterais','Acompanhe o dólar há 3 anos','Seja convertível há 10 anos'], ans:1, exp:'Critério cambial: a moeda deve participar no MEE (Mecanismo de Estabilidade Cambial) durante 2 anos consecutivos sem desvalorizar face ao euro.'},
+    {q:'O principal desafio da UEM é a assimetria de:', opts:['Tamanhos dos países','Ciclos económicos nacionais — um só instrumento monetário para economias diferentes','Línguas e culturas','Sistemas judiciais'], ans:1, exp:'O maior desafio da UEM é a existência de ciclos económicos diferentes nos países membros, mas com apenas um instrumento monetário (BCE) para todos.'},
+    {q:'O critério da taxa de juro de Maastricht exige:', opts:['Taxa de juro < 5%','Taxa de juro ≤ média dos 3 países com taxas mais baixas + 2 pp','Taxa de juro = taxa da Alemanha','Taxa de juro fixada pelo BCE'], ans:1, exp:'Critério da taxa de juro: a taxa de juro nominal de longo prazo não deve exceder a média dos 3 países com inflação mais baixa em mais de 2 pontos percentuais.'},
+    {q:'A disciplina orçamental na UEM é fundamental porque:', opts:['Aumenta o PIB automaticamente','Decisões orçamentais de um país podem ter efeitos negativos sobre os restantes países da zona euro','O BCE não pode imprimir dinheiro','É exigida pelo FMI'], ans:1, exp:'Numa união monetária, défices excessivos num país podem pressionar as taxas de juro para todos, criar externalidades negativas e ameaçar a estabilidade do euro.'},
+    {q:'Convergência nominal é diferente de convergência real porque:', opts:['A nominal é mais difícil de atingir','A nominal envolve indicadores financeiros/monetários; a real envolve níveis de vida e produtividade','A real é medida pelo BCE; a nominal pelo FMI','São a mesma coisa com nomes diferentes'], ans:1, exp:'Convergência nominal: inflação, taxa de juro, défice, dívida, câmbio. Convergência real: PIB per capita, produtividade, emprego — os objetivos de bem-estar a longo prazo.'},
+    {q:'Portugal entrou na zona euro em:', opts:['1993','1995','1999','2002 (circulação das notas)'], ans:2, exp:'Portugal aderiu oficialmente à UEM e fixou a taxa de conversão escudo/euro em 1999. As notas e moedas físicas entraram em circulação a 1 de janeiro de 2002.'},
+    {q:'O BCE foi criado para:', opts:['Gerir os orçamentos nacionais','Conduzir a política monetária da área do euro de forma independente','Supervisionar os bancos nacionais individualmente','Financiar os défices dos países membros'], ans:1, exp:'O BCE (Banco Central Europeu) foi criado para conduzir de forma independente a política monetária única da área do euro, com o objetivo de estabilidade de preços.'},
+    {q:'Se um país da zona euro entrar em recessão, já não pode:', opts:['Aumentar a despesa pública','Reduzir impostos','Desvalorizar a moeda para aumentar as exportações','Emitir obrigações do Tesouro'], ans:2, exp:'Com o euro, os países perderam o instrumento de política cambial. Não podem desvalorizar a moeda para ganhar competitividade — só através de "desvalorização interna" (corte de salários/preços).'},
+    {q:'O Fundo de Coesão da UE serve para:', opts:['Financiar bancos em dificuldades','Reduzir disparidades entre regiões mais pobres e mais ricas da UE','Controlar a inflação','Gerir as reservas de petróleo europeias'], ans:1, exp:'O Fundo de Coesão financia projetos de ambiente e transportes em países com PIB per capita abaixo de 90% da média comunitária, promovendo a convergência real.'},
+    {q:'O Eurosistema é constituído por:', opts:['BCE e governos da zona euro','BCE e bancos centrais dos países que adotaram o euro','Todos os bancos comerciais da UE','FMI e BCE'], ans:1, exp:'O Eurosistema = BCE + bancos centrais nacionais dos países membros da zona euro. É responsável pela política monetária da área do euro.'},
+    {q:'O critério do défice de Maastricht exige que o défice orçamental seja inferior a:', opts:['1% do PIB','2% do PIB','3% do PIB','5% do PIB'], ans:2, exp:'O défice orçamental deve ser inferior a 3% do PIB. Este é um dos critérios de convergência nominal mais escrutinados e que levou à criação do Pacto de Estabilidade.'},
+    {q:'A "desvalorização interna" é:', opts:['Desvalorização da moeda decretada pelo BCE','Redução de salários e preços internos para ganhar competitividade sem poder alterar câmbio','Redução do PIB deliberada','Corte nas transferências sociais'], ans:1, exp:'Sem poder desvalorizar a moeda, países da zona euro devem ganhar competitividade via "desvalorização interna": redução de custos de produção (salários) para baixar preços de exportação.'},
+    {q:'O objetivo da política regional da UE é promover:', opts:['Crescimento das economias mais fortes','A convergência real, reduzindo disparidades entre regiões','A harmonização fiscal completa','O alargamento geográfico da UE'], ans:1, exp:'A política regional (FEDER, Fundo de Coesão) visa promover a convergência real: reduzir as disparidades económicas e sociais entre regiões e países da UE.'},
+  ],
+};
+
+// ─── FORMULAS ─────────────────────────────────────────────────────
+const FORMULAS_DATA = [
+  {title:'VAB', formula:'VAB = Produção Total − Consumos Intermédios', desc:'Valor Acrescentado Bruto por cada ramo de atividade. Soma dos VAB = PIB (ótica do produto)'},
+  {title:'PIB pm (ótica despesa)', formula:'PIB = C + I + G + X − M', desc:'C = consumo privado, I = investimento, G = consumo público, X = exportações, M = importações'},
+  {title:'PIBpm vs PIBcf', formula:'PIBpm = PIBcf + Impostos Ind.Líq. − Subsídios', desc:'pm = preços de mercado; cf = custo de fatores (elimina distorções fiscais)'},
+  {title:'PIL (Produto Interno Líquido)', formula:'PIL = PIB pm − Amortizações', desc:'Desconta o desgaste do capital fixo (consumo de capital fixo)'},
+  {title:'PNB / PNL', formula:'PNB = PIB + SRRM    PNL = PNB − Amortizações', desc:'SRRM = Saldo Rendimentos Resto do Mundo (rend. recebidos − enviados)'},
+  {title:'PIB Real (preços constantes)', formula:'PIB real = (PIB nominal / Deflator) × 100', desc:'Elimina o efeito da inflação. Deflator = IPC'},
+  {title:'Taxa de Crescimento Real do PIB', formula:'g = (PIB real t − PIB real t-1) / PIB real t-1 × 100', desc:'Mede a variação real da produção entre dois períodos'},
+  {title:'Saldo da Balança de Pagamentos', formula:'Saldo = Crédito − Débito    BC + BK + BF = 0', desc:'Saldo global sempre nulo. Erros e Omissões = ajustamento contabilístico'},
+  {title:'Taxa de Cobertura', formula:'TC = (Exportações / Importações) × 100', desc:'Percentagem das importações coberta pelas exportações'},
+  {title:'Salário Real', formula:'Salário Real = (Salário Nominal / IPC) × 100', desc:'Mede o poder de compra efetivo. Aumenta se salário nominal cresce acima da inflação'},
+  {title:'RDP (Rendimento Disponível)', formula:'RDP = Rend. Primários + Transf. − Impostos − Contrib. SS', desc:'Rendimento disponível para consumo e poupança das famílias'},
+  {title:'Índice de GINI', formula:'GINI = Área A / (Área A + Área B)', desc:'A = entre bissetriz e Curva de Lorenz; B = abaixo da Lorenz. 0 = igualdade, 1 = desigualdade máxima'},
+  {title:'Elasticidade-Preço da Procura', formula:'Ep = (ΔQ/Q) ÷ (ΔP/P)', desc:'|Ep|>1 elástica; |Ep|<1 inelástica; |Ep|=1 unitária; |Ep|=0 perfeitamente inelástica'},
+  {title:'Saldo Orçamental', formula:'SO = Receitas Públicas − Despesas Públicas', desc:'SO > 0 = superavit; SO < 0 = défice; SO = 0 = equilíbrio'},
+  {title:'PIB per capita', formula:'PIB pc = PIB / População', desc:'Indicador de nível de vida médio. Em PPC permite comparações internacionais fiáveis'},
+  {title:'Critérios Maastricht (resumo)', formula:'Défice < 3% PIB | Dívida < 60% PIB', desc:'+ inflação, taxa de juro e câmbio (critérios nominais) para adesão ao euro'},
+];
+
+// ═══════════════════════════════════════════════════════════════════
+// RENDER FUNCTIONS
+// ═══════════════════════════════════════════════════════════════════
+
+function buildUnitPills(containerId, activeUnit, onClick) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  UNITS.forEach(u => {
+    const btn = document.createElement('button');
+    btn.className = 'unit-pill' + (u.id === activeUnit ? ' active' : '');
+    btn.textContent = u.label;
+    btn.onclick = () => onClick(u.id);
+    el.appendChild(btn);
+  });
+}
+
+// ── RESUMOS ──
+let activeResumosUnit = 'u1';
+function initResumos() {
+  buildUnitPills('resumos-units', activeResumosUnit, (uid) => {
+    activeResumosUnit = uid;
+    buildUnitPills('resumos-units', uid, (u2) => { activeResumosUnit = u2; renderResumos(); initResumos(); });
+    renderResumos();
+  });
+  renderResumos();
+}
+function renderResumos() {
+  const html = RESUMOS[activeResumosUnit] || '<p style="color:#999;padding:20px;">Em construção...</p>';
+  document.getElementById('resumos-content').innerHTML = html;
+  buildUnitPills('resumos-units', activeResumosUnit, (uid) => { activeResumosUnit = uid; renderResumos(); buildUnitPills('resumos-units', uid, (u2) => { activeResumosUnit = u2; renderResumos(); }); });
+}
+
+// ── FUTEBOL ──
+let activeFutebolUnit = 'u1';
+function initFutebol() {
+  buildUnitPills('futebol-units', activeFutebolUnit, (uid) => { activeFutebolUnit = uid; renderFutebol(); buildUnitPills('futebol-units', uid, (u2) => { activeFutebolUnit = u2; renderFutebol(); }); });
+  renderFutebol();
+}
+function renderFutebol() {
+  const html = FUTEBOL[activeFutebolUnit] || '<p style="color:#ccc;padding:20px;">Em construção...</p>';
+  document.getElementById('futebol-content').innerHTML = html;
+  buildUnitPills('futebol-units', activeFutebolUnit, (uid) => { activeFutebolUnit = uid; renderFutebol(); buildUnitPills('futebol-units', uid, (u2) => { activeFutebolUnit = u2; renderFutebol(); }); });
+}
+
+// ── JORNAL ──
+let activeJornalUnit = 'u1';
+function initJornal() {
+  buildUnitPills('jornal-units', activeJornalUnit, (uid) => { activeJornalUnit = uid; renderJornal(); buildUnitPills('jornal-units', uid, (u2) => { activeJornalUnit = u2; renderJornal(); }); });
+  renderJornal();
+}
+function renderJornal() {
+  const html = JORNAL[activeJornalUnit] || '<p style="color:#999;padding:20px;">Em construção...</p>';
+  document.getElementById('jornal-content').innerHTML = html;
+  buildUnitPills('jornal-units', activeJornalUnit, (uid) => { activeJornalUnit = uid; renderJornal(); buildUnitPills('jornal-units', uid, (u2) => { activeJornalUnit = u2; renderJornal(); }); });
+}
+
+// ── FLASHCARDS ──
+let flashUnit = 'u10';
+let flashCards = [];
+let flashIdx = 0;
+function initFlash() {
+  buildUnitPills('flash-units', flashUnit, (uid) => { flashUnit = uid; loadFlash(uid); });
+  loadFlash(flashUnit);
+}
+function loadFlash(uid) {
+  flashCards = FLASHCARDS[uid] || [];
+  flashIdx = 0;
+  buildUnitPills('flash-units', uid, (u2) => { flashUnit = u2; loadFlash(u2); });
+  renderFlash();
+}
+function renderFlash() {
+  if (!flashCards.length) return;
+  const c = flashCards[flashIdx];
+  document.getElementById('card-unit-label').textContent = UNITS.find(u => u.id === flashUnit)?.label || '';
+  document.getElementById('card-question').textContent = c.q;
+  document.getElementById('card-answer').textContent = c.a;
+  document.getElementById('card-formula').textContent = c.f || '';
+  document.getElementById('card-counter').textContent = (flashIdx+1) + ' / ' + flashCards.length;
+  document.getElementById('flash-progress').style.width = ((flashIdx+1)/flashCards.length*100)+'%';
+  const fc = document.getElementById('flashcard');
+  fc.classList.remove('flipped');
+}
+function flipCard() { document.getElementById('flashcard').classList.toggle('flipped'); }
+function nextCard() { if(flashIdx < flashCards.length-1){flashIdx++;} else {flashIdx=0;} renderFlash(); }
+function prevCard() { if(flashIdx > 0){flashIdx--;} else {flashIdx=flashCards.length-1;} renderFlash(); }
+
+// ── QUIZ ──
+let quizUnit = null;
+let quizQuestions = [];
+let quizIdx = 0;
+let quizScore = 0;
+let quizAnswered = false;
+function initQuiz() {
+  buildUnitPills('quiz-units', null, (uid) => { startQuiz(uid); });
+}
+function startQuiz(uid) {
+  quizUnit = uid;
+  quizQuestions = [...(QUIZ[uid] || [])].sort(() => Math.random()-0.5);
+  quizIdx = 0; quizScore = 0; quizAnswered = false;
+  buildUnitPills('quiz-units', uid, (u2) => { startQuiz(u2); });
+  document.getElementById('results-box').classList.remove('show');
+  document.getElementById('quiz-controls').style.display = 'flex';
+  document.getElementById('quiz-status').textContent = 'UNIDADE: ' + UNITS.find(u=>u.id===uid)?.label;
+  updateScoreDisplay();
+  renderQuestion();
+}
+function renderQuestion() {
+  if (quizIdx >= quizQuestions.length) { showResults(); return; }
+  quizAnswered = false;
+  const q = quizQuestions[quizIdx];
+  const letters = ['A','B','C','D'];
+  let opts = q.opts.map((o,i) => `
+    <button class="quiz-option" onclick="answerQuiz(${i})" id="opt-${i}">
+      <span class="opt-letter">${letters[i]}</span>
+      <span>${o}</span>
+    </button>`).join('');
+  document.getElementById('quiz-question-area').innerHTML = `
+    <div class="quiz-question-card">
+      <div class="quiz-question-num">PERGUNTA ${quizIdx+1} DE ${quizQuestions.length}</div>
+      <div class="quiz-question-text">${q.q}</div>
+      <div class="quiz-options">${opts}</div>
+      <div class="quiz-explanation" id="quiz-exp">${q.exp}</div>
+    </div>`;
+  document.getElementById('next-q-btn').style.display = 'none';
+  updateScoreDisplay();
+}
+function answerQuiz(chosen) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+  const q = quizQuestions[quizIdx];
+  const opts = document.querySelectorAll('.quiz-option');
+  opts.forEach((btn,i) => {
+    btn.disabled = true;
+    if(i === q.ans) btn.classList.add('correct');
+    else if(i === chosen && chosen !== q.ans) btn.classList.add('wrong');
+  });
+  if(chosen === q.ans) quizScore++;
+  document.getElementById('quiz-exp').classList.add('show');
+  document.getElementById('next-q-btn').style.display = 'inline-block';
+  updateScoreDisplay();
+}
+function nextQuestion() { quizIdx++; renderQuestion(); }
+function updateScoreDisplay() {
+  document.getElementById('quiz-score-display').textContent = quizScore + '/' + quizIdx;
+}
+function showResults() {
+  const pct = Math.round(quizScore/quizQuestions.length*100);
+  document.getElementById('quiz-question-area').innerHTML = '';
+  document.getElementById('quiz-controls').style.display = 'none';
+  const rb = document.getElementById('results-box');
+  rb.classList.add('show');
+  document.getElementById('results-score').textContent = pct + '%';
+  let verdict, msg;
+  if(pct >= 90) { verdict = '🏆 CAMPEÃO NACIONAL!'; msg = 'Épico! O Benfica ficaria orgulhoso. Estás pronto para o exame!'; }
+  else if(pct >= 70) { verdict = '⚽ APURADO PARA A FINAL!'; msg = 'Muito bom! Mais uns treinos e chegas ao título.'; }
+  else if(pct >= 50) { verdict = '🟡 MEIA ÉPOCA SÓLIDA'; msg = 'Passável, mas há margem para melhorar. Revê os resumos!'; }
+  else { verdict = '🔴 TREINO NECESSÁRIO'; msg = 'Não desistas! Revê a matéria e tenta outra vez. Até o Benfica perdeu antes de ganhar!'; }
+  document.getElementById('results-verdict').textContent = verdict;
+  document.getElementById('results-msg').textContent = msg;
+}
+function restartQuiz() { if(quizUnit) startQuiz(quizUnit); }
+
+// ── FORMULAS ──
+function renderFormulas() {
+  let html = '<div class="formula-grid">';
+  FORMULAS_DATA.forEach(f => {
+    html += `<div class="formula-tile"><h4>${f.title}</h4><div class="formula">${f.formula}</div><p>${f.desc}</p></div>`;
+  });
+  html += '</div>';
+  document.getElementById('formula-content').innerHTML = html;
+}
+
+// ── SECTION SWITCH ──
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const tabs = document.querySelectorAll('.tab-btn');
+  const names = ['resumos','futebol','jornal','flashcards','quiz','formulas'];
+  tabs[names.indexOf(id)]?.classList.add('active');
+}
+
+// ── INIT ──
+window.onload = function() {
+  initResumos();
+  initFutebol();
+  initJornal();
+  initFlash();
+  initQuiz();
+  renderFormulas();
+};
+</script>
+</body>
+</html>
