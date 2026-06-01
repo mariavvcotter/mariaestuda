@@ -39,10 +39,8 @@ nav.light .nav-links a{color:rgba(13,11,9,.55)}
 .btn-outline-light{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.35)}
 .btn-outline-light:hover{background:rgba(255,255,255,.1)}
 
-/* ── HERO ── */
-/* The hero is a simple flex column — no grid, no absolute positioning of content */
+/* ── HERO — coluna única centrada, sempre ── */
 .hero{background:var(--ink);position:relative}
-/* blobs sit in their own clipping box that never affects layout */
 .hero-blobs{position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;pointer-events:none;z-index:0}
 .hero-blob{position:absolute;border-radius:50%;filter:blur(80px)}
 .hero-blob-1{width:600px;height:600px;background:radial-gradient(circle,rgba(245,110,15,.4) 0%,transparent 65%);top:-180px;left:-80px;animation:b1 12s ease-in-out infinite alternate}
@@ -51,32 +49,30 @@ nav.light .nav-links a{color:rgba(13,11,9,.55)}
 @keyframes b1{0%{transform:translate(0,0)}100%{transform:translate(50px,35px)}}
 @keyframes b2{0%{transform:translate(0,0)}100%{transform:translate(-35px,-25px)}}
 @keyframes b3{0%{transform:translate(0,0)}100%{transform:translate(25px,45px)}}
-
-/* MOBILE hero: single column stacked */
-.hero-inner{position:relative;z-index:1;display:flex;flex-direction:column;padding:88px 20px 0}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.hero-text{padding:20px 0 32px;text-align:center}
-.hero-eyebrow{font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--o2);margin-bottom:28px;opacity:0;animation:fadeUp .7s .15s forwards}
-.hero-text h1{font-size:clamp(34px,8vw,68px);color:var(--white);letter-spacing:-2px;margin-bottom:22px;opacity:0;animation:fadeUp .7s .3s forwards}
+.hero-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;padding:100px 20px 0;min-height:100vh}
+/* text block */
+.hero-text{text-align:center;max-width:700px;width:100%;padding-bottom:8px}
+.hero-eyebrow{font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--o2);margin-bottom:24px;opacity:0;animation:fadeUp .7s .15s forwards}
+.hero-text h1{font-size:clamp(36px,7vw,72px);color:var(--white);letter-spacing:-2px;margin-bottom:20px;opacity:0;animation:fadeUp .7s .3s forwards}
 .hero-text h1 em{font-style:normal;color:var(--o1)}
-.hero-lead{font-size:16px;font-weight:300;color:rgba(255,255,255,.65);line-height:1.75;margin-bottom:36px;opacity:0;animation:fadeUp .7s .45s forwards;max-width:520px;margin-left:auto;margin-right:auto}
+.hero-lead{font-size:16px;font-weight:300;color:rgba(255,255,255,.65);line-height:1.75;margin-bottom:32px;opacity:0;animation:fadeUp .7s .45s forwards}
 .hero-ctas{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;opacity:0;animation:fadeUp .7s .6s forwards}
-.hero-built{margin-top:28px;font-size:12px;color:rgba(255,255,255,.28);line-height:1.6;opacity:0;animation:fadeUp .7s .75s forwards;padding:0 8px}
-
-/* Trust bar — directly under text */
-.hero-trust{padding:28px 0 24px;opacity:0;animation:fadeUp .7s .9s forwards}
+.hero-built{margin-top:24px;font-size:12px;color:rgba(255,255,255,.28);line-height:1.6;opacity:0;animation:fadeUp .7s .75s forwards}
+/* trust */
+.hero-trust{width:100%;padding:28px 0 20px;opacity:0;animation:fadeUp .7s .9s forwards}
 .hero-trust-label{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.38);text-align:center;margin-bottom:14px}
 .trust-ticker-wrap{overflow:hidden;width:100%;mask-image:linear-gradient(90deg,transparent 0%,#000 10%,#000 90%,transparent 100%);-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 10%,#000 90%,transparent 100%)}
 .trust-ticker{display:flex;gap:72px;width:max-content;animation:ticker 60s linear infinite}
 .trust-ticker span{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:700;color:rgba(255,255,255,.26);white-space:nowrap}
 @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
-/* Form — below trust on mobile */
-.hero-form{padding:8px 0 56px;opacity:0;animation:fadeUp .7s .5s forwards}
-.form-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:20px;padding:28px;backdrop-filter:blur(20px);width:100%;max-width:480px;margin:0 auto;box-shadow:0 24px 64px rgba(0,0,0,.3)}
+/* form */
+.hero-form{width:100%;max-width:560px;padding:16px 0 60px;opacity:0;animation:fadeUp .7s 1s forwards}
+.form-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:20px;padding:28px;backdrop-filter:blur(20px);width:100%;box-shadow:0 24px 64px rgba(0,0,0,.3)}
 .form-card-title{font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:700;color:var(--white);margin-bottom:4px}
 .form-card-sub{font-size:13px;color:rgba(255,255,255,.42);margin-bottom:20px}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:480px){.form-row{grid-template-columns:1fr}}
 .field{margin-bottom:8px}
 .field label{display:block;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-bottom:4px}
 .field input{width:100%;padding:10px 13px;border-radius:9px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s}
@@ -87,21 +83,6 @@ nav.light .nav-links a{color:rgba(13,11,9,.55)}
 .form-check span{font-size:11px;color:rgba(255,255,255,.32);line-height:1.5}
 .form-check a{color:var(--o2)}
 .form-submit{width:100%;padding:12px;font-size:13px;border-radius:11px}
-
-/* DESKTOP hero: side by side above 1100px */
-@media(min-width:1100px){
-  .hero-inner{flex-direction:row;align-items:stretch;padding:0;gap:0;min-height:100vh}
-  .hero-text-col{flex:0 0 55%;display:flex;flex-direction:column;justify-content:center;padding:110px 60px 0 60px}
-  .hero-text{text-align:left;padding:0 0 24px}
-  .hero-lead{margin-left:0;margin-right:0;max-width:440px}
-  .hero-ctas{justify-content:flex-start}
-  .hero-built{padding:0}
-  .hero-trust{padding:24px 0 32px}
-  .hero-form-col{flex:0 0 45%;display:flex;align-items:center;justify-content:center;padding:100px 40px 40px}
-  .form-card{max-width:420px;width:85%}
-  .hero-form{padding:0;width:100%;opacity:1;animation:none}
-  .hero-form-col .form-card{opacity:0;animation:fadeUp .7s .4s forwards}
-}
 
 /* ── SECTIONS ── */
 section{padding:80px 20px}
@@ -309,50 +290,25 @@ footer{background:var(--ink);color:var(--white);padding:48px 20px 32px}
     <div class="hero-blob hero-blob-3"></div>
   </div>
   <div class="hero-inner">
-    <!-- TEXT COL (desktop) / TEXT BLOCK (mobile) -->
-    <div class="hero-text-col">
-      <div class="hero-text">
-        <p class="hero-eyebrow">uPlayback · Um produto Grupês</p>
-        <h1>Todas as suas<br>gravações.<br><em>Um portal seguro.</em></h1>
-        <p class="hero-lead">Gestão e arquivo unificados de cada gravação de voz, com gestão de metadados, regras e utilizador. Compliance, segurança e soberania digital, integrados por design.</p>
-        <div class="hero-ctas">
-          <a href="#demo" class="btn btn-primary">Marcar Demo</a>
-          <a href="#quiz" class="btn btn-ghost">Checklist MiFID II</a>
-        </div>
-        <p class="hero-built">Construído para contact centers, operadores de telecomunicações, seguradoras e instituições financeiras.</p>
+    <div class="hero-text">
+      <p class="hero-eyebrow">uPlayback · Um produto Grupês</p>
+      <h1>Todas as suas<br>gravações.<br><em>Um portal seguro.</em></h1>
+      <p class="hero-lead">Gestão e arquivo unificados de cada gravação de voz, com gestão de metadados, regras e utilizador. Compliance, segurança e soberania digital, integrados por design.</p>
+      <div class="hero-ctas">
+        <a href="#demo" class="btn btn-primary">Marcar Demo</a>
+        <a href="#quiz" class="btn btn-ghost">Checklist MiFID II</a>
       </div>
-      <div class="hero-trust">
-        <p class="hero-trust-label">Confiança de</p>
-        <div class="trust-ticker-wrap">
-          <div class="trust-ticker">
-            <span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span>
-          </div>
-        </div>
-      </div>
-      <!-- FORM on mobile sits here, inside text col -->
-      <div class="hero-form" id="demo">
-        <div class="form-card">
-          <p class="form-card-title">Entre em contacto</p>
-          <p class="form-card-sub">Descubra a solução certa para a sua organização.</p>
-          <div class="form-row">
-            <div class="field"><label>Nome</label><input type="text" placeholder="João Silva"></div>
-            <div class="field"><label>Telefone</label><input type="tel" placeholder="+351 900 000 000"></div>
-          </div>
-          <div class="field"><label>Email profissional</label><input type="email" placeholder="joao@empresa.pt"></div>
-          <div class="form-row">
-            <div class="field"><label>Empresa</label><input type="text" placeholder="Empresa SA"></div>
-            <div class="field"><label>Cargo</label><input type="text" placeholder="Compliance Officer"></div>
-          </div>
-          <div class="form-check">
-            <input type="checkbox" id="consent">
-            <span><label for="consent">Aceito ser contactado pelo uPlayback. <a href="#">Política de privacidade.</a></label></span>
-          </div>
-          <button class="btn btn-primary form-submit">Marcar Demo →</button>
+      <p class="hero-built">Construído para contact centers, operadores de telecomunicações, seguradoras e instituições financeiras.</p>
+    </div>
+    <div class="hero-trust">
+      <p class="hero-trust-label">Confiança de</p>
+      <div class="trust-ticker-wrap">
+        <div class="trust-ticker">
+          <span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span>
         </div>
       </div>
     </div>
-    <!-- FORM COL — desktop only, hidden on mobile via CSS -->
-    <div class="hero-form-col">
+    <div class="hero-form" id="demo">
       <div class="form-card">
         <p class="form-card-title">Entre em contacto</p>
         <p class="form-card-sub">Descubra a solução certa para a sua organização.</p>
@@ -366,22 +322,14 @@ footer{background:var(--ink);color:var(--white);padding:48px 20px 32px}
           <div class="field"><label>Cargo</label><input type="text" placeholder="Compliance Officer"></div>
         </div>
         <div class="form-check">
-          <input type="checkbox" id="consent2">
-          <span><label for="consent2">Aceito ser contactado pelo uPlayback. <a href="#">Política de privacidade.</a></label></span>
+          <input type="checkbox" id="consent">
+          <span><label for="consent">Aceito ser contactado pelo uPlayback. <a href="#">Política de privacidade.</a></label></span>
         </div>
         <button class="btn btn-primary form-submit">Marcar Demo →</button>
       </div>
     </div>
   </div>
 </div>
-<!-- hide one of the two forms depending on screen -->
-<style>
-  .hero-form-col{display:none}
-  @media(min-width:1100px){
-    .hero-form-col{display:flex}
-    .hero-form{display:none}
-  }
-</style>
 
 <!-- FLASHCARDS -->
 <section class="pillars" id="simples">
