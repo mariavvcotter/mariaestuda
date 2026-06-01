@@ -195,13 +195,16 @@ section{padding:110px 60px}
 .ring-label{font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
 .quiz-result h3{font-size:26px;letter-spacing:-.6px;margin-bottom:12px}
 .quiz-result p{font-size:16px;color:var(--muted);max-width:480px;margin:0 auto 32px;line-height:1.7}
-.quiz-result-items{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:600px;margin:0 auto 36px;text-align:left}
-.quiz-res-item{padding:14px 18px;border-radius:12px;font-size:13px;display:flex;gap:10px;align-items:center}
-.quiz-res-item.ok{background:rgba(72,187,120,.1);color:#276749}
-.quiz-res-item.warn{background:rgba(245,110,15,.08);color:var(--o3)}
-.quiz-res-item.bad{background:rgba(229,62,62,.08);color:#c53030}
-.quiz-res-icon{flex-shrink:0;font-size:16px}
 .quiz-result-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+/* ── BENTO TOGGLE ── */
+.bento-item.toggleable{cursor:pointer}
+.bento-toggle-body{overflow:hidden;max-height:0;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .35s ease;opacity:0;margin-top:0}
+.bento-item.open .bento-toggle-body{max-height:200px;opacity:1;margin-top:10px}
+.bento-toggle-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.bento-plus{flex-shrink:0;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--warm2);display:flex;align-items:center;justify-content:center;font-size:16px;line-height:1;transition:transform .35s cubic-bezier(.34,1.56,.64,1),background .3s,border-color .3s;margin-top:2px}
+.bento-item.dark .bento-plus{border-color:rgba(255,255,255,.2)}
+.bento-item.open .bento-plus{transform:rotate(45deg);background:var(--o1);border-color:var(--o1);color:white}
 
 /* ── TEAM ── */
 .team-section{background:var(--white)}
@@ -579,7 +582,7 @@ footer{background:var(--ink);color:var(--white);padding:64px 60px 40px}
         <button class="quiz-opt" data-score="0">Não, o processo é manual e demorado</button>
         <button class="quiz-opt" data-score="0">Nunca foi testado</button>
       </div>
-      <div class="quiz-nav"><span class="quiz-nav-left"></span><button class="btn btn-dark quiz-next" disabled>Seguinte →</button></div>
+      <div class="quiz-nav"><span class="quiz-nav-left" style="cursor:pointer;font-size:13px;color:var(--muted)">← Anterior</span></div>
     </div>
 
     <!-- Q2 -->
@@ -593,7 +596,7 @@ footer{background:var(--ink);color:var(--white);padding:64px 60px 40px}
         <button class="quiz-opt" data-score="0">Não temos audit trail detalhado</button>
         <button class="quiz-opt" data-score="0">Não sei</button>
       </div>
-      <div class="quiz-nav"><span class="quiz-nav-left">← Anterior</span><button class="btn btn-dark quiz-next" disabled>Seguinte →</button></div>
+      <div class="quiz-nav"><span class="quiz-nav-left" style="cursor:pointer;font-size:13px;color:var(--muted)">← Anterior</span></div>
     </div>
 
     <!-- Q3 -->
@@ -607,7 +610,7 @@ footer{background:var(--ink);color:var(--white);padding:64px 60px 40px}
         <button class="quiz-opt" data-score="0">Não é configurável, é uma política única</button>
         <button class="quiz-opt" data-score="0">Não sei como está configurado</button>
       </div>
-      <div class="quiz-nav"><span class="quiz-nav-left">← Anterior</span><button class="btn btn-dark quiz-next" disabled>Seguinte →</button></div>
+      <div class="quiz-nav"><span class="quiz-nav-left" style="cursor:pointer;font-size:13px;color:var(--muted)">← Anterior</span></div>
     </div>
 
     <!-- Q4 -->
@@ -621,7 +624,7 @@ footer{background:var(--ink);color:var(--white);padding:64px 60px 40px}
         <button class="quiz-opt" data-score="0">Não tenho certeza da localização dos dados</button>
         <button class="quiz-opt" data-score="0">Não, alguns dados estão em servidores americanos</button>
       </div>
-      <div class="quiz-nav"><span class="quiz-nav-left">← Anterior</span><button class="btn btn-dark quiz-next" disabled>Seguinte →</button></div>
+      <div class="quiz-nav"><span class="quiz-nav-left" style="cursor:pointer;font-size:13px;color:var(--muted)">← Anterior</span></div>
     </div>
 
     <!-- Q5 -->
@@ -635,7 +638,7 @@ footer{background:var(--ink);color:var(--white);padding:64px 60px 40px}
         <button class="quiz-opt" data-score="0">Cada canal tem o seu próprio sistema</button>
         <button class="quiz-opt" data-score="0">Ainda não temos integração multi-canal</button>
       </div>
-      <div class="quiz-nav"><span class="quiz-nav-left">← Anterior</span><button class="btn btn-dark quiz-next" disabled>Seguinte →</button></div>
+      <div class="quiz-nav"><span class="quiz-nav-left" style="cursor:pointer;font-size:13px;color:var(--muted)">← Anterior</span></div>
     </div>
 
     <!-- Q6 -->
@@ -649,7 +652,7 @@ footer{background:var(--ink);color:var(--white);padding:64px 60px 40px}
         <button class="quiz-opt" data-score="0">Não foi negociado no contrato</button>
         <button class="quiz-opt" data-score="0">Nunca pensámos nisso</button>
       </div>
-      <div class="quiz-nav"><span class="quiz-nav-left">← Anterior</span><button class="btn btn-dark quiz-next" disabled>Seguinte →</button></div>
+      <div class="quiz-nav"><span class="quiz-nav-left" style="cursor:pointer;font-size:13px;color:var(--muted)">← Anterior</span></div>
     </div>
 
     <!-- Q7 -->
@@ -663,7 +666,7 @@ footer{background:var(--ink);color:var(--white);padding:64px 60px 40px}
         <button class="quiz-opt" data-score="0">Existe um plano genérico de DR, não específico</button>
         <button class="quiz-opt" data-score="0">Não temos plano de resiliência formal</button>
       </div>
-      <div class="quiz-nav"><span class="quiz-nav-left">← Anterior</span><button class="btn btn-primary quiz-submit" disabled>Ver resultado →</button></div>
+      <div class="quiz-nav"><span class="quiz-nav-left" style="cursor:pointer;font-size:13px;color:var(--muted)">← Anterior</span></div>
     </div>
 
     <!-- RESULT -->
@@ -680,7 +683,6 @@ footer{background:var(--ink);color:var(--white);padding:64px 60px 40px}
       </div>
       <h3 id="resultTitle">A avaliar...</h3>
       <p id="resultMsg"></p>
-      <div class="quiz-result-items" id="resultItems"></div>
       <div class="quiz-result-cta">
         <a href="#demo" class="btn btn-primary">Resolver já — Marcar Demo</a>
         <button class="btn btn-dark" onclick="resetQuiz()">Repetir avaliação</button>
@@ -709,31 +711,46 @@ footer{background:var(--ink);color:var(--white);padding:64px 60px 40px}
   </div>
   <div class="bento">
     <!-- Row 1 -->
-    <div class="bento-item reveal">
+    <div class="bento-item toggleable reveal" onclick="toggleBento(this)">
       <p class="bento-q">Onboarding</p>
-      <h4>Quanto tempo demora a entrar em produção?</h4>
-      <p>A maioria dos projetos vai para produção em semanas, não meses. A equipa de R&D é altamente responsiva e habituada a avançar com rapidez.</p>
+      <div class="bento-toggle-head">
+        <h4>Quanto tempo demora a entrar em produção?</h4>
+        <span class="bento-plus">+</span>
+      </div>
+      <div class="bento-toggle-body"><p>A maioria dos projetos vai para produção em semanas, não meses. A equipa de R&D é altamente responsiva e habituada a avançar com rapidez.</p></div>
     </div>
-    <div class="bento-item dark span2 reveal">
+    <div class="bento-item dark span2 toggleable reveal" onclick="toggleBento(this)">
       <p class="bento-q">Integrações</p>
-      <h4>O uPlayback consegue integrar com a nossa infraestrutura atual?</h4>
-      <p>Sim. Cisco Webex, NICE Engage, NTR-X, ASC Recording Insights, Microsoft Teams e outras. Consoante a arquitetura e método de gravação existentes.</p>
+      <div class="bento-toggle-head">
+        <h4>O uPlayback consegue integrar com a nossa infraestrutura atual?</h4>
+        <span class="bento-plus">+</span>
+      </div>
+      <div class="bento-toggle-body"><p>Sim. Cisco Webex, NICE Engage, NTR-X, ASC Recording Insights, Microsoft Teams e outras. Consoante a arquitetura e método de gravação existentes.</p></div>
     </div>
     <!-- Row 2 -->
-    <div class="bento-item dark reveal">
+    <div class="bento-item dark toggleable reveal" onclick="toggleBento(this)">
       <p class="bento-q">Soberania</p>
-      <h4>Os dados podem ficar em Portugal?</h4>
-      <p>Sim. Cloud ou on-premises, configurado para que gravações, metadados e audit logs permaneçam alojados em território português.</p>
+      <div class="bento-toggle-head">
+        <h4>Os dados podem ficar em Portugal?</h4>
+        <span class="bento-plus">+</span>
+      </div>
+      <div class="bento-toggle-body"><p>Sim. Cloud ou on-premises, configurado para que gravações, metadados e audit logs permaneçam alojados em território português.</p></div>
     </div>
-    <div class="bento-item reveal">
+    <div class="bento-item toggleable reveal" onclick="toggleBento(this)">
       <p class="bento-q">Compliance</p>
-      <h4>Como responde à MiFID II, DORA e RGPD?</h4>
-      <p>Registo regulamentar, resiliência operacional, proteção de dados, auditabilidade e controlo de acessos — tudo alinhado por design.</p>
+      <div class="bento-toggle-head">
+        <h4>Como responde à MiFID II, DORA e RGPD?</h4>
+        <span class="bento-plus">+</span>
+      </div>
+      <div class="bento-toggle-body"><p>Registo regulamentar, resiliência operacional, proteção de dados, auditabilidade e controlo de acessos — tudo alinhado por design.</p></div>
     </div>
-    <div class="bento-item reveal">
+    <div class="bento-item toggleable reveal" onclick="toggleBento(this)">
       <p class="bento-q">Canais</p>
-      <h4>Cobre chat e email, ou só voz?</h4>
-      <p>Voz, chat e email num único registo governado das comunicações regulamentadas, consoante os canais e conectores ativos.</p>
+      <div class="bento-toggle-head">
+        <h4>Cobre chat e email, ou só voz?</h4>
+        <span class="bento-plus">+</span>
+      </div>
+      <div class="bento-toggle-body"><p>Voz, chat e email num único registo governado das comunicações regulamentadas, consoante os canais e conectores ativos.</p></div>
     </div>
     <!-- Row 3 -->
     <div class="bento-item orange reveal">
@@ -741,10 +758,13 @@ footer{background:var(--ink);color:var(--white);padding:64px 60px 40px}
       <div class="bento-stat">20+</div>
       <p>Anos de experiência em compliance recording nos principais bancos e seguradoras portuguesas.</p>
     </div>
-    <div class="bento-item reveal">
+    <div class="bento-item toggleable reveal" onclick="toggleBento(this)">
       <p class="bento-q">API</p>
-      <h4>Fornece áudio e metadados a outras aplicações?</h4>
-      <p>Sim. Áudio, metadados ou resultados de pesquisa de forma segura, com permissões e controlos de auditoria configurados.</p>
+      <div class="bento-toggle-head">
+        <h4>Fornece áudio e metadados a outras aplicações?</h4>
+        <span class="bento-plus">+</span>
+      </div>
+      <div class="bento-toggle-body"><p>Sim. Áudio, metadados ou resultados de pesquisa de forma segura, com permissões e controlos de auditoria configurados.</p></div>
     </div>
     <div class="bento-item dark reveal" style="display:flex;flex-direction:column;justify-content:space-between">
       <div>
@@ -868,57 +888,54 @@ track.parentElement.addEventListener('touchend', e => {
   if (Math.abs(dx) > 40) goSlide(dx > 0 ? cur + 1 : cur - 1);
 });
 
-/* ── QUIZ ── */
+/* ── QUIZ — auto-advance on click ── */
 const questions = document.querySelectorAll('.quiz-step');
 const progress = document.getElementById('quizProgress');
 let scores = new Array(7).fill(null);
 let qCur = 0;
 
 questions.forEach((step, qi) => {
-  const opts = step.querySelectorAll('.quiz-opt');
-  const nextBtn = step.querySelector('.quiz-next, .quiz-submit');
-  opts.forEach(opt => {
+  const isLast = qi === questions.length - 1;
+  step.querySelectorAll('.quiz-opt').forEach(opt => {
     opt.addEventListener('click', () => {
-      opts.forEach(o => o.classList.remove('selected'));
+      // mark selection
+      step.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('selected'));
       opt.classList.add('selected');
       scores[qi] = parseInt(opt.dataset.score);
-      if (nextBtn) nextBtn.disabled = false;
-    });
-  });
-  if (step.querySelector('.quiz-next')) {
-    step.querySelector('.quiz-next').addEventListener('click', () => {
-      step.classList.remove('active');
-      qCur++;
-      questions[qCur].classList.add('active');
-      progress.style.width = ((qCur / 7) * 100) + '%';
-      // back nav
-      const backEl = questions[qCur].querySelector('.quiz-nav-left');
-      if (backEl && backEl.textContent.includes('Anterior')) {
-        backEl.style.cursor = 'pointer';
-        backEl.onclick = () => {
-          questions[qCur].classList.remove('active');
-          qCur--;
+
+      // brief pause so user sees the selection, then advance
+      setTimeout(() => {
+        if (isLast) {
+          showResult();
+        } else {
+          step.classList.remove('active');
+          qCur++;
           questions[qCur].classList.add('active');
           progress.style.width = ((qCur / 7) * 100) + '%';
-        };
-      }
+          // wire back nav
+          const backEl = questions[qCur].querySelector('.quiz-nav-left');
+          if (backEl) {
+            backEl.style.cursor = 'pointer';
+            backEl.onclick = () => {
+              questions[qCur].classList.remove('active');
+              qCur--;
+              questions[qCur].classList.add('active');
+              progress.style.width = ((qCur / 7) * 100) + '%';
+            };
+          }
+        }
+      }, 320);
     });
-  }
-  if (step.querySelector('.quiz-submit')) {
-    step.querySelector('.quiz-submit').addEventListener('click', showResult);
-  }
+  });
 });
 
 function showResult() {
   questions[qCur].classList.remove('active');
   progress.style.width = '100%';
   const total = scores.reduce((a, b) => a + (b || 0), 0);
-  const max = 14;
-  const pct = Math.round((total / max) * 100);
-
+  const pct = Math.round((total / 14) * 100);
   document.getElementById('quizResult').classList.add('active');
 
-  // Ring animation
   const circumference = 326.7;
   const offset = circumference - (pct / 100) * circumference;
   setTimeout(() => {
@@ -930,15 +947,6 @@ function showResult() {
       if (n >= pct) clearInterval(iv);
     }, 20);
   }, 200);
-
-  const labels = ['Recuperação', 'Audit Trail', 'Retenção', 'Soberania', 'Integração', 'Portabilidade', 'Resiliência'];
-  const itemsEl = document.getElementById('resultItems');
-  itemsEl.innerHTML = '';
-  scores.forEach((s, i) => {
-    const cls = s === 2 ? 'ok' : s === 1 ? 'warn' : 'bad';
-    const icon = s === 2 ? '✓' : s === 1 ? '⚠' : '✗';
-    itemsEl.innerHTML += `<div class="quiz-res-item ${cls}"><span class="quiz-res-icon">${icon}</span><span>${labels[i]}</span></div>`;
-  });
 
   let title, msg;
   if (pct >= 80) {
@@ -958,12 +966,22 @@ function showResult() {
 function resetQuiz() {
   scores = new Array(7).fill(null);
   qCur = 0;
-  questions.forEach(s => { s.classList.remove('active'); s.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('selected')); s.querySelectorAll('.quiz-next,.quiz-submit').forEach(b => b.disabled = true); });
+  questions.forEach(s => {
+    s.classList.remove('active');
+    s.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('selected'));
+  });
   document.getElementById('quizResult').classList.remove('active');
   document.getElementById('ringFill').style.strokeDashoffset = '326.7';
   document.getElementById('ringPct').textContent = '0%';
   progress.style.width = '0%';
   questions[0].classList.add('active');
+}
+
+/* ── BENTO TOGGLE ── */
+function toggleBento(el) {
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.bento-item.open').forEach(b => b.classList.remove('open'));
+  if (!isOpen) el.classList.add('open');
 }
 </script>
 </body>
