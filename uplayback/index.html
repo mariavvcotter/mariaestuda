@@ -37,36 +37,51 @@ nav.light .nav-links a{color:rgba(13,11,9,.55)}
 .btn-outline-light{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,.35)}
 .btn-outline-light:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.7)}
 
-/* ── HERO — desktop: 2 cols; mobile: 1 col, form moves to bottom ── */
-.hero{min-height:100vh;background:var(--ink);position:relative;overflow:hidden;display:grid;grid-template-columns:55% 45%;grid-template-rows:1fr auto;align-items:stretch}
-.hero-blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;will-change:transform}
+/* ── HERO — mobile first: 1 col por defeito, 2 cols só acima de 1200px ── */
+.hero{min-height:100vh;background:var(--ink);position:relative;display:grid;grid-template-columns:1fr;grid-template-rows:auto auto auto;align-items:start}
+/* blob container: overflow hidden isolado, nunca toca no conteúdo */
+.hero-blobs{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.hero-blob{position:absolute;border-radius:50%;filter:blur(90px);will-change:transform}
 .hero-blob-1{width:700px;height:700px;background:radial-gradient(circle,rgba(245,110,15,.38) 0%,transparent 65%);top:-200px;left:-100px;animation:blob1 12s ease-in-out infinite alternate}
 .hero-blob-2{width:500px;height:500px;background:radial-gradient(circle,rgba(255,140,58,.22) 0%,transparent 65%);bottom:-80px;left:30%;animation:blob2 15s ease-in-out infinite alternate}
 .hero-blob-3{width:300px;height:300px;background:radial-gradient(circle,rgba(245,110,15,.15) 0%,transparent 65%);top:40%;right:45%;animation:blob3 10s ease-in-out infinite alternate}
 @keyframes blob1{0%{transform:translate(0,0) scale(1)}100%{transform:translate(60px,40px) scale(1.08)}}
 @keyframes blob2{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-40px,-30px) scale(1.12)}}
 @keyframes blob3{0%{transform:translate(0,0)}100%{transform:translate(30px,50px)}}
-.hero-left{grid-column:1;grid-row:1;position:relative;z-index:2;display:flex;flex-direction:column;justify-content:center;padding:120px 64px 40px}
+/* mobile: centrado, 1 coluna */
+.hero-left{grid-column:1;grid-row:1;position:relative;z-index:2;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:100px 24px 32px}
+.hero-lead{text-align:left;max-width:560px}
+.hero-built{text-align:center;max-width:560px}
 @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
 .hero-eyebrow{font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--o2);margin-bottom:32px;opacity:0;animation:fadeUp .8s .2s forwards}
-.hero-left h1{font-size:clamp(44px,5vw,72px);color:var(--white);letter-spacing:-2px;margin-bottom:28px;opacity:0;animation:fadeUp .8s .35s forwards}
+.hero-left h1{font-size:clamp(36px,7vw,72px);color:var(--white);letter-spacing:-2px;margin-bottom:28px;opacity:0;animation:fadeUp .8s .35s forwards}
 .hero-left h1 em{font-style:normal;color:var(--o1)}
-.hero-lead{font-size:17px;font-weight:300;color:rgba(255,255,255,.62);max-width:440px;line-height:1.75;margin-bottom:48px;opacity:0;animation:fadeUp .8s .5s forwards}
-.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s .65s forwards}
-.hero-built{margin-top:40px;font-size:12px;color:rgba(255,255,255,.3);letter-spacing:.04em;line-height:1.6;max-width:400px;opacity:0;animation:fadeUp .8s .8s forwards}
-
-/* TRUST — always centred under hero-left, infinite ticker */
-.hero-trust{grid-column:1;grid-row:2;position:relative;z-index:3;padding:24px 64px 36px;opacity:0;animation:fadeUp .8s 1s forwards}
-.hero-trust-label{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.35);text-align:center;margin-bottom:14px}
-.trust-ticker-wrap{overflow:hidden;width:100%;mask-image:linear-gradient(90deg,transparent 0%,black 12%,black 88%,transparent 100%);-webkit-mask-image:linear-gradient(90deg,transparent 0%,black 12%,black 88%,transparent 100%)}
-.trust-ticker{display:flex;gap:56px;width:max-content;animation:ticker 20s linear infinite}
+.hero-lead{font-size:17px;font-weight:300;color:rgba(255,255,255,.62);line-height:1.75;margin-bottom:48px;opacity:0;animation:fadeUp .8s .5s forwards}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;opacity:0;animation:fadeUp .8s .65s forwards}
+.hero-built{margin-top:32px;font-size:12px;color:rgba(255,255,255,.3);letter-spacing:.04em;line-height:1.6;opacity:0;animation:fadeUp .8s .8s forwards}
+/* mobile trust: row 2 */
+.hero-trust{grid-column:1;grid-row:2;position:relative;z-index:3;padding:8px 24px 32px;opacity:0;animation:fadeUp .8s 1s forwards;display:flex;flex-direction:column;justify-content:center;min-height:90px}
+.hero-trust-label{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.4);text-align:center;margin-bottom:16px}
+.trust-ticker-wrap{overflow:hidden;width:100%;mask-image:linear-gradient(90deg,transparent 0%,black 8%,black 92%,transparent 100%);-webkit-mask-image:linear-gradient(90deg,transparent 0%,black 8%,black 92%,transparent 100%)}
+.trust-ticker{display:flex;gap:80px;width:max-content;animation:ticker 60s linear infinite}
 .trust-ticker:hover{animation-play-state:paused}
-.trust-ticker span{font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:700;color:rgba(255,255,255,.3);white-space:nowrap;letter-spacing:-.2px}
+.trust-ticker span{font-family:'Bricolage Grotesque',sans-serif;font-size:18px;font-weight:700;color:rgba(255,255,255,.28);white-space:nowrap;letter-spacing:-.3px}
 @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+/* mobile form: row 3 */
+.hero-right{grid-column:1;grid-row:3;position:relative;z-index:2;display:flex;align-items:flex-start;justify-content:center;padding:0 20px 64px;opacity:0;animation:fadeUp .9s .4s forwards}
+.form-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:32px;backdrop-filter:blur(20px);width:100%;max-width:480px;box-shadow:0 32px 80px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08)}
 
-/* HERO FORM — desktop: col 2 rows 1-2 */
-.hero-right{grid-column:2;grid-row:1/3;position:relative;z-index:2;display:flex;align-items:center;justify-content:center;padding:100px 52px 52px;opacity:0;animation:fadeUp .9s .4s forwards}
-.form-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:40px;backdrop-filter:blur(20px);width:100%;max-width:440px;box-shadow:0 32px 80px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08)}
+/* ── DESKTOP hero: 2 colunas — só ativa acima de 1200px ── */
+@media(min-width:1200px){
+  .hero{grid-template-columns:minmax(0,55%) minmax(0,45%);grid-template-rows:1fr auto}
+  .hero-left{grid-column:1;grid-row:1;align-items:flex-start;text-align:left;padding:120px 64px 40px}
+  .hero-lead{text-align:left;max-width:440px}
+  .hero-built{text-align:left;max-width:400px}
+  .hero-ctas{justify-content:flex-start}
+  .hero-trust{grid-column:1/3;grid-row:2;padding:0 64px;min-height:110px}
+  .hero-right{grid-column:2;grid-row:1/3;align-items:center;padding:80px clamp(16px,4%,52px)}
+  .form-card{width:min(75%,460px)}
+}
 .form-card-title{font-family:'Bricolage Grotesque',sans-serif;font-size:20px;font-weight:700;color:var(--white);margin-bottom:6px}
 .form-card-sub{font-size:13px;color:rgba(255,255,255,.45);margin-bottom:24px}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -259,21 +274,11 @@ footer{background:var(--ink);color:var(--white);padding:64px 60px 40px}
 .reveal.in{opacity:1;transform:translateY(0)}
 
 /* ── RESPONSIVE ── */
-@media(max-width:960px){
+@media(max-width:1100px){
   nav{padding:16px 24px}
   .nav-links{display:none}
   section{padding:64px 20px}
   .stats-band{padding:56px 20px}
-
-  /* Hero: single column; form goes below text+trust */
-  .hero{grid-template-columns:1fr;grid-template-rows:auto auto auto}
-  .hero-left{grid-column:1;grid-row:1;padding:100px 24px 24px}
-  .hero-trust{grid-column:1;grid-row:2;padding:0 24px 28px}
-  .hero-right{grid-column:1;grid-row:3;padding:0 20px 60px;justify-content:flex-start}
-  .form-card{max-width:100%}
-
-  /* Trust ticker — full width */
-  .trust-ticker-wrap{width:100%}
 
   /* Pillars */
   .pillars-grid{grid-template-columns:1fr}
@@ -313,6 +318,7 @@ footer{background:var(--ink);color:var(--white);padding:64px 60px 40px}
   .bento-item.span2{grid-column:span 1}
   .form-row{grid-template-columns:1fr}
   .quiz-options{grid-template-columns:1fr}
+  .hero-left h1{font-size:clamp(28px,8vw,44px)}
 }
 </style>
 </head>
@@ -332,9 +338,11 @@ footer{background:var(--ink);color:var(--white);padding:64px 60px 40px}
 
 <!-- HERO -->
 <section class="hero" id="hero">
-  <div class="hero-blob hero-blob-1"></div>
-  <div class="hero-blob hero-blob-2"></div>
-  <div class="hero-blob hero-blob-3"></div>
+  <div class="hero-blobs">
+    <div class="hero-blob hero-blob-1"></div>
+    <div class="hero-blob hero-blob-2"></div>
+    <div class="hero-blob hero-blob-3"></div>
+  </div>
 
   <!-- col 1 row 1: text -->
   <div class="hero-left">
@@ -348,12 +356,15 @@ footer{background:var(--ink);color:var(--white);padding:64px 60px 40px}
     <p class="hero-built">Construído para contact centers, operadores de telecomunicações, seguradoras e instituições financeiras.</p>
   </div>
 
-  <!-- col 1 row 2: trust ticker — always centred, always looping -->
+  <!-- row 3 span both cols: trust ticker -->
   <div class="hero-trust">
     <p class="hero-trust-label">Confiança de</p>
     <div class="trust-ticker-wrap">
-      <div class="trust-ticker">
-        <span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span>
+      <div class="trust-ticker" id="trustTicker">
+        <!-- set A (visible half) -->
+        <span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span>
+        <!-- set B (mirror for seamless wrap) -->
+        <span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span><span>Santander</span><span>Cofidis</span><span>Crédito Agrícola</span><span>Haitong</span><span>Banco CTT</span>
       </div>
     </div>
   </div>
@@ -395,7 +406,7 @@ footer{background:var(--ink);color:var(--white);padding:64px 60px 40px}
     </div></div>
     <div class="flashcard reveal"><div class="flashcard-inner">
       <div class="flashcard-front"><div><span class="pillar-tag">Para IT e Segurança</span><h3>Segurança.</h3></div><span class="flip-hint">Hover para saber mais</span></div>
-      <div class="flashcard-back"><p>Controlo de acessos baseado em perfis, autenticação AD / LDAP / Azure, encriptação e extração controladas por workflow. Cada ação de cada utilizador fica registada. O audit trail é não negociável.</p><a href="#simples">Saber mais →</a></div>
+      <div class="flashcard-back"><p>Controlo de acessos baseado em perfis, autenticação AD / LDAP / Azure, encriptação e extração controladas por workflow. Cada ação de cada utilizador fica registada. O audit trail é não negociável.</p></div>
     </div></div>
     <div class="flashcard reveal"><div class="flashcard-inner">
       <div class="flashcard-front"><div><span class="pillar-tag">Para o Board</span><h3>Soberania digital.</h3></div><span class="flip-hint">Hover para saber mais</span></div>
