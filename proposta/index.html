@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposta Website — Desenvolvimento</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #050505;
+    --black2: #0a0a0a;
+    --white: #f5f0eb;
+    --orange1: #ff6b1a;
+    --orange2: #e84d00;
+    --amber: #f59e0b;
+    --teal: #0a9396;
+    --gray: #888;
+    --graylight: #333;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ── CUSTOM CURSOR ── */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--orange1);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, opacity 0.2s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(255,107,26,0.5);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.12s ease;
+  }
+
+  /* ── LIGHT BARS BACKGROUND ── */
+  .light-bars {
+    position: fixed;
+    top: 0; right: 0;
+    width: 45vw; height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.18;
+    display: flex;
+    gap: 0;
+    overflow: hidden;
+  }
+  .light-bars .bar {
+    flex: 1;
+    background: linear-gradient(to bottom, transparent 0%, var(--orange1) 40%, var(--orange2) 60%, transparent 100%);
+    transform-origin: top center;
+    animation: barFloat linear infinite;
+    opacity: 0;
+  }
+  .light-bars .bar:nth-child(1)  { animation-duration: 7s; animation-delay: 0s;    opacity: 0.9; }
+  .light-bars .bar:nth-child(2)  { animation-duration: 9s; animation-delay: -1s;   opacity: 0.6; }
+  .light-bars .bar:nth-child(3)  { animation-duration: 6s; animation-delay: -2s;   opacity: 1.0; }
+  .light-bars .bar:nth-child(4)  { animation-duration: 8s; animation-delay: -3s;   opacity: 0.4; }
+  .light-bars .bar:nth-child(5)  { animation-duration: 11s; animation-delay: -4s;  opacity: 0.8; }
+  .light-bars .bar:nth-child(6)  { animation-duration: 7s; animation-delay: -5s;   opacity: 0.5; }
+  .light-bars .bar:nth-child(7)  { animation-duration: 9s; animation-delay: -1.5s; opacity: 0.9; }
+  .light-bars .bar:nth-child(8)  { animation-duration: 6s; animation-delay: -2.5s; opacity: 0.3; }
+  .light-bars .bar:nth-child(9)  { animation-duration: 10s; animation-delay: -3.5s;opacity: 0.7; }
+  .light-bars .bar:nth-child(10) { animation-duration: 8s; animation-delay: -0.5s; opacity: 0.6; }
+  .light-bars .bar:nth-child(11) { animation-duration: 7s; animation-delay: -4.5s; opacity: 0.4; }
+  .light-bars .bar:nth-child(12) { animation-duration: 9s; animation-delay: -6s;   opacity: 0.8; }
+
+  @keyframes barFloat {
+    0%   { opacity: 0; transform: scaleY(0.6) translateY(-10%); }
+    20%  { opacity: 1; }
+    50%  { opacity: 0.8; transform: scaleY(1.1) translateY(5%); }
+    80%  { opacity: 0.6; }
+    100% { opacity: 0; transform: scaleY(0.7) translateY(10%); }
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.6rem 4rem;
+    background: linear-gradient(to bottom, rgba(5,5,5,0.95), transparent);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 3px;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+  }
+  .nav-links a {
+    color: var(--gray);
+    text-decoration: none;
+    font-size: 0.78rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--orange1); }
+
+  /* ── SECTIONS COMMON ── */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 8rem 4rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--orange1);
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  h1, h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    line-height: 0.9;
+    letter-spacing: 2px;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    padding: 0 4rem;
+    justify-content: flex-end;
+    padding-bottom: 8rem;
+  }
+  .hero-content { max-width: 700px; }
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--orange1);
+    padding: 0.4rem 1rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
+  }
+  .hero-title {
+    font-size: clamp(5rem, 12vw, 11rem);
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+    color: var(--gray);
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin-bottom: 3rem;
+    max-width: 460px;
+    line-height: 1.7;
+  }
+  .hero-cta {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 1rem 2.5rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--orange1);
+    transform: translateX(-101%);
+    transition: transform 0.3s ease;
+    z-index: -1;
+  }
+  .hero-cta:hover::before { transform: translateX(0); }
+  .hero-cta:hover { border-color: var(--orange1); color: var(--black); }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem; left: 4rem;
+    display: flex; align-items: center; gap: 1rem;
+    font-size: 0.68rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+  .scroll-line {
+    width: 40px; height: 1px;
+    background: var(--orange1);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse { 0%,100%{width:40px} 50%{width:80px} }
+
+  /* ── DIVIDER ── */
+  .section-divider {
+    width: 60px; height: 1px;
+    background: var(--orange1);
+    margin-bottom: 2.5rem;
+  }
+
+  /* ── AMBITO ── */
+  #ambito { background: var(--black2); }
+  .ambito-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+    margin-top: 4rem;
+    border: 1px solid var(--graylight);
+  }
+  .ambito-card {
+    padding: 2.5rem 2rem;
+    border-right: 1px solid var(--graylight);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .ambito-card:last-child { border-right: none; }
+  .ambito-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--orange1);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+    transform-origin: left;
+  }
+  .ambito-card:hover::before { transform: scaleX(1); }
+  .ambito-card:hover { background: rgba(255,107,26,0.04); }
+  .ambito-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    color: rgba(255,255,255,0.06);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+  .ambito-icon { font-size: 1.8rem; margin-bottom: 1rem; display: block; }
+  .ambito-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.5px;
+  }
+  .ambito-desc {
+    font-size: 0.85rem;
+    color: var(--gray);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+  .ambito-note {
+    margin-top: 3rem;
+    padding: 1.5rem 2rem;
+    border-left: 2px solid var(--orange1);
+    background: rgba(255,107,26,0.05);
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.6);
+    font-style: italic;
+    line-height: 1.7;
+    max-width: 700px;
+  }
+
+  /* ── SEO ── */
+  #seo { }
+  .seo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4rem;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  .seo-badge {
+    font-size: 0.68rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    font-weight: 600;
+    border: 1px solid;
+  }
+  .badge-teal { color: var(--teal); border-color: var(--teal); }
+  .badge-amber { color: var(--amber); border-color: var(--amber); }
+
+  .seo-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+
+  .seo-layer-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+  .layer1 { color: var(--teal); }
+  .layer2 { color: var(--amber); }
+
+  .seo-items { margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0; }
+  .seo-item {
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--graylight);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    align-items: start;
+    transition: padding-left 0.2s;
+  }
+  .seo-item:hover { padding-left: 0.5rem; }
+  .seo-item-name { font-size: 0.9rem; font-weight: 500; color: var(--white); }
+  .seo-item-desc { font-size: 0.78rem; color: var(--gray); margin-top: 0.2rem; font-weight: 300; }
+  .seo-item-native {
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--teal);
+    background: rgba(10,147,150,0.1);
+    padding: 0.25rem 0.6rem;
+    white-space: nowrap;
+    align-self: center;
+  }
+
+  .seo-callout {
+    margin-top: 4rem;
+    padding: 2rem;
+    border: 1px solid var(--graylight);
+    background: rgba(255,255,255,0.02);
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.5);
+    font-style: italic;
+    line-height: 1.8;
+    position: relative;
+  }
+  .seo-callout::before {
+    content: '"';
+    position: absolute;
+    top: -1.5rem; left: 1.5rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    color: var(--orange1);
+    opacity: 0.3;
+    line-height: 1;
+  }
+
+  /* ── COMPLIANCE ── */
+  #compliance { background: var(--black2); }
+  .compliance-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+  .compliance-card {
+    padding: 2rem;
+    border: 1px solid var(--graylight);
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    transition: border-color 0.3s, background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .compliance-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,107,26,0.05), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .compliance-card:hover { border-color: rgba(255,107,26,0.3); }
+  .compliance-card:hover::after { opacity: 1; }
+  .compliance-emoji { font-size: 1.8rem; flex-shrink: 0; }
+  .compliance-title { font-size: 0.95rem; font-weight: 600; color: var(--white); margin-bottom: 0.4rem; }
+  .compliance-desc { font-size: 0.82rem; color: var(--gray); line-height: 1.6; font-weight: 300; }
+  .compliance-footer {
+    margin-top: 2.5rem;
+    padding: 1.2rem 2rem;
+    background: var(--orange1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .compliance-footer-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--black);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .compliance-footer-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    color: var(--black);
+    letter-spacing: 2px;
+  }
+
+  /* ── TRANSPARÊNCIA ── */
+  #transparencia { }
+  .transp-intro {
+    max-width: 600px;
+    font-size: 1rem;
+    color: var(--gray);
+    font-weight: 300;
+    line-height: 1.8;
+    margin-bottom: 4rem;
+  }
+  .transp-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .transp-col { padding: 0 3rem 0 0; }
+  .transp-col:last-child { padding: 0 0 0 3rem; border-left: 1px solid var(--graylight); }
+  .transp-col-label {
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    margin-bottom: 2rem;
+    display: inline-block;
+  }
+  .label-green { background: rgba(10,147,150,0.15); color: var(--teal); }
+  .label-amber { background: rgba(245,158,11,0.15); color: var(--amber); }
+  .transp-item { margin-bottom: 2rem; }
+  .transp-item-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .transp-dot-green { width: 6px; height: 6px; background: var(--teal); border-radius: 50%; flex-shrink: 0; }
+  .transp-dot-amber { width: 6px; height: 6px; background: var(--amber); border-radius: 50%; flex-shrink: 0; }
+  .transp-item-desc { font-size: 0.83rem; color: var(--gray); line-height: 1.7; font-weight: 300; padding-left: 1.1rem; }
+  .transp-quote {
+    margin-top: 4rem;
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3.5rem);
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.12);
+    line-height: 1.2;
+  }
+  .transp-quote span { color: var(--orange1); }
+
+  /* ── INVESTIMENTO ── */
+  #investimento { background: var(--black2); }
+  .inv-main {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 6rem;
+    margin-top: 4rem;
+    align-items: start;
+  }
+  .inv-big-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 10vw, 9rem);
+    line-height: 0.85;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+  .inv-big-num span { color: var(--orange1); }
+  .inv-label {
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 1.5rem;
+  }
+  .inv-breakdown {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.8;
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
+  .inv-pill {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--orange1);
+    color: var(--orange1);
+    font-weight: 500;
+  }
+  .inv-annual { }
+  .inv-annual-title {
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 1.5rem;
+  }
+  .inv-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--graylight);
+  }
+  .inv-row-name { font-size: 0.9rem; font-weight: 500; color: var(--white); }
+  .inv-row-sub { font-size: 0.75rem; color: var(--gray); font-weight: 300; }
+  .inv-row-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+    color: var(--amber);
+  }
+  .inv-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+    background: rgba(255,255,255,0.04);
+    margin-top: 1rem;
+    border: 1px solid var(--graylight);
+  }
+  .inv-total-label {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+  .inv-total-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 2px;
+    color: var(--white);
+  }
+  .inv-note {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.25);
+    font-style: italic;
+  }
+
+  /* ── PRÓXIMOS PASSOS ── */
+  #passos { }
+  .passos-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 4rem;
+    border-top: 1px solid var(--graylight);
+    border-left: 1px solid var(--graylight);
+  }
+  .passo {
+    padding: 2.5rem 2rem;
+    border-right: 1px solid var(--graylight);
+    border-bottom: 1px solid var(--graylight);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .passo:hover { background: rgba(255,255,255,0.02); }
+  .passo-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4.5rem;
+    color: rgba(255,255,255,0.06);
+    line-height: 1;
+    position: absolute;
+    top: 0.5rem; right: 1rem;
+  }
+  .passo-label {
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--orange1);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  .passo-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+  }
+  .passo-desc { font-size: 0.82rem; color: var(--gray); line-height: 1.6; font-weight: 300; }
+
+  /* ── FOOTER / CTA ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    background: var(--black);
+    border-top: 1px solid var(--graylight);
+    padding: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  .footer-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 2px;
+    color: var(--white);
+  }
+  .footer-text span { color: var(--orange1); }
+  .footer-cta {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--black);
+    background: var(--orange1);
+    padding: 1.1rem 2.5rem;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .footer-cta:hover { background: #ff8040; }
+  .footer-copy {
+    width: 100%;
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 1px;
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid var(--graylight);
+    margin-top: 1rem;
+  }
+
+  /* ── REVEAL ANIMATIONS ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Animated light bars (right side) -->
+<div class="light-bars">
+  <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+  <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+  <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+  <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">MC · Proposta</a>
+  <ul class="nav-links">
+    <li><a href="#ambito">Âmbito</a></li>
+    <li><a href="#seo">SEO</a></li>
+    <li><a href="#compliance">Legal</a></li>
+    <li><a href="#investimento">Custos</a></li>
+    <li><a href="#passos">Custos 1.º Ano</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-tag reveal">Proposta Comercial · 2026</div>
+    <h1 class="hero-title reveal reveal-delay-1">PROPOSTA<br>WEBSITE</h1>
+    <p class="hero-subtitle reveal reveal-delay-2">Design · WordPress · SEO · Compliance Legal<br>Uma proposta honesta, técnica e a custo justo.</p>
+    <a href="#ambito" class="hero-cta reveal reveal-delay-3">Ver proposta completa</a>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+</section>
+
+<!-- ÂMBITO -->
+<section id="ambito">
+  <div class="section-label reveal">01 — Âmbito do Projeto</div>
+  <div class="section-divider reveal"></div>
+  <h2 style="font-size: clamp(3rem,7vw,6rem); margin-bottom: 0.5rem;" class="reveal">DESIGN &<br>DESENVOLVIMENTO</h2>
+
+  <div class="ambito-grid reveal reveal-delay-1">
+    <div class="ambito-card">
+      <div class="ambito-num">01</div>
+      <span class="ambito-icon">✍</span>
+      <div class="ambito-title">Copywriting</div>
+      <div class="ambito-desc">Conteúdo final baseado no trabalho de copywriting e storytelling da Jelly, complementado com contribuição própria para garantir autenticidade.</div>
+    </div>
+    <div class="ambito-card">
+      <div class="ambito-num">02</div>
+      <span class="ambito-icon">🌐</span>
+      <div class="ambito-title">Multilíngua</div>
+      <div class="ambito-desc">Idioma nativo Português. Inglês e Espanhol implementados via WeGlot, sem necessidade de tradução manual.</div>
+    </div>
+    <div class="ambito-card">
+      <div class="ambito-num">03</div>
+      <span class="ambito-icon">⚙️</span>
+      <div class="ambito-title">Stack Técnica</div>
+      <div class="ambito-desc">WordPress + Hosting Hostinger Premium. Plataforma madura, suportada, com ecossistema de plugins robusto e sem vendor lock-in.</div>
+    </div>
+  </div>
+
+  <div class="ambito-note reveal reveal-delay-2">
+    O trabalho conceptual e de copywriting da Jelly é de qualidade reconhecida. Esta proposta aproveita esse trabalho e constrói sobre ele — sem reinventar a roda, a um custo significativamente inferior.
+  </div>
+</section>
+
+<!-- SEO -->
+<section id="seo">
+  <div class="section-label reveal">02 — SEO Setup</div>
+  <div class="section-divider reveal"></div>
+  <h2 style="font-size: clamp(3rem,7vw,6rem); margin-bottom: 2rem;" class="reveal">OTIMIZAÇÃO<br>PARA MOTORES</h2>
+
+  <div class="seo-cols">
+    <div class="reveal">
+      <div style="display:flex; align-items:center; gap:1rem; margin-bottom:2rem;">
+        <span class="seo-badge badge-teal">Camada 1 — Base</span>
+      </div>
+      <h3 class="seo-layer-title layer1">FUNDAÇÕES<br>TÉCNICAS</h3>
+      <div class="seo-items">
+        <div class="seo-item">
+          <div>
+            <div class="seo-item-name">Sitemap XML + Robots.txt</div>
+            <div class="seo-item-desc">Gerado automaticamente pelo plugin</div>
+          </div>
+          <span class="seo-item-native">Auto</span>
+        </div>
+        <div class="seo-item">
+          <div>
+            <div class="seo-item-name">Meta Tags</div>
+            <div class="seo-item-desc">Title, Description, Alt texts — interface visual por página</div>
+          </div>
+          <span class="seo-item-native">Visual</span>
+        </div>
+        <div class="seo-item">
+          <div>
+            <div class="seo-item-name">Focus Keywords</div>
+            <div class="seo-item-desc">Funcionalidade nativa do Yoast / Rank Math</div>
+          </div>
+          <span class="seo-item-native">Nativo</span>
+        </div>
+        <div class="seo-item">
+          <div>
+            <div class="seo-item-name">Canonical tags & HTTPS</div>
+            <div class="seo-item-desc">Automático com plugin + certificado SSL</div>
+          </div>
+          <span class="seo-item-native">Auto</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <div style="display:flex; align-items:center; gap:1rem; margin-bottom:2rem;">
+        <span class="seo-badge badge-amber">Camada 2 — Avançado</span>
+      </div>
+      <h3 class="seo-layer-title layer2">OTIMIZAÇÃO<br>AVANÇADA</h3>
+      <div class="seo-items">
+        <div class="seo-item">
+          <div>
+            <div class="seo-item-name">Schema Markup</div>
+            <div class="seo-item-desc">Organization, LocalBusiness via Rank Math Pro / Schema Pro</div>
+          </div>
+          <span class="seo-item-native" style="color:var(--amber);background:rgba(245,158,11,0.1);">Pro</span>
+        </div>
+        <div class="seo-item">
+          <div>
+            <div class="seo-item-name">Open Graph + Twitter Cards</div>
+            <div class="seo-item-desc">Incluído de base no Yoast / Rank Math</div>
+          </div>
+          <span class="seo-item-native" style="color:var(--amber);background:rgba(245,158,11,0.1);">Base</span>
+        </div>
+        <div class="seo-item">
+          <div>
+            <div class="seo-item-name">HTML Semântico</div>
+            <div class="seo-item-desc">Temas Astra, GeneratePress, Kadence já usam &lt;article&gt;, &lt;section&gt;, &lt;header&gt;</div>
+          </div>
+          <span class="seo-item-native" style="color:var(--amber);background:rgba(245,158,11,0.1);">Tema</span>
+        </div>
+        <div class="seo-item">
+          <div>
+            <div class="seo-item-name">Robots.txt para bots de IA</div>
+            <div class="seo-item-desc">Edição direta no Yoast — 2 linhas de configuração</div>
+          </div>
+          <span class="seo-item-native" style="color:var(--amber);background:rgba(245,158,11,0.1);">Manual</span>
+        </div>
+        <div class="seo-item">
+          <div>
+            <div class="seo-item-name">dateModified + SameAs schema</div>
+            <div class="seo-item-desc">Automático no WordPress — timestamps nativos + campos Rank Math</div>
+          </div>
+          <span class="seo-item-native" style="color:var(--amber);background:rgba(245,158,11,0.1);">Auto</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="seo-callout reveal reveal-delay-2">
+    Reconheço a qualidade da estrutura conceptual da Jelly; e entrego o mesmo resultado técnico a um custo significativamente inferior, porque a plataforma WordPress já inclui estas ferramentas nativamente.
+  </div>
+</section>
+
+<!-- COMPLIANCE -->
+<section id="compliance">
+  <div class="section-label reveal">03 — Compliance Legal Digital</div>
+  <div class="section-divider reveal"></div>
+  <h2 style="font-size: clamp(3rem,7vw,6rem); margin-bottom:0.5rem;" class="reveal">PROTEÇÃO<br>DE DADOS</h2>
+  <p style="color:var(--gray); font-size:0.9rem; margin-bottom:0; font-weight:300;" class="reveal">Setup iubenda — tudo incluído numa plataforma certificada.</p>
+
+  <div class="compliance-grid">
+    <div class="compliance-card reveal">
+      <span class="compliance-emoji">🔒</span>
+      <div>
+        <div class="compliance-title">Política de Privacidade RGPD</div>
+        <div class="compliance-desc">Documentação legal gerada e mantida automaticamente, em conformidade com o Regulamento Geral de Proteção de Dados.</div>
+      </div>
+    </div>
+    <div class="compliance-card reveal reveal-delay-1">
+      <span class="compliance-emoji">🍪</span>
+      <div>
+        <div class="compliance-title">Banner de Consentimento Cookies</div>
+        <div class="compliance-desc">Configuração RGPD compliant com gestão de preferências por categoria e registo de consentimento.</div>
+      </div>
+    </div>
+    <div class="compliance-card reveal reveal-delay-2">
+      <span class="compliance-emoji">♿</span>
+      <div>
+        <div class="compliance-title">WCAG 2.1 — Acessibilidade</div>
+        <div class="compliance-desc">Conformidade com as normas de acessibilidade digital. Site utilizável por pessoas com diferentes capacidades.</div>
+      </div>
+    </div>
+    <div class="compliance-card reveal reveal-delay-3">
+      <span class="compliance-emoji">📄</span>
+      <div>
+        <div class="compliance-title">Termos e Condições</div>
+        <div class="compliance-desc">Documento legal completo e personalizado, gerado pela plataforma iubenda e atualizado automaticamente.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="compliance-footer reveal">
+    <span class="compliance-footer-text">iubenda (RGPD, ePrivacy, CCPA, LGPD) · Renovação anual</span>
+    <span class="compliance-footer-price">239,88 €/ano</span>
+  </div>
+</section>
+
+<!-- TRANSPARÊNCIA -->
+<section id="transparencia">
+  <div class="section-label reveal">04 — Transparência</div>
+  <div class="section-divider reveal"></div>
+  <h2 style="font-size: clamp(3rem,7vw,6rem); margin-bottom:1.5rem;" class="reveal">HONESTIDADE<br>COMO BASE</h2>
+  <p class="transp-intro reveal">Não sou uma agência. Sou alguém próxima do projeto, em aprendizagem ativa, com acesso às melhores ferramentas. Aqui está o que isso significa na prática.</p>
+
+  <div class="transp-cols reveal">
+    <div class="transp-col">
+      <span class="transp-col-label label-green">✦ Vantagens</span>
+      <div class="transp-item">
+        <div class="transp-item-title"><div class="transp-dot-green"></div>Conhecimento profundo do negócio</div>
+        <div class="transp-item-desc">Não sou uma agência externa a tentar perceber quem sois. Conheço o contexto, os objetivos e os detalhes que normalmente se perdem em briefings.</div>
+      </div>
+      <div class="transp-item">
+        <div class="transp-item-title"><div class="transp-dot-green"></div>Motivação genuína</div>
+        <div class="transp-item-desc">O sucesso do site é também o meu sucesso. Isso traduz-se em cuidado com cada detalhe — não em horas faturadas a mais.</div>
+      </div>
+      <div class="transp-item">
+        <div class="transp-item-title"><div class="transp-dot-green"></div>IA como co-piloto técnico</div>
+        <div class="transp-item-desc">Utilizo ferramentas de IA para acelerar desenvolvimento, validar código e garantir decisões técnicas bem fundamentadas — mesmo onde o meu conhecimento ainda está a crescer.</div>
+      </div>
+    </div>
+    <div class="transp-col">
+      <span class="transp-col-label label-amber">◆ Limitações (e como as giro)</span>
+      <div class="transp-item">
+        <div class="transp-item-title"><div class="transp-dot-amber"></div>Estou a aprender</div>
+        <div class="transp-item-desc">Não tenho 10 anos de agência. Mas tenho acesso às mesmas ferramentas, documentação e boas práticas — e uso IA para colmatar lacunas técnicas em tempo real.</div>
+      </div>
+      <div class="transp-item">
+        <div class="transp-item-title"><div class="transp-dot-amber"></div>Menor velocidade em casos edge</div>
+        <div class="transp-item-desc">Problemas muito específicos podem demorar mais a resolver. A contrapartida: o custo é proporcional ao esforço real, não a uma tabela de preços de agência.</div>
+      </div>
+      <div class="transp-item">
+        <div class="transp-item-title"><div class="transp-dot-amber"></div>Sem equipa de backup</div>
+        <div class="transp-item-desc">Sou um único ponto de execução. Por isso, o âmbito está bem definido, os prazos são realistas e a bolsa de horas garante continuidade pós-entrega.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="transp-quote reveal">A TRANSPARÊNCIA NÃO É UMA FRAQUEZA —<br>É A BASE DE UMA <span>RELAÇÃO QUE FUNCIONA.</span></div>
+</section>
+
+<!-- INVESTIMENTO -->
+<section id="investimento">
+  <div class="section-label reveal">05 — Investimento</div>
+  <div class="section-divider reveal"></div>
+  <h2 style="font-size: clamp(3rem,7vw,6rem);" class="reveal">RESUMO<br>DE CUSTOS</h2>
+
+  <div class="inv-main">
+    <div class="reveal">
+      <div class="inv-label">Desenvolvimento + Manutenção</div>
+      <div class="inv-big-num">1.200<span>€</span></div>
+      <div class="inv-breakdown">
+        Estimativa de 45h de desenvolvimento a 20€/h<br>
+        + Bolsa de 15h de manutenção (300€) — válida 1 ano
+      </div>
+      <div class="inv-pill">Manutenção futura: 15€/h</div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <div class="inv-annual-title">Custos anuais de plataforma</div>
+      <div class="inv-row">
+        <div>
+          <div class="inv-row-name">Alojamento Web</div>
+          <div class="inv-row-sub">Hostinger Premium</div>
+        </div>
+        <div class="inv-row-price">~72€</div>
+      </div>
+      <div class="inv-row">
+        <div>
+          <div class="inv-row-name">Tradução Automática</div>
+          <div class="inv-row-sub">WeGlot Business</div>
+        </div>
+        <div class="inv-row-price">290€</div>
+      </div>
+      <div class="inv-row">
+        <div>
+          <div class="inv-row-name">Compliance Legal</div>
+          <div class="inv-row-sub">iubenda</div>
+        </div>
+        <div class="inv-row-price">239,88€</div>
+      </div>
+      <div class="inv-total-row">
+        <span class="inv-total-label">Total plataforma / ano</span>
+        <span class="inv-total-price">~601,88€</span>
+      </div>
+      <div class="inv-note">IVA incluído no alojamento. Restantes valores sujeitos a IVA aplicável.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRÓXIMOS PASSOS -->
+<section id="passos">
+  <div class="section-label reveal">06 — Síntese Financeira</div>
+  <div class="section-divider reveal"></div>
+  <h2 style="font-size: clamp(3rem,7vw,6rem);" class="reveal">CUSTOS SOMADOS<br>DO 1.º ANO</h2>
+  <p style="color:var(--gray); font-size:0.9rem; margin-top:1rem; font-weight:300; max-width:520px;" class="reveal">Tudo incluído — desenvolvimento, manutenção, plataformas e compliance. Sem surpresas.</p>
+
+  <div style="margin-top:4rem; display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--graylight);" class="reveal">
+
+    <!-- Linha cabeçalho -->
+    <div style="padding:1rem 1.5rem; background:rgba(255,255,255,0.03); border-bottom:1px solid var(--graylight); border-right:1px solid var(--graylight);">
+      <span style="font-size:0.65rem; letter-spacing:3px; text-transform:uppercase; color:var(--gray);">Item</span>
+    </div>
+    <div style="padding:1rem 1.5rem; background:rgba(255,255,255,0.03); border-bottom:1px solid var(--graylight); text-align:right;">
+      <span style="font-size:0.65rem; letter-spacing:3px; text-transform:uppercase; color:var(--gray);">Valor</span>
+    </div>
+
+    <!-- Desenvolvimento -->
+    <div style="padding:1.4rem 1.5rem; border-bottom:1px solid var(--graylight); border-right:1px solid var(--graylight);">
+      <div style="font-size:0.95rem; font-weight:600; color:var(--white);">Desenvolvimento do website</div>
+      <div style="font-size:0.78rem; color:var(--gray); margin-top:0.25rem; font-weight:300;">45h estimadas a 20€/h</div>
+    </div>
+    <div style="padding:1.4rem 1.5rem; border-bottom:1px solid var(--graylight); text-align:right; display:flex; align-items:center; justify-content:flex-end;">
+      <span style="font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:2px; color:var(--white);">900€</span>
+    </div>
+
+    <!-- Bolsa manutenção -->
+    <div style="padding:1.4rem 1.5rem; border-bottom:1px solid var(--graylight); border-right:1px solid var(--graylight);">
+      <div style="font-size:0.95rem; font-weight:600; color:var(--white);">Bolsa de manutenção</div>
+      <div style="font-size:0.78rem; color:var(--gray); margin-top:0.25rem; font-weight:300;">15h incluídas · válida 1 ano</div>
+    </div>
+    <div style="padding:1.4rem 1.5rem; border-bottom:1px solid var(--graylight); text-align:right; display:flex; align-items:center; justify-content:flex-end;">
+      <span style="font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:2px; color:var(--white);">300€</span>
+    </div>
+
+    <!-- Hostinger -->
+    <div style="padding:1.4rem 1.5rem; border-bottom:1px solid var(--graylight); border-right:1px solid var(--graylight);">
+      <div style="font-size:0.95rem; font-weight:600; color:var(--white);">Alojamento Web</div>
+      <div style="font-size:0.78rem; color:var(--gray); margin-top:0.25rem; font-weight:300;">Hostinger Premium · IVA incluído</div>
+    </div>
+    <div style="padding:1.4rem 1.5rem; border-bottom:1px solid var(--graylight); text-align:right; display:flex; align-items:center; justify-content:flex-end;">
+      <span style="font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:2px; color:var(--amber);">~72€</span>
+    </div>
+
+    <!-- WeGlot -->
+    <div style="padding:1.4rem 1.5rem; border-bottom:1px solid var(--graylight); border-right:1px solid var(--graylight);">
+      <div style="font-size:0.95rem; font-weight:600; color:var(--white);">Tradução Automática</div>
+      <div style="font-size:0.78rem; color:var(--gray); margin-top:0.25rem; font-weight:300;">WeGlot Business</div>
+    </div>
+    <div style="padding:1.4rem 1.5rem; border-bottom:1px solid var(--graylight); text-align:right; display:flex; align-items:center; justify-content:flex-end;">
+      <span style="font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:2px; color:var(--amber);">290€</span>
+    </div>
+
+    <!-- iubenda -->
+    <div style="padding:1.4rem 1.5rem; border-bottom:1px solid var(--graylight); border-right:1px solid var(--graylight);">
+      <div style="font-size:0.95rem; font-weight:600; color:var(--white);">Compliance Legal</div>
+      <div style="font-size:0.78rem; color:var(--gray); margin-top:0.25rem; font-weight:300;">iubenda (RGPD, ePrivacy, CCPA, LGPD)</div>
+    </div>
+    <div style="padding:1.4rem 1.5rem; border-bottom:1px solid var(--graylight); text-align:right; display:flex; align-items:center; justify-content:flex-end;">
+      <span style="font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:2px; color:var(--amber);">239,88€</span>
+    </div>
+
+    <!-- TOTAL -->
+    <div style="padding:1.8rem 1.5rem; background:var(--orange1); border-right:1px solid var(--orange1);">
+      <div style="font-size:0.7rem; letter-spacing:3px; text-transform:uppercase; color:rgba(0,0,0,0.6); font-weight:600;">Total estimado · 1.º ano completo</div>
+      <div style="font-size:0.78rem; color:rgba(0,0,0,0.5); margin-top:0.3rem; font-weight:300;">Desenvolvimento + plataformas + compliance</div>
+    </div>
+    <div style="padding:1.8rem 1.5rem; background:var(--orange1); text-align:right; display:flex; align-items:center; justify-content:flex-end;">
+      <span style="font-family:'Bebas Neue',sans-serif; font-size:2.8rem; letter-spacing:2px; color:var(--black);">~1.801,88€</span>
+    </div>
+
+  </div>
+
+  <p style="margin-top:1rem; font-size:0.75rem; color:rgba(255,255,255,0.2); font-style:italic;" class="reveal">Valores estimados. Desenvolvimento e bolsa de horas podem variar consoante âmbito final. Plataformas sujeitas a alterações de preço pelos respetivos fornecedores.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-text">VAMOS <span>FALAR?</span></div>
+  <a href="mailto:hello@dominio.pt" class="footer-cta">hello@dominio.pt</a>
+  <div class="footer-copy">Proposta de Desenvolvimento Web · 2026 · Todos os valores estimados e sujeitos a confirmação</div>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Trigger hero reveals immediately
+  document.querySelectorAll('#hero .reveal').forEach((el, i) => {
+    setTimeout(() => el.classList.add('visible'), 200 + i * 150);
+  });
+</script>
+</body>
+</html>
