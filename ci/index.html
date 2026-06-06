@@ -26,7 +26,9 @@
     --shadow: 0 2px 16px rgba(124,111,205,0.12);
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+  body { -webkit-font-smoothing: antialiased; }
   
   body {
     font-family: 'DM Sans', sans-serif;
@@ -34,6 +36,7 @@
     color: var(--ink);
     min-height: 100vh;
     overflow-x: hidden;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   /* HEADER */
@@ -99,6 +102,7 @@
     gap: 24px;
     justify-content: center;
     flex-wrap: wrap;
+    overflow-x: auto;
   }
   .stat-pill {
     font-size: 12px;
@@ -182,6 +186,7 @@
     border: 1.5px solid var(--border);
     border-radius: var(--radius-sm);
     padding: 14px 18px;
+    min-height: 48px;
     text-align: left;
     font-family: 'DM Sans', sans-serif;
     font-size: 14px;
@@ -257,6 +262,8 @@
     margin: 0 auto 28px;
     height: 280px;
     cursor: pointer;
+    touch-action: manipulation;
+    user-select: none;
   }
   .flashcard-inner {
     position: relative;
@@ -312,7 +319,7 @@
     background: white;
     border: 1.5px solid var(--border);
     border-radius: 50%;
-    width: 40px; height: 40px;
+    width: 48px; height: 48px;
     display: flex; align-items: center; justify-content: center;
     cursor: pointer;
     font-size: 18px;
@@ -326,7 +333,7 @@
   .fc-known-btn {
     flex: 1;
     max-width: 160px;
-    padding: 10px;
+    padding: 14px 10px;
     border-radius: var(--radius-sm);
     border: 1.5px solid;
     background: none;
@@ -335,6 +342,7 @@
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
+    min-height: 48px;
   }
   .fc-known-btn.yes { border-color: var(--green); color: var(--green); }
   .fc-known-btn.yes:hover { background: var(--green-light); }
@@ -490,7 +498,7 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
-    max-height: 75vh;
+    max-height: 75dvh;
     overflow-y: auto;
   }
   .chat-date-divider {
@@ -673,10 +681,124 @@
 
   .section-title { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--ink); margin-bottom: 16px; }
 
-  @media (max-width: 600px) {
-    .nav-tab { padding: 0 8px; font-size: 10px; }
+  /* ===================== MOBILE-FIRST OVERRIDES ===================== */
+  /* Base styles above are already lean; these adapt for small screens */
+
+  @media (max-width: 640px) {
+    /* Header: hide title text, make it compact */
+    .header-inner { padding: 0 12px; height: 48px; }
     .header-title { font-size: 13px; }
-    .question-text { font-size: 15px; }
+    .header-title span { display: none; }
+
+    /* Nav: move to bottom of screen as app tab bar */
+    .header { position: static; box-shadow: none; }
+    .nav-tabs {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 60px;
+      background: var(--ink);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      z-index: 200;
+      display: flex;
+      justify-content: space-around;
+      align-items: stretch;
+      gap: 0;
+      padding: 0 4px;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    .nav-tab {
+      flex: 1;
+      padding: 0 2px;
+      font-size: 9px;
+      letter-spacing: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      border-bottom: none;
+      border-top: 2px solid transparent;
+    }
+    .nav-tab.active { border-top: 2px solid var(--purple); border-bottom: none; }
+    .nav-tab::before {
+      font-size: 18px;
+      line-height: 1;
+    }
+    .nav-tab:nth-child(1)::before { content: '🏠'; }
+    .nav-tab:nth-child(2)::before { content: '🧠'; }
+    .nav-tab:nth-child(3)::before { content: '🃏'; }
+    .nav-tab:nth-child(4)::before { content: '✍️'; }
+    .nav-tab:nth-child(5)::before { content: '📖'; }
+    .nav-tab:nth-child(6)::before { content: '🫦'; }
+
+    /* Stats bar: compact single row */
+    .stats-bar { padding: 7px 12px; gap: 12px; }
+    .stat-pill { font-size: 11px; }
+    .stat-pill strong { font-size: 12px; }
+
+    /* Main: add bottom padding for fixed tab bar + reduce side padding */
+    .main { padding: 16px 12px 80px; }
+
+    /* Hero: smaller */
+    .section-hero { padding: 20px 18px; margin-bottom: 20px; }
+    .section-hero h1 { font-size: 20px; }
+    .section-hero p { font-size: 13px; }
+
+    /* Home grid: 2 columns */
+    .home-grid { grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .mode-card { padding: 16px 12px; }
+    .mode-icon { font-size: 28px; margin-bottom: 8px; }
+    .mode-title { font-size: 13px; }
+    .mode-desc { font-size: 11px; }
+    .mode-count { font-size: 10px; }
+
+    /* Topics: 1 column */
+    .topics-list { grid-template-columns: 1fr; gap: 7px; }
+    .topic-chip { font-size: 12px; padding: 10px 12px; }
+
+    /* Section title */
+    .section-title { font-size: 17px; margin-bottom: 12px; }
+
+    /* Quiz */
+    .quiz-container { max-width: 100%; }
+    .question-card { padding: 20px 16px; }
+    .question-text { font-size: 15px; margin-bottom: 20px; }
+    .option-btn { padding: 12px 14px; font-size: 13px; }
+    .quiz-nav { gap: 8px; }
+    .btn { padding: 10px 18px; font-size: 13px; }
+    .btn-ghost { padding: 9px 16px; font-size: 13px; }
+
+    /* Flashcards */
+    .flashcard-scene { height: 220px; }
+    .card-term { font-size: 18px; }
+    .card-def { font-size: 14px; }
+    .fc-progress { max-width: 100%; }
+
+    /* Fill in the blank */
+    .fitb-card { padding: 18px 14px; }
+    .fitb-sentence { font-size: 15px; }
+    .blank-input { width: 120px; font-size: 15px; }
+
+    /* Story */
+    .story-container { max-width: 100%; }
+    .ch-title { font-size: 21px; }
+    .story-body { font-size: 15px; }
+    .chapter-nav { gap: 6px; }
+    .ch-btn { font-size: 11px; padding: 5px 11px; }
+
+    /* Gossip chat */
+    .gossip-single { max-width: 100%; }
+    .chat-body { max-height: 65vh; padding: 12px 10px; }
+    .bubble { font-size: 13px; padding: 8px 11px; }
+    .chat-bubble-col { max-width: 82%; }
+    .chat-header { padding: 10px 14px; }
+    .chat-header-name { font-size: 14px; }
+    .chat-header-members { font-size: 11px; }
+
+    /* Results modal */
+    .results-box { padding: 28px 20px; }
+    .results-score { font-size: 44px; }
   }
 </style>
 </head>
