@@ -781,7 +781,10 @@ const UNITS = [
   { id:'u2', label:'U2 – Circuito Económico' },
   { id:'u3', label:'U3 – Produção' },
   { id:'u4', label:'U4 – Mercado e Preços' },
+  { id:'u5', label:'U5 – Moeda e Inflação' },
   { id:'u6', label:'U6 – Rendimentos' },
+  { id:'u7', label:'U7 – Utilização dos Rendimentos' },
+  { id:'u8', label:'U8 – Agentes e Circuito' },
   { id:'u9', label:'U9 – Contabilidade Nacional' },
   { id:'u10', label:'U10 – Balança de Pagamentos' },
   { id:'u11', label:'U11 – Estado e Políticas' },
@@ -876,6 +879,30 @@ const RESUMOS = {
       <div class="formula-box">Taxa de cobertura = (Exportações / Importações) × 100</div>
     </div>`,
 
+  u5: `
+    <div class="summary-card">
+      <h3>A Moeda <span class="tag">U5</span></h3>
+      <p>Antes da moeda existia a <strong>troca direta</strong> (escambo), que tinha grandes inconvenientes: necessidade de <span class="highlight">dupla coincidência de desejos</span>, dificuldade em atribuir valor, indivisibilidade dos bens e problemas de transporte e conservação.</p>
+      <p>A <strong>moeda</strong> surge como intermediário geral das trocas. As suas três <strong>funções</strong>:</p>
+      <ul>
+        <li><strong>Meio de pagamento</strong> (intermediário das trocas) — resolve a troca direta</li>
+        <li><strong>Unidade de conta</strong> (medida de valor) — exprime o preço de todos os bens</li>
+        <li><strong>Reserva de valor</strong> — permite guardar poder de compra para o futuro</li>
+      </ul>
+      <p><strong>Evolução / formas da moeda</strong>: mercadoria → metálica → papel-moeda → escritural (depósitos à ordem) → eletrónica. Tendência atual: <span class="highlight">desmaterialização</span> da moeda.</p>
+    </div>
+    <div class="summary-card">
+      <h3>A Inflação <span class="tag">PREÇOS</span></h3>
+      <p><strong>Inflação</strong>: subida <em>generalizada e contínua</em> do nível geral de preços. Mede-se pela variação do <strong>IPC</strong> (Índice de Preços no Consumidor), calculado sobre um cabaz de bens e serviços representativo.</p>
+      <div class="formula-box">Taxa de inflação = [(IPC ano n − IPC ano n−1) / IPC ano n−1] × 100</div>
+      <ul>
+        <li><strong>Deflação</strong>: descida generalizada dos preços (taxa negativa)</li>
+        <li><strong>Desinflação</strong>: abrandamento da inflação (continua positiva, mas menor)</li>
+      </ul>
+      <p><strong>Consequências</strong>: perda de poder de compra; prejudica quem tem rendimentos fixos e os credores; beneficia os devedores. Liga-se ao salário real.</p>
+      <div class="formula-box">Salário real = (Salário nominal / IPC) × 100</div>
+    </div>`,
+
   u6: `
     <div class="summary-card">
       <h3>Rendimentos e Distribuição <span class="tag">U6</span></h3>
@@ -889,6 +916,50 @@ const RESUMOS = {
         <li>GINI = 0 → Igualdade perfeita</li>
         <li>GINI = 1 → Desigualdade máxima</li>
       </ul>
+    </div>`,
+
+  u7: `
+    <div class="summary-card">
+      <h3>Consumo e Poupança <span class="tag">U7</span></h3>
+      <p>O <strong>rendimento disponível (RD)</strong> das famílias tem dois destinos: o <strong>consumo (C)</strong> e a <strong>poupança (S)</strong>.</p>
+      <div class="formula-box">RD = Consumo + Poupança</div>
+      <p><strong>Consumo autónomo</strong>: existe mesmo com rendimento nulo (necessidades básicas). <strong>Consumo induzido</strong>: depende do nível de rendimento — quanto maior o rendimento disponível, maior tende a ser o consumo. O que não é consumido é poupado.</p>
+      <p><strong>Fatores do consumo</strong>: rendimento, preços, crédito, expectativas, publicidade. <strong>Fatores da poupança</strong>: rendimento, taxa de juro, confiança no futuro, política fiscal.</p>
+    </div>
+    <div class="summary-card">
+      <h3>Poupança, Investimento e Banca <span class="tag">DESTINOS</span></h3>
+      <p>A poupança pode ter três <strong>destinos</strong>:</p>
+      <ul>
+        <li><strong>Entesouramento</strong>: guardar moeda parada (sem rendimento)</li>
+        <li><strong>Colocação financeira</strong>: depósitos, ações, obrigações (gera juro/rendimento)</li>
+        <li><strong>Investimento</strong>: aquisição de bens de produção (FBCF)</li>
+      </ul>
+      <p><strong>Investimento</strong> — quanto à função: de <em>substituição</em>, de <em>capacidade</em> e de <em>modernização/inovação</em>; quanto ao agente: <em>público</em> ou <em>privado</em>; quanto à origem: <em>interno</em> ou <em>externo</em>.</p>
+      <p>O <strong>sistema bancário</strong> faz a intermediação financeira: <span class="highlight">capta a poupança</span> dos aforradores e <span class="highlight">concede crédito</span> a quem quer investir ou consumir.</p>
+    </div>`,
+
+  u8: `
+    <div class="summary-card">
+      <h3>Agentes e Circuito Económico <span class="tag">U8</span></h3>
+      <p>A atividade económica é um <strong>circuito</strong>: produção → repartição do rendimento → despesa → nova produção. Nele atuam cinco <strong>agentes económicos</strong>:</p>
+      <ul>
+        <li><strong>Famílias</strong> → consumir</li>
+        <li><strong>Empresas não financeiras</strong> → produzir bens e serviços</li>
+        <li><strong>Estado / Administração Pública</strong> → repartir rendimentos e satisfazer necessidades coletivas</li>
+        <li><strong>Setor financeiro</strong> → financiar</li>
+        <li><strong>Resto do Mundo</strong> → trocar bens, serviços e capitais</li>
+      </ul>
+      <p>Os agentes correspondem aos setores institucionais da Contabilidade Nacional (S11 a S15 e S2).</p>
+    </div>
+    <div class="summary-card">
+      <h3>Fluxos, Mercados e Equilíbrio <span class="tag">MACRO</span></h3>
+      <p>Cada <strong>fluxo real</strong> (bens, serviços, trabalho) tem um <strong>fluxo monetário</strong> de sentido contrário (pagamento). O fluxo monetário é universal e comparável (mesma unidade).</p>
+      <ul>
+        <li><strong>Economia fechada</strong>: só os 4 agentes internos</li>
+        <li><strong>Economia aberta</strong>: inclui o Resto do Mundo</li>
+        <li><strong>Macroeconomia</strong> (conjunto) vs <strong>microeconomia</strong> (agente individual)</li>
+      </ul>
+      <p>Os fluxos encontram-se em três <strong>mercados</strong>: de bens e serviços, de fatores produtivos e de bens financeiros. O circuito está em <strong>equilíbrio</strong> quando o total de entradas iguala o total de saídas.</p>
     </div>`,
 
   u9: `
@@ -1014,6 +1085,15 @@ const FUTEBOL = {
       <span class="benfica-cheer">🔴 O BENFICA SABE NEGOCIAR – E VÓS TAMBÉM SABEM ECONOMIA! 🔴</span>
     </div>`,
 
+  u5: `
+    <div class="football-card">
+      <h3>⚽ MOEDA E INFLAÇÃO – O PREÇO DOS BILHETES DA LUZ</h3>
+      <p>Imagina que querias trocar uma camisola do Benfica por um bilhete para o jogo. Só funciona se o outro adepto quiser exatamente a tua camisola — é a <strong>dupla coincidência de desejos</strong> da troca direta. A <strong>moeda</strong> resolve isto: serve para pagar tudo (meio de pagamento), medir o preço de tudo (unidade de conta) e guardar valor para a próxima época (reserva de valor).</p>
+      <div class="pitch-box">🏟️ Inflação na Luz: se o bilhete custava 30€ e passa a custar 33€, e tudo o resto sobe na mesma proporção, há inflação de 10%. O teu salário de adepto continua igual, mas compras menos bilhetes — perdeste poder de compra (salário real).</div>
+      <p>Da moeda-mercadoria (trocar por cromos) à moeda escritural (MB WAY para pagar o bilhete): é a <strong>desmaterialização</strong> da moeda!</p>
+      <span class="benfica-cheer">🔴 O VERDADEIRO VALOR ESTÁ NAS TAÇAS, NÃO NA INFLAÇÃO! 🔴</span>
+    </div>`,
+
   u6: `
     <div class="football-card">
       <h3>⚽ RENDIMENTOS – OS SALÁRIOS DA LUZ</h3>
@@ -1021,6 +1101,24 @@ const FUTEBOL = {
       <div class="pitch-box">🏟️ Curva de Lorenz do balneário: se só o avançado ganhar 20x mais que o guarda-redes da equipa B, a curva está muito afastada da bissetriz. O Estado (FPF/FIFA) redistribui através de solidarity payments para os clubes mais pequenos.</div>
       <p>O <strong>salário real</strong> do Jonathan Risco depende da inflação: se ganhar 1.000€/mês mas a inflação for alta, o poder de compra real diminui mesmo sem o salário nominal baixar.</p>
       <span class="benfica-cheer">🔴 GLORIA ETERNA A QUEM DISTRIBUI BEM O RENDIMENTO! 🔴</span>
+    </div>`,
+
+  u7: `
+    <div class="football-card">
+      <h3>⚽ UTILIZAÇÃO DOS RENDIMENTOS – O ORÇAMENTO DO ADEPTO</h3>
+      <p>Recebes o teu rendimento e tens de o repartir: parte vai para <strong>consumo</strong> (bilhetes, cachecóis, viagens à Luz) e parte para <strong>poupança</strong> (juntar para o passe de época do próximo ano).</p>
+      <div class="pitch-box">🏟️ Recebes o teu rendimento: parte gastas já em merchandising do Benfica (consumo) e parte guardas para o passe de época (poupança). A poupança pode ficar parada na gaveta (entesouramento), render no banco (colocação financeira) ou financiar a SAD (investimento).</p>
+      <p>O <strong>banco</strong> é o médio defensivo da economia: recolhe a poupança dos adeptos e distribui crédito para quem quer investir — pura intermediação financeira.</p>
+      <span class="benfica-cheer">🔴 POUPA HOJE, FESTEJA O TÍTULO AMANHÃ! 🔴</span>
+    </div>`,
+
+  u8: `
+    <div class="football-card">
+      <h3>⚽ AGENTES E CIRCUITO – A EQUIPA COMPLETA DA ECONOMIA</h3>
+      <p>O circuito económico é como o jogo completo: as <strong>Famílias</strong> (jogadores) cedem trabalho; as <strong>Empresas</strong> (clube) produzem e pagam salários; o <strong>Estado</strong> (federação) cobra impostos e devolve serviços; o <strong>setor financeiro</strong> (patrocinadores/banca) financia; e o <strong>Resto do Mundo</strong> (adversários europeus) troca com todos.</p>
+      <div class="pitch-box">🏟️ A cada passe de bola (fluxo real: trabalho, bens) corresponde um passe de dinheiro em sentido contrário (fluxo monetário: salário, pagamento). Economia fechada = só a liga nacional; economia aberta = também há jogos europeus (Resto do Mundo).</div>
+      <p>Tudo se cruza em três <strong>mercados</strong>: o de bens e serviços (a loja do clube), o de fatores (o mercado de transferências) e o financeiro (a bolsa e a banca).</p>
+      <span class="benfica-cheer">🔴 ONZE AGENTES EM CAMPO, UMA ECONOMIA A GANHAR! 🔴</span>
     </div>`,
 
   u9: `
@@ -1071,6 +1169,14 @@ const JORNAL = {
       <div class="real-example">📌 <strong>Exemplo Real:</strong> Em 2023, Portugal tinha 740.000 habitações vagas, mas a maioria concentrava-se no interior — os recursos existem, mas <em>onde</em> são necessários é que há escassez. Esta é a distribuição assimétrica dos recursos que a Economia estuda.</div>
     </div>`,
 
+  u2: `
+    <div class="newspaper-card">
+      <div class="newspaper-dateline">Macroeconomia · Análise</div>
+      <h3>Consumo das Famílias Sustenta a Economia: O Circuito Económico em Ação</h3>
+      <p>O consumo privado representa cerca de 65% do PIB português, sendo o principal motor do circuito económico. O mecanismo é simples mas poderoso: as famílias fornecem trabalho às empresas (fluxo real) e recebem salários (fluxo monetário); com esse rendimento compram bens e serviços (novo fluxo real), pagando-os (novo fluxo monetário) — e esse pagamento volta a financiar a produção e o emprego. É a natureza circular da atividade económica. Quando a confiança cai e as famílias travam o consumo, todo o circuito abranda: as empresas vendem menos, contratam menos e os rendimentos diminuem. O Estado participa cobrando impostos e devolvendo transferências e serviços públicos, enquanto o Resto do Mundo entra através das exportações e importações numa economia aberta como a portuguesa.</p>
+      <div class="real-example">📌 <strong>Exemplo Real:</strong> Em 2023, o consumo privado em Portugal rondou os 65% do PIB. Cada euro gasto por uma família torna-se rendimento de uma empresa, que paga salários a outras famílias — ilustrando porque o fluxo monetário e o fluxo real circulam sempre em sentidos opostos.</div>
+    </div>`,
+
   u3: `
     <div class="newspaper-card">
       <div class="newspaper-dateline">Industria · Relatório Especial</div>
@@ -1087,12 +1193,36 @@ const JORNAL = {
       <div class="real-example">📌 <strong>Exemplo Real:</strong> BCE subiu taxa de 0% para 4,5% entre 2022-2023. Uma prestação de 200.000€ a 30 anos passou de ~750€/mês para ~1.200€/mês. Resultado: equilíbrio de mercado deslocou-se para menor quantidade transacionada a preços ligeiramente inferiores.</div>
     </div>`,
 
+  u5: `
+    <div class="newspaper-card">
+      <div class="newspaper-dateline">Preços · Inflação</div>
+      <h3>Inflação Disparou para Máximos de Décadas: O Poder de Compra dos Portugueses sob Pressão</h3>
+      <p>A inflação em Portugal, medida pela variação do Índice de Preços no Consumidor (IPC), atingiu cerca de 7,8% em 2022 — o valor mais alto em mais de três décadas —, antes de abrandar para perto de 4,3% em 2023. Esta subida generalizada e contínua do nível geral de preços corroeu o poder de compra das famílias: mesmo quem manteve o salário nominal viu o salário real diminuir, pois o mesmo dinheiro passou a comprar menos bens. A inflação penaliza sobretudo quem tem rendimentos fixos (pensionistas) e os credores, beneficiando os devedores, cuja dívida se desvaloriza em termos reais. Em resposta, o BCE — responsável pela política monetária do euro — subiu fortemente as taxas de juro para travar a procura e devolver a estabilidade dos preços, com o objetivo de manter a inflação próxima dos 2% a médio prazo.</p>
+      <div class="real-example">📌 <strong>Fórmula Aplicada:</strong> Se o IPC passou de 100 (2021) para 107,8 (2022), a taxa de inflação = [(107,8 − 100)/100] × 100 = 7,8%. Um salário nominal de 1.000€ valia, em termos reais, (1.000/107,8)×100 ≈ 928€ a preços de 2021.</div>
+    </div>`,
+
   u6: `
     <div class="newspaper-card">
       <div class="newspaper-dateline">Sociedade · Desigualdade</div>
       <h3>Portugal com Segundo Maior Índice de GINI da UE: Redistribuição Falha no Combate à Desigualdade</h3>
       <p>Portugal apresenta um dos índices de GINI mais elevados da União Europeia, situando-se em 0,33 segundo dados do Eurostat 2023, apenas atrás da Bulgária. Este valor indica que, apesar da redistribuição secundária pelo Estado através de impostos e transferências sociais, a desigualdade na distribuição de rendimentos permanece estruturalmente elevada. O ratio S80/S20 — que mede o rendimento dos 20% mais ricos face aos 20% mais pobres — é de 5,2 em Portugal, acima da média europeia de 4,8. A redistribuição vertical através do IRS progressivo e as transferências horizontais para famílias carenciadas não têm sido suficientes para corrigir as assimetrias da repartição primária, potenciada pela elevada dispersão salarial.</p>
       <div class="real-example">📌 <strong>Exemplo Real:</strong> O salário mínimo nacional em 2024 é de 820€. O CEO médio de uma empresa do PSI-20 recebe 15.000-50.000€/mês. Esta dispersão traduz-se diretamente na curvatura da Curva de Lorenz portuguesa.</div>
+    </div>`,
+
+  u7: `
+    <div class="newspaper-card">
+      <div class="newspaper-dateline">Famílias · Poupança</div>
+      <h3>Portugueses Poupam Pouco: Taxa de Poupança das Famílias Entre as Mais Baixas da UE</h3>
+      <p>A taxa de poupança das famílias portuguesas — a parcela do rendimento disponível que não é consumida — situou-se em torno dos 6% em 2023, abaixo da média da Zona Euro (cerca de 13%). Isto significa que os portugueses consomem uma fração muito elevada do rendimento: de cada euro de rendimento disponível, a maior parte é gasta em consumo e pouco sobra para poupança. Esta poupança pode seguir três destinos: ficar parada (entesouramento), ser aplicada em produtos financeiros (colocação financeira) ou financiar bens de produção (investimento). O sistema bancário desempenha aqui um papel central de intermediação: capta a poupança dos aforradores e canaliza-a, sob a forma de crédito, para as famílias e empresas que querem consumir ou investir. Quando a taxa de juro sobe, a poupança tende a ser mais remunerada e o consumo a crédito torna-se mais caro.</p>
+      <div class="real-example">📌 <strong>Exemplo Real:</strong> Uma família com rendimento disponível de 2.000€ que consome 1.880€ tem uma poupança de 120€ — uma taxa de poupança de 6%. O que não é consumido fica disponível para poupança e, através da banca, para financiar o investimento.</div>
+    </div>`,
+
+  u8: `
+    <div class="newspaper-card">
+      <div class="newspaper-dateline">Economia · Estrutura</div>
+      <h3>Quem é Quem na Economia: O Peso de Cada Agente no Circuito Económico Português</h3>
+      <p>A economia portuguesa, sendo uma economia aberta, articula cinco agentes económicos num circuito permanente. As famílias, enquanto consumidoras, sustentam cerca de dois terços da despesa nacional; as empresas não financeiras produzem os bens e serviços e geram emprego; o Estado redistribui rendimento e fornece serviços coletivos, pesando perto de 45% do PIB em despesa pública; o setor financeiro financia a atividade, ligando poupança e investimento; e o Resto do Mundo entra através de um comércio externo que, somado, equivale a mais de 80% do PIB. A cada troca de bens, serviços ou trabalho (fluxo real) corresponde um pagamento em sentido contrário (fluxo monetário). É a interdependência destes agentes que explica por que razão um choque num deles — uma quebra no consumo, uma crise externa — se propaga rapidamente a toda a economia.</p>
+      <div class="real-example">📌 <strong>Exemplo Real:</strong> Numa economia fechada considerar-se-iam apenas famílias, empresas, Estado e setor financeiro. Em Portugal, economia aberta, o Resto do Mundo é incontornável: as exportações de bens e serviços representam mais de 40% do PIB.</div>
     </div>`,
 
   u9: `
@@ -1137,6 +1267,13 @@ const FLASHCARDS = {
     {q:'O que são bens complementares?', a:'Bens que se usam em conjunto — a utilização de um implica a utilização do outro. Ex: carro e gasolina, papel e caneta.', f:'Elasticidade cruzada < 0'},
     {q:'Quais são os 5 agentes económicos?', a:'1) Famílias, 2) Empresas não financeiras, 3) Instituições financeiras, 4) Estado/Adm. Pública, 5) Resto do Mundo'},
   ],
+  u2: [
+    {q:'O que é o circuito económico?', a:'Representação simplificada das relações e fluxos estabelecidos entre os agentes económicos.'},
+    {q:'Fluxo real vs fluxo monetário', a:'Fluxo real: movimento de bens, serviços e fatores produtivos. Fluxo monetário: o pagamento correspondente, em sentido contrário.'},
+    {q:'Que fluxos trocam famílias e empresas?', a:'Famílias cedem trabalho e recebem salários; compram bens e pagam o seu preço. A cada fluxo real corresponde um fluxo monetário inverso.'},
+    {q:'Papel do Estado no circuito', a:'Cobra impostos e devolve transferências sociais e serviços coletivos (saúde, educação, segurança).'},
+    {q:'Papel do Resto do Mundo no circuito', a:'Numa economia aberta, entra através das exportações (entrada de divisas) e das importações (saída de divisas).'},
+  ],
   u3: [
     {q:'O que é o VAB?', a:'Valor Acrescentado Bruto: valor que cada empresa/setor acrescenta ao valor dos seus inputs (consumos intermédios) no processo de produção.', f:'VAB = Produção Total − Consumos Intermédios'},
     {q:'Setores de atividade económica (Colin Clark)', a:'Primário: recursos naturais (pesca, agricultura). Secundário: indústria transformadora. Terciário: serviços (comércio, saúde, educação).'},
@@ -1151,12 +1288,34 @@ const FLASHCARDS = {
     {q:'Elasticidade-preço da procura', a:'Mede a sensibilidade da quantidade procurada a variações de preço. |Ep|>1: elástica. |Ep|<1: inelástica. |Ep|=0: perfeitamente inelástica.', f:'Ep = (ΔQ/Q) ÷ (ΔP/P)'},
     {q:'Taxa de cobertura das exportações', a:'Percentagem das importações coberta pelas exportações. Indica a competitividade externa do país.', f:'TC = (Exportações / Importações) × 100'},
   ],
+  u5: [
+    {q:'Inconvenientes da troca direta', a:'Exige dupla coincidência de desejos, dificuldade em medir o valor, indivisibilidade dos bens e problemas de transporte e conservação.'},
+    {q:'As três funções da moeda', a:'Meio de pagamento (intermediário das trocas), unidade de conta (medida de valor) e reserva de valor (guardar poder de compra).'},
+    {q:'Formas e evolução da moeda', a:'Mercadoria, metálica, papel-moeda, escritural (depósitos à ordem) e eletrónica. Tendência atual: desmaterialização da moeda.'},
+    {q:'O que é a inflação e como se mede?', a:'Subida generalizada e contínua do nível geral de preços. Mede-se pela variação do IPC.', f:'Taxa de inflação = (IPC n − IPC n-1) / IPC n-1 × 100'},
+    {q:'Quem perde e quem ganha com a inflação?', a:'Perdem os rendimentos fixos e os credores; beneficiam os devedores. O salário real cai se o nominal crescer abaixo da inflação.', f:'Salário real = (Salário nominal / IPC) × 100'},
+  ],
   u6: [
     {q:'Diferença entre salário nominal e salário real', a:'Salário nominal: valor monetário pago. Salário real: poder de compra efetivo, ajustado à inflação.', f:'Salário Real = (Salário Nominal / IPC) × 100'},
     {q:'O que mede o Índice de GINI?', a:'Grau de concentração (desigualdade) na distribuição do rendimento. Varia entre 0 (igualdade perfeita) e 1 (desigualdade máxima).'},
     {q:'O que é a Curva de Lorenz?', a:'Curva que representa a distribuição acumulada do rendimento pela população. Quanto mais afastada da bissetriz dos 45°, maior a desigualdade.'},
     {q:'Rendimento disponível dos particulares (RDP)', a:'Rendimento que as famílias têm disponível para consumir e poupar, após impostos e contribuições.', f:'RDP = Rend. Primários + Transferências − Impostos − Contribuições SS'},
     {q:'Redistribuição vertical vs. horizontal', a:'Vertical: reduz desigualdades via IRS progressivo. Horizontal: transferências correntes para famílias carenciadas (prestações sociais).'},
+  ],
+  u7: [
+    {q:'Destinos do rendimento disponível', a:'O rendimento disponível das famílias reparte-se entre consumo e poupança.', f:'RD = Consumo + Poupança'},
+    {q:'Consumo autónomo vs consumo induzido', a:'Autónomo: existe mesmo com rendimento nulo (necessidades básicas). Induzido: varia com o nível de rendimento.'},
+    {q:'Fatores que influenciam o consumo e a poupança', a:'Consumo: rendimento, preços, crédito, expectativas e publicidade. Poupança: rendimento, taxa de juro, confiança no futuro e política fiscal.'},
+    {q:'Destinos da poupança', a:'Entesouramento (moeda parada, sem rendimento), colocação financeira (depósitos, ações, obrigações) e investimento (bens de produção).'},
+    {q:'Tipos de investimento', a:'Quanto à função: substituição, capacidade e modernização/inovação. Quanto ao agente: público/privado. Quanto à origem: interno/externo.'},
+    {q:'Papel do sistema bancário', a:'Faz a intermediação financeira: capta a poupança dos aforradores e concede crédito a quem quer consumir ou investir.'},
+  ],
+  u8: [
+    {q:'Os cinco agentes económicos e as suas funções', a:'Famílias (consumir), empresas não financeiras (produzir), Estado (redistribuir e necessidades coletivas), setor financeiro (financiar), Resto do Mundo (trocar).'},
+    {q:'Economia aberta vs economia fechada', a:'Fechada: considera apenas os 4 agentes internos. Aberta: inclui também o Resto do Mundo.'},
+    {q:'Macroeconomia vs microeconomia', a:'Macro: estuda os agentes em conjunto (economia como um todo). Micro: estuda cada agente de forma individual.'},
+    {q:'Os três mercados do circuito', a:'Mercado de bens e serviços, mercado de fatores produtivos e mercado de bens financeiros.'},
+    {q:'Quando está o circuito em equilíbrio?', a:'Quando o total de entradas iguala o total de saídas. Um défice com o exterior é compensado por financiamento do Resto do Mundo.'},
   ],
   u9: [
     {q:'Três óticas de cálculo do PIB', a:'1) Ótica do Produto: soma dos VAB. 2) Ótica da Despesa: C+I+G+X−M. 3) Ótica do Rendimento: soma das remunerações dos fatores. Resultado = igual!'},
@@ -1212,6 +1371,75 @@ const QUIZ = {
     {q:'As instituições financeiras têm como função principal:', opts:['Consumir bens públicos','Prestar serviços financeiros e financiar a atividade económica','Exportar capitais','Redistribuir o rendimento'], ans:1, exp:'As instituições financeiras (bancos, seguradoras) prestam serviços financeiros e financiam a atividade económica através do crédito e da mobilização de poupanças.'},
     {q:'A utilidade de um bem económico é:', opts:['O seu preço no mercado','A sua raridade','A sua aptidão para satisfazer necessidades dos indivíduos','O seu custo de produção'], ans:2, exp:'Utilidade é a aptidão de um bem para satisfazer alguma necessidade humana. Não deve ser confundida com preço ou raridade.'},
     {q:'O problema económico fundamental surge porque:', opts:['Os governos são incompetentes','Os recursos são ilimitados mas as necessidades são escassas','Os recursos são escassos face a necessidades ilimitadas','O mercado não funciona bem'], ans:2, exp:'O problema económico fundamental é a contradição entre recursos escassos (limitados) e necessidades ilimitadas. É esta tensão que torna necessária a Economia.'},
+  ],
+
+  u5: [
+    {q:'Qual era o principal inconveniente da troca direta?', opts:['Excesso de moeda','Necessidade de dupla coincidência de desejos','Inflação elevada','Falta de bancos'], ans:1, exp:'Na troca direta era preciso que cada um quisesse exatamente o bem que o outro oferecia — a dupla coincidência de desejos. A moeda resolve este problema.'},
+    {q:'A função da moeda que permite guardar poder de compra para o futuro é:', opts:['Unidade de conta','Meio de pagamento','Reserva de valor','Padrão de trocas'], ans:2, exp:'Como reserva de valor, a moeda permite conservar poder de compra ao longo do tempo, adiando o consumo.'},
+    {q:'Quando a moeda serve para exprimir e comparar o preço de todos os bens, desempenha a função de:', opts:['Unidade de conta','Reserva de valor','Meio de pagamento','Entesouramento'], ans:0, exp:'Como unidade de conta (medida de valor), a moeda dá uma medida comum que permite comparar o valor de bens diferentes.'},
+    {q:'A função de meio de pagamento da moeda significa que ela:', opts:['Acumula juros','É aceite como intermediário nas trocas','Substitui o trabalho','Elimina a inflação'], ans:1, exp:'Como meio de pagamento, a moeda é aceite por todos como intermediário das trocas, dispensando a troca direta.'},
+    {q:'A moeda escritural corresponde a:', opts:['Moedas metálicas','Notas de banco','Depósitos à ordem movimentáveis por cheque ou transferência','Ouro do banco central'], ans:2, exp:'A moeda escritural são os depósitos à ordem, movimentados por cheque, transferência, débito direto ou cartão — sem existência física.'},
+    {q:'A substituição da moeda física por meios eletrónicos designa-se:', opts:['Inflação','Desmaterialização da moeda','Deflação','Entesouramento'], ans:1, exp:'A desmaterialização traduz a passagem da moeda física para formas escriturais e eletrónicas (cartões, MB WAY, transferências).'},
+    {q:'A inflação define-se como:', opts:['Subida do preço de um único bem','Subida generalizada e contínua do nível geral de preços','Aumento do desemprego','Descida do poder de compra dos mais ricos'], ans:1, exp:'Inflação é a subida generalizada e continuada do nível geral de preços, medida pela variação do IPC.'},
+    {q:'O IPC (Índice de Preços no Consumidor) mede:', opts:['O preço do ouro','A variação do preço de um cabaz representativo de bens e serviços','A taxa de juro dos bancos','O valor das exportações'], ans:1, exp:'O IPC mede a evolução dos preços de um cabaz de bens e serviços representativo do consumo das famílias.'},
+    {q:'Se o IPC passou de 100 para 105 num ano, a taxa de inflação foi de:', opts:['5%','105%','0,5%','50%'], ans:0, exp:'Taxa de inflação = (105 − 100) / 100 × 100 = 5%.'},
+    {q:'Uma descida generalizada e continuada dos preços chama-se:', opts:['Desinflação','Estagflação','Deflação','Reflação'], ans:2, exp:'Deflação é a descida generalizada e continuada do nível geral de preços (taxa de inflação negativa).'},
+    {q:'Quando a inflação continua positiva mas está a abrandar, fala-se em:', opts:['Deflação','Desinflação','Hiperinflação','Estagnação'], ans:1, exp:'Desinflação é a redução do ritmo da inflação: os preços ainda sobem, mas mais devagar.'},
+    {q:'Quem é, em regra, mais prejudicado pela inflação?', opts:['Os devedores','Quem tem rendimentos fixos e os credores','Os exportadores','Os bancos centrais'], ans:1, exp:'A inflação corrói o poder de compra de quem tem rendimentos fixos (ex.: pensionistas) e o valor real recebido pelos credores.'},
+    {q:'Quem tende a beneficiar de uma inflação inesperada?', opts:['Os credores','Os devedores','Os reformados','Os aforradores'], ans:1, exp:'Os devedores beneficiam porque pagam as dívidas com moeda que vale menos em termos reais.'},
+    {q:'O salário real calcula-se por:', opts:['Salário nominal × IPC','(Salário nominal / IPC) × 100','Salário nominal + inflação','Salário nominal − impostos'], ans:1, exp:'Salário real = (Salário nominal / IPC) × 100. Mede o poder de compra efetivo do salário.'},
+    {q:'Se o salário nominal sobe 3% e a inflação é 5%, o salário real:', opts:['Aumenta','Mantém-se igual','Diminui','Duplica'], ans:2, exp:'Quando o salário nominal cresce menos do que a inflação, o poder de compra (salário real) diminui.'},
+    {q:'Um exemplo de moeda-mercadoria é:', opts:['Uma nota de 10 euros','O sal ou o gado usados como meio de troca','Um depósito à ordem','Um cartão de débito'], ans:1, exp:'A moeda-mercadoria era um bem com valor próprio (sal, gado, conchas) aceite como meio de troca antes da moeda metálica.'},
+    {q:'As notas de banco correspondem a que forma de moeda?', opts:['Moeda escritural','Papel-moeda','Moeda-mercadoria','Moeda metálica'], ans:1, exp:'As notas são papel-moeda; as moedas de metal são moeda metálica. Ambas são moeda física.'},
+    {q:'O objetivo primordial da política monetária do BCE é:', opts:['Maximizar o emprego','Manter a estabilidade dos preços (inflação próxima de 2%)','Aumentar as exportações','Reduzir os impostos'], ans:1, exp:'O BCE tem como objetivo primordial a estabilidade dos preços, procurando manter a inflação próxima de 2% a médio prazo.'},
+    {q:'A moeda atual tem aceitação por confiança e imposição legal, sem valor próprio. Diz-se moeda:', opts:['Mercadoria','Fiduciária','Metálica com valor intrínseco','De ouro'], ans:1, exp:'A moeda atual é fiduciária: o seu valor assenta na confiança e na lei, não no material de que é feita.'},
+    {q:'Para combater uma inflação elevada, o banco central tende a:', opts:['Descer a taxa de juro','Subir a taxa de juro','Imprimir mais moeda','Baixar os impostos'], ans:1, exp:'Subir a taxa de juro torna o crédito mais caro, trava a procura e ajuda a reduzir a inflação (política monetária restritiva).'},
+  ],
+
+  u7: [
+    {q:'O rendimento disponível das famílias reparte-se entre:', opts:['Impostos e juros','Consumo e poupança','Exportações e importações','Salários e lucros'], ans:1, exp:'O rendimento disponível tem dois destinos: o consumo e a poupança (RD = C + S).'},
+    {q:'O consumo que existe mesmo quando o rendimento é nulo designa-se:', opts:['Consumo induzido','Consumo autónomo','Consumo marginal','Consumo público'], ans:1, exp:'O consumo autónomo corresponde às necessidades básicas, satisfeitas mesmo sem rendimento (com poupanças ou crédito).'},
+    {q:'O consumo que varia com o nível de rendimento chama-se:', opts:['Consumo autónomo','Consumo induzido','Consumo coletivo','Consumo fixo'], ans:1, exp:'O consumo induzido depende do rendimento: quanto maior o rendimento, maior o consumo induzido.'},
+    {q:'O rendimento disponível das famílias obtém-se, a partir dos rendimentos, depois de:', opts:['Somar os impostos diretos','Deduzir impostos diretos e contribuições e somar transferências','Multiplicar pelo IPC','Somar as exportações'], ans:1, exp:'O rendimento disponível resulta dos rendimentos primários mais transferências, menos impostos diretos e contribuições sociais.'},
+    {q:'Quais dos seguintes são fatores que influenciam o consumo?', opts:['A taxa de câmbio do iene','O rendimento, os preços, o crédito e as expectativas','A profundidade dos oceanos','O número de bancos centrais'], ans:1, exp:'O consumo depende sobretudo do rendimento disponível, dos preços, do acesso ao crédito, das expectativas e da publicidade.'},
+    {q:'Um aumento da taxa de juro tende a:', opts:['Reduzir a poupança','Incentivar a poupança e encarecer o consumo a crédito','Não ter qualquer efeito','Eliminar o investimento'], ans:1, exp:'Juros mais altos tornam a poupança mais remunerada e o crédito mais caro, incentivando a poupar e travando o consumo a crédito.'},
+    {q:'A poupança define-se como:', opts:['O total do rendimento','A parte do rendimento disponível que não é consumida','Os impostos pagos','O investimento das empresas'], ans:1, exp:'Poupança é a parcela do rendimento disponível que não é gasta em consumo.'},
+    {q:'Guardar moeda parada, sem a aplicar nem a pôr a render, é:', opts:['Investimento','Colocação financeira','Entesouramento','Consumo induzido'], ans:2, exp:'O entesouramento é guardar moeda inativa, sem qualquer rendimento.'},
+    {q:'Aplicar a poupança em depósitos a prazo, ações ou obrigações é:', opts:['Entesouramento','Colocação financeira','Consumo autónomo','Importação'], ans:1, exp:'A colocação financeira é a aplicação da poupança em produtos financeiros que geram rendimento (juros, dividendos).'},
+    {q:'Em sentido económico, investimento corresponde sobretudo a:', opts:['Comprar ações na bolsa','Aquisição de bens de produção (formação de capital)','Depositar dinheiro no banco','Comprar bens de consumo'], ans:1, exp:'Em sentido económico, investimento é a aquisição de bens de produção (FBCF) que aumentam a capacidade produtiva.'},
+    {q:'O investimento destinado a substituir equipamento desgastado é investimento de:', opts:['Capacidade','Substituição','Inovação','Carteira'], ans:1, exp:'O investimento de substituição repõe o capital desgastado (amortizado), mantendo a capacidade produtiva.'},
+    {q:'Um investimento que aumenta a capacidade produtiva da empresa é investimento de:', opts:['Substituição','Capacidade','Entesouramento','Consumo'], ans:1, exp:'O investimento de capacidade amplia a capacidade de produção (ex.: nova fábrica, mais máquinas).'},
+    {q:'A introdução de nova tecnologia para melhorar o processo produtivo é investimento de:', opts:['Substituição','Modernização ou inovação','Carteira','Reposição'], ans:1, exp:'O investimento de modernização/inovação incorpora novas técnicas, aumentando a produtividade.'},
+    {q:'Quanto ao agente, o investimento pode ser:', opts:['Interno ou externo','Público ou privado','Real ou nominal','Bruto ou líquido'], ans:1, exp:'Quanto ao agente que o realiza, o investimento classifica-se em público (Estado) ou privado (empresas e famílias).'},
+    {q:'Um dos principais fatores que influenciam a poupança é:', opts:['A cor da moeda','A taxa de juro','O número de feriados','A taxa de câmbio do iene'], ans:1, exp:'A taxa de juro influencia a poupança: juros mais altos tornam-na mais atrativa (mais remunerada).'},
+    {q:'Qual dos seguintes é um fator do consumo?', opts:['O rendimento disponível','A profundidade dos oceanos','O número de bancos centrais','A dimensão do território'], ans:0, exp:'O rendimento disponível é o principal fator do consumo: quanto maior o rendimento, maior tende a ser o consumo.'},
+    {q:'O papel do sistema bancário no circuito é:', opts:['Produzir bens de consumo','Captar poupança e conceder crédito (intermediação financeira)','Cobrar impostos','Exportar mercadorias'], ans:1, exp:'O sistema bancário faz a intermediação financeira: recolhe a poupança e concede crédito a quem quer investir ou consumir.'},
+    {q:'A poupança é importante para a economia porque:', opts:['Reduz o investimento','Permite financiar o investimento','Aumenta a inflação','Diminui o rendimento'], ans:1, exp:'A poupança, canalizada pelo sistema financeiro, permite financiar o investimento, essencial ao crescimento.'},
+    {q:'Comprar um automóvel para uso pessoal da família é considerado:', opts:['Investimento','Consumo','Entesouramento','Colocação financeira'], ans:1, exp:'A aquisição de bens para satisfação de necessidades das famílias é consumo, mesmo sendo um bem duradouro. Investimento refere-se a bens de produção.'},
+    {q:'O investimento em capital humano corresponde a:', opts:['Comprar máquinas novas','Gastos em educação e formação que aumentam a produtividade','Depositar dinheiro no banco','Comprar ações na bolsa'], ans:1, exp:'O investimento em capital humano (educação, formação, saúde) aumenta a produtividade do trabalho e a capacidade produtiva futura.'},
+  ],
+
+  u8: [
+    {q:'O agente económico cuja função principal é consumir é:', opts:['As empresas','As famílias','O setor financeiro','O Estado'], ans:1, exp:'As famílias têm como função principal o consumo, fornecendo também fatores de produção (trabalho).'},
+    {q:'Produzir bens e serviços não financeiros é a função principal:', opts:['Das famílias','Das empresas não financeiras','Do Resto do Mundo','Dos bancos'], ans:1, exp:'As empresas não financeiras têm como função produzir bens e serviços destinados ao mercado.'},
+    {q:'Que agente tem como função financiar a atividade económica?', opts:['As famílias','O setor financeiro','O Resto do Mundo','As empresas não financeiras'], ans:1, exp:'O setor financeiro (instituições financeiras) presta serviços financeiros e financia a atividade económica.'},
+    {q:'Redistribuir o rendimento e satisfazer necessidades coletivas é função:', opts:['Das empresas','Do Estado / Administração Pública','Das famílias','Do setor financeiro'], ans:1, exp:'O Estado redistribui rendimento (impostos e transferências) e fornece serviços coletivos (saúde, educação, segurança).'},
+    {q:'O Resto do Mundo, no circuito económico, representa:', opts:['Os bancos nacionais','Os agentes não residentes com quem se trocam bens, serviços e capitais','O Estado','As famílias mais ricas'], ans:1, exp:'O Resto do Mundo agrega os agentes não residentes, com quem a economia troca bens, serviços e capitais.'},
+    {q:'Um fluxo real corresponde a:', opts:['Um pagamento em dinheiro','Um movimento de bens, serviços ou fatores produtivos','Uma transferência bancária','Um imposto'], ans:1, exp:'O fluxo real é o movimento de bens, serviços ou fatores produtivos (ex.: trabalho), sem envolver dinheiro.'},
+    {q:'Um fluxo monetário corresponde a:', opts:['A entrega de um bem','O pagamento que faz a contrapartida do fluxo real','A produção de um serviço','A cedência de trabalho'], ans:1, exp:'O fluxo monetário é o pagamento em dinheiro que corresponde, em sentido contrário, a um fluxo real.'},
+    {q:'No circuito económico, a cada fluxo real corresponde:', opts:['Outro fluxo real no mesmo sentido','Um fluxo monetário em sentido contrário','Um imposto','Uma exportação'], ans:1, exp:'A cada fluxo real corresponde sempre um fluxo monetário de sentido oposto (trabalho num sentido, salário no outro).'},
+    {q:'Um trabalhador presta trabalho e recebe salário. O salário é:', opts:['Um fluxo real','Um fluxo monetário','Uma importação','Um imposto'], ans:1, exp:'O trabalho é o fluxo real (família para empresa) e o salário é o fluxo monetário correspondente (empresa para família).'},
+    {q:'Uma economia fechada considera:', opts:['Apenas as famílias','Apenas os quatro agentes internos, sem o Resto do Mundo','Todos os agentes','Só o Estado e as empresas'], ans:1, exp:'A economia fechada considera apenas famílias, empresas, Estado e setor financeiro, ignorando o Resto do Mundo.'},
+    {q:'Uma economia aberta distingue-se por:', opts:['Não ter Estado','Incluir as relações com o Resto do Mundo','Não ter bancos','Não ter impostos'], ans:1, exp:'A economia aberta inclui o Resto do Mundo, ou seja, as relações de comércio e de capitais com o exterior.'},
+    {q:'A macroeconomia estuda:', opts:['Cada empresa individualmente','Os agentes e variáveis em conjunto, a economia como um todo','Apenas o mercado de um bem','As contas de uma família'], ans:1, exp:'A macroeconomia analisa a economia no seu conjunto (PIB, inflação, desemprego).'},
+    {q:'A microeconomia estuda:', opts:['O PIB do país','O comportamento individual de agentes e mercados','A política monetária do BCE','A balança de pagamentos'], ans:1, exp:'A microeconomia centra-se no comportamento individual (uma família, uma empresa, um mercado específico).'},
+    {q:'A procura e a oferta de trabalho realizam-se no:', opts:['Mercado de bens e serviços','Mercado de fatores produtivos','Mercado de bens financeiros','Mercado cambial'], ans:1, exp:'O trabalho é um fator de produção, transacionado no mercado de fatores produtivos.'},
+    {q:'A compra de ações e obrigações ocorre no:', opts:['Mercado de bens e serviços','Mercado de fatores produtivos','Mercado de bens financeiros','Mercado de trabalho'], ans:2, exp:'Ações, obrigações e outros produtos financeiros transacionam-se no mercado de bens financeiros.'},
+    {q:'A atividade económica é descrita como um processo:', opts:['Linear e único','Circular e contínuo (produção, repartição, despesa)','Estático','Aleatório'], ans:1, exp:'A atividade económica é circular: a produção gera rendimento, que é despendido, sustentando nova produção.'},
+    {q:'O circuito económico está em equilíbrio quando:', opts:['Há mais importações que exportações','O total de entradas iguala o total de saídas','O Estado tem défice','A inflação é nula'], ans:1, exp:'Há equilíbrio quando o total de entradas (recursos) iguala o total de saídas (usos).'},
+    {q:'Numa economia aberta com défice externo, o desequilíbrio é compensado por:', opts:['Mais consumo interno','Financiamento proveniente do Resto do Mundo','Aumento dos impostos','Redução dos salários'], ans:1, exp:'Quando as saídas para o exterior superam as entradas, o défice é coberto por financiamento externo.'},
+    {q:'Os cinco agentes do circuito correspondem, na Contabilidade Nacional, aos:', opts:['Ramos de atividade','Setores institucionais (S11 a S15 e S2)','Fatores de produção','Setores primário, secundário e terciário'], ans:1, exp:'Os agentes correspondem aos setores institucionais: S11, S12, S13, S14, S15 e o Resto do Mundo (S2).'},
+    {q:'Qual destas NÃO é uma função correta de um agente económico?', opts:['Famílias: consumir','Empresas não financeiras: produzir','Setor financeiro: redistribuir o rendimento','Resto do Mundo: trocar com o exterior'], ans:2, exp:'Redistribuir o rendimento é função do Estado; a função do setor financeiro é financiar.'},
   ],
 
   u9: [
@@ -1418,6 +1646,8 @@ const FORMULAS_DATA = [
   {title:'Saldo Orçamental', formula:'SO = Receitas Públicas − Despesas Públicas', desc:'SO > 0 = superavit; SO < 0 = défice; SO = 0 = equilíbrio'},
   {title:'PIB per capita', formula:'PIB pc = PIB / População', desc:'Indicador de nível de vida médio. Em PPC permite comparações internacionais fiáveis'},
   {title:'Critérios Maastricht (resumo)', formula:'Défice < 3% PIB | Dívida < 60% PIB', desc:'+ inflação, taxa de juro e câmbio (critérios nominais) para adesão ao euro'},
+  {title:'Taxa de Inflação', formula:'π = (IPC n − IPC n-1) / IPC n-1 × 100', desc:'Variação percentual do IPC. Se negativa = deflação; se positiva mas a abrandar = desinflação'},
+  {title:'Rendimento Disponível (utilização)', formula:'RD = Consumo + Poupança', desc:'O rendimento disponível das famílias reparte-se entre consumo e poupança'},
 ];
 
 // ═══════════════════════════════════════════════════════════════════
