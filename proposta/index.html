@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0032)https://mariaestuda.eu/proposta/ -->
+<html lang="pt"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Proposta Website — Desenvolvimento</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+<link href="./Proposta Website- Desenvolvimento_files/css2" rel="stylesheet">
 <style>
   :root {
     --black: #050505;
@@ -234,10 +234,16 @@
   #ambito { background: var(--black2); }
   .ambito-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
     gap: 1px;
     margin-top: 4rem;
     border: 1px solid var(--graylight);
+  }
+  @media (max-width: 900px) {
+    .ambito-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .ambito-grid { grid-template-columns: 1fr; }
   }
   .ambito-card {
     padding: 2.5rem 2rem;
@@ -680,8 +686,8 @@
 <body>
 
 <!-- Cursor -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor" id="cursor" style="left: 1588px; top: 699px;"></div>
+<div class="cursor-ring" id="cursorRing" style="left: 1627.47px; top: 554.716px;"></div>
 
 <!-- Animated light bars (right side) -->
 <div class="light-bars">
@@ -693,23 +699,23 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#hero" class="nav-logo">MC · Proposta</a>
+  <a href="https://mariaestuda.eu/proposta/#hero" class="nav-logo">MC · Proposta</a>
   <ul class="nav-links">
-    <li><a href="#ambito">Âmbito</a></li>
-    <li><a href="#seo">SEO</a></li>
-    <li><a href="#compliance">Legal</a></li>
-    <li><a href="#investimento">Custos</a></li>
-    <li><a href="#passos">Custos 1.º Ano</a></li>
+    <li><a href="https://mariaestuda.eu/proposta/#ambito">Âmbito</a></li>
+    <li><a href="https://mariaestuda.eu/proposta/#seo">SEO</a></li>
+    <li><a href="https://mariaestuda.eu/proposta/#compliance">Legal</a></li>
+    <li><a href="https://mariaestuda.eu/proposta/#investimento">Custos</a></li>
+    <li><a href="https://mariaestuda.eu/proposta/#passos">Custos 1.º Ano</a></li>
   </ul>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
   <div class="hero-content">
-    <div class="hero-tag reveal">Proposta Comercial · 2026</div>
-    <h1 class="hero-title reveal reveal-delay-1">PROPOSTA<br>WEBSITE</h1>
-    <p class="hero-subtitle reveal reveal-delay-2">Design · WordPress · SEO · Compliance Legal<br>Uma proposta honesta, técnica e a custo justo.</p>
-    <a href="#ambito" class="hero-cta reveal reveal-delay-3">Ver proposta completa</a>
+    <div class="hero-tag reveal visible">Proposta Comercial · 2026</div>
+    <h1 class="hero-title reveal reveal-delay-1 visible">PROPOSTA<br>WEBSITE</h1>
+    <p class="hero-subtitle reveal reveal-delay-2 visible">Design · WordPress · SEO · Compliance Legal<br>Uma proposta honesta, técnica e a custo justo.</p>
+    <a href="https://mariaestuda.eu/proposta/#ambito" class="hero-cta reveal reveal-delay-3 visible">Ver proposta completa</a>
   </div>
   <div class="scroll-hint">
     <div class="scroll-line"></div>
@@ -719,11 +725,11 @@
 
 <!-- ÂMBITO -->
 <section id="ambito">
-  <div class="section-label reveal">01 — Âmbito do Projeto</div>
-  <div class="section-divider reveal"></div>
-  <h2 style="font-size: clamp(3rem,7vw,6rem); margin-bottom: 0.5rem;" class="reveal">DESIGN &<br>DESENVOLVIMENTO</h2>
+  <div class="section-label reveal visible">01 — Âmbito do Projeto</div>
+  <div class="section-divider reveal visible"></div>
+  <h2 style="font-size: clamp(3rem,7vw,6rem); margin-bottom: 0.5rem;" class="reveal visible">DESIGN &amp;<br>DESENVOLVIMENTO</h2>
 
-  <div class="ambito-grid reveal reveal-delay-1">
+  <div class="ambito-grid reveal reveal-delay-1 visible">
     <div class="ambito-card">
       <div class="ambito-num">01</div>
       <span class="ambito-icon">✍</span>
@@ -742,21 +748,27 @@
       <div class="ambito-title">Stack Técnica</div>
       <div class="ambito-desc">WordPress + Hosting Hostinger Premium. Plataforma madura, suportada, com ecossistema de plugins robusto e sem vendor lock-in.</div>
     </div>
+    <div class="ambito-card" style="border-color: var(--orange1); background: rgba(255,107,26,0.05);">
+      <div class="ambito-num" style="color:var(--orange1);">04</div>
+      <span class="ambito-icon">⚡</span>
+      <div class="ambito-title">Protótipo Funcional</div>
+      <div class="ambito-desc">O layout, hierarquia e identidade visual já estão construídos e disponíveis. A fase de mockup típica de 2–3 semanas não se aplica — o desenvolvimento começa a partir de uma base aprovável, não de um blank canvas. <a href="https://mariaestuda.eu/uplayback" target="_blank" style="color:var(--orange1); text-decoration:none; font-weight:600;">Ver protótipo →</a></div>
+    </div>
   </div>
 
-  <div class="ambito-note reveal reveal-delay-2">
+  <div class="ambito-note reveal reveal-delay-2 visible">
     O conteúdo é desenvolvido com conhecimento direto do projeto — sem briefings intermediários, sem perda de contexto, com autenticidade desde o primeiro rascunho.
   </div>
 </section>
 
 <!-- SEO -->
 <section id="seo">
-  <div class="section-label reveal">02 — SEO Setup</div>
-  <div class="section-divider reveal"></div>
-  <h2 style="font-size: clamp(3rem,7vw,6rem); margin-bottom: 2rem;" class="reveal">OTIMIZAÇÃO<br>PARA MOTORES</h2>
+  <div class="section-label reveal visible">02 — SEO Setup</div>
+  <div class="section-divider reveal visible"></div>
+  <h2 style="font-size: clamp(3rem,7vw,6rem); margin-bottom: 2rem;" class="reveal visible">OTIMIZAÇÃO<br>PARA MOTORES</h2>
 
   <div class="seo-cols">
-    <div class="reveal">
+    <div class="reveal visible">
       <div style="display:flex; align-items:center; gap:1rem; margin-bottom:2rem;">
         <span class="seo-badge badge-teal">Camada 1 — Base</span>
       </div>
@@ -785,7 +797,7 @@
         </div>
         <div class="seo-item">
           <div>
-            <div class="seo-item-name">Canonical tags & HTTPS</div>
+            <div class="seo-item-name">Canonical tags &amp; HTTPS</div>
             <div class="seo-item-desc">Automático com plugin + certificado SSL</div>
           </div>
           <span class="seo-item-native">Auto</span>
@@ -793,7 +805,7 @@
       </div>
     </div>
 
-    <div class="reveal reveal-delay-1">
+    <div class="reveal reveal-delay-1 visible">
       <div style="display:flex; align-items:center; gap:1rem; margin-bottom:2rem;">
         <span class="seo-badge badge-amber">Camada 2 — Avançado</span>
       </div>
@@ -909,6 +921,10 @@
         <div class="transp-item-title"><div class="transp-dot-green"></div>IA como co-piloto técnico</div>
         <div class="transp-item-desc">Utilizo ferramentas de IA para acelerar desenvolvimento, validar código e garantir decisões técnicas bem fundamentadas — mesmo onde o meu conhecimento ainda está a crescer.</div>
       </div>
+      <div class="transp-item">
+        <div class="transp-item-title"><div class="transp-dot-green"></div>Gestão de projeto via ClickUp</div>
+        <div class="transp-item-desc">O cliente tem acesso ao board em tempo real — tasks, estado de cada entregável, histórico de decisões. Reunião semanal de estado de 30 minutos, em data fixa acordada no kick-off. Visibilidade total, sem intermediários.</div>
+      </div>
     </div>
     <div class="transp-col">
       <span class="transp-col-label label-amber">◆ Limitações (e como as giro)</span>
@@ -919,10 +935,6 @@
       <div class="transp-item">
         <div class="transp-item-title"><div class="transp-dot-amber"></div>Menor velocidade em casos edge</div>
         <div class="transp-item-desc">Problemas muito específicos podem demorar mais a resolver. A contrapartida: o custo é proporcional ao esforço real, transparente e acordado à partida.</div>
-      </div>
-      <div class="transp-item">
-        <div class="transp-item-title"><div class="transp-dot-amber"></div>Sem equipa de backup</div>
-        <div class="transp-item-desc">Sou um único ponto de execução. Por isso, o âmbito está bem definido, os prazos são realistas e a bolsa de horas garante continuidade pós-entrega.</div>
       </div>
     </div>
   </div>
@@ -1005,7 +1017,7 @@
       <div style="font-size:0.78rem; color:var(--gray); margin-top:0.25rem; font-weight:300;">45h estimadas a 20€/h</div>
     </div>
     <div style="padding:1.4rem 1.5rem; border-bottom:1px solid var(--graylight); text-align:right; display:flex; align-items:center; justify-content:flex-end;">
-      <span style="font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:2px; color:var(--white);">900€</span>
+      <span style="font-family:&#39;Bebas Neue&#39;,sans-serif; font-size:1.8rem; letter-spacing:2px; color:var(--white);">900€</span>
     </div>
 
     <!-- Bolsa manutenção -->
@@ -1014,7 +1026,7 @@
       <div style="font-size:0.78rem; color:var(--gray); margin-top:0.25rem; font-weight:300;">15h incluídas · válida 1 ano · partilhada com overflow de desenvolvimento</div>
     </div>
     <div style="padding:1.4rem 1.5rem; border-bottom:1px solid var(--graylight); text-align:right; display:flex; align-items:center; justify-content:flex-end;">
-      <span style="font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:2px; color:var(--white);">300€</span>
+      <span style="font-family:&#39;Bebas Neue&#39;,sans-serif; font-size:1.8rem; letter-spacing:2px; color:var(--white);">300€</span>
     </div>
 
     <!-- Hostinger -->
@@ -1023,7 +1035,7 @@
       <div style="font-size:0.78rem; color:var(--gray); margin-top:0.25rem; font-weight:300;">Hostinger Premium · IVA incluído</div>
     </div>
     <div style="padding:1.4rem 1.5rem; border-bottom:1px solid var(--graylight); text-align:right; display:flex; align-items:center; justify-content:flex-end;">
-      <span style="font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:2px; color:var(--amber);">~72€</span>
+      <span style="font-family:&#39;Bebas Neue&#39;,sans-serif; font-size:1.8rem; letter-spacing:2px; color:var(--amber);">~72€</span>
     </div>
 
     <!-- WeGlot -->
@@ -1032,7 +1044,7 @@
       <div style="font-size:0.78rem; color:var(--gray); margin-top:0.25rem; font-weight:300;">WeGlot Business</div>
     </div>
     <div style="padding:1.4rem 1.5rem; border-bottom:1px solid var(--graylight); text-align:right; display:flex; align-items:center; justify-content:flex-end;">
-      <span style="font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:2px; color:var(--amber);">290€</span>
+      <span style="font-family:&#39;Bebas Neue&#39;,sans-serif; font-size:1.8rem; letter-spacing:2px; color:var(--amber);">290€</span>
     </div>
 
     <!-- iubenda -->
@@ -1041,7 +1053,7 @@
       <div style="font-size:0.78rem; color:var(--gray); margin-top:0.25rem; font-weight:300;">iubenda (RGPD, ePrivacy, CCPA, LGPD)</div>
     </div>
     <div style="padding:1.4rem 1.5rem; border-bottom:1px solid var(--graylight); text-align:right; display:flex; align-items:center; justify-content:flex-end;">
-      <span style="font-family:'Bebas Neue',sans-serif; font-size:1.8rem; letter-spacing:2px; color:var(--amber);">239,88€</span>
+      <span style="font-family:&#39;Bebas Neue&#39;,sans-serif; font-size:1.8rem; letter-spacing:2px; color:var(--amber);">239,88€</span>
     </div>
 
     <!-- TOTAL -->
@@ -1050,7 +1062,7 @@
       <div style="font-size:0.78rem; color:rgba(0,0,0,0.5); margin-top:0.3rem; font-weight:300;">Desenvolvimento + plataformas + compliance</div>
     </div>
     <div style="padding:1.8rem 1.5rem; background:var(--orange1); text-align:right; display:flex; align-items:center; justify-content:flex-end;">
-      <span style="font-family:'Bebas Neue',sans-serif; font-size:2.8rem; letter-spacing:2px; color:var(--black);">~1.801,88€</span>
+      <span style="font-family:&#39;Bebas Neue&#39;,sans-serif; font-size:2.8rem; letter-spacing:2px; color:var(--black);">~1.801,88€</span>
     </div>
 
   </div>
@@ -1091,5 +1103,6 @@
     setTimeout(() => el.classList.add('visible'), 200 + i * 150);
   });
 </script>
-</body>
-</html>
+
+
+</body></html>
