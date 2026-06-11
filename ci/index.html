@@ -2,927 +2,140 @@
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Comunicação Interpessoal — Plataforma de Estudo</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --purple: #7c6fcd;
-    --purple-light: #ebe8fa;
-    --purple-dark: #3c3489;
-    --ink: #1a1a2e;
-    --ink-muted: #5f5e7a;
-    --surface: #f8f7ff;
-    --white: #ffffff;
-    --border: rgba(124,111,205,0.18);
-    --green: #2d9e75;
-    --green-light: #e1f5ee;
-    --red: #e24b4a;
-    --red-light: #fcebeb;
-    --amber: #ba7517;
-    --amber-light: #faeeda;
-    --radius: 12px;
-    --radius-sm: 8px;
-    --shadow: 0 2px 16px rgba(124,111,205,0.12);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html { scroll-behavior: smooth; }
-  body { -webkit-font-smoothing: antialiased; }
-  
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--surface);
-    color: var(--ink);
-    min-height: 100vh;
-    overflow-x: hidden;
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-
-  /* HEADER */
-  .header {
-    background: var(--ink);
-    color: white;
-    padding: 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 20px rgba(26,26,46,0.3);
-  }
-  .header-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    gap: 0;
-    height: 56px;
-    padding: 0 20px;
-  }
-  .header-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 17px;
-    letter-spacing: 0.02em;
-    color: white;
-    flex: 1;
-  }
-  .header-title span { color: var(--purple); }
-  .nav-tabs {
-    display: flex;
-    height: 56px;
-    gap: 2px;
-  }
-  .nav-tab {
-    background: none;
-    border: none;
-    color: rgba(255,255,255,0.55);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    cursor: pointer;
-    padding: 0 14px;
-    height: 100%;
-    transition: color 0.2s, border-bottom 0.2s;
-    border-bottom: 2px solid transparent;
-    white-space: nowrap;
-  }
-  .nav-tab.active {
-    color: var(--purple);
-    border-bottom: 2px solid var(--purple);
-  }
-  .nav-tab:hover { color: white; }
-
-  /* STATS BAR */
-  .stats-bar {
-    background: white;
-    border-bottom: 1px solid var(--border);
-    padding: 10px 20px;
-    display: flex;
-    gap: 24px;
-    justify-content: center;
-    flex-wrap: wrap;
-    overflow-x: auto;
-  }
-  .stat-pill {
-    font-size: 12px;
-    color: var(--ink-muted);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .stat-pill strong { color: var(--purple-dark); font-size: 14px; font-weight: 600; }
-  .stat-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-  .dot-green { background: var(--green); }
-  .dot-amber { background: var(--amber); }
-  .dot-purple { background: var(--purple); }
-
-  /* MAIN LAYOUT */
-  .main { max-width: 1100px; margin: 0 auto; padding: 32px 20px; }
-  
-  /* PAGES */
-  .page { display: none; }
-  .page.active { display: block; }
-
-  /* SECTION HERO */
-  .section-hero {
-    background: linear-gradient(135deg, var(--ink) 0%, #2a2050 100%);
-    color: white;
-    border-radius: var(--radius);
-    padding: 32px 36px;
-    margin-bottom: 32px;
-    position: relative;
-    overflow: hidden;
-  }
-  .section-hero::before {
-    content: '';
-    position: absolute;
-    top: -40px; right: -40px;
-    width: 200px; height: 200px;
-    border-radius: 50%;
-    background: rgba(124,111,205,0.15);
-  }
-  .section-hero h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 28px;
-    margin-bottom: 8px;
-    position: relative;
-  }
-  .section-hero p { color: rgba(255,255,255,0.65); font-size: 14px; position: relative; }
-
-  /* QUIZ */
-  .quiz-container { max-width: 720px; margin: 0 auto; }
-  .quiz-progress-wrap { margin-bottom: 24px; }
-  .quiz-progress-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-muted); margin-bottom: 8px; }
-  .progress-bar { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
-  .progress-fill { height: 100%; background: var(--purple); border-radius: 99px; transition: width 0.4s ease; }
-  
-  .question-card {
-    background: white;
-    border-radius: var(--radius);
-    padding: 32px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    margin-bottom: 20px;
-  }
-  .question-number {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--purple);
-    margin-bottom: 12px;
-  }
-  .question-text {
-    font-size: 17px;
-    font-weight: 500;
-    line-height: 1.6;
-    margin-bottom: 28px;
-    color: var(--ink);
-  }
-  .options { display: flex; flex-direction: column; gap: 10px; }
-  .option-btn {
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 14px 18px;
-    min-height: 48px;
-    text-align: left;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    color: var(--ink);
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    line-height: 1.5;
-  }
-  .option-btn:hover:not(:disabled) { border-color: var(--purple); background: var(--purple-light); }
-  .option-btn.correct { background: var(--green-light); border-color: var(--green); color: #0f6e56; }
-  .option-btn.wrong { background: var(--red-light); border-color: var(--red); color: #a32d2d; }
-  .option-letter {
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    background: var(--border);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: 600;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-  .option-btn.correct .option-letter { background: var(--green); color: white; }
-  .option-btn.wrong .option-letter { background: var(--red); color: white; }
-  
-  .explanation {
-    margin-top: 16px;
-    padding: 16px;
-    background: var(--purple-light);
-    border-radius: var(--radius-sm);
-    font-size: 13px;
-    color: var(--purple-dark);
-    line-height: 1.6;
-    display: none;
-  }
-  .explanation.show { display: block; }
-  
-  .quiz-nav { display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px; }
-  .btn {
-    background: var(--purple);
-    color: white;
-    border: none;
-    border-radius: var(--radius-sm);
-    padding: 11px 24px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-  }
-  .btn:hover { background: var(--purple-dark); }
-  .btn:active { transform: scale(0.98); }
-  .btn-ghost {
-    background: none;
-    border: 1.5px solid var(--border);
-    color: var(--ink-muted);
-    border-radius: var(--radius-sm);
-    padding: 10px 24px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  .btn-ghost:hover { border-color: var(--purple); color: var(--purple); background: var(--purple-light); }
-
-  /* FLASHCARDS */
-  .flashcard-scene {
-    perspective: 1200px;
-    max-width: 600px;
-    margin: 0 auto 28px;
-    height: 280px;
-    cursor: pointer;
-    touch-action: manipulation;
-    user-select: none;
-  }
-  .flashcard-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);
-  }
-  .flashcard-inner.flipped { transform: rotateY(180deg); }
-  .flashcard-face {
-    position: absolute;
-    inset: 0;
-    backface-visibility: hidden;
-    border-radius: var(--radius);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 36px;
-    text-align: center;
-  }
-  .flashcard-front {
-    background: var(--ink);
-    color: white;
-    box-shadow: var(--shadow);
-  }
-  .flashcard-back {
-    background: white;
-    border: 1.5px solid var(--border);
-    transform: rotateY(180deg);
-    color: var(--ink);
-  }
-  .card-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    opacity: 0.5;
-  }
-  .card-term {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    line-height: 1.4;
-    color: white;
-  }
-  .card-def { font-size: 15px; line-height: 1.65; color: var(--ink); }
-  .card-hint { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 20px; }
-  
-  .flashcard-nav { display: flex; align-items: center; justify-content: center; gap: 16px; }
-  .fc-counter { font-size: 13px; color: var(--ink-muted); min-width: 60px; text-align: center; }
-  .fc-btn {
-    background: white;
-    border: 1.5px solid var(--border);
-    border-radius: 50%;
-    width: 48px; height: 48px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    font-size: 18px;
-    transition: all 0.2s;
-    color: var(--ink);
-  }
-  .fc-btn:hover { border-color: var(--purple); color: var(--purple); background: var(--purple-light); }
-  
-  .fc-progress { max-width: 600px; margin: 0 auto 28px; }
-  .fc-known { display: flex; gap: 12px; justify-content: center; margin-top: 16px; }
-  .fc-known-btn {
-    flex: 1;
-    max-width: 160px;
-    padding: 14px 10px;
-    border-radius: var(--radius-sm);
-    border: 1.5px solid;
-    background: none;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    min-height: 48px;
-  }
-  .fc-known-btn.yes { border-color: var(--green); color: var(--green); }
-  .fc-known-btn.yes:hover { background: var(--green-light); }
-  .fc-known-btn.no { border-color: var(--red); color: var(--red); }
-  .fc-known-btn.no:hover { background: var(--red-light); }
-
-  /* FILL IN THE BLANK */
-  .fitb-card {
-    background: white;
-    border-radius: var(--radius);
-    padding: 32px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    margin-bottom: 20px;
-    max-width: 720px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .fitb-sentence {
-    font-size: 16px;
-    line-height: 2.0;
-    margin-bottom: 20px;
-    color: var(--ink);
-  }
-  .blank-input {
-    border: none;
-    border-bottom: 2px solid var(--purple);
-    background: transparent;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
-    color: var(--purple-dark);
-    font-weight: 600;
-    min-width: 120px;
-    width: 160px;
-    outline: none;
-    padding: 0 4px;
-    transition: border-color 0.2s;
-  }
-  .blank-input:focus { border-color: var(--purple-dark); }
-  .blank-input.correct-answer { border-color: var(--green); color: var(--green); }
-  .blank-input.wrong-answer { border-color: var(--red); color: var(--red); }
-  
-  .fitb-feedback {
-    margin-top: 16px;
-    padding: 12px 16px;
-    border-radius: var(--radius-sm);
-    font-size: 13px;
-    display: none;
-    line-height: 1.6;
-  }
-  .fitb-feedback.show { display: block; }
-  .fitb-feedback.ok { background: var(--green-light); color: #0f6e56; }
-  .fitb-feedback.err { background: var(--red-light); color: #a32d2d; }
-
-  /* STORY MODE */
-  .story-container { max-width: 700px; margin: 0 auto; }
-  .chapter-nav {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 28px;
-    flex-wrap: wrap;
-  }
-  .ch-btn {
-    background: white;
-    border: 1.5px solid var(--border);
-    border-radius: 99px;
-    padding: 6px 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    cursor: pointer;
-    color: var(--ink-muted);
-    transition: all 0.2s;
-  }
-  .ch-btn.active { background: var(--purple); border-color: var(--purple); color: white; }
-  .ch-btn:hover:not(.active) { border-color: var(--purple); color: var(--purple); }
-  
-  .story-chapter { display: none; }
-  .story-chapter.active { display: block; }
-  
-  .chapter-header {
-    margin-bottom: 28px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--border);
-  }
-  .ch-number {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--purple);
-    margin-bottom: 8px;
-  }
-  .ch-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 26px;
-    color: var(--ink);
-    line-height: 1.3;
-  }
-  .story-body {
-    font-size: 16px;
-    line-height: 1.9;
-    color: var(--ink);
-  }
-  .story-body p { margin-bottom: 18px; }
-  .story-body .concept {
-    background: var(--purple-light);
-    color: var(--purple-dark);
-    padding: 2px 7px;
-    border-radius: 4px;
-    font-weight: 500;
-  }
-  .story-body .highlight {
-    border-left: 3px solid var(--purple);
-    padding: 12px 20px;
-    background: var(--purple-light);
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-    margin: 20px 0;
-    font-style: italic;
-    color: var(--purple-dark);
-  }
-  .story-body strong { color: var(--purple-dark); }
-
-  /* GOSSIP MODE — group chat */
-  .gossip-single { max-width: 680px; margin: 0 auto 40px; }
-  .chat-window {
-    background: #f0ece8;
-    border-radius: var(--radius);
-    overflow: hidden;
-    border: 1px solid var(--border);
-    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
-  }
-  .chat-header {
-    background: var(--ink);
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .chat-header-avatar {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    background: var(--purple);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-  }
-  .chat-header-info { flex: 1; }
-  .chat-header-name { color: white; font-weight: 600; font-size: 15px; }
-  .chat-header-members { color: rgba(255,255,255,0.5); font-size: 12px; margin-top: 1px; }
-  .chat-header-dots { color: rgba(255,255,255,0.4); font-size: 20px; letter-spacing: 3px; cursor: default; }
-  .chat-body {
-    padding: 16px 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    max-height: 75dvh;
-    overflow-y: auto;
-  }
-  .chat-date-divider {
-    text-align: center;
-    font-size: 11px;
-    color: #999;
-    background: rgba(0,0,0,0.08);
-    border-radius: 99px;
-    padding: 3px 12px;
-    align-self: center;
-    margin: 10px 0 6px;
-    letter-spacing: 0.04em;
-  }
-  .chat-msg-row {
-    display: flex;
-    align-items: flex-end;
-    gap: 7px;
-    margin-bottom: 2px;
-  }
-  .chat-msg-row.right { flex-direction: row-reverse; }
-  .chat-msg-row.right .chat-name { text-align: right; }
-  .chat-sender-col { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 32px; flex-shrink: 0; }
-  .chat-av {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px;
-    flex-shrink: 0;
-    font-weight: 700;
-    color: white;
-  }
-  .av-rita   { background: #e05c7e; }
-  .av-mariana{ background: #e07c3c; }
-  .av-beatriz{ background: #7c6fcd; }
-  .av-sofia  { background: #2d9e75; }
-  .av-prof   { background: #1a1a2e; font-size: 11px; }
-  .chat-bubble-col { display: flex; flex-direction: column; gap: 1px; max-width: 75%; }
-  .chat-name { font-size: 10px; font-weight: 700; color: #888; margin-bottom: 2px; padding: 0 10px; }
-  .chat-name.rita    { color: #c04060; }
-  .chat-name.mariana { color: #b05820; }
-  .chat-name.beatriz { color: #5048a0; }
-  .chat-name.sofia   { color: #1a7055; }
-  .chat-name.prof    { color: #444; }
-  .bubble {
-    padding: 9px 13px;
-    border-radius: 16px;
-    font-size: 14px;
-    line-height: 1.55;
-    color: #1a1a1a;
-    position: relative;
-    word-break: break-word;
-  }
-  .bubble-girl { background: white; border-radius: 4px 16px 16px 16px; }
-  .bubble-right { background: #dcf8c6; border-radius: 16px 4px 16px 16px; }
-  .bubble-prof {
-    background: #e8e4f8;
-    border-radius: 4px 16px 16px 16px;
-    border-left: 3px solid var(--purple);
-    font-size: 13px;
-    color: #333;
-  }
-  .bubble-prof strong { color: var(--purple-dark); }
-  .bubble-prof .theory-label {
-    display: inline-block;
-    background: var(--purple);
-    color: white;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 2px 8px;
-    border-radius: 99px;
-    margin-bottom: 6px;
-  }
-  .bubble .ts {
-    font-size: 10px;
-    color: #aaa;
-    text-align: right;
-    margin-top: 3px;
-    display: block;
-  }
-  .bubble .ts.delivered::after { content: ' ✓✓'; color: #4fc3f7; }
-  .read-receipt { font-size: 10px; color: #aaa; text-align: right; margin-top: 1px; padding-right: 4px; }
-  .typing-indicator {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 14px 4px;
-    font-size: 12px; color: #999; font-style: italic;
-  }
-  .typing-dots span {
-    display: inline-block;
-    width: 6px; height: 6px;
-    background: #bbb;
-    border-radius: 50%;
-    margin: 0 1px;
-    animation: tdot 1.2s infinite;
-  }
-  .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
-  .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes tdot { 0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)} }
-  .chat-input-bar {
-    background: #f0ece8;
-    border-top: 1px solid rgba(0,0,0,0.1);
-    padding: 10px 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .chat-input-fake {
-    flex: 1;
-    background: white;
-    border-radius: 99px;
-    padding: 9px 16px;
-    font-size: 14px;
-    color: #bbb;
-    border: none;
-  }
-  .chat-mic { font-size: 20px; color: #888; cursor: default; }
-
-  /* RESULTS */
-  .results-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(26,26,46,0.75);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-  }
-  .results-overlay.show { display: flex; }
-  .results-box {
-    background: white;
-    border-radius: 20px;
-    padding: 40px;
-    max-width: 420px;
-    width: 90%;
-    text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  }
-  .results-emoji { font-size: 56px; margin-bottom: 16px; }
-  .results-score {
-    font-family: 'Playfair Display', serif;
-    font-size: 52px;
-    color: var(--purple);
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-  .results-label { font-size: 14px; color: var(--ink-muted); margin-bottom: 24px; }
-  .results-sub { font-size: 13px; color: var(--ink-muted); line-height: 1.6; }
-
-  /* HOME PAGE */
-  .home-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px; }
-  .mode-card {
-    background: white;
-    border-radius: var(--radius);
-    padding: 24px;
-    border: 1.5px solid var(--border);
-    cursor: pointer;
-    transition: all 0.25s;
-    text-align: center;
-  }
-  .mode-card:hover { border-color: var(--purple); transform: translateY(-3px); box-shadow: var(--shadow); }
-  .mode-icon { font-size: 36px; margin-bottom: 12px; }
-  .mode-title { font-weight: 600; font-size: 15px; color: var(--ink); margin-bottom: 6px; }
-  .mode-desc { font-size: 12px; color: var(--ink-muted); line-height: 1.5; }
-  .mode-count { display: inline-block; background: var(--purple-light); color: var(--purple-dark); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px; margin-top: 10px; }
-
-  .topics-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 10px; }
-  .topic-chip {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    color: var(--ink);
-  }
-  .topic-num { background: var(--purple); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
-
-  .section-title { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--ink); margin-bottom: 16px; }
-
-  /* ===================== MOBILE-FIRST OVERRIDES ===================== */
-  /* Base styles above are already lean; these adapt for small screens */
-
-  @media (max-width: 640px) {
-    /* Header: hide title text, make it compact */
-    .header-inner { padding: 0 12px; height: 48px; }
-    .header-title { font-size: 13px; }
-    .header-title span { display: none; }
-
-    /* Nav: move to bottom of screen as app tab bar */
-    .header { position: static; box-shadow: none; }
-    .nav-tabs {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      height: 60px;
-      background: var(--ink);
-      border-top: 1px solid rgba(255,255,255,0.08);
-      z-index: 200;
-      display: flex;
-      justify-content: space-around;
-      align-items: stretch;
-      gap: 0;
-      padding: 0 4px;
-      padding-bottom: env(safe-area-inset-bottom, 0px);
-    }
-    .nav-tab {
-      flex: 1;
-      padding: 0 2px;
-      font-size: 9px;
-      letter-spacing: 0;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      border-bottom: none;
-      border-top: 2px solid transparent;
-    }
-    .nav-tab.active { border-top: 2px solid var(--purple); border-bottom: none; }
-    .nav-tab::before {
-      font-size: 18px;
-      line-height: 1;
-    }
-    .nav-tab:nth-child(1)::before { content: '🏠'; }
-    .nav-tab:nth-child(2)::before { content: '🧠'; }
-    .nav-tab:nth-child(3)::before { content: '🃏'; }
-    .nav-tab:nth-child(4)::before { content: '✍️'; }
-    .nav-tab:nth-child(5)::before { content: '📖'; }
-    .nav-tab:nth-child(6)::before { content: '🫦'; }
-
-    /* Stats bar: compact single row */
-    .stats-bar { padding: 7px 12px; gap: 12px; }
-    .stat-pill { font-size: 11px; }
-    .stat-pill strong { font-size: 12px; }
-
-    /* Main: add bottom padding for fixed tab bar + reduce side padding */
-    .main { padding: 16px 12px 80px; }
-
-    /* Hero: smaller */
-    .section-hero { padding: 20px 18px; margin-bottom: 20px; }
-    .section-hero h1 { font-size: 20px; }
-    .section-hero p { font-size: 13px; }
-
-    /* Home grid: 2 columns */
-    .home-grid { grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-    .mode-card { padding: 16px 12px; }
-    .mode-icon { font-size: 28px; margin-bottom: 8px; }
-    .mode-title { font-size: 13px; }
-    .mode-desc { font-size: 11px; }
-    .mode-count { font-size: 10px; }
-
-    /* Topics: 1 column */
-    .topics-list { grid-template-columns: 1fr; gap: 7px; }
-    .topic-chip { font-size: 12px; padding: 10px 12px; }
-
-    /* Section title */
-    .section-title { font-size: 17px; margin-bottom: 12px; }
-
-    /* Quiz */
-    .quiz-container { max-width: 100%; }
-    .question-card { padding: 20px 16px; }
-    .question-text { font-size: 15px; margin-bottom: 20px; }
-    .option-btn { padding: 12px 14px; font-size: 13px; }
-    .quiz-nav { gap: 8px; }
-    .btn { padding: 10px 18px; font-size: 13px; }
-    .btn-ghost { padding: 9px 16px; font-size: 13px; }
-
-    /* Flashcards */
-    .flashcard-scene { height: 220px; }
-    .card-term { font-size: 18px; }
-    .card-def { font-size: 14px; }
-    .fc-progress { max-width: 100%; }
-
-    /* Fill in the blank */
-    .fitb-card { padding: 18px 14px; }
-    .fitb-sentence { font-size: 15px; }
-    .blank-input { width: 120px; font-size: 15px; }
-
-    /* Story */
-    .story-container { max-width: 100%; }
-    .ch-title { font-size: 21px; }
-    .story-body { font-size: 15px; }
-    .chapter-nav { gap: 6px; }
-    .ch-btn { font-size: 11px; padding: 5px 11px; }
-
-    /* Gossip chat */
-    .gossip-single { max-width: 100%; }
-    .chat-body { max-height: 65vh; padding: 12px 10px; }
-    .bubble { font-size: 13px; padding: 8px 11px; }
-    .chat-bubble-col { max-width: 82%; }
-    .chat-header { padding: 10px 14px; }
-    .chat-header-name { font-size: 14px; }
-    .chat-header-members { font-size: 11px; }
-
-    /* Results modal */
-    .results-box { padding: 28px 20px; }
-    .results-score { font-size: 44px; }
-  }
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Comunicação Interpessoal — Plataforma de Estudo v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <div class="header">
   <div class="header-inner">
+    <img class="header-logo" src="assets/logo.svg" alt="">
     <div class="header-title">Comunicação <span>Interpessoal</span></div>
     <nav class="nav-tabs">
-      <button class="nav-tab active" onclick="showPage('home')">Início</button>
-      <button class="nav-tab" onclick="showPage('quiz')">Quiz ×100</button>
-      <button class="nav-tab" onclick="showPage('flash')">Flashcards</button>
-      <button class="nav-tab" onclick="showPage('fitb')">Fill in Blank</button>
-      <button class="nav-tab" onclick="showPage('story')">📖 História</button>
-      <button class="nav-tab" onclick="showPage('gossip')">🫦 Fofoca</button>
+      <button class="nav-tab active" data-tab="home" onclick="showPage('home')">Início</button>
+      <button class="nav-tab" data-tab="quiz" onclick="showPage('quiz')">Quiz</button>
+      <button class="nav-tab" data-tab="flash" onclick="showPage('flash')">Cartões</button>
+      <button class="nav-tab" data-tab="jogos" onclick="showPage('jogos')">Jogos</button>
+      <button class="nav-tab" data-tab="ler" onclick="showPage('ler')">Ler</button>
     </nav>
+    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" title="Mudar tema">🌙</button>
   </div>
 </div>
 
 <div class="stats-bar">
-  <div class="stat-pill"><span class="stat-dot dot-purple"></span><strong id="stat-quiz">0</strong> quiz corretos</div>
-  <div class="stat-pill"><span class="stat-dot dot-green"></span><strong id="stat-flash">0</strong> flashcards dominados</div>
-  <div class="stat-pill"><span class="stat-dot dot-amber"></span><strong id="stat-fitb">0</strong> frases completadas</div>
+  <div class="stat-pill">⭐ <strong id="stat-xp">0</strong> XP</div>
+  <div class="stat-pill">🎓 <strong id="stat-level">Nível 1</strong></div>
+  <div class="stat-pill">🔥 <strong id="stat-streak">0</strong> dias seguidos</div>
+  <div class="stat-pill">🏆 <strong id="stat-ach">0</strong> conquistas</div>
 </div>
 
-<!-- HOME PAGE -->
+<!-- ===================== INÍCIO ===================== -->
 <div id="page-home" class="page active main">
-  <div class="section-hero">
-    <h1>Bem-vindo ao teu estúdio de estudo 🎓</h1>
-    <p>14 aulas · 4 modos de aprendizagem · 175 exercícios · Comunicação Interpessoal</p>
-  </div>
-  
-  <div class="section-title">Escolhe o modo de estudo</div>
-  <div class="home-grid">
-    <div class="mode-card" onclick="showPage('quiz')">
-      <div class="mode-icon">🧠</div>
-      <div class="mode-title">Quiz de Escolha Múltipla</div>
-      <div class="mode-desc">Testa os teus conhecimentos com perguntas sobre toda a matéria</div>
-      <div class="mode-count">100 perguntas</div>
+  <div class="dash-top">
+    <div class="level-card">
+      <div class="level-greeting" id="dash-greeting">Olá! Pronta para estudar?</div>
+      <div class="level-name" id="dash-level-name">Ruído Branco</div>
+      <div class="level-xp-row"><span id="dash-xp-now">0 XP</span><span id="dash-xp-next">próximo nível: 100 XP</span></div>
+      <div class="level-bar"><div class="level-bar-fill" id="dash-xp-bar" style="width:0%"></div></div>
     </div>
-    <div class="mode-card" onclick="showPage('flash')">
-      <div class="mode-icon">🃏</div>
-      <div class="mode-title">Flashcards</div>
-      <div class="mode-desc">Memoriza os conceitos-chave virando os cartões</div>
-      <div class="mode-count">50 cartões</div>
-    </div>
-    <div class="mode-card" onclick="showPage('fitb')">
-      <div class="mode-icon">✍️</div>
-      <div class="mode-title">Fill in the Blank</div>
-      <div class="mode-desc">Completa as frases com os termos corretos</div>
-      <div class="mode-count">25 frases</div>
-    </div>
-    <div class="mode-card" onclick="showPage('story')">
-      <div class="mode-icon">📖</div>
-      <div class="mode-title">Modo História</div>
-      <div class="mode-desc">Aprende a matéria como uma narrativa contínua</div>
-      <div class="mode-count">7 capítulos</div>
-    </div>
-    <div class="mode-card" onclick="showPage('gossip')">
-      <div class="mode-icon">🫦</div>
-      <div class="mode-title">Modo Fofoca</div>
-      <div class="mode-desc">A matéria como se fosses contar segredos a uma amiga</div>
-      <div class="mode-count">14 aulas fofocadas</div>
+    <div class="streak-card">
+      <div class="streak-flame" id="dash-flame">🔥</div>
+      <div>
+        <div class="streak-num" id="dash-streak">0</div>
+        <div class="streak-label">dias seguidos</div>
+      </div>
     </div>
   </div>
 
-  <div class="section-title">Tópicos abordados</div>
-  <div class="topics-list">
-    <div class="topic-chip"><span class="topic-num">1</span>Introdução à Comunicação Interpessoal</div>
-    <div class="topic-chip"><span class="topic-num">2</span>Comunicação Não-Verbal</div>
-    <div class="topic-chip"><span class="topic-num">3</span>TGIM e Teoria dos Objetivos Múltiplos</div>
-    <div class="topic-chip"><span class="topic-num">4</span>Perceções e Perfil Verbal-Não Verbal</div>
-    <div class="topic-chip"><span class="topic-num">5</span>Troca Social e Interacionismo Simbólico</div>
-    <div class="topic-chip"><span class="topic-num">6</span>Escuta Ativa, Empática e Reflexiva</div>
-    <div class="topic-chip"><span class="topic-num">7</span>Inteligência Emocional (IE)</div>
-    <div class="topic-chip"><span class="topic-num">8</span>Estilos de Comunicação: Assertivo, Passivo, Agressivo</div>
-    <div class="topic-chip"><span class="topic-num">9</span>Teoria da Retórica Normativa (Ethos, Logos, Pathos)</div>
-    <div class="topic-chip"><span class="topic-num">11</span>Desafios da Comunicação Contemporânea</div>
+  <div class="quick-row">
+    <button class="btn btn-big" onclick="startQuickStudy()">⚡ Estudo rápido — 10 perguntas</button>
+    <button class="btn-ghost btn-big" onclick="startQuiz('exame','Todos')">⏱️ Simular exame</button>
   </div>
+
+  <div class="section-title">Modos de estudo</div>
+  <div class="home-grid" id="home-modes"></div>
+
+  <div class="section-title">Os teus pontos fracos</div>
+  <div class="weak-list" id="weak-list"></div>
+
+  <div class="section-title">Conquistas</div>
+  <div class="ach-grid" id="ach-grid"></div>
 </div>
 
-<!-- QUIZ PAGE -->
+<!-- ===================== QUIZ ===================== -->
 <div id="page-quiz" class="page main">
   <div class="section-hero">
     <h1>Quiz de Escolha Múltipla</h1>
-    <p>100 perguntas sobre toda a matéria de Comunicação Interpessoal</p>
+    <p>100 perguntas · treino com feedback imediato ou simulação de exame com tempo</p>
   </div>
   <div class="quiz-container">
-    <div class="quiz-progress-wrap">
-      <div class="quiz-progress-label">
-        <span id="q-label">Pergunta 1 de 100</span>
-        <span id="q-score">✓ 0 corretas</span>
+    <div id="quiz-setup" class="setup-card">
+      <div class="setup-label">Modo</div>
+      <div class="choice-row" id="quiz-mode-row">
+        <button class="choice-chip sel" data-mode="treino">📖 Treino — feedback imediato</button>
+        <button class="choice-chip" data-mode="exame">⏱️ Exame — 20 perguntas, 20 min</button>
+        <button class="choice-chip" data-mode="erradas" id="chip-erradas">🔁 Repetir erradas</button>
       </div>
-      <div class="progress-bar"><div class="progress-fill" id="q-progress" style="width:1%"></div></div>
+      <div class="setup-label">Tópico</div>
+      <div class="choice-row" id="quiz-topic-row"></div>
+      <div class="setup-actions">
+        <button class="btn btn-big" onclick="startQuizFromSetup()">Começar →</button>
+      </div>
     </div>
-    <div class="question-card" id="q-card">
-      <div class="question-number" id="q-number">PERGUNTA 1</div>
-      <div class="question-text" id="q-text"></div>
-      <div class="options" id="q-options"></div>
-      <div class="explanation" id="q-explanation"></div>
-    </div>
-    <div class="quiz-nav">
-      <button class="btn-ghost" onclick="skipQuestion()">Saltar →</button>
-      <button class="btn" id="q-next-btn" onclick="nextQuestion()" style="display:none">Próxima →</button>
+
+    <div id="quiz-play" style="display:none">
+      <div class="quiz-progress-wrap">
+        <div class="quiz-progress-label">
+          <span id="q-label"></span>
+          <span id="q-right"></span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="q-progress"></div></div>
+      </div>
+      <div class="question-card">
+        <div class="question-number"><span id="q-number"></span><span class="topic-tag" id="q-topic"></span></div>
+        <div class="question-text" id="q-text"></div>
+        <div class="options" id="q-options"></div>
+        <div class="explanation" id="q-explanation"></div>
+      </div>
+      <div class="quiz-nav">
+        <span class="session-streak" id="q-session-streak"></span>
+        <div class="quiz-nav-right">
+          <button class="btn-ghost" onclick="quitQuiz()">Sair</button>
+          <button class="btn-ghost" id="q-skip-btn" onclick="skipQuestion()">Saltar →</button>
+          <button class="btn" id="q-next-btn" onclick="nextQuestion()" style="display:none">Próxima →</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- FLASHCARDS PAGE -->
+<!-- ===================== FLASHCARDS ===================== -->
 <div id="page-flash" class="page main">
   <div class="section-hero">
     <h1>Flashcards</h1>
-    <p>Clica no cartão para virar · Marca se sabias ou não · 50 conceitos-chave</p>
+    <p>Repetição espaçada: os cartões que falhares voltam mais vezes · 50 conceitos</p>
+  </div>
+  <div class="fc-filter-row">
+    <button class="choice-chip sel" data-fcfilter="todas" onclick="setFcFilter('todas')">Todas</button>
+    <button class="choice-chip" data-fcfilter="dificeis" onclick="setFcFilter('dificeis')">Só as difíceis</button>
+    <button class="choice-chip" onclick="shuffleFc()">🔀 Baralhar</button>
   </div>
   <div class="fc-progress">
     <div class="quiz-progress-label">
-      <span id="fc-label">Cartão 1 de 50</span>
-      <span id="fc-score">🟢 0 dominados</span>
+      <span id="fc-label"></span>
+      <span id="fc-score"></span>
     </div>
-    <div class="progress-bar"><div class="progress-fill" id="fc-progress" style="width:2%"></div></div>
+    <div class="progress-bar"><div class="progress-fill" id="fc-progress"></div></div>
   </div>
   <div class="flashcard-scene" onclick="flipCard()">
     <div class="flashcard-inner" id="fc-inner">
       <div class="flashcard-face flashcard-front">
+        <span class="box-tag" id="fc-box-tag"></span>
         <div class="card-label">conceito</div>
         <div class="card-term" id="fc-term"></div>
         <div class="card-hint">↻ clica para ver a definição</div>
@@ -939,29 +152,153 @@
   </div>
   <div class="flashcard-nav" style="margin-top:20px">
     <button class="fc-btn" onclick="fcNav(-1)">←</button>
-    <span class="fc-counter" id="fc-counter">1 / 50</span>
+    <span class="fc-counter" id="fc-counter"></span>
     <button class="fc-btn" onclick="fcNav(1)">→</button>
   </div>
+  <div class="fc-kbd-hint">Atalhos: <kbd>espaço</kbd> vira · <kbd>←</kbd><kbd>→</kbd> navega · <kbd>1</kbd> não sabia · <kbd>2</kbd> sabia</div>
 </div>
 
-<!-- FILL IN THE BLANK PAGE -->
+<!-- ===================== JOGOS (hub) ===================== -->
+<div id="page-jogos" class="page main">
+  <div class="section-hero">
+    <h1>Jogos & Exercícios</h1>
+    <p>Três formas diferentes de pôr a matéria à prova</p>
+  </div>
+  <div class="hub-grid">
+    <div class="mode-card" onclick="showPage('fitb')">
+      <div class="mode-icon">✍️</div>
+      <div class="mode-title">Preencher Espaços</div>
+      <div class="mode-desc">Completa 25 frases com o termo correto — agora aceita respostas sem acentos</div>
+      <div class="mode-stat" id="hub-fitb-stat"></div>
+    </div>
+    <div class="mode-card" onclick="showPage('cenarios')">
+      <div class="mode-icon">🎭</div>
+      <div class="mode-title">Cenários de Exame</div>
+      <div class="mode-desc">16 situações reais para aplicar conceitos — o formato da prova escrita</div>
+      <div class="mode-stat" id="hub-cen-stat"></div>
+    </div>
+    <div class="mode-card" onclick="showPage('match')">
+      <div class="mode-icon">🧩</div>
+      <div class="mode-title">Jogo de Associação</div>
+      <div class="mode-desc">Liga cada conceito à sua definição contra o relógio</div>
+      <div class="mode-stat" id="hub-match-stat"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== FITB ===================== -->
 <div id="page-fitb" class="page main">
   <div class="section-hero">
-    <h1>Fill in the Blank</h1>
-    <p>25 frases com espaços em branco · Completa com o termo correto</p>
+    <h1>Preencher Espaços ✍️</h1>
+    <p>25 frases · escreve o termo e carrega Enter · acentos opcionais</p>
   </div>
   <div id="fitb-container"></div>
-  <div style="text-align:center;margin-top:8px">
-    <button class="btn" onclick="checkAllFitb()">Verificar todas as respostas</button>
-    <button class="btn-ghost" onclick="resetFitb()" style="margin-left:10px">Recomeçar</button>
+  <div class="fitb-actions">
+    <button class="btn" onclick="checkAllFitb()">Corrigir tudo</button>
+    <button class="btn-ghost" onclick="resetFitb()">Recomeçar</button>
   </div>
 </div>
 
-<!-- STORY PAGE -->
+<!-- ===================== CENÁRIOS ===================== -->
+<div id="page-cenarios" class="page main">
+  <div class="section-hero">
+    <h1>Cenários de Exame 🎭</h1>
+    <p>Aplica a teoria a situações concretas — tal como na prova escrita</p>
+  </div>
+  <div class="quiz-container">
+    <div id="cen-setup" class="setup-card" style="text-align:center">
+      <p style="font-size:14px; color:var(--ink-muted); line-height:1.7; margin-bottom:8px">16 cenários do dia-a-dia. Lê a situação, identifica o conceito ou a teoria em jogo e escolhe a resposta certa. Cada acerto vale <strong>15 XP</strong>.</p>
+      <div class="setup-actions" style="justify-content:center">
+        <button class="btn btn-big" onclick="startCen()">Começar →</button>
+      </div>
+    </div>
+    <div id="cen-play" style="display:none">
+      <div class="quiz-progress-wrap">
+        <div class="quiz-progress-label">
+          <span id="cen-label"></span>
+          <span id="cen-right"></span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="cen-progress"></div></div>
+      </div>
+      <div class="question-card">
+        <div class="question-number"><span id="cen-number"></span><span class="topic-tag">cenário</span></div>
+        <div class="scenario-box" id="cen-sc"></div>
+        <div class="question-text" id="cen-q"></div>
+        <div class="options" id="cen-options"></div>
+        <div class="explanation" id="cen-explanation"></div>
+      </div>
+      <div class="quiz-nav">
+        <span></span>
+        <div class="quiz-nav-right">
+          <button class="btn-ghost" onclick="quitCen()">Sair</button>
+          <button class="btn" id="cen-next-btn" onclick="nextCen()" style="display:none">Próximo →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ASSOCIAÇÃO ===================== -->
+<div id="page-match" class="page main">
+  <div class="section-hero">
+    <h1>Jogo de Associação 🧩</h1>
+    <p>Liga cada conceito à definição certa · 6 pares por ronda · contra o relógio</p>
+  </div>
+  <div class="match-wrap">
+    <div id="match-setup" class="setup-card" style="text-align:center">
+      <p style="font-size:14px; color:var(--ink-muted); line-height:1.7; margin-bottom:8px">Seleciona um conceito à esquerda e a definição correspondente à direita. Ronda completa = <strong>30 XP</strong>. Sem erros = bónus!</p>
+      <div class="setup-actions" style="justify-content:center">
+        <button class="btn btn-big" onclick="startMatch()">Jogar →</button>
+      </div>
+    </div>
+    <div id="match-play" style="display:none">
+      <div class="match-hud">
+        <span>⏱️ <strong id="match-time">0s</strong></span>
+        <span>✅ <strong id="match-found">0</strong>/6</span>
+        <span>❌ <strong id="match-errors">0</strong> erros</span>
+      </div>
+      <div class="match-cols">
+        <div class="match-col" id="match-terms"></div>
+        <div class="match-col" id="match-defs"></div>
+      </div>
+    </div>
+    <div id="match-done" class="match-done" style="display:none"></div>
+  </div>
+</div>
+
+<!-- ===================== LER (hub) ===================== -->
+<div id="page-ler" class="page main">
+  <div class="section-hero">
+    <h1>Ler & Consultar</h1>
+    <p>A matéria contada de três maneiras muito diferentes</p>
+  </div>
+  <div class="hub-grid">
+    <div class="mode-card" onclick="showPage('story')">
+      <div class="mode-icon">📖</div>
+      <div class="mode-title">Modo História</div>
+      <div class="mode-desc">A matéria como uma narrativa contínua em 7 capítulos</div>
+      <div class="mode-stat" id="hub-story-stat"></div>
+    </div>
+    <div class="mode-card" onclick="showPage('gossip')">
+      <div class="mode-icon">🫦</div>
+      <div class="mode-title">Modo Fofoca</div>
+      <div class="mode-desc">O drama da Ana Catarina e do Tiago, interrompido pelo Prof. Manuel a aplicar teoria</div>
+      <div class="mode-stat">Top Gossip Gang 🔥</div>
+    </div>
+    <div class="mode-card" onclick="showPage('glossario')">
+      <div class="mode-icon">🔎</div>
+      <div class="mode-title">Glossário</div>
+      <div class="mode-desc">Os 50 conceitos pesquisáveis — para tirar dúvidas em segundos</div>
+      <div class="mode-stat">50 conceitos</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== HISTÓRIA ===================== -->
 <div id="page-story" class="page main">
   <div class="section-hero">
     <h1>Modo História 📖</h1>
-    <p>A matéria contada como um livro — capítulo a capítulo</p>
+    <p>A matéria toda como uma narrativa — 7 capítulos</p>
   </div>
   <div class="story-container">
     <div class="chapter-nav" id="ch-nav"></div>
@@ -969,7 +306,7 @@
   </div>
 </div>
 
-<!-- GOSSIP PAGE -->
+<!-- ===================== FOFOCA ===================== -->
 <div id="page-gossip" class="page main">
   <div class="section-hero">
     <h1>Modo Fofoca 🫦</h1>
@@ -978,654 +315,36 @@
   <div class="gossip-single" id="gossip-container"></div>
 </div>
 
-<!-- RESULTS -->
+<!-- ===================== GLOSSÁRIO ===================== -->
+<div id="page-glossario" class="page main">
+  <div class="section-hero">
+    <h1>Glossário 🔎</h1>
+    <p>Todos os conceitos da disciplina, pesquisáveis (com ou sem acentos)</p>
+  </div>
+  <div class="gloss-search-wrap">
+    <span class="gloss-search-icon">🔎</span>
+    <input type="text" class="gloss-search" id="gloss-search" placeholder="Pesquisar conceito… (ex: proxemica, ethos, escuta)" autocomplete="off">
+  </div>
+  <div class="gloss-count" id="gloss-count"></div>
+  <div class="gloss-list" id="gloss-list"></div>
+</div>
+
+<!-- ===================== MODAL DE RESULTADOS ===================== -->
 <div class="results-overlay" id="results-overlay">
   <div class="results-box">
     <div class="results-emoji" id="res-emoji">🎉</div>
-    <div class="results-score" id="res-score">87%</div>
-    <div class="results-label" id="res-label">Quiz concluído!</div>
+    <div class="results-score" id="res-score"></div>
+    <div class="results-label" id="res-label"></div>
+    <div class="results-xp" id="res-xp"></div>
     <p class="results-sub" id="res-sub"></p>
-    <br>
-    <button class="btn" onclick="restartQuiz()">Recomeçar quiz</button>
-    <button class="btn-ghost" style="margin-left:10px" onclick="document.getElementById('results-overlay').classList.remove('show')">Fechar</button>
+    <div id="res-review" style="text-align:left"></div>
+    <div class="results-actions" id="res-actions"></div>
   </div>
 </div>
 
-<script>
-// ============================================================
-// DATA: 100 QUIZ QUESTIONS
-// ============================================================
-const quizData = [
-  {q:"O que é a Comunicação Interpessoal?",o:["Envio de mensagens em massa","Troca de informação e significado entre duas ou mais pessoas","Comunicação através de tecnologia","Leitura de documentos oficiais"],a:1,e:"A Comunicação Interpessoal envolve a troca de informação, significado e emoções entre pessoas, sendo inseparável das relações humanas."},
-  {q:"Segundo Minter (2010), qual é a relação entre comunicação e relações humanas?",o:["São conceitos opostos","São quase sinónimos e extremamente ligados","A comunicação é mais importante","As relações humanas dispensam comunicação"],a:1,e:"Minter (2010) afirma que os conceitos são 'quase sinónimos' e que é impossível haver relações humanas sem comunicação e vice-versa."},
-  {q:"O que são os 'sinais não-verbais' na comunicação?",o:["Palavras escritas","Mensagens transmitidas sem palavras faladas (gestos, expressões, postura, toque)","Apenas o silêncio","Apenas contacto visual"],a:1,e:"Os sinais não-verbais incluem gestos, expressões faciais, postura corporal, toque, tom de voz e uso do espaço — tudo o que comunica sem palavras."},
-  {q:"Qual é a Teoria da Gestão da Informação Motivada (TGIM)?",o:["Teoria sobre gestão de empresas","Teoria sobre como as pessoas gerem a incerteza e ansiedade em situações de comunicação","Teoria sobre tecnologia de informação","Teoria sobre motivação no trabalho"],a:1,e:"A TGIM explica como as pessoas gerem a incerteza e ansiedade ao comunicar, buscando informação para reduzir a incerteza."},
-  {q:"O que é a Teoria dos Objetivos Múltiplos?",o:["Teoria sobre múltiplas tarefas","Teoria que explica como as pessoas perseguem vários objetivos em simultâneo na comunicação","Teoria sobre objetivos desportivos","Teoria sobre gestão de projetos"],a:1,e:"A Teoria dos Objetivos Múltiplos mostra que ao comunicar perseguimos vários objetivos em simultâneo: instrumentais, relacionais e identitários."},
-  {q:"O que é o 'Perfil Verbal-Não Verbal Discrepante'?",o:["Quando se fala muito alto","Quando a mensagem verbal e não-verbal são inconsistentes/contraditórias","Quando não se usa gestos","Quando se fala e escreve ao mesmo tempo"],a:1,e:"O Perfil Discrepante ocorre quando o que dizemos verbalmente contradiz o que a nossa linguagem corporal e tom de voz transmitem."},
-  {q:"O que é a Troca Social na comunicação interpessoal?",o:["Troca de dinheiro entre pessoas","Princípio de que as interações humanas envolvem trocas de recursos, recompensas e custos","Troca de redes sociais","Troca de presentes"],a:1,e:"A Troca Social é o princípio segundo o qual as interações humanas são governadas por trocas de recursos, custos e recompensas, orientadas pelo interesse próprio e reciprocidade."},
-  {q:"O que distingue uma Troca Social de uma Troca Económica?",o:["A troca social envolve dinheiro, a económica não","A troca económica tem obrigações legais e precisão; a social é voluntária e baseada em confiança","São exatamente iguais","A troca social é mais formal"],a:1,e:"A troca económica envolve obrigações legais e precisão (ex: preço fixo). A troca social é voluntária, baseada em confiança, com custos e recompensas mais flexíveis."},
-  {q:"O que é o Interacionismo Simbólico?",o:["Uso de símbolos matemáticos","Perspetiva que vê o comportamento social como resultado do significado que as pessoas atribuem aos símbolos","Teoria sobre sinais de trânsito","Estudo de logos e marcas"],a:1,e:"O Interacionismo Simbólico vê o comportamento social como produto dos significados simbólicos que as pessoas constroem nas interações."},
-  {q:"O que afirma o Teorema de Thomas?",o:["Que a realidade é objetiva","'Se as pessoas definem as situações como reais, elas são reais nas suas consequências'","Que os símbolos são naturais","Que a comunicação é linear"],a:1,e:"O Teorema de Thomas diz que se as pessoas definem uma situação como real, ela torna-se real nas suas consequências — mostrando o poder das perceções."},
-  {q:"Qual a diferença entre Ouvir e Escutar?",o:["Não há diferença","Ouvir é passivo (receção de som); Escutar é ativo (processar, interpretar e responder ao que se ouve)","Escutar é apenas para música","Ouvir requer mais esforço"],a:1,e:"Ouvir é um processo fisiológico passivo. Escutar implica atenção ativa, compreensão e resposta — é um processo cognitivo e emocional."},
-  {q:"O que é a Escuta Ativa?",o:["Ouvir música com atenção","Forma de escuta em que o receptor demonstra atenção, compreensão e interesse ativo na mensagem do outro","Apenas responder com perguntas","Tomar notas durante uma conversa"],a:1,e:"A Escuta Ativa envolve prestar atenção plena, mostrar envolvimento, pedir clarificações e dar feedback — demonstrando que o outro foi compreendido."},
-  {q:"O que é a Escuta Empática?",o:["Escutar apenas factos","Escutar procurando compreender os sentimentos e perspetiva do outro","Escutar para contradizer","Apenas escutar quando é obrigatório"],a:1,e:"A Escuta Empática vai além dos factos — tenta compreender a perspetiva emocional do outro, colocando-se no seu lugar."},
-  {q:"Qual é uma barreira psicológica à comunicação?",o:["Ruído ambiental","Preconceitos, emoções fortes ou experiências passadas que distorcem a receção da mensagem","Falha de microfone","Língua diferente"],a:1,e:"As barreiras psicológicas incluem preconceitos, expectativas, emoções e experiências passadas que interferem na interpretação da mensagem."},
-  {q:"Qual é uma barreira semântica à comunicação?",o:["Falar muito alto","Diferenças no significado atribuído às palavras ou símbolos entre emissor e recetor","Falta de iluminação","Excesso de barulho"],a:1,e:"As barreiras semânticas surgem quando os interlocutores atribuem significados diferentes às mesmas palavras, expressões ou conceitos."},
-  {q:"O que é a Inteligência Emocional (IE)?",o:["A capacidade de fazer cálculos complexos","A capacidade de reconhecer, compreender e gerir as próprias emoções e as dos outros","Inteligência académica","A capacidade de reprimir emoções"],a:1,e:"A IE é a capacidade de perceber, usar, compreender e regular as emoções — tanto as próprias como as dos outros — envolvendo autoconsciência, autorregulação, motivação, empatia e competências sociais."},
-  {q:"Quais são os 5 pilares da Inteligência Emocional segundo Goleman?",o:["Força, velocidade, resistência, flexibilidade, equilíbrio","Autoconsciência, autorregulação, motivação, empatia e competências sociais","Lógica, criatividade, memória, atenção, linguagem","Assertividade, passividade, agressividade, empatia, silêncio"],a:1,e:"Os 5 pilares de Goleman são: autoconsciência (conhecer as próprias emoções), autorregulação, motivação interna, empatia e competências sociais."},
-  {q:"O que é a IE de 'habilidade' (ability)?",o:["A capacidade de realizar tarefas manuais","Um conjunto de capacidades cognitivas sobre emoções: perceber, usar, compreender e regular emoções","A tendência para expressar emoções","A capacidade de ignorar emoções"],a:1,e:"A IE de habilidade envolve capacidades cognitivas mensuráveis: perceber emoções nos outros, usá-las para pensar, compreendê-las e regulá-las adaptativamente."},
-  {q:"O que é a IE de 'traço' (trait)?",o:["Um traço físico observável","Traços auto-reportados relacionados com autoeficácia emocional, bem-estar e sociabilidade","A habilidade de calcular emoções","Traços exclusivamente genéticos"],a:1,e:"A IE de traço refere-se a como a pessoa percebe as suas próprias características emocionais — é auto-reportada e inclui bem-estar subjetivo e autoeficácia emocional."},
-  {q:"O que é a Teoria da Atribuição no contexto da IE?",o:["Teoria sobre atribuição de tarefas no trabalho","Processo pelo qual interpretamos as causas do comportamento dos outros (interno vs externo)","Teoria sobre distribuição de recursos","Processo de atribuição de notas"],a:1,e:"A Teoria da Atribuição explica como interpretamos as causas do comportamento alheio — atribuindo causas internas (personalidade) ou externas (situação), o que afeta como comunicamos."},
-  {q:"O que é a Teoria da Troca Afetiva?",o:["Troca de presentes em relações afetivas","Como as emoções trocadas nas interações influenciam e regulam as relações interpessoais","Teoria sobre mercados emocionais","Troca de informação racional"],a:1,e:"A Teoria da Troca Afetiva explica como as emoções que transmitimos e recebemos nas interações moldam e regulam a qualidade das nossas relações."},
-  {q:"Como se caracteriza o estilo de comunicação Assertivo?",o:["Impõe a sua vontade ignorando os outros","Expressa necessidades e opiniões com respeito pelos direitos próprios e dos outros","Evita sempre o conflito","Usa ironia e sarcasmo para comunicar"],a:1,e:"O assertivo defende os seus direitos construtivamente, é direto, honesto e específico, e respeita os direitos dos outros — o estilo mais adaptativo."},
-  {q:"Como se caracteriza o estilo de comunicação Passivo?",o:["Expressa as suas opiniões com confiança","Evita o conflito, sublima as suas necessidades e cede facilmente quando desafiado","Impõe as suas necessidades","Usa manipulação indireta"],a:1,e:"O passivo evita conflito, teme a desaprovação, hesita antes de responder e suprime as suas necessidades para satisfazer os outros."},
-  {q:"Como se caracteriza o estilo de comunicação Agressivo?",o:["Respeita as opiniões dos outros","Procura alcançar objetivos atacando, ameaçando ou intimidando os outros","Evita confrontos a todo o custo","Comunica de forma indireta"],a:1,e:"O agressivo procura os seus objetivos às custas dos outros, usa ameaças, ataques pessoais, é sarcástico e não coopera — 'eu venço, tu perdes'."},
-  {q:"O que distingue o estilo Passivo-Agressivo?",o:["Combina agressividade física com passividade verbal","Evita confronto direto mas manifesta insatisfação de forma indireta (ironia, sabotagem velada)","É uma versão moderada do assertivo","É o estilo mais eficaz"],a:1,e:"O passivo-agressivo evita o confronto direto mas expressa insatisfação indiretamente através de ironia, ambiguidade ou sabotagem velada."},
-  {q:"Porque é o estilo assertivo considerado o mais desejável?",o:["Porque garante sempre ganhar conflitos","Porque equilibra defesa dos próprios direitos com respeito pelos outros, contribuindo para relações saudáveis","Porque é o mais passivo","Porque nunca cria conflito"],a:1,e:"A assertividade é desejável porque defende os direitos próprios sem violar os dos outros, promove comunicação aberta e contribui para maior satisfação pessoal e relacional."},
-  {q:"O que é o Modelo DESC na comunicação assertiva?",o:["Modelo de defesa, escuta, síntese e conclusão","Estrutura: Descreve → Expressa → Sugere → Consequências — para comunicar assertivamente em situações de conflito","Modelo de desenvolvimento estratégico de competências","Modelo de decisão empresarial"],a:1,e:"O DESC é uma estrutura para comunicação assertiva: Descreve o comportamento problemático, Expressa como te sentes, Sugere uma mudança, e indica as Consequências positivas."},
-  {q:"O que é o Modelo XYZ?",o:["Modelo matemático","Estrutura de comunicação: 'Quando X, sinto Y, porque Z' — para expressar sentimentos de forma não acusatória","Modelo de gestão de projetos","Modelo de análise de dados"],a:1,e:"O Modelo XYZ permite expressar sentimentos sem atacar o outro: 'Quando fazes X, sinto Y, porque Z' — foca no comportamento e não na pessoa."},
-  {q:"O que é a Teoria da Retórica Normativa (TRN)?",o:["Teoria sobre normas gramaticais","Teoria que estuda os princípios éticos da persuasão na comunicação","Teoria sobre retórica política","Teoria sobre normas de pronunciação"],a:1,e:"A TRN, baseada em Aristóteles, estuda os princípios éticos da persuasão — como comunicar de forma eficaz e justa, respeitando o receptor."},
-  {q:"O que é o Ethos na retórica?",o:["Apelo às emoções do público","Credibilidade e integridade do comunicador que leva o público a confiar na mensagem","Uso de argumentos lógicos","Estrutura do discurso"],a:1,e:"Ethos é a credibilidade do orador — a perceção de integridade, competência e confiabilidade que leva o público a aceitar a mensagem."},
-  {q:"O que é o Logos na retórica?",o:["Apelo emocional","Uso de argumentos racionais, lógicos e evidências para convencer","A credibilidade do orador","A narrativa pessoal do orador"],a:1,e:"Logos refere-se ao uso de argumentos racionais, dados, provas e lógica para persuadir — o apelo à razão do público."},
-  {q:"O que é o Pathos na retórica?",o:["A credibilidade do orador","Apelo às emoções do público para envolver e persuadir","Uso de dados estatísticos","A estrutura lógica do argumento"],a:1,e:"Pathos é o apelo emocional — ativar as emoções do público (medo, esperança, empatia) para tornar a mensagem mais persuasiva."},
-  {q:"Segundo a TRN, como deve ser usado o Pathos eticamente?",o:["Pode manipular livremente as emoções","Deve ser usado respeitando a capacidade crítica do público, sem manipulação emocional","Deve ser evitado completamente","Deve ser usado apenas em discursos políticos"],a:1,e:"A TRN defende que o apelo emocional deve ser ético — pode envolver emoções mas não deve manipular, distorcer ou explorar vulnerabilidades do público."},
-  {q:"O que são os 'relacionamentos' segundo Watzlawick?",o:["Apenas amizades formais","Emergem da interação entre pessoas com regras estabelecidas e aceites por ambas as partes","Contratos legais entre pessoas","Apenas relações familiares"],a:1,e:"Para Watzlawick, os relacionamentos emergem da interação com regras comunicativas aceites por ambas as partes, regulando os comportamentos."},
-  {q:"O que é a 'Expressividade' na comunicação não-verbal?",o:["Volume da voz","Grau de abertura e visibilidade das emoções que o comunicador projeta através de sinais não-verbais","Habilidade de escrever expressivamente","Uso de palavras expressivas"],a:1,e:"A Expressividade é a intensidade com que as emoções são projetadas através de sinais não-verbais — movimentos, microexpressões, tom de voz."},
-  {q:"O que é a 'Capacidade de Resposta' na comunicação?",o:["Velocidade de digitação","Habilidade de perceber e responder adequadamente às necessidades e sinais comunicativos do interlocutor","Capacidade de falar alto","Tempo de resposta a e-mails"],a:1,e:"A Capacidade de Resposta é a habilidade de 'ler' os sinais do outro e ajustar a própria comunicação de forma adaptativa e oportuna."},
-  {q:"Por que são importantes os silêncios na comunicação interpessoal?",o:["Porque significam falta de interesse","São elementos fundamentais que fazem parte da comunicação, criam espaço para escuta e transmitem emoções","Devem ser sempre evitados","São apenas pausas sem significado"],a:1,e:"Os silêncios são fundamentais: fazem parte integrante da comunicação, são muito frequentes, podem ser embaraçosos ou profundos, e são necessários para escutar o outro."},
-  {q:"O que é a 'interdependência' nas relações interpessoais?",o:["Dependência financeira","Os resultados de cada pessoa são influenciados pelos esforços dos outros — os resultados são partilhados","Independência total entre pessoas","Dependência emocional"],a:1,e:"Interdependência significa que numa relação os resultados de cada um são influenciados pelo outro — o sucesso individual depende dos esforços do parceiro."},
-  {q:"O que é a 'equidade' nas trocas sociais?",o:["Igualdade absoluta de recursos","Perceção de que os custos e benefícios são distribuídos de forma justa na relação","Ausência de conflito","Partilha igual de responsabilidades"],a:1,e:"A equidade é a perceção de justiça na distribuição de custos e benefícios numa relação — não significa igualdade perfeita mas proporcionalidade percebida."},
-  {q:"O que é a 'reciprocidade' na troca social?",o:["Dar sempre o mesmo que se recebe em dinheiro","Princípio de que as trocas devem ser mutuamente benéficas e que as ações dos outros geram expectativas de retorno","Evitar qualquer troca","Apenas troca de favores formais"],a:1,e:"A reciprocidade é o princípio de que as trocas nas relações devem ter retorno — quando alguém nos dá algo, sentimos necessidade de retribuir."},
-  {q:"O que é o 'interesse próprio' (self-interest) na troca social?",o:["Egoísmo puro","O ímpeto pelo qual as pessoas agem de acordo com os seus resultados percebidos e projetados nas interações","Apenas motivações financeiras","Comportamento altruísta"],a:1,e:"O interesse próprio é a motivação para agir de acordo com os resultados esperados de cada interação — não é necessariamente egoísta, pois pode incluir cooperação."},
-  {q:"Qual é a definição de assertividade segundo Alberti & Emmons (2017)?",o:["Impor a vontade sobre os outros","Expressão direta, honesta e respeitosa de pensamentos e sentimentos","Evitar conflito a todo o custo","Usar persuasão intensa"],a:1,e:"Alberti & Emmons definem assertividade como 'expressão direta, honesta e respeitosa de pensamentos e sentimentos', equilibrando auto-expressão com respeito pelo outro."},
-  {q:"Quais são os benefícios da assertividade segundo a investigação?",o:["Aumento de conflitos","Relações equilibradas, redução de stress e maior capacidade de resolução de problemas","Isolamento social","Maior dominância nas relações"],a:1,e:"Estudos mostram que a assertividade está ligada a relações mais equilibradas, menor stress, maior satisfação profissional e melhor resolução de conflitos (Speed et al., 2018)."},
-  {q:"O que é a IE 'mista' (competências)?",o:["Combinação de IE de habilidade e de traço","Competências comportamentais aplicadas ao desempenho social (consciência de si, autorregulação, motivação, empatia, competências sociais)","Um tipo de IE indefinido","IE que combina emoções e lógica"],a:1,e:"A IE mista refere-se a competências emocionais comportamentais observáveis — como dar feedback, gerir conflitos ou demonstrar empatia em contextos sociais e profissionais."},
-  {q:"Como a IE de habilidade afeta a comunicação?",o:["Não afeta a comunicação","Melhora a precisão ao descodificar expressões e voz, e melhora o 'timing' comunicativo","Aumenta a agressividade","Reduz a necessidade de comunicar"],a:1,e:"A IE de habilidade permite ler com mais precisão as expressões faciais e tom de voz dos outros, e ter melhor 'timing' — saber quando e como dizer as coisas."},
-  {q:"O que é a 'autoconsciência' como pilar da IE?",o:["Saber fazer auto-retratos","A capacidade de reconhecer e compreender as próprias emoções, forças e limitações","Vigilância constante dos outros","Consciência do ambiente físico"],a:1,e:"A autoconsciência é o primeiro pilar da IE de Goleman — a capacidade de reconhecer as próprias emoções no momento em que ocorrem e compreender como afetam o comportamento."},
-  {q:"O que é a 'autorregulação' como pilar da IE?",o:["Disciplina física","A capacidade de controlar emoções destrutivas e impulsos, e adaptar-se a circunstâncias em mudança","Regulação de temperatura corporal","Autocontrolo alimentar"],a:1,e:"A autorregulação é a capacidade de gerir as próprias emoções e impulsos — não os suprimir, mas expressá-los de forma adequada e adaptativa."},
-  {q:"O que é a 'empatia' como pilar da IE?",o:["Simpatia superficial","A capacidade de compreender as emoções dos outros e responder de forma adequada","Leitura do pensamento","Imitação das emoções dos outros"],a:1,e:"A empatia é a capacidade de perceber e compreender os sentimentos e perspetivas dos outros — colocarmo-nos no lugar deles para responder adequadamente."},
-  {q:"Que tipo de comportamento não-verbal caracteriza o comunicador assertivo?",o:["Olhar desafiante e gestos ameaçadores","Voz firme e calma, contacto visual sem intimidar, expressão facial aberta e postura descontraída","Desviar o olhar, fala fraca e hesitante","Interrupções frequentes e tom agressivo"],a:1,e:"O assertivo tem voz firme mas calma, mantém contacto visual sem intimidar, tem expressão facial aberta e postura descontraída — transmite confiança sem agressividade."},
-  {q:"Que tipo de comportamento não-verbal caracteriza o comunicador passivo?",o:["Postura dominante e voz forte","Desvia o olhar, postura retraída, voz fraca ou lamurienta, sorriso forçado","Expressão facial agressiva","Interrompe frequentemente"],a:1,e:"O passivo desvia o olhar, tem postura retraída, fala com voz fraca ou hesitante e sorri de forma forçada — sinais de insegurança e submissão."},
-  {q:"O que é a 'Teoria da Retórica Normativa' especificamente?",o:["Uma teoria sobre gramática normativa","Uma teoria que combina princípios clássicos de persuasão com ética comunicativa","Uma teoria sobre leis de comunicação","Uma teoria sobre normas sociais"],a:1,e:"A TRN combina os princípios clássicos de Aristóteles com preocupações éticas modernas — como persuadir de forma eficaz, honesta e respeitosa."},
-  {q:"Que papel tem a 'credibilidade' na persuasão eficaz?",o:["Não é relevante para a persuasão","O público confia mais em comunicadores que percebe como credíveis e íntegros (Ethos)","Só é relevante em contextos académicos","A credibilidade pode ser fabricada facilmente"],a:1,e:"A credibilidade (Ethos) é fundamental — quando o público percebe o comunicador como competente e honesto, está mais disposto a aceitar a mensagem."},
-  {q:"O que é a 'comunicação contemporânea' e os seus desafios?",o:["Comunicação por carta","Comunicação na era digital — marcada por excesso de informação, velocidade, filtros algorítmicos e questões de autenticidade","Comunicação apenas face a face","Comunicação sem tecnologia"],a:1,e:"A comunicação contemporânea enfrenta desafios como sobrecarga informacional, velocidade das interações digitais, questões de autenticidade e influência do contexto cultural."},
-  {q:"O que é a 'autenticidade' na comunicação contemporânea?",o:["Dizer sempre o que pensamos sem filtros","A correspondência genuína entre o que se sente interiormente e o que se expressa — comunicar de forma verdadeira","Comunicar apenas factos verificáveis","Evitar qualquer tipo de persuasão"],a:1,e:"A autenticidade é a congruência entre o estado interno e a expressão externa — comunicar de forma genuína, sem máscaras ou performatividade excessiva."},
-  {q:"Como a Cultura afeta a Comunicação Interpessoal?",o:["Não tem qualquer influência","Molda os padrões de comunicação, os valores, as normas de proximidade, de contacto visual e de expressão emocional","Apenas afeta a língua falada","Afeta apenas a comunicação formal"],a:1,e:"A cultura influencia profundamente como comunicamos — desde regras de contacto visual e toque, ao estilo de negociação, à expressão de emoções e ao uso do silêncio."},
-  {q:"O que é a 'motivação' como pilar da IE de Goleman?",o:["Motivação financeira","Impulso interno para alcançar objetivos com entusiasmo e persistência, independentemente de recompensas externas","Motivação dada por outros","Motivação para evitar emoções"],a:1,e:"A motivação intrínseca é a paixão interna pelo trabalho — não movida por dinheiro ou status, mas por satisfação e crescimento pessoal — um pilar da IE de Goleman."},
-  {q:"O que é a 'competência social' como pilar da IE?",o:["Habilidade de trabalhar sozinho","Capacidade de gerir relações, inspirar e influenciar os outros e construir redes de contacto","Habilidade de memorizar nomes","Competência técnica"],a:1,e:"A competência social é a capacidade de gerir relações interpessoais com eficácia — persuadir, liderar, construir redes e gerir conflitos construtivamente."},
-  {q:"Porque é que 'é impossível não comunicar' (Watzlawick)?",o:["Porque todos falam constantemente","Porque mesmo o silêncio e a inação transmitem mensagens nas relações interpessoais","Porque a comunicação é automática","Porque os humanos comunicam 24h por dia"],a:1,e:"Watzlawick afirma que 'é impossível não comunicar' — mesmo o silêncio, a ausência ou a inação são formas de mensagem nas interações interpessoais."},
-  {q:"O que são as 'Competências Sociais' no contexto da IE?",o:["Etiqueta social formal","Conjunto de habilidades para gerir relações com eficácia: comunicação, liderança, resolução de conflitos, trabalho em equipa","Apenas habilidades de networking","Capacidade de memorizar nomes"],a:1,e:"As competências sociais da IE incluem habilidades relacionais: comunicar com clareza, liderar, inspirar mudança, gerir conflitos e construir equipas colaborativas."},
-  {q:"Qual é o objetivo do Modelo DESC?",o:["Descrever emoções de forma vaga","Estruturar a comunicação assertiva para resolver conflitos de forma construtiva, sem atacar a pessoa","Evitar conversas difíceis","Impor soluções aos outros"],a:1,e:"O DESC oferece uma estrutura para abordar situações difíceis de forma assertiva: descrevendo o comportamento, expressando sentimentos, sugerindo mudança e mostrando as consequências."},
-  {q:"Qual é a diferença entre 'comunicação de alta contexto' e 'baixo contexto'?",o:["Alta contexto usa mais tecnologia","Alta contexto usa muito contexto implícito (cultura asiática); baixo contexto é mais direto e explícito (cultura ocidental)","Não há diferença real","Alta contexto é mais ruidosa"],a:1,e:"Culturas de alto contexto (ex: japonesa) comunicam muito através de contexto implícito, relações e não-verbal. Culturas de baixo contexto (ex: americana) são mais diretas e explícitas."},
-  {q:"O que são as 'barreiras fisiológicas/ambientais' à comunicação?",o:["Preconceitos pessoais","Obstáculos físicos como ruído, temperatura, distância, ou limitações sensoriais do receptor","Diferenças de idioma","Emoções negativas"],a:1,e:"As barreiras fisiológicas incluem surdez, fadiga, dor; as ambientais incluem ruído, iluminação inadequada, distância ou distrações físicas no ambiente."},
-  {q:"O que é a 'Escuta Reflexiva'?",o:["Escutar enquanto se olha ao espelho","Técnica de escuta em que se reformula e reflete de volta o que o outro disse para confirmar compreensão","Escutar de forma passiva","Escutar apenas factos objetivos"],a:1,e:"A escuta reflexiva envolve parafrasear ou reformular o que o outro disse — 'Então o que estás a dizer é...' — para confirmar compreensão e mostrar atenção."},
-  {q:"Como os 'preconceitos' afetam a escuta?",o:["Não têm impacto na escuta","Filtram e distorcem a mensagem recebida — ouvimos o que esperamos ouvir e ignoramos o que contraria as nossas crenças","Melhoram a compreensão","Só afetam a comunicação escrita"],a:1,e:"Os preconceitos são barreiras psicológicas que fazem com que filtremos as mensagens — tendemos a ouvir o que confirma as nossas crenças (confirmação cognitiva)."},
-  {q:"Qual é a função do 'feedback' na comunicação interpessoal?",o:["Avaliar o desempenho académico","Resposta do recetor que informa o emissor sobre como a mensagem foi recebida e compreendida","Apenas criticar o comunicador","Finalizar a conversa"],a:1,e:"O feedback é a resposta do recetor que fecha o ciclo comunicativo — informa o emissor se a mensagem foi recebida, compreendida e que efeito produziu."},
-  {q:"O que é a 'proxémica' na comunicação não-verbal?",o:["Estudo de expressões faciais","Estudo do uso e perceção do espaço físico nas interações (distância íntima, pessoal, social, pública)","Estudo do toque","Estudo do olhar"],a:1,e:"A proxémica (Hall) estuda como usamos o espaço nas interações — distância íntima (~45cm), pessoal (~120cm), social (~360cm) e pública (+360cm)."},
-  {q:"O que é a 'cinésica' na comunicação não-verbal?",o:["Estudo do espaço","Estudo dos movimentos corporais — gestos, postura, expressões faciais, contacto visual","Estudo do tempo","Estudo da voz"],a:1,e:"A cinésica (Birdwhistell) é o estudo dos movimentos corporais como forma de comunicação — gestos, postura, expressões faciais, olhar e orientação do corpo."},
-  {q:"O que é a 'paralinguagem' na comunicação?",o:["Idioma paralelo","Elementos vocais que acompanham as palavras: tom, ritmo, volume, pausas, entonação, timbre","Linguagem de sinais","Segunda língua aprendida"],a:1,e:"A paralinguagem são os elementos vocais além das palavras — como dizemos algo: tom, volume, ritmo, pausas e entonação que modificam o significado da mensagem."},
-  {q:"Qual é a importância do 'toque' nas relações interpessoais?",o:["Não tem importância","É através do contacto físico que se transmitem sentimentos e se desencadeiam reações positivas ou negativas","Deve ser sempre evitado","Só é relevante em relações românticas"],a:1,e:"O toque é uma forma poderosa de comunicação não-verbal — transmite afeto, apoio, poder ou dominância, e desencadeia reações emocionais fortes."},
-  {q:"Como o 'tempo' funciona como forma de comunicação?",o:["O tempo não comunica nada","A forma como gerimos o tempo — pontualidade, duração, silêncios — transmite mensagens sobre respeito, prioridades e status","Apenas em contextos formais","Apenas em culturas ocidentais"],a:1,e:"A 'cronémica' estuda o tempo como comunicação — chegar tarde comunica desrespeito; o tempo que dedicamos a alguém comunica a sua importância para nós."},
-  {q:"O que é a 'distância íntima' na proxémica?",o:["Distância entre países","Zona reservada para relações íntimas (~0-45cm) onde a comunicação é muito pessoal e envolve toque","Distância entre colegas de trabalho","Distância em palcos públicos"],a:1,e:"A distância íntima (~0-45cm) é a zona mais privada, reservada para relações muito próximas — permite toque, sussurros e comunicação muito pessoal."},
-  {q:"O que são 'microexpressões' faciais?",o:["Expressões muito exageradas","Expressões emocionais faciais brevíssimas (menos de 0.5 segundos) que revelam emoções genuínas","Expressões teatrais","Expressões aprendidas culturalmente"],a:1,e:"As microexpressões são flashes emocionais faciais involuntários — duram menos de 0.5 segundos e revelam emoções genuínas que tentamos esconder."},
-  {q:"O que é o 'ruído semântico' na comunicação?",o:["Barulho físico no ambiente","Interferência causada por diferenças no significado atribuído às palavras entre interlocutores","Ruído em chamadas telefónicas","Erros de gramática"],a:1,e:"O ruído semântico surge quando emissor e receptor atribuem significados diferentes às mesmas palavras — criando mal-entendidos apesar da transmissão técnica ser perfeita."},
-  {q:"Como a assertividade contribui para a resolução de conflitos?",o:["Elimina todos os conflitos","Permite expressar perspetivas diretamente e ouvir as do outro, criando condições para soluções mutuamente satisfatórias","Determina quem ganha o conflito","Evita que os conflitos sejam discutidos"],a:1,e:"A assertividade cria condições para resolver conflitos construtivamente — permite expressar as próprias necessidades claramente e ouvir as do outro, procurando soluções 'eu venço, tu também venço'."},
-  {q:"Qual é o papel da 'empatia' na escuta ativa?",o:["A empatia não está relacionada com a escuta","A empatia permite compreender a perspetiva emocional do outro, tornando a escuta mais profunda e a resposta mais adequada","A empatia apenas serve para simpatizar","A empatia distorce a escuta objetiva"],a:1,e:"A empatia é central na escuta ativa — permite ir além das palavras e compreender os sentimentos e necessidades do outro, respondendo de forma mais eficaz."},
-  {q:"O que é a 'metacomunicação'?",o:["Comunicação sobre comunicação","Comunicar sobre a própria comunicação — reflexão explícita sobre o processo comunicativo em curso","Comunicação através de metáforas","Comunicação de massas"],a:1,e:"A metacomunicação é comunicar sobre o próprio processo de comunicação — 'Acho que não me estou a fazer entender' é metacomunicação, uma forma de regular a interação."},
-  {q:"O que são 'barreiras tecnológicas' à comunicação?",o:["Falta de interesse em tecnologia","Interferências causadas por tecnologia: falhas de ligação, notificações, desumanização das interações digitais, perda de sinais não-verbais","Excesso de tecnologia avançada","Apenas problemas de hardware"],a:1,e:"As barreiras tecnológicas incluem falhas de ligação, ausência de sinais não-verbais em comunicação digital, distrações de notificações e a desumanização de algumas formas de comunicação mediada."},
-  {q:"Qual é a diferença entre 'simpatia' e 'empatia'?",o:["Não há diferença real","Simpatia é sentir compaixão por alguém; empatia é colocar-se no lugar do outro e compreender a sua perspetiva emocional","Empatia é mais superficial","Simpatia requer mais esforço"],a:1,e:"Simpatia é reconhecer o sofrimento do outro de fora. Empatia é entrar na perspetiva do outro — compreender como se sente a partir de dentro, sem julgamento."},
-  {q:"Que papel desempenha o 'contexto' na comunicação interpessoal?",o:["O contexto não afeta a comunicação","O contexto (físico, social, cultural, temporal) molda o significado das mensagens e as expectativas dos interlocutores","O contexto só importa em negócios","O contexto apenas afeta a língua usada"],a:1,e:"O contexto é fundamental — uma mesma mensagem tem significados diferentes conforme o contexto físico, social, cultural e temporal em que é produzida."},
-  {q:"O que é a 'Teoria dos Papéis' nas relações interpessoais?",o:["Teoria teatral","Conceito de que nas relações todos desempenhamos 'papéis' sociais com expectativas de comportamento associadas","Teoria de gestão empresarial","Teoria sobre papéis de género"],a:1,e:"A Teoria dos Papéis afirma que nas interações sociais desempenhamos papéis com comportamentos esperados — pai, aluno, líder — e que a violação desses papéis cria conflito."},
-  {q:"O que significa 'maximizar resultados' na Troca Social?",o:["Ganhar sempre mais dinheiro","Tentar obter o máximo benefício das interações, às vezes mas nem sempre em prejuízo dos outros","Trabalhar o máximo de horas","Maximizar o número de relações"],a:1,e:"Na Troca Social, as pessoas tendem a maximizar resultados — procurar o máximo benefício. Mas cooperar pode ser estrategicamente mais vantajoso do que competir."},
-  {q:"Como a IE contribui para a liderança eficaz?",o:["A IE é irrelevante para a liderança","Líderes com alta IE motivam melhor, gerem conflitos com mais eficácia, criam equipas mais coesas e inspiram confiança","A IE diminui a autoridade do líder","Apenas a inteligência cognitiva importa na liderança"],a:1,e:"A investigação mostra que a IE é um preditor-chave do sucesso na liderança — líderes emocionalmente inteligentes criam climas positivos, motivam equipas e gerem conflitos construtivamente."},
-  {q:"O que é o 'princípio da cooperação' de Grice?",o:["Cooperar em todas as decisões","Princípio de que os interlocutores cooperam implicitamente para tornar a comunicação eficaz — sendo relevantes, verdadeiros e claros","Acordo contratual de cooperação","Cooperação em jogos"],a:1,e:"Grice propôs que a comunicação eficaz se baseia numa cooperação implícita — ser tão informativo quanto necessário, verdadeiro, relevante e claro (máximas de Grice)."},
-  {q:"Que comportamento verbal caracteriza o comunicador passivo?",o:["Usa linguagem direta e clara","Usa termos hesitantes ('talvez', 'não sei bem'), dá respostas longas com pedidos de desculpa, cede facilmente","Usa ameaças implícitas","Usa sarcasmo frequente"],a:1,e:"O comunicador passivo hesita antes de responder, usa muitas qualificações ('talvez', 'acha que sim?'), pede muitas desculpas e cede facilmente quando desafiado."},
-  {q:"Qual é o papel das 'normas de comunicação' nas relações?",o:["São apenas leis formais","Regras implícitas ou explícitas aceites pelos interlocutores que regulam quem fala, como, quando e sobre o quê","São apenas relevantes em contextos profissionais","Normas que nunca mudam"],a:1,e:"As normas de comunicação são regras implícitas ou explícitas que estruturam as interações — quem fala, em que ordem, que tópicos são adequados, como se exprime discordância."},
-  {q:"O que é a 'autoconsciência' como primeiro pilar da IE de Goleman e por que razão é considerada a base de todos os outros?",o:["É a capacidade de estar atento ao ambiente externo","É a capacidade de reconhecer as próprias emoções no momento em que ocorrem e compreender como afetam pensamentos e comportamento — base de todos os outros pilares","É a consciência das emoções dos outros","É exclusivamente a capacidade de introspecção filosófica"],a:1,e:"A autoconsciência é o ponto de partida da IE: sem reconhecer as nossas próprias emoções em tempo real, não podemos regulá-las (autorregulação), nem motivarmo-nos genuinamente, nem ser empáticos. É a fundação de todos os outros pilares."},
-  {q:"De que forma a 'Teoria dos Objetivos Múltiplos' explica conflitos aparentemente triviais nas relações interpessoais?",o:["Diz que os conflitos surgem sempre por razões financeiras","Mostra que quando os objetivos instrumentais, relacionais e identitários de duas pessoas entram em colisão, mesmo uma conversa simples pode escalar para conflito","Afirma que os conflitos são sempre intencionais","Explica que conflitos só surgem em comunicação verbal"],a:1,e:"A Teoria dos Objetivos Múltiplos revela que em cada interação perseguimos objetivos simultâneos — obter um resultado (instrumental), preservar a relação (relacional) e proteger a nossa imagem (identitário). Quando estes objetivos colidem com os do outro, surgem conflitos mesmo em situações aparentemente simples."},
-  {q:"O que é a 'identificação' na retórica de Kenneth Burke?",o:["Identificar o público-alvo","Processo de estabelecer pontos de ligação e semelhança com o público para tornar a persuasão mais eficaz","Identificar argumentos falaciosos","Identificar a intenção do orador"],a:1,e:"Burke propôs que a persuasão eficaz começa com 'identificação' — o orador estabelece pontos de ligação e semelhança com o público, reduzindo a distância e aumentando a recetividade."},
-  {q:"O que é a 'dissonância cognitiva' na comunicação interpessoal?",o:["Ruído cognitivo","Desconforto psicológico causado por informações contraditórias que o receptor tenta resolver — pode levar à rejeição de mensagens","Excesso de informação","Conflito de opiniões"],a:1,e:"A dissonância cognitiva é o desconforto de ter crenças contraditórias — ao comunicar, as pessoas frequentemente rejeitam informação que contradiz as suas crenças para reduzir esse desconforto."},
-  {q:"Qual é a relação entre 'perceção' e 'comunicação'?",o:["A perceção não afeta a comunicação","A perceção filtro a realidade — vemos e ouvimos o que esperamos, o que afeta como interpretamos as mensagens dos outros","A perceção é objetiva","A perceção só afeta a comunicação escrita"],a:1,e:"A perceção é o filtro pelo qual interpretamos as mensagens — as nossas expectativas, experiências e estado emocional moldam o que 'vemos' e 'ouvimos' nas interações."},
-  {q:"O que significa 'comunicar eficazmente' na prática?",o:["Falar muito e rapidamente","Conseguir que a mensagem pretendida seja recebida e compreendida como pretendido, produzindo o efeito desejado na relação","Usar vocabulário elaborado","Nunca criar conflito"],a:1,e:"A comunicação eficaz ocorre quando a mensagem intencionada é recebida e compreendida como pretendido — considerando o contexto, o receptor e a relação."},
-  {q:"Qual é o problema da 'comunicação unilateral'?",o:["É muito eficiente","Ignora o feedback do receptor, não permite ajuste da mensagem e prejudica a relação interpessoal","É o método mais eficaz","Apenas funciona em contextos formais"],a:1,e:"A comunicação unilateral (sem feedback) não permite verificar se a mensagem foi compreendida, não cria diálogo e prejudica as relações interpessoais pela falta de reciprocidade."},
-  {q:"Que papel tem a 'motivação' na gestão da informação (TGIM)?",o:["A motivação não tem papel","A motivação determina que tipo de informação as pessoas procuram para gerir a incerteza e a ansiedade em interações","Apenas motiva a comunicar mais","Motiva a evitar comunicação"],a:1,e:"Na TGIM, a motivação determina como as pessoas gerem a incerteza — dependendo do nível de ansiedade e incerteza, podem procurar ou evitar informação para regular o seu estado."},
-  {q:"O que distingue a comunicação 'pública' da 'interpessoal'?",o:["Apenas o número de pessoas","A comunicação pública é unidirecional e formal; a interpessoal é bidirecional, pessoal e baseada em relação","A comunicação pública usa microfones","A interpessoal é apenas cara-a-cara"],a:1,e:"A comunicação interpessoal é íntima, bidirecional e moldada pela relação — ao contrário da pública, que é mais formal, unidirecional e não depende de relação pessoal."},
-  {q:"O que é a 'gestão de impressões' na comunicação?",o:["Gerir a reputação empresarial","O processo pelo qual as pessoas controlam conscientemente a informação que transmitem para influenciar como são percebidas pelos outros","Impressão de documentos","Gestão de fotografias"],a:1,e:"A gestão de impressões (Goffman) é o processo pelo qual gerimos a nossa 'apresentação' para controlar como os outros nos percebem — escolhendo roupa, palavras, postura."},
-  {q:"O que é a 'janela de Johari'?",o:["Um tipo de janela arquitetónica","Modelo que representa os níveis de autoconhecimento e comunicação: o que é conhecido/desconhecido por si mesmo e pelos outros","Um modelo de negociação","Um modelo de gestão de conflitos"],a:1,e:"A Janela de Johari divide o autoconhecimento em 4 quadrantes: Arena (conhecido por mim e pelos outros), Ponto Cego (desconhecido por mim, conhecido pelos outros), Fachada (conhecido por mim, desconhecido pelos outros) e Desconhecido."},
-  {q:"Como os 'desafios digitais' afetam a autenticidade comunicativa?",o:["A tecnologia não afeta a autenticidade","A comunicação digital facilita a curadoria e performance da identidade, podendo criar distância entre a persona apresentada e o eu autêntico","A tecnologia sempre aumenta a autenticidade","A autenticidade é mais fácil online"],a:1,e:"As redes sociais e comunicação digital permitem construir personas cuidadosamente editadas — criando tensão entre a 'performance' online e a autenticidade das relações interpessoais reais."},
-  {q:"O que é a 'comunicação não-violenta' (CNV)?",o:["Comunicar sem usar palavras fortes","Abordagem de comunicação focada em observações, sentimentos, necessidades e pedidos concretos — sem julgamentos ou críticas pessoais","Comunicar em voz baixa","Evitar toda a forma de conflito"],a:1,e:"A CNV (Rosenberg) propõe comunicar através de: Observações (não julgamentos), Sentimentos, Necessidades e Pedidos concretos — criando ligação genuína sem violência verbal."},
-  {q:"Qual é a relação entre 'locus de controlo' e comunicação assertiva?",o:["Não há relação","Pessoas com locus de controlo interno (creem que controlam os seus resultados) tendem a ser mais assertivas e eficazes comunicativamente","Locus externo facilita assertividade","O locus de controlo é irrelevante"],a:1,e:"O locus de controlo interno — a crença de que controlamos os nossos resultados — está associado a maior assertividade, pois a pessoa acredita que a sua comunicação pode fazer diferença."},
-  {q:"O que é a 'competência comunicativa'?",o:["Apenas ter boas notas em língua portuguesa","A capacidade de comunicar de forma eficaz e adequada em diferentes contextos, relações e situações culturais","Falar muitas línguas","Ter vocabulário extenso"],a:1,e:"A competência comunicativa é a capacidade de comunicar eficazmente e adequadamente — saber o que dizer, como dizer, a quem, quando e em que contexto cultural e relacional."}
-];
+<div class="toast-zone" id="toast-zone"></div>
 
-// ============================================================
-// DATA: 50 FLASHCARDS
-// ============================================================
-const flashData = [
-  {t:"Comunicação Interpessoal",d:"Troca de informação, significado e emoções entre duas ou mais pessoas numa relação. É inseparável das relações humanas (Minter, 2010)."},
-  {t:"Sinais Não-Verbais",d:"Mensagens comunicadas sem palavras: gestos, expressões faciais, postura, toque, tom de voz e uso do espaço."},
-  {t:"TGIM — Teoria da Gestão da Informação Motivada",d:"Explica como as pessoas gerem a incerteza e ansiedade em situações de comunicação, procurando ou evitando informação."},
-  {t:"Teoria dos Objetivos Múltiplos",d:"Ao comunicar, perseguimos vários objetivos em simultâneo: instrumentais (obter algo), relacionais (manter a relação) e identitários (proteger a imagem)."},
-  {t:"Perfil Verbal-Não Verbal Discrepante",d:"Situação em que a mensagem verbal e a não-verbal são inconsistentes — o que se diz contradiz o que o corpo expressa."},
-  {t:"Troca Social",d:"Princípio de que as interações humanas envolvem trocas de recursos, custos e recompensas, orientadas pelo interesse próprio e reciprocidade."},
-  {t:"Interacionismo Simbólico",d:"Perspetiva que vê o comportamento social como resultado dos significados simbólicos que as pessoas constroem e partilham nas interações."},
-  {t:"Teorema de Thomas",d:"'Se as pessoas definem as situações como reais, elas são reais nas suas consequências' — o poder das perceções na comunicação."},
-  {t:"Escuta Ativa",d:"Forma de escuta em que o receptor demonstra atenção plena, compreensão e interesse ativo — fazendo perguntas, dando feedback, parafraseando."},
-  {t:"Escuta Empática",d:"Escuta que procura compreender os sentimentos e perspetiva emocional do outro, colocando-se no seu lugar sem julgamento."},
-  {t:"Escuta Reflexiva",d:"Técnica de escuta em que se reformula o que o outro disse — 'Então o que estás a dizer é...' — para confirmar compreensão."},
-  {t:"Barreiras Psicológicas",d:"Obstáculos à comunicação causados por preconceitos, emoções fortes, expectativas ou experiências passadas que distorcem a receção da mensagem."},
-  {t:"Barreiras Semânticas",d:"Interferências causadas por diferenças no significado atribuído às palavras ou símbolos entre emissor e recetor."},
-  {t:"Inteligência Emocional (IE)",d:"Capacidade de reconhecer, compreender e gerir as próprias emoções e as dos outros. Inclui: autoconsciência, autorregulação, motivação, empatia e competências sociais."},
-  {t:"IE de Habilidade (Ability)",d:"Conjunto de capacidades cognitivas: perceber, usar, compreender e regular emoções. Permite ler emoções nos outros com precisão."},
-  {t:"IE de Traço (Trait)",d:"Traços auto-reportados relacionados com autoeficácia emocional, bem-estar subjetivo e sociabilidade — como a pessoa percebe as suas características emocionais."},
-  {t:"IE Mista (Competências)",d:"Competências comportamentais observáveis: dar feedback, gerir conflitos, demonstrar empatia — aplicadas ao desempenho social e profissional."},
-  {t:"5 Pilares da IE (Goleman)",d:"Autoconsciência · Autorregulação · Motivação intrínseca · Empatia · Competências Sociais"},
-  {t:"Teoria da Atribuição",d:"Processo pelo qual interpretamos as causas do comportamento dos outros — atribuindo causas internas (personalidade) ou externas (situação)."},
-  {t:"Teoria da Troca Afetiva",d:"Explica como as emoções trocadas nas interações influenciam e regulam a qualidade das relações interpessoais."},
-  {t:"Estilo Assertivo",d:"'Eu venço, tu também venças.' Expressa necessidades com respeito pelos direitos próprios e alheios. Voz firme, contacto visual sem intimidar, expressão aberta."},
-  {t:"Estilo Passivo",d:"'Eu perco, tu ganhas.' Evita conflito, sublima necessidades, cede facilmente. Voz fraca, olhar desviado, hesitação constante."},
-  {t:"Estilo Agressivo",d:"'Eu venço, tu perdes.' Impõe necessidades atacando os outros. Ameaças, sarcasmo, olhar desafiante, gestos ameaçadores."},
-  {t:"Estilo Passivo-Agressivo",d:"Evita confronto direto mas manifesta insatisfação indiretamente: ironia, sabotagem velada, ambiguidades e resistência passiva."},
-  {t:"Modelo DESC",d:"Estrutura assertiva: Descreve o comportamento → Expressa sentimentos → Sugere mudança → Consequências positivas."},
-  {t:"Modelo XYZ",d:"'Quando fazes X, sinto Y, porque Z.' Expressa sentimentos sem acusar a pessoa, focando no comportamento específico."},
-  {t:"Teoria da Retórica Normativa (TRN)",d:"Combina os princípios clássicos de Aristóteles com ética comunicativa — como persuadir de forma eficaz, honesta e respeitosa."},
-  {t:"Ethos",d:"Credibilidade e integridade do comunicador. Pilar da persuasão: o público confia mais em quem percebe como competente e honesto."},
-  {t:"Logos",d:"Apelo à razão. Uso de argumentos lógicos, dados e evidências para convencer — o lado racional da persuasão."},
-  {t:"Pathos",d:"Apelo emocional. Ativar emoções do público (esperança, medo, empatia) para tornar a mensagem mais persuasiva — deve ser usado eticamente."},
-  {t:"Proxémica",d:"Estudo do uso do espaço físico nas interações. Zonas: íntima (~0-45cm), pessoal (~120cm), social (~360cm), pública (+360cm). (Hall)"},
-  {t:"Cinésica",d:"Estudo dos movimentos corporais como comunicação: gestos, postura, expressões faciais, contacto visual, orientação do corpo. (Birdwhistell)"},
-  {t:"Paralinguagem",d:"Elementos vocais que acompanham as palavras: tom, ritmo, volume, pausas, entonação, timbre — modificam o significado das mensagens."},
-  {t:"Metacomunicação",d:"Comunicar sobre o próprio processo de comunicação — 'Acho que não nos estamos a entender' é metacomunicação."},
-  {t:"Dissonância Cognitiva",d:"Desconforto psicológico causado por crenças contraditórias. Na comunicação, pode levar à rejeição de mensagens que contradizem crenças existentes."},
-  {t:"Janela de Johari",d:"Modelo com 4 quadrantes: Arena (conhecido por mim e outros), Ponto Cego (outros sabem, eu não), Fachada (eu sei, outros não), Desconhecido."},
-  {t:"Gestão de Impressões",d:"Processo pelo qual controlamos a informação que transmitimos para influenciar como somos percebidos pelos outros (Goffman)."},
-  {t:"Interdependência",d:"Nas relações, os resultados de cada pessoa são influenciados pelos esforços dos outros — o sucesso individual depende do parceiro."},
-  {t:"Reciprocidade",d:"Princípio de que as trocas nas relações devem ter retorno — quando alguém nos dá algo, sentimos necessidade de retribuir."},
-  {t:"Microexpressões",d:"Expressões faciais brevíssimas (menos de 0.5 segundos) que revelam emoções genuínas — difíceis de falsificar ou esconder."},
-  {t:"Competência Comunicativa",d:"Capacidade de comunicar de forma eficaz e adequada em diferentes contextos, relações e situações culturais."},
-  {t:"Comunicação Não-Violenta (CNV)",d:"Abordagem (Rosenberg): Observações → Sentimentos → Necessidades → Pedidos. Sem julgamentos ou críticas pessoais."},
-  {t:"Comunicação de Alto Contexto",d:"Estilo cultural onde muito do significado está no contexto implícito, nas relações e na comunicação não-verbal (ex: cultura japonesa)."},
-  {t:"Comunicação de Baixo Contexto",d:"Estilo cultural onde a mensagem é explícita e direta — a maioria do significado está nas palavras ditas (ex: cultura americana)."},
-  {t:"Princípio da Cooperação (Grice)",d:"Na comunicação eficaz, os interlocutores cooperam implicitamente: sendo informativos, verdadeiros, relevantes e claros (Máximas de Grice)."},
-  {t:"Ruído Semântico",d:"Interferência causada por diferenças no significado atribuído às palavras — mesmo com transmissão perfeita, há mal-entendido."},
-  {t:"Locus de Controlo Interno",d:"Crença de que controlamos os nossos resultados — associado a maior assertividade e eficácia comunicativa."},
-  {t:"Barreiras Tecnológicas",d:"Interferências na comunicação digital: falhas de ligação, ausência de sinais não-verbais, distrações de notificações, desumanização."},
-  {t:"Simbolismo",d:"No interacionismo simbólico, os símbolos (palavras, gestos, objetos) têm significados socialmente partilhados que medeiam todas as interações."},
-  {t:"Autenticidade Comunicativa",d:"Correspondência genuína entre o que se sente interiormente e o que se expressa — comunicar sem máscaras ou performatividade excessiva."}
-];
-
-// ============================================================
-// DATA: 25 FILL IN THE BLANK
-// ============================================================
-const fitbData = [
-  {s:"A comunicação interpessoal é, segundo Minter, quase sinónima de ___.", a:"relações humanas", alt:["relações", "relacionamentos"]},
-  {s:"O estilo de comunicação considerado mais desejável é o ___.", a:"assertivo"},
-  {s:"O ___ afirma que 'se as pessoas definem as situações como reais, elas são reais nas suas consequências'.", a:"Teorema de Thomas", alt:["teorema de thomas","thomas"]},
-  {s:"Os 3 pilares da retórica de Aristóteles são Ethos, Logos e ___.", a:"Pathos", alt:["pathos"]},
-  {s:"A capacidade de reconhecer e gerir as próprias emoções e as dos outros chama-se ___ ___.", a:"inteligência emocional", alt:["IE", "i.e."]},
-  {s:"Na escuta ___, o receptor reformula o que o outro disse para confirmar compreensão.", a:"reflexiva"},
-  {s:"O estilo ___ evita o conflito, sublima as necessidades e cede facilmente.", a:"passivo"},
-  {s:"O estilo ___ impõe necessidades através de ameaças e ataques.", a:"agressivo"},
-  {s:"O modelo ___ estrutura a comunicação assertiva: Descreve, Expressa, Sugere e Consequências.", a:"DESC"},
-  {s:"O ___ é o apelo à credibilidade e integridade do comunicador na retórica.", a:"Ethos", alt:["ethos"]},
-  {s:"O ___ é o apelo à razão e argumentos lógicos na retórica.", a:"Logos", alt:["logos"]},
-  {s:"Na Troca Social, os custos e benefícios são flexíveis e baseados em ___.", a:"confiança"},
-  {s:"O ___ afirma que o comportamento social resulta dos significados que atribuímos aos símbolos.", a:"Interacionismo Simbólico", alt:["interacionismo simbólico", "interacionismo"]},
-  {s:"Os ___ são elementos fundamentais da comunicação: criam espaço para escutar o outro.", a:"silêncios", alt:["silencios"]},
-  {s:"A ___ é o estudo do uso do espaço físico nas interações.", a:"proxémica", alt:["proxemica","proxemia"]},
-  {s:"Quando a mensagem verbal e a não-verbal são contraditórias, temos um Perfil ___ Discrepante.", a:"Verbal-Não Verbal", alt:["verbal não verbal", "discrepante"]},
-  {s:"Os 5 pilares da IE de Goleman incluem autoconsciência, autorregulação, motivação, empatia e ___.", a:"competências sociais", alt:["competencias sociais"]},
-  {s:"A ___ é o estudo dos movimentos corporais como forma de comunicação.", a:"cinésica", alt:["cinesica","cinésica"]},
-  {s:"A ___ é o estudo dos elementos vocais: tom, ritmo, volume, pausas e entonação.", a:"paralinguagem"},
-  {s:"Comunicar sobre o próprio processo de comunicação chama-se ___.", a:"metacomunicação", alt:["metacomunicacao"]},
-  {s:"O modelo ___ usa a estrutura 'Quando fazes X, sinto Y, porque Z'.", a:"XYZ"},
-  {s:"A ___ na retórica normativa é o apelo emocional ao público.", a:"Pathos", alt:["pathos"]},
-  {s:"A Teoria da Gestão da Informação ___ explica como gerimos incerteza e ansiedade ao comunicar.", a:"Motivada", alt:["motivada"]},
-  {s:"Na comunicação de ___ contexto, o significado está principalmente nas palavras explícitas.", a:"baixo"},
-  {s:"A Janela de ___ divide o autoconhecimento em Arena, Ponto Cego, Fachada e Desconhecido.", a:"Johari", alt:["johari"]}
-];
-
-// ============================================================
-// DATA: STORY CHAPTERS
-// ============================================================
-const storyChapters = [
-  {
-    num:"Capítulo I", title:"O Mundo Antes das Palavras",
-    body:`<p>Imagine que acordas num mundo sem linguagem. Nenhuma palavra, nenhuma frase — apenas corpos, olhares e gestos. Surpreendentemente, continuaríamos a <span class="concept">comunicar</span>. É este paradoxo que nos lembra da primeira grande verdade: <strong>a comunicação precede a língua</strong>.</p>
-    <p>Segundo Minter (2010), a comunicação e as relações humanas são "quase sinónimas" — tão interligadas que estudar uma sem a outra é quase impossível. Para Watzlawick, os relacionamentos emergem da interação, regulada por regras que ambas as partes aceitam. E há uma regra universal: <span class="concept">é impossível não comunicar</span>.</p>
-    <div class="highlight">"Os conceitos de comunicação e de relações humanas estão de tal modo relacionados que são quase sinónimos." — Minter, 2010</div>
-    <p>Mas o que é, afinal, a <strong>Comunicação Interpessoal</strong>? É a troca de informação, significado e emoções entre pessoas — cara a cara, por voz, por texto, por um simples silêncio. É o mecanismo pelo qual construímos relações, identidades e sociedades inteiras.</p>
-    <p>Antes de dizer uma palavra, já comunicamos: pela postura, pelo olhar, pelo espaço que escolhemos ocupar. É o reino da <span class="concept">comunicação não-verbal</span> — gestos, expressões faciais, toque, tom de voz. Estudos clássicos sugerem que mais de metade da nossa comunicação é não-verbal. O que diz o teu corpo quando as tuas palavras dizem o contrário?</p>`
-  },
-  {
-    num:"Capítulo II", title:"Os Segredos do Silêncio e da Perceção",
-    body:`<p>Dois alunos sentam-se lado a lado numa sala de aula. Um olha diretamente para o professor e acena com a cabeça. O outro olha para baixo e não diz nada. O professor pergunta-se: qual deles está a escutar? A resposta é: nenhum, necessariamente. <strong>Ouvir não é escutar.</strong></p>
-    <p>Esta distinção está no coração da <span class="concept">Escuta Ativa</span>. Ouvir é passivo — a recepção de ondas sonoras. Escutar é ativo — implica processar, interpretar e responder. A <strong>Escuta Empática</strong> vai ainda mais longe: procura compreender a perspetiva emocional do outro, colocando-se no seu lugar. A <strong>Escuta Reflexiva</strong> fecha o ciclo, reformulando o que o outro disse.</p>
-    <p>E os silêncios? São, paradoxalmente, comunicação. Criam espaço, transmitem emoções, marcam respeito. Para escutar o outro, precisamos primeiro de estar em silêncio.</p>
-    <div class="highlight">O silêncio não é ausência de comunicação — é uma das suas formas mais poderosas.</div>
-    <p>Mas a comunicação enfrenta barreiras constantes. <span class="concept">Barreiras psicológicas</span> — os nossos preconceitos e emoções — distorcem as mensagens. <span class="concept">Barreiras semânticas</span> criam ruído quando as mesmas palavras têm significados diferentes. <span class="concept">Barreiras tecnológicas</span> surgem quando o digital apaga os sinais não-verbais. E o <strong>Perfil Verbal-Não Verbal Discrepante</strong> aparece quando o que dizemos contradiz o que o corpo expressa — e o outro ouve sempre o corpo.</p>`
-  },
-  {
-    num:"Capítulo III", title:"As Trocas que nos Unem",
-    body:`<p>Todos os dias, sem perceber, fazemos centenas de cálculos. Quanto me custa esta conversa? O que ganho com ela? Vale a pena? Não é cinismo — é a <span class="concept">Teoria da Troca Social</span> em ação.</p>
-    <p>A Troca Social é o princípio de que as interações humanas envolvem trocas de recursos, custos e recompensas. Ao contrário da troca económica — com preços fixos e contratos legais — a troca social é voluntária, baseada em confiança, com custos e benefícios flexíveis e negociados.</p>
-    <p>O <strong>interesse próprio</strong> motiva as nossas ações — mas isso não significa egoísmo. Muitas vezes, <strong>cooperar</strong> é a estratégia mais racional, pois ambas as partes beneficiam. A <strong>equidade</strong>, a <strong>justiça</strong> e a <strong>reciprocidade</strong> afetam constantemente as nossas decisões sobre com quem e como interagimos.</p>
-    <div class="highlight">A interdependência significa que os resultados de cada pessoa são influenciados pelos esforços dos outros.</div>
-    <p>Mas as trocas vão além dos recursos tangíveis. O <span class="concept">Interacionismo Simbólico</span> revela que o que trocamos são sobretudo <strong>significados</strong> — símbolos carregados de interpretações culturais e pessoais. E o <strong>Teorema de Thomas</strong> lembra-nos: se definimos uma situação como real, ela torna-se real nas suas consequências. A realidade social é, em grande parte, construída pela perceção.</p>`
-  },
-  {
-    num:"Capítulo IV", title:"A Tempestade Interior: Emoções e Inteligência",
-    body:`<p>Imagina um líder de equipa que tem uma ideia brilhante mas não consegue que ninguém a ouça — porque cada palavra que diz provoca resistência. E imagina outro, com ideias medianas, que consegue mobilizar toda uma organização. A diferença? <span class="concept">Inteligência Emocional</span>.</p>
-    <p>Goleman definiu a IE como a capacidade de reconhecer, compreender e gerir as próprias emoções e as dos outros. Os seus <strong>5 pilares</strong> são: autoconsciência, autorregulação, motivação intrínseca, empatia e competências sociais.</p>
-    <p>Mas há três abordagens à IE. A <strong>IE de Habilidade</strong> vê-a como capacidade cognitiva: ler emoções com precisão, usá-las para pensar. A <strong>IE de Traço</strong> foca o autoconceito emocional: como eu me percebo emocionalmente. A <strong>IE Mista</strong> traduz-se em comportamentos: dar feedback, gerir conflitos, demonstrar empatia em ação.</p>
-    <div class="highlight">A inteligência emocional ajuda-nos a interpretar as causas das emoções (atribuição) e a gerir as relações através das emoções que trocamos com os outros (troca afetiva).</div>
-    <p>A <span class="concept">Teoria da Atribuição</span> explica como interpretamos o comportamento alheio — causas internas ("é preguiçoso") ou externas ("teve um dia difícil"). A <span class="concept">Teoria da Troca Afetiva</span> mostra que as emoções que circulam entre nós moldam a qualidade das nossas relações. Quem regula melhor as suas emoções, comunica melhor — e relaciona-se melhor.</p>`
-  },
-  {
-    num:"Capítulo V", title:"A Arte de Ser Direto: Os Estilos de Comunicação",
-    body:`<p>Três pessoas recebem a mesma crítica do chefe. A primeira responde: "Compreendo o seu ponto de vista. Na minha perspetiva, o projeto enfrenta os seguintes desafios..." — assertiva, clara, respeitosa. A segunda não diz nada, sorri forçado e vai para casa furiosa — passiva. A terceira explode: "Sempre a mesma conversa, nunca estão satisfeitos!" — agressiva.</p>
-    <p>Estes são os três estilos clássicos de comunicação. O <span class="concept">Assertivo</span> — "eu venço, tu também venças" — defende os próprios direitos sem violar os dos outros. É firme, direto, respeitoso. O <span class="concept">Passivo</span> — "eu perco, tu ganhas" — evita conflito, sublima necessidades, cede sob pressão. O <span class="concept">Agressivo</span> — "eu venço, tu perdes" — impõe, ameaça, não coopera.</p>
-    <p>Existe ainda o <strong>Passivo-Agressivo</strong>: evita o confronto direto mas manifesta insatisfação através de ironia subtil ou sabotagem velada — o mais difícil de gerir porque nunca é explícito.</p>
-    <div class="highlight">A assertividade contribui para maior satisfação connosco próprios e com os outros, e melhora as relações. (Rego, 2016)</div>
-    <p>Como comunicar assertivamente em situações difíceis? O <span class="concept">Modelo DESC</span> oferece uma estrutura: Descreve o comportamento → Expressa o que sentes → Sugere uma mudança → aponta as Consequências positivas. O <span class="concept">Modelo XYZ</span> simplifica: "Quando fazes X, sinto Y, porque Z" — foca no comportamento, não na pessoa.</p>`
-  },
-  {
-    num:"Capítulo VI", title:"A Arte de Persuadir: Retórica e Ética",
-    body:`<p>Há 2400 anos, Aristóteles sistematizou o que comunicadores intuitivos já sabiam: para persuadir, precisamos de credibilidade, lógica e emoção. A <span class="concept">Teoria da Retórica Normativa</span> combina estes princípios com a ética moderna.</p>
-    <p>O <span class="concept">Ethos</span> é a credibilidade do comunicador — a perceção de integridade e competência que leva o público a confiar na mensagem. Sem Ethos, os outros dois pilares perdem força. O <span class="concept">Logos</span> é o apelo à razão — argumentos lógicos, dados, evidências. Convence o intelecto. O <span class="concept">Pathos</span> é o apelo emocional — ativar medo, esperança ou empatia para tornar a mensagem visceral.</p>
-    <div class="highlight">A retórica normativa defende que o apelo emocional deve ser utilizado de forma ética, respeitando a capacidade do público de pensar criticamente.</div>
-    <p>A distinção entre <strong>persuasão</strong> e <strong>manipulação</strong> é ética: a persuasão respeita a autonomia do outro; a manipulação explora vulnerabilidades. A TRN defende a persuasão ética — usar todos os pilares, mas nunca distorcer, exagerar ou explorar.</p>
-    <p>Na prática, os melhores comunicadores integram os três pilares: são credíveis, fundamentam com evidências e sabem tocar o coração do público — sem nunca o enganar.</p>`
-  },
-  {
-    num:"Capítulo VII", title:"O Futuro de Comunicar: Desafios Contemporâneos",
-    body:`<p>Nunca estivemos tão ligados. E nunca a comunicação foi tão desafiante. A era digital trouxe velocidade, alcance e comodidade — mas também fragmentação, desumanização e a tentação da performance.</p>
-    <p>A <span class="concept">autenticidade</span> tornou-se uma questão central: as redes sociais permitem construir personas cuidadosamente editadas, criando distância entre o "eu" apresentado e o "eu" real. A comunicação interpessoal genuína exige congruência — que o que expressamos corresponda ao que sentimos.</p>
-    <p>A <strong>Cultura e o Contexto</strong> são dimensões que sempre moldaram a comunicação — e hoje, num mundo globalizado, são mais visíveis. Culturas de <span class="concept">alto contexto</span> (como a japonesa) comunicam muito implicitamente; culturas de <span class="concept">baixo contexto</span> (como a americana) são mais diretas. Compreender estas diferenças é essencial para comunicar eficazmente num mundo diverso.</p>
-    <div class="highlight">A Comunicação adapta-se ao contexto e ao tempo em que vivemos. Nunca estivemos tão ligados, contudo, nem por isso estamos mais aptos a comunicar.</div>
-    <p>O desafio do século XXI não é ter mais tecnologia — é ser mais humano dentro dela. Escutar com empatia num mundo de notificações. Ser assertivo num mundo de ecrãs. Comunicar com autenticidade num mundo de algoritmos. As ferramentas mudam; a natureza humana da comunicação permanece.</p>`
-  }
-];
-
-// ============================================================
-// DATA: GOSSIP MODE
-// ============================================================
-const gossipNarrative = [
-  {type:"date", text:"Hoje, 09:12"},
-  {type:"girl", who:"rita", text:"MENINAS acordem 🚨🚨🚨 tenho coisa GORDA", ts:"09:12"},
-  {type:"girl", who:"mariana", text:"o que foi 😭😭", ts:"09:12"},
-  {type:"girl", who:"beatriz", text:"estou em aula mas continua", ts:"09:13"},
-  {type:"girl", who:"rita", text:"então vocês sabem a Ana Catarina certo? a do 3º ano que namorava com o Tiago que é amigo do primo da Sofia", ts:"09:13"},
-  {type:"girl", who:"sofia", text:"ESPERA o Tiago do Surf Club???", ts:"09:13"},
-  {type:"girl", who:"rita", text:"ESSE MESMO. então ontem à noite vejo ela no instagram a fazer story com outro tipo. mas tipo story normal nada demais. só que… o tipo estava de perfil e eu reconheci a casaco 💀", ts:"09:14"},
-  {type:"girl", who:"mariana", text:"NÃO", ts:"09:14"},
-  {type:"girl", who:"beatriz", text:"que casaco 😰", ts:"09:14"},
-  {type:"girl", who:"rita", text:"o casaco VERDE do Tiago. aquele com o patch da banda. aquele que ele tem HÁ ANOS", ts:"09:14"},
-  {type:"girl", who:"sofia", text:"ok mas pode ser coincidência não? casacos parecidos existem", ts:"09:15"},
-  {type:"girl", who:"rita", text:"Sofia querida eu gosto de ti mas estás MUITO errada", ts:"09:15"},
-  {type:"prof", theory:"Teoria da Atribuição", text:"<span class='theory-label'>📚 Teoria da Atribuição</span><br>Bom dia! Reparem neste momento — a Sofia fez uma <strong>atribuição externa</strong> (\"é coincidência\", causa na situação) enquanto a Rita fez uma <strong>atribuição interna</strong> (\"reconheci a casaco\", causa no comportamento da pessoa). A Teoria da Atribuição explica exatamente isto: como interpretamos as causas do comportamento dos outros muda completamente a nossa reação.", ts:"09:16"},
-  {type:"girl", who:"beatriz", text:"prof com todo o respeito estamos a tentar perceber se a Ana Catarina está a trair o Tiago", ts:"09:16"},
-  {type:"girl", who:"mariana", text:"💀💀💀 beatriz LMAO", ts:"09:16"},
-  {type:"girl", who:"prof_skip", text:"ok continuem eu estou a ouvir 👀", ts:"09:17"},
-  {type:"date", text:"09:18"},
-  {type:"girl", who:"rita", text:"então eu decidi não dizer nada. tipo fiquei ali a ver o story. mas a minha amiga Inês que também os conhece viu e ficou tipo 'ah eu vi os dois juntos na biblioteca na semana passada mas achei que eram só amigos'", ts:"09:18"},
-  {type:"girl", who:"sofia", text:"INÊS SABIA?? e não disse nada?!", ts:"09:19"},
-  {type:"girl", who:"mariana", text:"ok isso é informação retida de propósito ou ela realmente não sabia o que estava a ver?", ts:"09:19"},
-  {type:"girl", who:"rita", text:"É EXATAMENTE A PERGUNTA. porque eu falei com ela e ela disse que achou que eram só amigos. mas tipo… biblioteca a dois…", ts:"09:20"},
-  {type:"prof", theory:"TGIM", text:"<span class='theory-label'>📚 TGIM — Gestão da Informação Motivada</span><br>Excelente exemplo! A Inês geriu a informação motivada pela redução de ansiedade — inconscientemente escolheu a interpretação menos perturbadora (\"são só amigos\") porque a alternativa causaria desconforto. A <strong>TGIM</strong> explica que gerimos ativamente quanto queremos saber e como interpretamos o que vemos, especialmente quando a verdade seria difícil de processar.", ts:"09:21"},
-  {type:"girl", who:"beatriz", text:"okay mas prof e nós agora? também estamos a gerir informação motivada porque queremos saber TUDO 😭", ts:"09:21"},
-  {type:"girl", who:"mariana", text:"ao contrário da Inês nós queremos a informação máxima AHAHAH", ts:"09:22"},
-  {type:"date", text:"09:24"},
-  {type:"girl", who:"rita", text:"ok PLOT TWIST. o Tiago viu o story. e em vez de reagir… não disse NADA. ficou em lido.", ts:"09:24"},
-  {type:"girl", who:"sofia", text:"o silêncio é uma resposta por si próprio!!!", ts:"09:24"},
-  {type:"girl", who:"beatriz", text:"Sofia acordaste hoje 👏", ts:"09:25"},
-  {type:"girl", who:"sofia", text:"hm estudei ontem sobre comunicação não-verbal e silêncio como forma de comunicação… este prof está a entrar na minha cabeça", ts:"09:25"},
-  {type:"prof", theory:"Comunicação Não-Verbal + Silêncio", text:"<span class='theory-label'>📚 Comunicação Não-Verbal & Silêncio</span><br>A Sofia acertou em cheio! O silêncio é um elemento fundamental da comunicação — não é ausência de mensagem, É a mensagem. Watzlawick diria que é <strong>impossível não comunicar</strong>: ao não responder, o Tiago comunicou algo (o quê exatamente, depende da interpretação de cada uma). Além disso, o <strong>Perfil Verbal-Não Verbal Discrepante</strong> aparece quando as ações (não reagir) contradizem o que seria esperado verbalmente.", ts:"09:26"},
-  {type:"girl", who:"mariana", text:"prof isso significa que o Tiago sabe???", ts:"09:26"},
-  {type:"girl", who:"rita", text:"OU significa que está a gerir a situação passivamente 👀", ts:"09:27"},
-  {type:"date", text:"09:31"},
-  {type:"girl", who:"beatriz", text:"ok eu investiguei. fui ao perfil do tipo do casaco. chama-se Rodrigo. e tem uma foto com a Ana Catarina de MARÇO. tipo quando eles ainda supostamente estavam juntos", ts:"09:31"},
-  {type:"girl", who:"sofia", text:"MARÇO???", ts:"09:31"},
-  {type:"girl", who:"mariana", text:"então isto não foi de repente. isto é uma NOVELA", ts:"09:32"},
-  {type:"girl", who:"rita", text:"e agora vem a melhor parte. eu conheço a Ana Catarina razoavelmente bem. e ela tem um estilo de comunicação muito muito específico", ts:"09:32"},
-  {type:"girl", who:"beatriz", text:"deixa adivinhar. nunca diz o que sente diretamente?", ts:"09:33"},
-  {type:"girl", who:"rita", text:"JAMAIS. é sempre 'não é nada' e 'estou bem' mas com aquele tom que não está nada bem", ts:"09:33"},
-  {type:"prof", theory:"Estilos de Comunicação", text:"<span class='theory-label'>📚 Estilos de Comunicação</span><br>Isto é um exemplo claro do estilo <strong>Passivo-Agressivo</strong>: evita o confronto direto mas manifesta insatisfação de forma indireta — através do tom, do silêncio estratégico, de ações veladas. É diferente do <strong>Passivo</strong> puro (que apenas suprime) — o passivo-agressivo age, mas nunca de forma direta. Comparem com o estilo <strong>Assertivo</strong>, que expressaria as necessidades com respeito: 'Não estou bem com esta situação porque...'", ts:"09:34"},
-  {type:"girl", who:"mariana", text:"então ela nunca disse ao Tiago que estava insatisfeita?", ts:"09:35"},
-  {type:"girl", who:"rita", text:"A Bruna que é amiga dela disse que ela ficou a acumular durante MESES. dizia que estava tudo bem. e depois um dia simplesmente desligou.", ts:"09:35"},
-  {type:"girl", who:"sofia", text:"isso é tão triste. mas também tão previsível", ts:"09:36"},
-  {type:"date", text:"09:40"},
-  {type:"girl", who:"beatriz", text:"ok mas e o Tiago? alguém falou com ele?", ts:"09:40"},
-  {type:"girl", who:"mariana", text:"o meu primo falou com ele ontem. e o Tiago está tipo em modo robô. responde a tudo com 'estou bem' e 'já passou' mas claramente NÃO passou", ts:"09:41"},
-  {type:"girl", who:"rita", text:"o clássico do passivo puro 😔", ts:"09:41"},
-  {type:"girl", who:"sofia", text:"ele está a escutar os amigos?", ts:"09:42"},
-  {type:"girl", who:"mariana", text:"o meu primo disse que tentou falar com ele mas que ele muda de assunto constantemente", ts:"09:42"},
-  {type:"prof", theory:"Escuta Ativa vs Ouvir", text:"<span class='theory-label'>📚 Escuta Ativa & Barreiras</span><br>O Tiago está a <strong>ouvir</strong> mas não a <strong>escutar</strong>. Ouvir é passivo — receber o som. Escutar implica processar, estar presente, responder genuinamente. As <strong>barreiras psicológicas</strong> — a dor emocional, o orgulho ferido — estão a impedir a escuta real. Além disso, os amigos podem estar a tentar aplicar <strong>Escuta Empática</strong> (entrar na perspetiva emocional dele) mas sem sucesso se ele não deixar espaço para isso.", ts:"09:43"},
-  {type:"girl", who:"beatriz", text:"prof não devia estar a dar aula agora", ts:"09:43"},
-  {type:"girl", who:"prof_skip", text:"tecnicamente estou. isto conta como estudo de caso 📋", ts:"09:44"},
-  {type:"girl", who:"mariana", text:"AHAHAHA ACEITAMOS", ts:"09:44"},
-  {type:"date", text:"09:48"},
-  {type:"girl", who:"rita", text:"ok SEGUNDA VOLTA. a Bruna (amiga da Ana Catarina) postou agora mesmo uma foto com ela e o Rodrigo. com o caption 'os meus favoritos 🤍'", ts:"09:48"},
-  {type:"girl", who:"sofia", text:"a Bruna sabia tudo desde o início???", ts:"09:48"},
-  {type:"girl", who:"beatriz", text:"ou está a marcar território em nome da amiga lol", ts:"09:49"},
-  {type:"girl", who:"mariana", text:"e agora toda a gente vai saber. é um comunicado oficial sem ser oficial", ts:"09:49"},
-  {type:"prof", theory:"Gestão de Impressões + Simbólico", text:"<span class='theory-label'>📚 Gestão de Impressões & Interacionismo Simbólico</span><br>Fascinante! A Bruna usou dois mecanismos em simultâneo. Primeiro, <strong>Gestão de Impressões</strong> (Goffman): controlou deliberadamente a informação pública para influenciar como a Ana Catarina e o Rodrigo são percebidos — como casal legítimo. Segundo, <strong>Interacionismo Simbólico</strong>: aquela foto não é apenas uma foto — é um símbolo carregado de significado social: validação, oficialização, mensagem ao Tiago. O caption '🤍' é um símbolo que toda a gente lê de forma diferente conforme o que já sabe.", ts:"09:50"},
-  {type:"girl", who:"rita", text:"PROF isso é exatamente o que aconteceu. toda a gente no grupo de amigos deles já está a comentar", ts:"09:51"},
-  {type:"girl", who:"beatriz", text:"o drama da gestão de impressões fazer mais barulho do que o drama real", ts:"09:51"},
-  {type:"date", text:"10:02"},
-  {type:"girl", who:"sofia", text:"ok update: o Tiago viu a foto. e deixou um like.", ts:"10:02"},
-  {type:"girl", who:"mariana", text:"UM LIKE??? que estilo de comunicação é esse prof??", ts:"10:02"},
-  {type:"girl", who:"rita", text:"ou é assertividade forçada ou é o maior bluff da história", ts:"10:03"},
-  {type:"prof", theory:"Objetivos Múltiplos", text:"<span class='theory-label'>📚 Teoria dos Objetivos Múltiplos</span><br>O like do Tiago é um exemplo perfeito de <strong>Objetivos Múltiplos em conflito</strong>. Ao mesmo tempo, ele quer: (1) proteger a sua imagem de que está bem (objetivo identitário), (2) não cortar completamente os laços sociais do grupo (objetivo relacional), e (3) talvez sinalizar que aceita a situação (objetivo instrumental). O like serve os três — é uma mensagem mínima que cobre o máximo de frentes. Comunicação altamente calculada, mesmo que pareça simples.", ts:"10:04"},
-  {type:"girl", who:"beatriz", text:"um like a fazer trabalho de três objetivos em simultâneo... respeito honestamente", ts:"10:05"},
-  {type:"girl", who:"mariana", text:"toda a teoria numa reação do instagram. este prof tem razão sobre tudo 😭", ts:"10:05"},
-  {type:"date", text:"10:09"},
-  {type:"girl", who:"rita", text:"ÚLTIMO UPDATE e juro que é o melhor. a Ana Catarina mandou mensagem ao Tiago. privada. e a Bruna mostrou à Inês que me mostrou a mim (com autorização ok não somos assim tão más)", ts:"10:09"},
-  {type:"girl", who:"sofia", text:"O QUE DIZIA", ts:"10:09"},
-  {type:"girl", who:"beatriz", text:"FALA RITA", ts:"10:10"},
-  {type:"girl", who:"rita", text:"ela disse: 'espero que estejas bem. não quis que soubesses assim mas também nunca soube como dizer-te. desculpa.' E ele respondeu: 'obrigado por dizer. fica bem.'", ts:"10:10"},
-  {type:"girl", who:"mariana", text:"…isso é bonito na verdade? tenho sentimentos contraditórios", ts:"10:11"},
-  {type:"girl", who:"sofia", text:"ela foi assertiva no fim. finalmente.", ts:"10:11"},
-  {type:"prof", theory:"Assertividade + DESC + Retórica", text:"<span class='theory-label'>📚 Assertividade, Modelo DESC & Ethos</span><br>A Ana Catarina finalmente usou comunicação <strong>assertiva</strong> — expressou os sentimentos com honestidade e sem atacar. Inconscientemente aplicou elementos do <strong>Modelo DESC</strong>: descreveu a situação ('não quis que soubesses assim'), expressou o sentimento ('nunca soube como dizer-te') e pediu desculpa. O Tiago respondeu com <strong>Ethos</strong> — credibilidade e dignidade — mantendo o tom respeitoso mesmo na dor. A mensagem dele é curta mas tem logos (racional), pathos (gentileza) e ethos (caráter). Às vezes as melhores comunicações são as mais simples.", ts:"10:12"},
-  {type:"girl", who:"beatriz", text:"ok prof agora estou a chorar numa aula de cálculo obrigada", ts:"10:12"},
-  {type:"girl", who:"rita", text:"AHAHAHA beatriz", ts:"10:13"},
-  {type:"girl", who:"mariana", text:"resumo da manhã: aprendemos teoria da comunicação interpessoal E acompanhámos uma separação em tempo real", ts:"10:13"},
-  {type:"girl", who:"sofia", text:"melhor aula do semestre sem dúvida", ts:"10:14"},
-  {type:"prof", theory:"Fim", text:"<span class='theory-label'>📚 Nota Final</span><br>E com isto cobrimos: Teoria da Atribuição, TGIM, Comunicação Não-Verbal, Silêncio como Comunicação, Estilos (Passivo, Passivo-Agressivo, Assertivo), Escuta Ativa, Gestão de Impressões, Interacionismo Simbólico, Objetivos Múltiplos e Retórica (Ethos/Logos/Pathos). Boa sorte no exame. 📋", ts:"10:14"},
-  {type:"girl", who:"rita", text:"vamos todos passar graças à Ana Catarina e ao Tiago 🙏", ts:"10:15"},
-  {type:"girl", who:"mariana", text:"mandem-lhes bem", ts:"10:15"},
-  {type:"girl", who:"beatriz", text:"🤍", ts:"10:15"},
-  {type:"girl", who:"sofia", text:"🤍", ts:"10:15"}
-];
-
-// ============================================================
-// STATE
-// ============================================================
-let qIdx = 0, qScore = 0, qAnswered = false;
-let fcIdx = 0, fcKnown = 0, fcFlipped = false, fcScores = new Array(50).fill(null);
-
-// ============================================================
-// NAVIGATION
-// ============================================================
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  const tabs = document.querySelectorAll('.nav-tab');
-  const tabMap = {home:0,quiz:1,flash:2,fitb:3,story:4,gossip:5};
-  if(tabMap[id]!==undefined) tabs[tabMap[id]].classList.add('active');
-}
-
-// ============================================================
-// QUIZ
-// ============================================================
-function renderQuestion() {
-  const q = quizData[qIdx];
-  document.getElementById('q-label').textContent = `Pergunta ${qIdx+1} de ${quizData.length}`;
-  document.getElementById('q-score').textContent = `✓ ${qScore} corretas`;
-  document.getElementById('q-number').textContent = `PERGUNTA ${qIdx+1}`;
-  document.getElementById('q-text').textContent = q.q;
-  const opts = document.getElementById('q-options');
-  opts.innerHTML = '';
-  const letters = ['A','B','C','D'];
-  q.o.forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'option-btn';
-    btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
-    btn.onclick = () => selectAnswer(i);
-    opts.appendChild(btn);
-  });
-  document.getElementById('q-explanation').classList.remove('show');
-  document.getElementById('q-explanation').textContent = '';
-  document.getElementById('q-next-btn').style.display = 'none';
-  document.getElementById('q-progress').style.width = ((qIdx+1)/quizData.length*100)+'%';
-  qAnswered = false;
-}
-
-function selectAnswer(i) {
-  if(qAnswered) return;
-  qAnswered = true;
-  const q = quizData[qIdx];
-  const btns = document.querySelectorAll('.option-btn');
-  btns.forEach((btn, idx) => {
-    btn.disabled = true;
-    if(idx === q.a) btn.classList.add('correct');
-    else if(idx === i && i !== q.a) btn.classList.add('wrong');
-  });
-  const exp = document.getElementById('q-explanation');
-  exp.textContent = q.e;
-  exp.classList.add('show');
-  if(i === q.a) { qScore++; document.getElementById('stat-quiz').textContent = qScore; }
-  document.getElementById('q-next-btn').style.display = 'inline-block';
-}
-
-function nextQuestion() {
-  qIdx++;
-  if(qIdx >= quizData.length) { showResults(); return; }
-  renderQuestion();
-}
-
-function skipQuestion() {
-  if(qAnswered) { nextQuestion(); return; }
-  qIdx++;
-  if(qIdx >= quizData.length) { showResults(); return; }
-  renderQuestion();
-}
-
-function showResults() {
-  const pct = Math.round(qScore/quizData.length*100);
-  document.getElementById('res-score').textContent = pct+'%';
-  document.getElementById('res-label').textContent = `Quiz concluído — ${qScore} de ${quizData.length} corretas`;
-  document.getElementById('res-emoji').textContent = pct>=80?'🎉':pct>=60?'💪':'📚';
-  document.getElementById('res-sub').textContent = pct>=80?'Excelente! Dominaste a matéria.':pct>=60?'Bom trabalho! Revê os tópicos que falhaste.':'Continua a estudar — vai melhorar!';
-  document.getElementById('results-overlay').classList.add('show');
-}
-
-function restartQuiz() {
-  qIdx = 0; qScore = 0;
-  document.getElementById('results-overlay').classList.remove('show');
-  renderQuestion();
-}
-
-// ============================================================
-// FLASHCARDS
-// ============================================================
-function renderFlashcard() {
-  const fc = flashData[fcIdx];
-  document.getElementById('fc-term').textContent = fc.t;
-  document.getElementById('fc-def').textContent = fc.d;
-  document.getElementById('fc-label').textContent = `Cartão ${fcIdx+1} de ${flashData.length}`;
-  document.getElementById('fc-counter').textContent = `${fcIdx+1} / ${flashData.length}`;
-  document.getElementById('fc-progress').style.width = ((fcIdx+1)/flashData.length*100)+'%';
-  const inner = document.getElementById('fc-inner');
-  inner.classList.remove('flipped');
-  fcFlipped = false;
-  document.getElementById('fc-score').textContent = `🟢 ${fcKnown} dominados`;
-}
-
-function flipCard() {
-  const inner = document.getElementById('fc-inner');
-  fcFlipped = !fcFlipped;
-  inner.classList.toggle('flipped', fcFlipped);
-}
-
-function fcNav(dir) {
-  fcIdx = (fcIdx + dir + flashData.length) % flashData.length;
-  renderFlashcard();
-}
-
-function fcVote(known) {
-  if(known && fcScores[fcIdx] !== true) {
-    fcKnown++;
-    fcScores[fcIdx] = true;
-    document.getElementById('stat-flash').textContent = fcKnown;
-  }
-  fcNav(1);
-}
-
-// ============================================================
-// FILL IN THE BLANK
-// ============================================================
-function renderFitb() {
-  const container = document.getElementById('fitb-container');
-  container.innerHTML = '';
-  fitbData.forEach((item, idx) => {
-    const card = document.createElement('div');
-    card.className = 'fitb-card';
-    card.innerHTML = `
-      <div class="question-number">FRASE ${idx+1}</div>
-      <div class="fitb-sentence">${item.s.replace('___', `<input type="text" class="blank-input" id="fitb-${idx}" placeholder="..." autocomplete="off">`)}</div>
-      <div class="fitb-feedback" id="fitb-fb-${idx}"></div>
-    `;
-    container.appendChild(card);
-    const input = card.querySelector(`#fitb-${idx}`);
-    input.addEventListener('keydown', e => { if(e.key==='Enter') checkFitbSingle(idx); });
-  });
-}
-
-function checkFitbSingle(idx) {
-  const input = document.getElementById(`fitb-${idx}`);
-  const fb = document.getElementById(`fitb-fb-${idx}`);
-  const val = input.value.trim().toLowerCase();
-  const item = fitbData[idx];
-  const correct = item.a.toLowerCase();
-  const alts = (item.alt || []).map(a => a.toLowerCase());
-  const isOk = val === correct || alts.includes(val);
-  input.className = 'blank-input ' + (isOk ? 'correct-answer' : 'wrong-answer');
-  fb.className = 'fitb-feedback show ' + (isOk ? 'ok' : 'err');
-  fb.textContent = isOk ? '✓ Correto!' : `✗ A resposta é: ${item.a}`;
-  input.disabled = true;
-}
-
-function checkAllFitb() {
-  let correct = 0;
-  fitbData.forEach((_, idx) => {
-    const input = document.getElementById(`fitb-${idx}`);
-    if(!input.disabled) checkFitbSingle(idx);
-    if(input.classList.contains('correct-answer')) correct++;
-  });
-  document.getElementById('stat-fitb').textContent = correct;
-}
-
-function resetFitb() {
-  renderFitb();
-}
-
-// ============================================================
-// STORY
-// ============================================================
-function renderStory() {
-  const nav = document.getElementById('ch-nav');
-  const content = document.getElementById('story-content');
-  nav.innerHTML = '';
-  content.innerHTML = '';
-  storyChapters.forEach((ch, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'ch-btn' + (i===0?' active':'');
-    btn.textContent = `${ch.num}`;
-    btn.onclick = () => {
-      document.querySelectorAll('.ch-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.story-chapter').forEach(s => s.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById(`ch-${i}`).classList.add('active');
-    };
-    nav.appendChild(btn);
-    const div = document.createElement('div');
-    div.className = 'story-chapter' + (i===0?' active':'');
-    div.id = `ch-${i}`;
-    div.innerHTML = `
-      <div class="chapter-header">
-        <div class="ch-number">${ch.num}</div>
-        <div class="ch-title">${ch.title}</div>
-      </div>
-      <div class="story-body">${ch.body}</div>
-    `;
-    content.appendChild(div);
-  });
-}
-
-// ============================================================
-// GOSSIP
-// ============================================================
-function renderGossip() {
-  const container = document.getElementById('gossip-container');
-  const avatars = { rita:'R', mariana:'M', beatriz:'B', sofia:'S', prof:'Prof', prof_skip:'Prof' };
-  const avClass = { rita:'av-rita', mariana:'av-mariana', beatriz:'av-beatriz', sofia:'av-sofia', prof:'av-prof', prof_skip:'av-prof' };
-  const names = { rita:'Rita 🔥', mariana:'Mariana', beatriz:'Beatriz', sofia:'Sofia 🌙', prof:'Prof. Manuel', prof_skip:'Prof. Manuel' };
-  const nameClass = { rita:'rita', mariana:'mariana', beatriz:'beatriz', sofia:'sofia', prof:'prof', prof_skip:'prof' };
-  const myGirl = 'beatriz';
-
-  container.innerHTML = `
-    <div class="chat-window">
-      <div class="chat-header">
-        <div class="chat-header-avatar">💅</div>
-        <div class="chat-header-info">
-          <div class="chat-header-name">Top Gossip Gang 🔥</div>
-          <div class="chat-header-members">Rita, Mariana, Beatriz, Sofia, Prof. Manuel</div>
-        </div>
-        <div class="chat-header-dots">···</div>
-      </div>
-      <div class="chat-body" id="chat-body-inner"></div>
-      <div class="chat-input-bar">
-        <span class="chat-mic">📎</span>
-        <div class="chat-input-fake">Mensagem</div>
-        <span class="chat-mic">🎤</span>
-      </div>
-    </div>
-  `;
-
-  const body = container.querySelector('#chat-body-inner');
-
-  gossipNarrative.forEach(msg => {
-    if(msg.type === 'date') {
-      const d = document.createElement('div');
-      d.className = 'chat-date-divider';
-      d.textContent = msg.text;
-      body.appendChild(d);
-      return;
-    }
-    const isMe = msg.who === myGirl;
-    const isProf = msg.who === 'prof' || msg.who === 'prof_skip';
-    const row = document.createElement('div');
-    row.className = 'chat-msg-row' + (isMe ? ' right' : '');
-    const senderCol = document.createElement('div');
-    senderCol.className = 'chat-sender-col';
-    const av = document.createElement('div');
-    av.className = 'chat-av ' + (avClass[msg.who] || 'av-prof');
-    av.textContent = avatars[msg.who] || '?';
-    senderCol.appendChild(av);
-    const bubbleCol = document.createElement('div');
-    bubbleCol.className = 'chat-bubble-col';
-    if(!isMe) {
-      const nameEl = document.createElement('div');
-      nameEl.className = 'chat-name ' + (nameClass[msg.who] || '');
-      nameEl.textContent = names[msg.who] || msg.who;
-      bubbleCol.appendChild(nameEl);
-    }
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble ' + (isProf ? 'bubble-prof' : isMe ? 'bubble-right' : 'bubble-girl');
-    bubble.innerHTML = msg.text + `<span class="ts${isMe?' delivered':''}">${msg.ts}</span>`;
-    bubbleCol.appendChild(bubble);
-    if(isMe) { row.appendChild(bubbleCol); row.appendChild(senderCol); }
-    else { row.appendChild(senderCol); row.appendChild(bubbleCol); }
-    body.appendChild(row);
-  });
-
-  const typing = document.createElement('div');
-  typing.className = 'typing-indicator';
-  typing.innerHTML = `<div class="chat-av av-rita" style="width:22px;height:22px;font-size:11px">R</div> Rita está a escrever <div class="typing-dots"><span></span><span></span><span></span></div>`;
-  body.appendChild(typing);
-  body.scrollTop = body.scrollHeight;
-}
-
-// ============================================================
-// INIT
-// ============================================================
-renderQuestion();
-renderFlashcard();
-renderFitb();
-renderStory();
-renderGossip();
-</script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
