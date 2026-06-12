@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Comunicação Interpessoal — Plataforma de Estudo v2</title>
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <img class="header-logo" src="assets/logo.svg" alt="">
+    <div class="header-title">Comunicação <span>Interpessoal</span></div>
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-tab="home" onclick="showPage('home')">Início</button>
+      <button class="nav-tab" data-tab="quiz" onclick="showPage('quiz')">Quiz</button>
+      <button class="nav-tab" data-tab="flash" onclick="showPage('flash')">Cartões</button>
+      <button class="nav-tab" data-tab="jogos" onclick="showPage('jogos')">Jogos</button>
+      <button class="nav-tab" data-tab="ler" onclick="showPage('ler')">Ler</button>
+    </nav>
+    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" title="Mudar tema">🌙</button>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-pill">⭐ <strong id="stat-xp">0</strong> XP</div>
+  <div class="stat-pill">🎓 <strong id="stat-level">Nível 1</strong></div>
+  <div class="stat-pill">🔥 <strong id="stat-streak">0</strong> dias seguidos</div>
+  <div class="stat-pill">🏆 <strong id="stat-ach">0</strong> conquistas</div>
+</div>
+
+<!-- ===================== INÍCIO ===================== -->
+<div id="page-home" class="page active main">
+  <div class="dash-top">
+    <div class="level-card">
+      <div class="level-greeting" id="dash-greeting">Olá! Pronta para estudar?</div>
+      <div class="level-name" id="dash-level-name">Ruído Branco</div>
+      <div class="level-xp-row"><span id="dash-xp-now">0 XP</span><span id="dash-xp-next">próximo nível: 100 XP</span></div>
+      <div class="level-bar"><div class="level-bar-fill" id="dash-xp-bar" style="width:0%"></div></div>
+    </div>
+    <div class="streak-card">
+      <div class="streak-flame" id="dash-flame">🔥</div>
+      <div>
+        <div class="streak-num" id="dash-streak">0</div>
+        <div class="streak-label">dias seguidos</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quick-row">
+    <button class="btn btn-big" onclick="startQuickStudy()">⚡ Estudo rápido — 10 perguntas</button>
+    <button class="btn-ghost btn-big" onclick="startQuiz('exame','Todos')">⏱️ Simular exame</button>
+  </div>
+
+  <div class="section-title">Modos de estudo</div>
+  <div class="home-grid" id="home-modes"></div>
+
+  <div class="section-title">Os teus pontos fracos</div>
+  <div class="weak-list" id="weak-list"></div>
+
+  <div class="section-title">Conquistas</div>
+  <div class="ach-grid" id="ach-grid"></div>
+</div>
+
+<!-- ===================== QUIZ ===================== -->
+<div id="page-quiz" class="page main">
+  <div class="section-hero">
+    <h1>Quiz de Escolha Múltipla</h1>
+    <p>100 perguntas · treino com feedback imediato ou simulação de exame com tempo</p>
+  </div>
+  <div class="quiz-container">
+    <div id="quiz-setup" class="setup-card">
+      <div class="setup-label">Modo</div>
+      <div class="choice-row" id="quiz-mode-row">
+        <button class="choice-chip sel" data-mode="treino">📖 Treino — feedback imediato</button>
+        <button class="choice-chip" data-mode="exame">⏱️ Exame — 20 perguntas, 20 min</button>
+        <button class="choice-chip" data-mode="erradas" id="chip-erradas">🔁 Repetir erradas</button>
+      </div>
+      <div class="setup-label">Tópico</div>
+      <div class="choice-row" id="quiz-topic-row"></div>
+      <div class="setup-actions">
+        <button class="btn btn-big" onclick="startQuizFromSetup()">Começar →</button>
+      </div>
+    </div>
+
+    <div id="quiz-play" style="display:none">
+      <div class="quiz-progress-wrap">
+        <div class="quiz-progress-label">
+          <span id="q-label"></span>
+          <span id="q-right"></span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="q-progress"></div></div>
+      </div>
+      <div class="question-card">
+        <div class="question-number"><span id="q-number"></span><span class="topic-tag" id="q-topic"></span></div>
+        <div class="question-text" id="q-text"></div>
+        <div class="options" id="q-options"></div>
+        <div class="explanation" id="q-explanation"></div>
+      </div>
+      <div class="quiz-nav">
+        <span class="session-streak" id="q-session-streak"></span>
+        <div class="quiz-nav-right">
+          <button class="btn-ghost" onclick="quitQuiz()">Sair</button>
+          <button class="btn-ghost" id="q-skip-btn" onclick="skipQuestion()">Saltar →</button>
+          <button class="btn" id="q-next-btn" onclick="nextQuestion()" style="display:none">Próxima →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== FLASHCARDS ===================== -->
+<div id="page-flash" class="page main">
+  <div class="section-hero">
+    <h1>Flashcards</h1>
+    <p>Repetição espaçada: os cartões que falhares voltam mais vezes · 50 conceitos</p>
+  </div>
+  <div class="fc-filter-row" id="fc-cat-row"></div>
+  <div class="fc-filter-row">
+    <button class="choice-chip sel" data-fcfilter="todas" onclick="setFcFilter('todas')">Todas</button>
+    <button class="choice-chip" data-fcfilter="dificeis" onclick="setFcFilter('dificeis')">Só as difíceis</button>
+    <button class="choice-chip" onclick="shuffleFc()">🔀 Baralhar</button>
+  </div>
+  <div class="fc-progress">
+    <div class="quiz-progress-label">
+      <span id="fc-label"></span>
+      <span id="fc-score"></span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="fc-progress"></div></div>
+  </div>
+  <div class="flashcard-scene" onclick="flipCard()">
+    <div class="flashcard-inner" id="fc-inner">
+      <div class="flashcard-face flashcard-front">
+        <span class="box-tag" id="fc-box-tag"></span>
+        <div class="card-label" id="fc-cat-label">conceito</div>
+        <div class="card-term" id="fc-term"></div>
+        <div class="card-hint">↻ clica para ver a definição</div>
+      </div>
+      <div class="flashcard-face flashcard-back">
+        <div class="card-label">definição</div>
+        <div class="card-def" id="fc-def"></div>
+      </div>
+    </div>
+  </div>
+  <div class="fc-known">
+    <button class="fc-known-btn no" onclick="fcVote(false)">✗ Não sabia</button>
+    <button class="fc-known-btn yes" onclick="fcVote(true)">✓ Sabia!</button>
+  </div>
+  <div class="flashcard-nav" style="margin-top:20px">
+    <button class="fc-btn" onclick="fcNav(-1)">←</button>
+    <span class="fc-counter" id="fc-counter"></span>
+    <button class="fc-btn" onclick="fcNav(1)">→</button>
+  </div>
+  <div class="fc-kbd-hint">Atalhos: <kbd>espaço</kbd> vira · <kbd>←</kbd><kbd>→</kbd> navega · <kbd>1</kbd> não sabia · <kbd>2</kbd> sabia</div>
+</div>
+
+<!-- ===================== JOGOS (hub) ===================== -->
+<div id="page-jogos" class="page main">
+  <div class="section-hero">
+    <h1>Jogos & Exercícios</h1>
+    <p>Três formas diferentes de pôr a matéria à prova</p>
+  </div>
+  <div class="hub-grid">
+    <div class="mode-card" onclick="showPage('fitb')">
+      <div class="mode-icon">✍️</div>
+      <div class="mode-title">Preencher Espaços</div>
+      <div class="mode-desc">Completa 25 frases com o termo correto — agora aceita respostas sem acentos</div>
+      <div class="mode-stat" id="hub-fitb-stat"></div>
+    </div>
+    <div class="mode-card" onclick="showPage('cenarios')">
+      <div class="mode-icon">🎭</div>
+      <div class="mode-title">Cenários de Exame</div>
+      <div class="mode-desc">16 situações reais para aplicar conceitos — o formato da prova escrita</div>
+      <div class="mode-stat" id="hub-cen-stat"></div>
+    </div>
+    <div class="mode-card" onclick="showPage('match')">
+      <div class="mode-icon">🧩</div>
+      <div class="mode-title">Jogo de Associação</div>
+      <div class="mode-desc">Liga cada conceito à sua definição contra o relógio</div>
+      <div class="mode-stat" id="hub-match-stat"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== FITB ===================== -->
+<div id="page-fitb" class="page main">
+  <div class="section-hero">
+    <h1>Preencher Espaços ✍️</h1>
+    <p>25 frases · escreve o termo e carrega Enter · acentos opcionais</p>
+  </div>
+  <div id="fitb-container"></div>
+  <div class="fitb-actions">
+    <button class="btn" onclick="checkAllFitb()">Corrigir tudo</button>
+    <button class="btn-ghost" onclick="resetFitb()">Recomeçar</button>
+  </div>
+</div>
+
+<!-- ===================== CENÁRIOS ===================== -->
+<div id="page-cenarios" class="page main">
+  <div class="section-hero">
+    <h1>Cenários de Exame 🎭</h1>
+    <p>Aplica a teoria a situações concretas — tal como na prova escrita</p>
+  </div>
+  <div class="quiz-container">
+    <div id="cen-setup" class="setup-card" style="text-align:center">
+      <p style="font-size:14px; color:var(--ink-muted); line-height:1.7; margin-bottom:8px">16 cenários do dia-a-dia. Lê a situação, identifica o conceito ou a teoria em jogo e escolhe a resposta certa. Cada acerto vale <strong>15 XP</strong>.</p>
+      <div class="setup-actions" style="justify-content:center">
+        <button class="btn btn-big" onclick="startCen()">Começar →</button>
+      </div>
+    </div>
+    <div id="cen-play" style="display:none">
+      <div class="quiz-progress-wrap">
+        <div class="quiz-progress-label">
+          <span id="cen-label"></span>
+          <span id="cen-right"></span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="cen-progress"></div></div>
+      </div>
+      <div class="question-card">
+        <div class="question-number"><span id="cen-number"></span><span class="topic-tag">cenário</span></div>
+        <div class="scenario-box" id="cen-sc"></div>
+        <div class="question-text" id="cen-q"></div>
+        <div class="options" id="cen-options"></div>
+        <div class="explanation" id="cen-explanation"></div>
+      </div>
+      <div class="quiz-nav">
+        <span></span>
+        <div class="quiz-nav-right">
+          <button class="btn-ghost" onclick="quitCen()">Sair</button>
+          <button class="btn" id="cen-next-btn" onclick="nextCen()" style="display:none">Próximo →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ASSOCIAÇÃO ===================== -->
+<div id="page-match" class="page main">
+  <div class="section-hero">
+    <h1>Jogo de Associação 🧩</h1>
+    <p>Liga cada conceito à definição certa · 6 pares por ronda · contra o relógio</p>
+  </div>
+  <div class="match-wrap">
+    <div id="match-setup" class="setup-card" style="text-align:center">
+      <p style="font-size:14px; color:var(--ink-muted); line-height:1.7; margin-bottom:8px">Seleciona um conceito à esquerda e a definição correspondente à direita. Ronda completa = <strong>30 XP</strong>. Sem erros = bónus!</p>
+      <div class="setup-actions" style="justify-content:center">
+        <button class="btn btn-big" onclick="startMatch()">Jogar →</button>
+      </div>
+    </div>
+    <div id="match-play" style="display:none">
+      <div class="match-hud">
+        <span>⏱️ <strong id="match-time">0s</strong></span>
+        <span>✅ <strong id="match-found">0</strong>/6</span>
+        <span>❌ <strong id="match-errors">0</strong> erros</span>
+      </div>
+      <div class="match-cols">
+        <div class="match-col" id="match-terms"></div>
+        <div class="match-col" id="match-defs"></div>
+      </div>
+    </div>
+    <div id="match-done" class="match-done" style="display:none"></div>
+  </div>
+</div>
+
+<!-- ===================== LER (hub) ===================== -->
+<div id="page-ler" class="page main">
+  <div class="section-hero">
+    <h1>Ler & Consultar</h1>
+    <p>A matéria contada de três maneiras muito diferentes</p>
+  </div>
+  <div class="hub-grid">
+    <div class="mode-card" onclick="showPage('story')">
+      <div class="mode-icon">📖</div>
+      <div class="mode-title">Modo História</div>
+      <div class="mode-desc">A matéria como uma narrativa contínua em 7 capítulos</div>
+      <div class="mode-stat" id="hub-story-stat"></div>
+    </div>
+    <div class="mode-card" onclick="showPage('gossip')">
+      <div class="mode-icon">🫦</div>
+      <div class="mode-title">Modo Fofoca</div>
+      <div class="mode-desc">O drama da Ana Catarina e do Tiago, interrompido pelo Prof. Manuel a aplicar teoria</div>
+      <div class="mode-stat">Top Gossip Gang 🔥</div>
+    </div>
+    <div class="mode-card" onclick="showPage('glossario')">
+      <div class="mode-icon">🔎</div>
+      <div class="mode-title">Glossário</div>
+      <div class="mode-desc">Os 50 conceitos pesquisáveis — para tirar dúvidas em segundos</div>
+      <div class="mode-stat">50 conceitos</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== HISTÓRIA ===================== -->
+<div id="page-story" class="page main">
+  <div class="section-hero">
+    <h1>Modo História 📖</h1>
+    <p>A matéria toda como uma narrativa — 7 capítulos</p>
+  </div>
+  <div class="story-container">
+    <div class="chapter-nav" id="ch-nav"></div>
+    <div id="story-content"></div>
+  </div>
+</div>
+
+<!-- ===================== FOFOCA ===================== -->
+<div id="page-gossip" class="page main">
+  <div class="section-hero">
+    <h1>Modo Fofoca 🫦</h1>
+    <p>A matéria toda de uma vez — como uma mensagem de voz longa que mandas à tua melhor amiga</p>
+  </div>
+  <div class="gossip-single" id="gossip-container"></div>
+</div>
+
+<!-- ===================== GLOSSÁRIO ===================== -->
+<div id="page-glossario" class="page main">
+  <div class="section-hero">
+    <h1>Glossário 🔎</h1>
+    <p>Todos os conceitos da disciplina, pesquisáveis (com ou sem acentos)</p>
+  </div>
+  <div class="gloss-search-wrap">
+    <span class="gloss-search-icon">🔎</span>
+    <input type="text" class="gloss-search" id="gloss-search" placeholder="Pesquisar conceito… (ex: proxemica, ethos, escuta)" autocomplete="off">
+  </div>
+  <div class="gloss-count" id="gloss-count"></div>
+  <div class="gloss-list" id="gloss-list"></div>
+</div>
+
+<!-- ===================== MODAL DE RESULTADOS ===================== -->
+<div class="results-overlay" id="results-overlay">
+  <div class="results-box">
+    <div class="results-emoji" id="res-emoji">🎉</div>
+    <div class="results-score" id="res-score"></div>
+    <div class="results-label" id="res-label"></div>
+    <div class="results-xp" id="res-xp"></div>
+    <p class="results-sub" id="res-sub"></p>
+    <div id="res-review" style="text-align:left"></div>
+    <div class="results-actions" id="res-actions"></div>
+  </div>
+</div>
+
+<div class="toast-zone" id="toast-zone"></div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
