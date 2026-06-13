@@ -50,6 +50,8 @@
   var fullProgress = {};    // cópia em memória do progress remoto (todas as secções)
   var syncTimer = null;
   var listeners = { login: [], logout: [] };
+  var pulled = false;       // já reconciliámos com o servidor nesta sessão? (trava pushes prematuros)
+  var migrated = false;     // o progress remoto estava no formato antigo (plano)?
 
   /* ---------- helpers de sessão ---------- */
   function currentUser() {
@@ -144,6 +146,7 @@
   function flushSync(keepalive) {
     clearTimeout(syncTimer); syncTimer = null;
     if (!REMOTE || !currentUser()) return;
+    if (!pulled) return;   // NUNCA enviar antes de reconciliar com o servidor (evita apagar dados)
     fullProgress[opts.section] = readLocalSlice();
     sbPatchProgress(currentUser().toLowerCase(), fullProgress, keepalive).catch(function () {});
   }
@@ -171,6 +174,40 @@
       if (slice) fullProgress = {};            // descarta formato legado; passa a namespaced
     }
     if (slice && typeof slice === 'object') writeLocalSlice(slice);
+  }
+
+  /* ---------- reconciliação ao carregar (com sessão ativa) ----------
+     Regras de segurança contra perda de dados:
+       • servidor com dados + local vazio  → adotar servidor (e recarregar)
+       • servidor vazio  + local com dados → manter local e RESTAURAR o servidor
+       • ambos com dados                   → manter local; não sobrescrever
+     Os pushes ficam travados (pulled=false) até isto correr.            */
+  function sliceFor(rp) {
+    migrated = false;
+    var s = (rp && typeof rp === 'object') ? rp[opts.section] : null;
+    if (s == null && typeof opts.migrate === 'function') { s = opts.migrate(rp || {}); if (s) migrated = true; }
+    return s;
+  }
+  function sliceEmpty(slice) {
+    if (!slice || typeof slice !== 'object' || Object.keys(slice).length === 0) return true;
+    if (typeof opts.isEmpty === 'function') return opts.isEmpty(slice);
+    return false;
+  }
+  function reconcile() {
+    sbGetUser(currentUser().toLowerCase()).then(function (user) {
+      if (!user) { pulled = true; return; }   // sessão sem conta no servidor → não fazer push
+      var rp = (user.progress && typeof user.progress === 'object') ? user.progress : {};
+      var remoteSlice = sliceFor(rp), wasMigrated = migrated;
+      var localSlice = readLocalSlice();
+      var rEmpty = sliceEmpty(remoteSlice), lEmpty = sliceEmpty(localSlice);
+      fullProgress = wasMigrated ? {} : rp;
+      if (!rEmpty && lEmpty) { writeLocalSlice(remoteSlice); location.reload(); return; }
+      pulled = true;
+      if (rEmpty && !lEmpty) scheduleSync();   // servidor vazio + local com dados → restaurar servidor
+    }).catch(function () {
+      // offline: não conseguimos puxar → só permitir push se o local tiver dados (não apagar o servidor)
+      pulled = !sliceEmpty(readLocalSlice());
+    });
   }
 
   /* ============================================================
@@ -359,6 +396,7 @@
 
       installStorageHook();
       logVisit();
+      if (REMOTE && currentUser()) reconcile(); else pulled = true;
 
       var start = function () { renderChip(); };
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);

@@ -44,6 +44,27 @@ const defaultState = () => ({
   lastStudy: null,
 });
 
+/* ---- recuperação de progresso de versões anteriores ----
+   Versões antigas guardavam o progresso por-utilizador
+   (edc_progress_v1__<nome>) ou como convidado (edc_progress_v1__guest).
+   Se a chave atual estiver vazia, adota a mais "rica" deste browser. */
+(function recoverLegacyProgress() {
+  function richness(s) {
+    try { var o = JSON.parse(s); return (o.xp || 0) + (o.answered || 0) + ((o.visited || []).length) + ((o.achievements || []).length); }
+    catch (e) { return -1; }
+  }
+  if (richness(localStorage.getItem(STORE_KEY)) > 0) return; // já há dados na chave atual
+  var best = null, bestScore = 0;
+  for (var i = 0; i < localStorage.length; i++) {
+    var k = localStorage.key(i);
+    if (k && k.indexOf(STORE_KEY + '__') === 0) {
+      var sc = richness(localStorage.getItem(k));
+      if (sc > bestScore) { bestScore = sc; best = localStorage.getItem(k); }
+    }
+  }
+  if (best && bestScore > 0) { try { localStorage.setItem(STORE_KEY, best); } catch (e) {} }
+})();
+
 let state = load();
 
 function load() {
@@ -921,6 +942,16 @@ if (window.Account) {
         return { 'edc_progress_v1': JSON.stringify(p) };
       }
       return null;
+    },
+    // uma fatia edc só conta como "com dados" se houver progresso real
+    isEmpty: function (slice) {
+      try {
+        var raw = slice && slice['edc_progress_v1'];
+        if (!raw) return true;
+        var o = JSON.parse(raw);
+        return !((o.xp || 0) || (o.answered || 0) || (o.examBest || 0) ||
+                 (o.achievements && o.achievements.length) || (o.visited && o.visited.length));
+      } catch (e) { return true; }
     },
   });
 }
