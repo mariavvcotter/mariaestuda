@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="/account/account.css">
 </head>
 <body>
 
@@ -24,6 +25,7 @@
       <button class="nav-tab" data-tab="ler" onclick="showPage('ler')">Ler</button>
     </nav>
     <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" title="Mudar tema">🌙</button>
+    <span id="user-slot"></span>
   </div>
 </div>
 
@@ -345,7 +347,12 @@
 
 <div class="toast-zone" id="toast-zone"></div>
 
+<script src="/account/config.js"></script>
+<script src="/account/account.js"></script>
 <script src="js/data.js"></script>
 <script src="js/app.js"></script>
+<script>
+  Account.init({ section: 'ci', keys: ['ciStudyV2'], mount: '#user-slot', label: 'Comunicação Interpessoal' });
+</script>
 </body>
 </html>

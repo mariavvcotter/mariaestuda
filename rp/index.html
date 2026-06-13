@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>✨ Relações Públicas — Plataforma de Estudo</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/account/account.css">
 <style>
 :root {
   --cream: #faf7f2;
@@ -2551,6 +2552,11 @@ function goToResult(tab) {
   closeSearch();
   showTab(tab);
 }
+</script>
+<script src="/account/config.js"></script>
+<script src="/account/account.js"></script>
+<script>
+  Account.init({ section: 'rp', keys: [], mount: '#nav', label: 'Relações Públicas', accent: '#c4440a' });
 </script>
 </body>
 </html>

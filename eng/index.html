@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>English Study Platform</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=Instrument+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/account/account.css">
 <style>
 /* ═══════════════ TOKENS ═══════════════ */
 :root {
@@ -1453,6 +1454,11 @@ function doSearch(query) {
       <div class="sr-snip">${hl(snip(item.text,q),query)}</div>
     </div>`).join('');
 }
+</script>
+<script src="/account/config.js"></script>
+<script src="/account/account.js"></script>
+<script>
+  Account.init({ section: 'eng', keys: [], mount: '#nav', label: 'English Study', accent: '#1c1510', accentInk: '#f5f0e8' });
 </script>
 </body>
 </html>

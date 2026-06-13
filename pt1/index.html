@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🏎️ GP de Gramática – Corrida pelo Saber!</title>
+<link rel="stylesheet" href="/account/account.css">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500;600&display=swap');
 
@@ -1331,6 +1332,11 @@ function showPodium() {
 window.addEventListener('DOMContentLoaded', () => {
   initOrders();
 });
+</script>
+<script src="/account/config.js"></script>
+<script src="/account/account.js"></script>
+<script>
+  Account.init({ section: 'pt1', keys: [], mount: '.score-bar', label: 'GP de Gramática', accent: '#E10600' });
 </script>
 </body>
 </html>

@@ -6,6 +6,7 @@
 <title>uPlayback · Todas as suas gravações. Um portal seguro.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/account/account.css">
 <style>
 :root{--o1:#F56E0F;--o2:#ff8c3a;--o3:#e05500;--ink:#0d0b09;--white:#fff;--warm:#faf8f5;--warm2:#f0ebe2;--muted:#8a8278}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -595,6 +596,11 @@ function toggleBento(el) {
   document.querySelectorAll('.bento-item.open').forEach(b => b.classList.remove('open'));
   if (!isOpen) el.classList.add('open');
 }
+</script>
+<script src="/account/config.js"></script>
+<script src="/account/account.js"></script>
+<script>
+  Account.init({ section: 'uplayback', keys: [], mount: '#nav', label: 'uPlayback', accent: '#F56E0F' });
 </script>
 </body>
 </html>

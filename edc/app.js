@@ -16,61 +16,15 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':
    ============================================================ */
 const STORE_KEY = 'edc_progress_v1';
 const THEME_KEY = 'edc_theme';
-const ACCOUNTS_KEY = 'edc_accounts';
-const CURRENT_KEY  = 'edc_current_user';
 const BLOCK = 8 * 3600 * 1000; // ofensiva de 8 em 8 horas
 
-/* ---- contas (sem segurança: nome + PIN no localStorage) ---- */
-function loadAccounts() {
-  try { return JSON.parse(localStorage.getItem(ACCOUNTS_KEY)) || {}; }
-  catch (e) { return {}; }
-}
-function saveAccounts(a) {
-  try { localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(a)); } catch (e) {}
-}
-let currentUser = localStorage.getItem(CURRENT_KEY) || null;
-// progresso guardado por utilizador
-const storeKey = () => currentUser ? STORE_KEY + '__' + currentUser.toLowerCase() : STORE_KEY + '__guest';
-
 /* ============================================================
-   SUPABASE (sincronização entre dispositivos) — opcional
-   Se config.js não estiver preenchido, funciona em modo local.
+   CONTAS / SINCRONIZAÇÃO
+   A autenticação (Nome + PIN) e a sincronização com o Supabase
+   são tratadas pelo módulo partilhado /account/account.js.
+   Aqui o progresso é apenas guardado em localStorage sob a chave
+   STORE_KEY; o módulo deteta as gravações e sincroniza-as.
    ============================================================ */
-const CFG = (typeof window !== 'undefined' && window.EDC_CONFIG) || {};
-const REMOTE = !!(CFG.SUPABASE_URL && CFG.SUPABASE_ANON_KEY
-  && !/COLA_AQUI/.test(CFG.SUPABASE_URL) && !/COLA_AQUI/.test(CFG.SUPABASE_ANON_KEY));
-const SB_ENDPOINT = REMOTE ? CFG.SUPABASE_URL.replace(/\/+$/, '') + '/rest/v1/edc_users' : '';
-const SB_HEADERS = REMOTE ? {
-  'apikey': CFG.SUPABASE_ANON_KEY,
-  'Authorization': 'Bearer ' + CFG.SUPABASE_ANON_KEY,
-  'Content-Type': 'application/json',
-} : {};
-
-async function sbGetUser(key) {
-  const url = `${SB_ENDPOINT}?username_key=eq.${encodeURIComponent(key)}&select=name,pin,progress`;
-  const r = await fetch(url, { headers: SB_HEADERS });
-  if (!r.ok) throw new Error('rede');
-  const rows = await r.json();
-  return rows[0] || null;
-}
-async function sbCreateUser(key, name, pin, progress) {
-  const r = await fetch(SB_ENDPOINT, {
-    method: 'POST',
-    headers: Object.assign({ 'Prefer': 'return=minimal' }, SB_HEADERS),
-    body: JSON.stringify({ username_key: key, name, pin, progress }),
-  });
-  if (r.status === 409) return 'exists';   // violação de chave única
-  if (!r.ok) throw new Error('rede');
-  return 'ok';
-}
-function sbSaveProgress(key, progress, useKeepalive) {
-  return fetch(`${SB_ENDPOINT}?username_key=eq.${encodeURIComponent(key)}`, {
-    method: 'PATCH',
-    headers: Object.assign({ 'Prefer': 'return=minimal' }, SB_HEADERS),
-    body: JSON.stringify({ progress, updated_at: new Date().toISOString() }),
-    keepalive: !!useKeepalive,
-  });
-}
 
 const defaultState = () => ({
   xp: 0,
@@ -94,28 +48,15 @@ let state = load();
 
 function load() {
   try {
-    const raw = localStorage.getItem(storeKey());
+    const raw = localStorage.getItem(STORE_KEY);
     if (!raw) return defaultState();
     return Object.assign(defaultState(), JSON.parse(raw));
   } catch (e) { return defaultState(); }
 }
-let syncTimer = null;
 function save() {
-  try { localStorage.setItem(storeKey(), JSON.stringify(state)); } catch (e) {}
-  if (REMOTE && currentUser) {
-    clearTimeout(syncTimer);
-    syncTimer = setTimeout(flushSync, 1500);   // agrupa gravações remotas
-  }
+  // O módulo /account/ deteta esta gravação e sincroniza para o Supabase.
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {}
 }
-function flushSync(useKeepalive) {
-  if (!REMOTE || !currentUser) return;
-  clearTimeout(syncTimer); syncTimer = null;
-  sbSaveProgress(currentUser.toLowerCase(), state, useKeepalive).catch(() => {});
-}
-window.addEventListener('beforeunload', () => { if (syncTimer) flushSync(true); });
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'hidden' && syncTimer) flushSync(true);
-});
 
 /* ---- ofensiva (streak) de 8h ---- */
 function registerStudy() {
@@ -942,141 +883,12 @@ function burstConfetti() {
 }
 
 /* ============================================================
-   AUTENTICAÇÃO (login / sign up — sem segurança real)
+   AUTENTICAÇÃO
+   Tratada pelo módulo partilhado /account/account.js, inicializado
+   no index.html. O login é OPCIONAL: a app funciona como convidado
+   e, ao entrar, o progresso é restaurado do servidor (a página
+   recarrega para aplicar os dados sincronizados).
    ============================================================ */
-let authMode = 'login'; // 'login' | 'signup'
-
-function setAuthMode(mode) {
-  authMode = mode;
-  $('#auth-error').textContent = '';
-  const t = mode === 'signup';
-  $('#auth-title').textContent       = t ? 'Criar conta' : 'Entrar';
-  $('#auth-sub').textContent         = t ? 'Escolhe um nome de utilizador e um PIN' : 'Inicia sessão para continuar o teu progresso';
-  $('#auth-submit').textContent      = t ? 'Criar conta' : 'Entrar';
-  $('#auth-switch-text').textContent = t ? 'Já tens conta?' : 'Ainda não tens conta?';
-  $('#auth-switch-btn').textContent  = t ? 'Entrar' : 'Criar conta';
-}
-function showAuth() {
-  $('#auth-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  setTimeout(() => $('#auth-user').focus(), 50);
-}
-function hideAuth() {
-  $('#auth-overlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-function updateUserChip() {
-  const chip = $('#nav-user'), btn = $('#logout-btn');
-  if (currentUser) { chip.textContent = '👤 ' + currentUser; btn.style.display = ''; }
-  else { chip.textContent = ''; btn.style.display = 'none'; }
-}
-function rerenderAll() {
-  startQuiz();
-  renderFlashcards();
-  updateHeroStats();
-  checkAchievements();
-  renderPanel();
-}
-function enterApp(name, progress) {
-  currentUser = name;
-  localStorage.setItem(CURRENT_KEY, name);
-  state = progress ? Object.assign(defaultState(), progress) : load();
-  try { localStorage.setItem(storeKey(), JSON.stringify(state)); } catch (e) {}
-  $('#auth-user').value = '';
-  $('#auth-pin').value = '';
-  $('#auth-error').textContent = '';
-  rerenderAll();
-  updateUserChip();
-  hideAuth();
-  showSection('inicio');
-}
-function showLoginScreen() {
-  if (REMOTE && currentUser && syncTimer) flushSync(true);
-  currentUser = null;
-  localStorage.removeItem(CURRENT_KEY);
-  state = defaultState();
-  updateUserChip();
-  setAuthMode('login');
-  showAuth();
-}
-function logout() {
-  showLoginScreen();
-  $('#auth-user').value = '';
-  $('#auth-pin').value = '';
-}
-async function restoreSession() {
-  if (!currentUser) { showLoginScreen(); return; }
-  if (REMOTE) {
-    try {
-      const user = await sbGetUser(currentUser.toLowerCase());
-      if (!user) { showLoginScreen(); return; }       // conta apagada no servidor
-      state = Object.assign(defaultState(), user.progress || {});
-      try { localStorage.setItem(storeKey(), JSON.stringify(state)); } catch (e) {}
-      updateUserChip();
-      rerenderAll();
-    } catch (e) {
-      // offline — continua com a cache local
-      updateUserChip();
-      rerenderAll();
-    }
-  } else {
-    if (loadAccounts()[currentUser.toLowerCase()]) { updateUserChip(); rerenderAll(); }
-    else showLoginScreen();
-  }
-}
-
-$('#auth-switch-btn').addEventListener('click', e => {
-  e.preventDefault();
-  setAuthMode(authMode === 'login' ? 'signup' : 'login');
-});
-$('#logout-btn').addEventListener('click', logout);
-$('#auth-form').addEventListener('submit', async e => {
-  e.preventDefault();
-  const name = $('#auth-user').value.trim();
-  const pin  = $('#auth-pin').value.trim();
-  const err  = $('#auth-error');
-  err.textContent = '';
-  if (name.length < 2) { err.textContent = 'O nome precisa de pelo menos 2 caracteres.'; return; }
-  if (!/^\d{4,8}$/.test(pin)) { err.textContent = 'O PIN tem de ter 4 a 8 dígitos.'; return; }
-  const key = name.toLowerCase();
-  const btn = $('#auth-submit');
-  const label = btn.textContent;
-
-  if (!REMOTE) {
-    // ---- modo local (config.js por preencher) ----
-    const accounts = loadAccounts();
-    if (authMode === 'signup') {
-      if (accounts[key]) { err.textContent = 'Esse nome de utilizador já existe — escolhe outro ou inicia sessão.'; return; }
-      accounts[key] = { name, pin }; saveAccounts(accounts); enterApp(name);
-    } else {
-      if (!accounts[key]) { err.textContent = 'Utilizador não encontrado. Cria uma conta primeiro.'; return; }
-      if (accounts[key].pin !== pin) { err.textContent = 'PIN incorreto.'; return; }
-      enterApp(accounts[key].name);
-    }
-    return;
-  }
-
-  // ---- modo remoto (Supabase) ----
-  btn.disabled = true;
-  btn.textContent = '…';
-  try {
-    if (authMode === 'signup') {
-      const res = await sbCreateUser(key, name, pin, defaultState());
-      if (res === 'exists') { err.textContent = 'Esse nome de utilizador já existe — escolhe outro ou inicia sessão.'; return; }
-      enterApp(name, defaultState());
-    } else {
-      const user = await sbGetUser(key);
-      if (!user) { err.textContent = 'Utilizador não encontrado. Cria uma conta primeiro.'; return; }
-      if (user.pin !== pin) { err.textContent = 'PIN incorreto.'; return; }
-      enterApp(user.name, user.progress || defaultState());
-    }
-  } catch (ex) {
-    err.textContent = 'Sem ligação ao servidor. Verifica a internet e tenta de novo.';
-  } finally {
-    btn.disabled = false;
-    btn.textContent = label;
-  }
-});
 
 /* ============================================================
    INIT
@@ -1095,6 +907,20 @@ renderFill();
 renderWhoSaid();
 renderTF();
 
-/* ---- gating de sessão (restaura do servidor se houver sessão) ---- */
-updateUserChip();
-restoreSession();
+/* ---- conta partilhada (login opcional) ---- */
+if (window.Account) {
+  Account.init({
+    section: 'edc',
+    keys: [STORE_KEY],
+    mount: '#user-slot',
+    label: 'EDC · Módulo II',
+    accent: getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#4A9B8E',
+    // migração: contas edc antigas guardavam o estado "achatado" em progress
+    migrate: function (p) {
+      if (p && p.edc === undefined && (p.xp !== undefined || p.answered !== undefined)) {
+        return { 'edc_progress_v1': JSON.stringify(p) };
+      }
+      return null;
+    },
+  });
+}

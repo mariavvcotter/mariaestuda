@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>1383–1385 · A Revolução Épica de Portugal</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/account/account.css">
 <style>
 :root {
   --fire: #ff4500;
@@ -239,7 +240,7 @@ footer{text-align:center;padding:3rem 1.5rem;border-top:1px solid rgba(212,160,2
   <a href="#f1">F1</a>
   <a href="#timeline">Cronologia</a>
   <a href="#quiz">Quiz</a>
-  
+  <span id="user-slot"></span>
 </nav>
  
 <!-- GOSSIP -->
@@ -750,9 +751,29 @@ function moveQ(dir){
 }
 function goQ(i){ quizState[currentQuiz].current = i; renderQuiz(); }
 function resetQ(){ quizState[currentQuiz] = {current:0, answers:{}}; renderQuiz(); }
+
+/* ---- persistência do progresso (sincronizada pela conta partilhada) ---- */
+(function(){
+  const KEY = 'mestudo_hgp1';
+  try {
+    const saved = JSON.parse(localStorage.getItem(KEY));
+    if (saved) {
+      if (saved.quizState) Object.keys(saved.quizState).forEach(function(k){ if (quizState[k]) quizState[k] = saved.quizState[k]; });
+      if (saved.currentQuiz && quizData[saved.currentQuiz]) currentQuiz = saved.currentQuiz;
+    }
+  } catch(e){}
+  function persist(){ try { localStorage.setItem(KEY, JSON.stringify({ quizState: quizState, currentQuiz: currentQuiz })); } catch(e){} }
+  document.addEventListener('visibilitychange', function(){ if (document.hidden) persist(); });
+  setInterval(persist, 4000);
+})();
  
 renderQuiz();
  
+</script>
+<script src="/account/config.js"></script>
+<script src="/account/account.js"></script>
+<script>
+  Account.init({ section: 'hgp1', keys: ['mestudo_hgp1'], mount: '#user-slot', label: '1383–1385', accent: '#d4a017', accentInk: '#1a1206' });
 </script>
 </body>
 </html>

@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EconoSL – Plataforma de Estudo | Economia A</title>
+<link rel="stylesheet" href="/account/account.css">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap');
 
@@ -1841,6 +1842,11 @@ window.onload = function() {
   initQuiz();
   renderFormulas();
 };
+</script>
+<script src="/account/config.js"></script>
+<script src="/account/account.js"></script>
+<script>
+  Account.init({ section: 'eco', keys: [], mount: '.header-inner', label: 'EconoSL', accent: '#E20020' });
 </script>
 </body>
 </html>

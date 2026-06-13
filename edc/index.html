@@ -6,6 +6,7 @@
 <title>EDC — Ética e Deontologia da Comunicação</title>
 <meta name="description" content="Plataforma de estudo de Ética e Deontologia da Comunicação — resumos, quiz, flashcards, mapas mentais, exame e conquistas.">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="/account/account.css">
 </head>
 <body>
 
@@ -26,10 +27,9 @@
       <li><a class="nav-link" data-section="flashcards">Flashcards</a></li>
       <li><a class="nav-link" data-section="glossario">Glossário</a></li>
     </ul>
-    <span class="nav-user" id="nav-user" title="Sessão iniciada"></span>
+    <span id="user-slot"></span>
     <button class="icon-btn" id="search-btn" title="Pesquisar (/)">⌕</button>
     <button class="icon-btn" id="theme-btn" title="Modo claro/escuro">☾</button>
-    <button class="icon-btn" id="logout-btn" title="Terminar sessão" style="display:none">⏻</button>
     <div class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></div>
   </div>
 </nav>
@@ -548,27 +548,6 @@
 </section>
 
 <!-- ====== LOGIN / SIGN UP ====== -->
-<div class="auth-overlay" id="auth-overlay">
-  <div class="auth-card">
-    <div class="auth-logo">EDC · Módulo II</div>
-    <h2 class="auth-title" id="auth-title">Entrar</h2>
-    <p class="auth-sub" id="auth-sub">Inicia sessão para continuar o teu progresso</p>
-    <form id="auth-form" autocomplete="off" novalidate>
-      <label class="auth-label" for="auth-user">Nome de utilizador</label>
-      <input type="text" id="auth-user" class="auth-input" maxlength="20" placeholder="o teu nome" autocapitalize="off" spellcheck="false">
-      <label class="auth-label" for="auth-pin">PIN</label>
-      <input type="password" id="auth-pin" class="auth-input" inputmode="numeric" maxlength="8" placeholder="4 a 8 dígitos">
-      <div class="auth-error" id="auth-error"></div>
-      <button type="submit" class="btn btn-primary auth-submit" id="auth-submit">Entrar</button>
-    </form>
-    <div class="auth-switch">
-      <span id="auth-switch-text">Ainda não tens conta?</span>
-      <a href="#" id="auth-switch-btn">Criar conta</a>
-    </div>
-    <p class="auth-note">⚠ Sem segurança real — o PIN serve apenas para separar perfis de estudo neste navegador.</p>
-  </div>
-</div>
-
 <!-- ====== SEARCH OVERLAY ====== -->
 <div class="search-overlay" id="search-overlay">
   <div class="search-panel">
@@ -581,7 +560,8 @@
 <div class="toast-wrap" id="toast-wrap"></div>
 <canvas id="confetti-canvas"></canvas>
 
-<script src="config.js"></script>
+<script src="/account/config.js"></script>
+<script src="/account/account.js"></script>
 <script src="data.js"></script>
 <script src="app.js"></script>
 </body>
