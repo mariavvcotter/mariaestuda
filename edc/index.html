@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDC — Ética e Deontologia da Comunicação</title>
+<meta name="description" content="Plataforma de estudo de Ética e Deontologia da Comunicação — resumos, quiz, flashcards, mapas mentais, exame e conquistas.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ====== NAV ====== -->
+<nav>
+  <span class="nav-logo">EDC · Módulo II</span>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a class="nav-link active" data-section="inicio" title="Início">⌂</a></li>
+      <li><a class="nav-link" data-section="painel">Painel</a></li>
+      <li><a class="nav-link" data-section="resumos">Resumos</a></li>
+      <li><a class="nav-link" data-section="mapas">Mapas</a></li>
+      <li><a class="nav-link" data-section="historia">História</a></li>
+      <li><a class="nav-link" data-section="casos">Casos</a></li>
+      <li><a class="nav-link" data-section="quiz">Quiz</a></li>
+      <li><a class="nav-link" data-section="exame">Exame</a></li>
+      <li><a class="nav-link" data-section="exercicios">Exercícios</a></li>
+      <li><a class="nav-link" data-section="flashcards">Flashcards</a></li>
+      <li><a class="nav-link" data-section="glossario">Glossário</a></li>
+    </ul>
+    <span class="nav-user" id="nav-user" title="Sessão iniciada"></span>
+    <button class="icon-btn" id="search-btn" title="Pesquisar (/)">⌕</button>
+    <button class="icon-btn" id="theme-btn" title="Modo claro/escuro">☾</button>
+    <button class="icon-btn" id="logout-btn" title="Terminar sessão" style="display:none">⏻</button>
+    <div class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<!-- ====== MOBILE MENU ====== -->
+<div class="mobile-menu" id="mobile-menu">
+  <ul>
+    <li><a data-section="inicio"><span class="m-icon">⌂</span> Início</a></li>
+    <li><a data-section="painel"><span class="m-icon">◰</span> Painel</a></li>
+    <li><a data-section="resumos"><span class="m-icon">◉</span> Resumos</a></li>
+    <li><a data-section="mapas"><span class="m-icon">❖</span> Mapas Mentais</a></li>
+    <li><a data-section="historia"><span class="m-icon">◎</span> Conta a História</a></li>
+    <li><a data-section="casos"><span class="m-icon">✦</span> Casos Reais</a></li>
+    <li><a data-section="quiz"><span class="m-icon">◇</span> Quiz</a></li>
+    <li><a data-section="exame"><span class="m-icon">⏱</span> Simulador de Exame</a></li>
+    <li><a data-section="exercicios"><span class="m-icon">△</span> Exercícios</a></li>
+    <li><a data-section="flashcards"><span class="m-icon">▽</span> Flashcards</a></li>
+    <li><a data-section="glossario"><span class="m-icon">⌥</span> Glossário</a></li>
+  </ul>
+</div>
+
+<!-- ====== INÍCIO ====== -->
+<section id="inicio" class="section active">
+  <div class="hero">
+    <span class="hero-tag">Módulo II — João Manuel Rocha</span>
+    <h1>Ética e<br><em>Deontologia</em><br>da Comunicação</h1>
+    <p class="hero-sub">Uma plataforma de estudo completa sobre deontologia, influência, responsabilidade social e códigos de conduta nos media e comunicação.</p>
+  </div>
+  <div class="hero-stats" id="hero-stats"><!-- preenchido por JS --></div>
+  <div class="hero-grid">
+    <div class="hero-card" data-go="painel"><div class="hero-card-icon">◰</div><h3>Painel</h3><p>XP, ofensiva e conquistas</p></div>
+    <div class="hero-card" data-go="resumos"><div class="hero-card-icon">◉</div><h3>Resumos</h3><p>Matéria condensada por tema</p></div>
+    <div class="hero-card" data-go="mapas"><div class="hero-card-icon">❖</div><h3>Mapas Mentais</h3><p>Visão de conjunto por tema</p></div>
+    <div class="hero-card" data-go="historia"><div class="hero-card-icon">◎</div><h3>Conta a História</h3><p>Blog · Futebol · F1 · Fofoca</p></div>
+    <div class="hero-card" data-go="casos"><div class="hero-card-icon">✦</div><h3>Casos Reais</h3><p>Análise de casos práticos</p></div>
+    <div class="hero-card" data-go="quiz"><div class="hero-card-icon">◇</div><h3>Quiz</h3><p id="hero-quiz-count">Perguntas por tema</p></div>
+    <div class="hero-card" data-go="exame"><div class="hero-card-icon">⏱</div><h3>Simulador de Exame</h3><p>Cronómetro e nota final</p></div>
+    <div class="hero-card" data-go="exercicios"><div class="hero-card-icon">△</div><h3>Exercícios</h3><p>Ordenar, associar, completar, V/F</p></div>
+    <div class="hero-card" data-go="flashcards"><div class="hero-card-icon">▽</div><h3>Flashcards</h3><p>Com repetição espaçada</p></div>
+    <div class="hero-card" data-go="glossario"><div class="hero-card-icon">⌥</div><h3>Glossário</h3><p>Termos-chave pesquisáveis</p></div>
+  </div>
+</section>
+
+<!-- ====== PAINEL ====== -->
+<section id="painel" class="section">
+  <div class="content-wrap">
+    <div class="section-title">Painel</div>
+    <div class="section-subtitle">— O teu progresso, guardado neste dispositivo</div>
+
+    <div class="xp-bar-wrap">
+      <div class="xp-bar-top"><span id="xp-level">Nível 1</span><span id="xp-text">0 / 100 XP</span></div>
+      <div class="xp-bar"><div class="xp-bar-fill" id="xp-fill"></div></div>
+    </div>
+
+    <div class="panel-top" id="panel-top"><!-- stats por JS --></div>
+
+    <h3 class="panel-h">Domínio por tema</h3>
+    <div class="theme-domain" id="theme-domain"><!-- por JS --></div>
+
+    <h3 class="panel-h">Conquistas <span id="ach-count" style="font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--muted)"></span></h3>
+    <div class="ach-grid" id="ach-grid"><!-- por JS --></div>
+
+    <div class="danger-zone">
+      <button class="btn btn-outline" id="reset-btn">↺ Apagar progresso</button>
+    </div>
+  </div>
+</section>
+
+<!-- ====== RESUMOS ====== -->
+<section id="resumos" class="section">
+  <div class="content-wrap">
+    <div class="section-title">Resumos</div>
+    <div class="section-subtitle">— Matéria organizada por tema</div>
+
+    <div class="resumo-block">
+      <h3>1. O Que é Deontologia?</h3>
+      <p>Deontologia é o conjunto de deveres e normas que regem o exercício de uma profissão. Distingue-se da ética pessoal por ser pública, assumida perante a sociedade — não é apenas uma questão de consciência individual, mas um compromisso coletivo.</p>
+      <ul>
+        <li>Deontologia ≠ Ética (ética é mais ampla, filosófica; deontologia é profissional)</li>
+        <li>Surge no jornalismo no final do séc. XIX / início do séc. XX</li>
+        <li>Primeiro código: 1896, jornalistas da Galiza (Império Austro-Húngaro)</li>
+        <li>Assenta num "contrato social" entre comunicadores e sociedade</li>
+        <li>Três pilares: direito à informação, busca da verdade, respeito pela pessoa humana</li>
+      </ul>
+    </div>
+
+    <div class="resumo-block">
+      <h3>2. Regulação, Auto-regulação e Co-regulação</h3>
+      <p>Existem três modelos para enquadrar e fiscalizar a actividade dos media:</p>
+      <ul>
+        <li><strong>Regulação (hetero-regulação):</strong> imposta pelo Estado através de legislação e sanções</li>
+        <li><strong>Auto-regulação:</strong> normas criadas e adoptadas pelos próprios profissionais (códigos deontológicos, provedores)</li>
+        <li><strong>Co-regulação:</strong> combinação dos dois modelos anteriores</li>
+        <li>M*A*R*S* (Bertrand) = Moyens d'Assurer la Responsabilité Sociale des Médias</li>
+        <li>Em Portugal: auto-regulação só se afirma após 1974; código de 1976 em vigor até 1993, actualizado em 2017</li>
+      </ul>
+    </div>
+
+    <div class="resumo-block">
+      <h3>3. Código Deontológico dos Jornalistas Portugueses</h3>
+      <p>Os principais pontos do código definem os deveres fundamentais:</p>
+      <ul>
+        <li>Relatar factos com rigor, comprovar e ouvir partes com interesses atendíveis</li>
+        <li>Combater censura e sensacionalismo; considerar acusação sem provas como falta grave</li>
+        <li>Lutar contra restrições ao acesso às fontes de informação</li>
+        <li>Usar meios leais para obter informações (identificação como jornalista é regra)</li>
+        <li>Assumir responsabilidade e promover retificação de informações inexatas</li>
+        <li>Recusar práticas que violentem a consciência profissional</li>
+        <li>Proteger fontes confidenciais; respeitar a vida privada</li>
+        <li>Rejeitar pressões externas que condicionem o exercício profissional</li>
+      </ul>
+    </div>
+
+    <div class="resumo-block">
+      <h3>4. Relações Públicas — Deontologia</h3>
+      <p>As RP conheceram preocupação auto-regulamentadora semelhante ao jornalismo, especialmente na primeira metade dos anos 60:</p>
+      <ul>
+        <li>Código de Veneza (1961) — Associação Internacional de RP</li>
+        <li>Código de Atenas (1965) — Centro Europeu de RP</li>
+        <li>Valores APCE/APECOM: confidencialidade, transparência, defesa da livre circulação, lealdade</li>
+        <li>RP distingue-se do marketing e da publicidade: foco em reputação e longo prazo</li>
+        <li>Objetivo: construir e preservar imagem da organização junto de media, comunidade, investidores</li>
+      </ul>
+    </div>
+
+    <div class="resumo-block">
+      <h3>5. Código de Conduta APPM (Marketing)</h3>
+      <p>A Associação Portuguesa dos Profissionais de Marketing estabelece:</p>
+      <ul>
+        <li>Princípio da licitude: respeitar o Código da Publicidade e legislação conexa</li>
+        <li>Princípio da honestidade: negociar e comunicar honestamente com todas as partes</li>
+        <li>Princípio da integridade: exercer actividade com integridade e proteger reputação</li>
+        <li>Responsabilidade social: impulsionar marketing sustentável e políticas socialmente responsáveis</li>
+        <li>Competência: manter padrões profissionais elevados e atualizar conhecimentos</li>
+        <li>Privacidade: não utilizar dados pessoais sem autorização expressa</li>
+      </ul>
+    </div>
+
+    <div class="resumo-block">
+      <h3>6. Influencers e Ética Digital</h3>
+      <p>Os influenciadores são líderes de opinião no meio digital que colaboram com marcas nas suas estratégias de comunicação:</p>
+      <ul>
+        <li>Devem identificar publicações como publicidade (patrocinado, publi, #ad)</li>
+        <li>Devem garantir que recomendações são baseadas em experiências reais</li>
+        <li>UE (2024): devem ter competências de literacia mediática e comportar-se responsavelmente</li>
+        <li>Praticam "trabalho emocional" e "trabalho relacional" (Hochschild; Baym)</li>
+        <li>Risco: manipulação psicológica e falta de transparência nas parcerias comerciais</li>
+      </ul>
+    </div>
+
+    <div class="resumo-block">
+      <h3>7. Ética Organizacional e RSO</h3>
+      <p>A responsabilidade social organizacional (RSO) assenta em quatro dimensões (Carroll, 2015):</p>
+      <ul>
+        <li>Ética dos negócios: comportamento concordante com valores morais da sociedade</li>
+        <li>Cidadania organizacional: responder a direitos e deveres para ser legítima</li>
+        <li>Gestão de stakeholders: servir interesses de todos os públicos relevantes</li>
+        <li>Sustentabilidade: responder às necessidades do presente sem sacrificar o futuro</li>
+        <li>Comunicação da RSO gera mais escrutínio: quanto mais se exibe ética, mais exposição crítica</li>
+        <li>Modelo da Comunicação Empresarial Responsável (Teresa Ruão)</li>
+      </ul>
+    </div>
+
+    <div class="resumo-block">
+      <h3>8. IA e Jornalismo — Princípios do Expresso/SIC</h3>
+      <p>As ferramentas de IA são simultaneamente oportunidade e desafio para o jornalismo:</p>
+      <ul>
+        <li>Conteúdo jornalístico é sempre responsabilidade de quem o produz e edita</li>
+        <li>IA é auxiliar na pesquisa, tratamento de informação e produção</li>
+        <li>Transparência: informar leitores quando IA é usada na elaboração de conteúdo</li>
+        <li>Propriedade intelectual: cuidado com plágio e reconhecimento de fontes</li>
+        <li>Privacidade e confidencialidade mantidas no uso de ferramentas de IA</li>
+        <li>AMD proíbe uso de IA para manipulação cognitiva ou discriminação ilegal</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====== MAPAS MENTAIS ====== -->
+<section id="mapas" class="section">
+  <div class="content-wrap">
+    <div class="section-title">Mapas Mentais</div>
+    <div class="section-subtitle">— Clica num tema para abrir a sua árvore de conceitos</div>
+    <div id="mindmaps"><!-- por JS --></div>
+
+    <h3 class="panel-h" style="margin-top:3rem">Linha do Tempo</h3>
+    <div class="timeline" id="timeline"><!-- por JS --></div>
+
+    <h3 class="panel-h" style="margin-top:3rem">Tabelas Comparativas</h3>
+    <div id="comparisons"><!-- por JS --></div>
+  </div>
+</section>
+
+<!-- ====== HISTÓRIA ====== -->
+<section id="historia" class="section">
+  <div class="content-wrap">
+    <div class="section-title">Conta a História</div>
+    <div class="section-subtitle">— A matéria em formatos narrativos diferentes</div>
+
+    <div class="story-tabs">
+      <div class="story-tab active" data-tab="blog">✦ Post de Blog</div>
+      <div class="story-tab" data-tab="futebol">⚽ Jogo de Futebol</div>
+      <div class="story-tab" data-tab="f1">🏎 Corrida F1</div>
+      <div class="story-tab" data-tab="fofoca">💬 Fofoca</div>
+    </div>
+
+    <div class="story-content active" id="tab-blog">
+      <div class="story-box">
+        <span class="story-label">post de blog — história única da matéria</span>
+        <h2>Quando Comunicar Deixou de Ser Inocente</h2>
+        <div class="blog-meta"><span>EDC — Módulo II</span><span>Leitura: ~8 min</span><span>Deontologia · RP · Marketing · Influência · IA</span></div>
+        <p>Era uma vez uma sociedade que descobriu que as palavras têm poder. Que uma notícia pode derrubar governos. Que uma campanha pode vender sonhos ou destruir reputações. E que, com esse poder, vieram responsabilidades que ninguém estava preparado para assumir.</p>
+        <div class="highlight-box">A história da deontologia da comunicação é a história de como profissionais tentaram — nem sempre com sucesso — domesticar esse poder.</div>
+        <h2>O Princípio: A Imprensa e o Séc. XIX</h2>
+        <p>Tudo começa no jornalismo. Nos séculos XVII e XVIII, já existiam nas organizações noticiosas algumas normas informais sobre verdade e verificação de fontes. Mas é na viragem do séc. XIX para o XX, com as técnicas industriais de impressão, a concentração urbana e a difusão massiva de informação, que a deontologia profissional emerge como necessidade.</p>
+        <p>O primeiro código formal data de 1896 — foi dos jornalistas da região polaca da Galiza, sob o Império Austro-Húngaro, que adoptaram uma lista de deveres e criaram um "tribunal de honra". Em Portugal, a situação foi diferente: a deontologia só se afirmou em letra de forma após 1974, impulsionada pela própria legislação. O código de 1976 esteve em vigor até 1993 e foi actualizado em 2017.</p>
+        <h2>O Triângulo Fundamental</h2>
+        <p>A deontologia jornalística assenta em três grandes valores que funcionam como vértices de um triângulo em permanente tensão: o <strong>direito à informação</strong>, a <strong>busca da verdade</strong> e o <strong>respeito pela pessoa humana</strong>. Parece simples. Não é.</p>
+        <p>O direito à informação não é "o direito a saber tudo". A busca da verdade é permanente e inacabada — usa métodos leais, cruza fontes, valida antes de publicar. E o respeito pelas pessoas implica proteger os vulneráveis, presumir a inocência e guardar o sigilo das fontes.</p>
+        <h2>A Auto-regulação e os Seus Instrumentos</h2>
+        <p>A regulação pode vir do Estado — leis, sanções, obrigações legais. Mas existe também a auto-regulação: aquela que os próprios profissionais criam e assumem publicamente. Claude-Jean Bertrand chamou a estes mecanismos M*A*R*S* (Moyens d'Assurer la Responsabilité Sociale des Médias). São eles os códigos deontológicos, os livros de estilo, os provedores do leitor, os conselhos de redacção.</p>
+        <p>A auto-regulação serve para duas coisas: afirmar publicamente os valores que guiam a profissão, e expor, analisar e julgar casos onde esses valores foram violados.</p>
+        <h2>E Depois Vieram as Relações Públicas e o Marketing</h2>
+        <p>O jornalismo não estava sozinho. Na primeira metade dos anos 60, as Relações Públicas criaram os seus próprios códigos — o de Veneza (1961) e o de Atenas (1965). Porque todas as actividades de comunicação com influência no público precisam de assegurar a confiança entre o comunicador e a sua audiência.</p>
+        <p>A APPM (Associação Portuguesa dos Profissionais de Marketing) foi mais longe: codificou deveres de honestidade, integridade, licitude, responsabilidade social e protecção da privacidade. O profissional de marketing tem de negociar honestamente, evitar conflitos de interesses e nunca manipular os consumidores.</p>
+        <h2>O Fenómeno dos Influencers</h2>
+        <p>E então chegaram as redes sociais. E com elas, uma nova categoria de comunicadores sem formação deontológica formal: os influenciadores. Um tweet, uma imagem, um vídeo pode criar tendências, mobilizar massas, alterar comportamentos, influenciar votos. Para muitas crianças e jovens, os modelos passaram a ser menos os pais e mais os influencers.</p>
+        <p>A maioria colabora com marcas para difundir mensagens. A questão ética é clara: quando uma recomendação é paga, tem de ser identificada como publicidade. Os influenciadores devem assegurar que as suas declarações são baseadas em experiências reais. Em 2024, o Conselho da União Europeia publicou um documento a exigir que influencers tenham "competências de literacia mediática" e se comportem de forma responsável.</p>
+        <h2>A Ética nas Organizações: RSO</h2>
+        <p>As organizações descobriram que ética não é apenas uma questão moral — é um activo de reputação. Carroll (2015) actualizou o seu modelo da pirâmide: as organizações têm responsabilidades éticas, de cidadania, de gestão de stakeholders e de sustentabilidade. Precisam considerar o impacto das suas acções na sociedade.</p>
+        <p>Mas Teresa Ruão alerta: comunicar RSO é arriscado. Quanto mais as empresas exibem as suas ambições éticas e sociais, mais expostas estão ao escrutínio crítico dos stakeholders. Uma identidade ética só se torna viável através da acção consistente — não basta comunicar valores, é preciso vivê-los.</p>
+        <h2>E a Inteligência Artificial?</h2>
+        <p>O mais recente capítulo desta história é a IA. O Expresso e a SIC foram pioneiros ao estabelecer princípios claros: o conteúdo jornalístico é sempre responsabilidade humana; a IA é uma ferramenta auxiliar sujeita a supervisão; é obrigatória transparência com os leitores; e a propriedade intelectual tem de ser respeitada. A AMD proíbe o uso de IA para manipulação psicológica dos consumidores.</p>
+        <div class="highlight-box">A história da deontologia da comunicação está longe de terminar. Cada nova tecnologia, cada novo actor, cada nova plataforma traz novos dilemas. O que permanece constante é a pergunta: como garantir que comunicar serve a sociedade, e não apenas os interesses de quem comunica?</div>
+      </div>
+    </div>
+
+    <div class="story-content" id="tab-futebol">
+      <div class="story-box">
+        <span class="story-label">jogo de futebol — 90 minutos de deontologia</span>
+        <h2>Deontologia FC vs. Manipulação United — A Grande Final</h2>
+        <p><strong>Estádio:</strong> Sociedade da Informação, lotação esgotada. <strong>Árbitro:</strong> Constituição da República.</p>
+        <h3>⚽ PRÉ-JOGO — Os Plantéis</h3>
+        <p>O <strong>Deontologia FC</strong> entra em campo com os seus melhores jogadores: <em>Verdade</em> no centro do campo, <em>Rigor e Exactidão</em> na defesa, <em>Protecção das Fontes</em> na baliza. O treinador é Claude-Jean Bertrand, que aposta num sistema 4-4-2 assente na auto-regulação.</p>
+        <p>Do outro lado, o <strong>Manipulação United</strong> joga com <em>Sensacionalismo</em> no ataque, <em>Conflito de Interesses</em> no meio-campo e <em>Falta de Transparência</em> na defesa. Um conjunto perigoso, rápido e sem escrúpulos.</p>
+        <h3>⚽ 1º MINUTO — Pontapé de Saída</h3>
+        <p>O jornalismo arranca com a bola. Em 1896, os jornalistas da Galiza criaram o primeiro código — é como se tivessem desenhado as linhas do campo. Sem campo marcado, não há jogo limpo. A deontologia existe para marcar os limites.</p>
+        <h3>⚽ 15º MINUTO — Primeira Grande Jogada</h3>
+        <p><em>Verificação de Fontes</em> avança pela direita, passa para <em>Cruzamento de Informação</em> e este centra para <em>Verdade</em>, que cabeceia para o golo! <strong>1-0 para Deontologia FC.</strong> O trinco: nunca publicar sem comprovar, ouvindo sempre as partes com interesses atendíveis no caso.</p>
+        <h3>⚽ 30º MINUTO — Cartão Amarelo!</h3>
+        <p><em>Sensacionalismo</em> faz uma entrada dura em <em>Presunção de Inocência</em>. O árbitro não hesita: cartão amarelo. O Código Deontológico é claro — acusação sem provas é uma grave falta profissional.</p>
+        <h3>⚽ 45º MINUTO — Intervalo</h3>
+        <p>No balneário do Deontologia FC, entram os reforços das Relações Públicas: os códigos de Veneza (1961) e Atenas (1965). No marketing, a APPM aquece para entrar no segundo tempo com integridade, honestidade e competência.</p>
+        <h3>⚽ 55º MINUTO — O Empate!</h3>
+        <p>Os Influencers entram em campo como substitutos do Manipulação United. São rápidos, têm milhões de seguidores e ninguém lhes ensinou as regras. <em>Falta de Identificação de Publicidade</em> ultrapassa <em>Transparência</em> e marca. <strong>1-1.</strong> Um influencer promoveu um produto sem dizer que era pago.</p>
+        <h3>⚽ 70º MINUTO — A Virada!</h3>
+        <p>O Conselho da União Europeia entra como VAR. Revê o lance. Decide: os influencers têm de ter literacia mediática, comportar-se responsavelmente e identificar publicidade. <em>Transparência Digital</em> converte o penálti. <strong>2-1 para Deontologia FC.</strong></p>
+        <h3>⚽ 85º MINUTO — A Inteligência Artificial entra em campo</h3>
+        <p>Substituição inesperada: a IA entra como médio centro. O Expresso/SIC estabelece as regras: a IA joga ao serviço do jornalista, não em substituição. Supervisão humana obrigatória. Transparência com os leitores.</p>
+        <h3>⚽ APITO FINAL — Deontologia FC vence 2-1!</h3>
+        <p>Não foi uma vitória fácil. O Manipulação United voltará com novas formas de enganar. Mas enquanto houver auto-regulação, códigos deontológicos e profissionais comprometidos com a verdade, o jogo tem regras. E as regras existem para ser cumpridas.</p>
+      </div>
+    </div>
+
+    <div class="story-content" id="tab-f1">
+      <div class="story-box">
+        <span class="story-label">grande prémio — corrida de fórmula 1</span>
+        <h2>Grande Prémio da Ética — Circuito da Responsabilidade</h2>
+        <p><strong>Circuito:</strong> Sociedade da Informação (72 voltas). <strong>Director de Corrida:</strong> Constituição da República.</p>
+        <h3>🏎 GRID DE PARTIDA</h3>
+        <p><strong>Pole position:</strong> Deontologia Jornalística — o carro mais antigo em pista. No seu motor: Verdade, Rigor, Sigilo das Fontes. Piloto: Código Deontológico dos Jornalistas Portugueses.</p>
+        <p><strong>2ª posição:</strong> Relações Públicas — carro elegante, foco em reputação e longo prazo. Piloto: APECOM/APCE.</p>
+        <p><strong>3ª posição:</strong> Marketing APPM — potência comercial. Honestidade, Integridade, Licitude no cockpit.</p>
+        <p><strong>Fila de trás:</strong> Influencer Marketing — carro novo, ainda a aprender as regras da pista.</p>
+        <h3>🏎 VOLTA 1-10 — A LARGADA</h3>
+        <p>Deontologia Jornalística sai na frente. A auto-regulação dá-lhe tracção: sem o Estado a decidir por ela, escolhe a sua própria trajectória. Bertrand no rádio: "M*A*R*S* activados." O Sensacionalismo tenta ultrapassar pela relva — bandeira amarela: acusação sem provas, penalização de 10 segundos.</p>
+        <h3>🏎 VOLTA 20-30 — CHUVA NO CIRCUITO</h3>
+        <p>As redes sociais molham a pista. Os influencers, com pneus de slick numa pista molhada (sem formação deontológica), derrapam. Falta de identificação de publicidade: penalização. O regulamento da UE de 2024 entra como Safety Car.</p>
+        <h3>🏎 VOLTA 45 — OS PITS</h3>
+        <p>As organizações trocam de pneus: entram os de RSO. Carroll (2015) calibra os amortecedores: ética dos negócios, cidadania organizacional, gestão de stakeholders, sustentabilidade. "Não é só ganhar a corrida", diz a chefe de equipa Teresa Ruão, "é ganhar de forma que a cidade nos queira de volta."</p>
+        <h3>🏎 VOLTA 60 — ENTRADA DA IA</h3>
+        <p>Um carro novo entra via wild card: a IA. Motor híbrido de eficiência sem precedentes. Mas o regulamento técnico é claro (Expresso/SIC): supervisão humana obrigatória, transparência, propriedade intelectual respeitada. O piloto humano mantém sempre o volante.</p>
+        <h3>🏎 ÚLTIMA VOLTA — BANDEIRA DE XADREZ</h3>
+        <p>Deontologia Jornalística cruza a linha em primeiro, seguida das RP e do Marketing. Os influencers terminam — aprenderam as regras a tempo. A IA cruza em último, mas com potencial enorme, desde que respeite os regulamentos. No pódio, o troféu não é de ouro. É de confiança pública.</p>
+      </div>
+    </div>
+
+    <div class="story-content" id="tab-fofoca">
+      <div class="gossip-feed">
+        <div class="gossip-card"><span class="gossip-tag">🔥 Exclusivo</span><div class="gossip-headline">CHOCANTE: Descoberto que as profissões de comunicação não confiam em si próprias!</div><div class="gossip-body"><p>Fontes próximas do sector revelam que jornalistas, relações-públicas e profissionais de marketing criaram <strong>códigos de conduta próprios</strong> — porque nem eles confiavam que toda a gente faria a coisa certa por iniciativa própria. "É um contrato social", admite uma fonte anónima (que provavelmente aprendeu isso no código deontológico).</p><p>Ao que se sabe, o primeiro escândalo aconteceu em <strong>1896 na Galiza</strong>, quando jornalistas criaram um "tribunal de honra" para julgar os colegas que se portavam mal. O drama existe desde sempre!</p></div></div>
+        <div class="gossip-card"><span class="gossip-tag">💅 Fui lá ver</span><div class="gossip-headline">Teresa Ruão EXPÕE as empresas que fingem ser éticas mas não são</div><div class="gossip-body"><p>A académica não poupou nas palavras: as organizações que comunicam responsabilidade social ficam <strong>mais expostas ao escrutínio crítico</strong>, não menos! "Quanto mais exibem as suas ambições éticas, mais críticas recebem."</p><p>O problema? Muitas empresas usam identidades visuais socialmente responsáveis mas <strong>falham ao não conseguirem viver de acordo com essa projeção</strong>. Bonito no Instagram, feio na realidade.</p><p>A solução: <strong>consistência entre comunicar valores éticos, vivê-los e adotar comportamentos morais</strong>.</p></div></div>
+        <div class="gossip-card"><span class="gossip-tag">👀 Toda a gente sabe</span><div class="gossip-headline">Os influencers estão a vender-te coisas e muitos nem dizem que é publicidade</div><div class="gossip-body"><p>Agora até o <strong>Conselho da União Europeia</strong> se cansou e publicou em 2024 um documento exigindo que influencers "estejam particularmente cientes do potencial impacto que têm".</p><p>Os influencers são descritos na literatura como praticantes de <strong>"trabalho emocional"</strong> e <strong>"trabalho relacional"</strong> — vendem a personalidade como produto. E muitos dos seus seguidores mais jovens tratam-nos como modelos, mais do que aos próprios pais.</p><p>A regra: <strong>#ad, #publi, "em parceria com"</strong>. Sempre que há dinheiro, tens de dizer.</p></div></div>
+        <div class="gossip-card"><span class="gossip-tag">🤫 Alguém tinha de dizer</span><div class="gossip-headline">A APPM tem um código de conduta que ninguém leu mas toda a gente devia</div><div class="gossip-body"><p>Existem regras para os profissionais de marketing em Portugal. O Artigo 7º diz que não podes <strong>encorajar comportamentos menos éticos</strong>. O Artigo 12º diz que não podes usar dados de alguém sem autorização expressa. O Artigo 8º pede integridade.</p><p>E há uma <strong>Comissão de Deontologia</strong> que pode arbitrar conflitos. Spoiler: raramente é chamada.</p></div></div>
+        <div class="gossip-card"><span class="gossip-tag">🤖 Breaking News</span><div class="gossip-headline">Expresso e SIC REVELAM: a IA trabalha para nós, não o contrário</div><div class="gossip-body"><p>O grupo Impresa estabeleceu os princípios para o uso de IA nas redacções: <strong>a IA é uma ferramenta, não um jornalista</strong>. Todo o conteúdo produzido com IA tem de ser supervisionado e revisto por humanos antes de publicado.</p><p>Prometeram ser <strong>transparentes com os leitores</strong> sempre que IA for usada, e há preocupação com a propriedade intelectual — a IA agrega fontes sem as identificar.</p></div></div>
+        <div class="gossip-card"><span class="gossip-tag">📰 Destaque da Semana</span><div class="gossip-headline">Há um triângulo entre RP, Marketing e Publicidade e toda a gente confunde tudo</div><div class="gossip-body"><p>Vamos esclarecer: <strong>Relações Públicas</strong> serve para construir e preservar imagem (longo prazo, media e comunidade). <strong>Marketing</strong> serve para promover produtos e gerar vendas (consumidores, curto/médio prazo). <strong>Publicidade</strong> serve para informar, persuadir e influenciar (anúncios, ROI, curto prazo).</p><p>Três profissões diferentes com objectivos, públicos e métricas distintas — e todas com <strong>obrigações éticas próprias</strong>.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== CASOS ====== -->
+<section id="casos" class="section">
+  <div class="content-wrap">
+    <div class="section-title">Casos Reais</div>
+    <div class="section-subtitle">— Análise de aplicabilidade ética</div>
+
+    <div class="case-card">
+      <div class="case-header"><span>📱 Caso 1: O influencer que promoveu suplementos sem aviso de publicidade</span><span class="case-toggle">+</span></div>
+      <div class="case-body"><div class="case-inner">
+        <div class="case-scenario">Um influencer português com 800k seguidores publicou vários posts sobre suplementos vitamínicos, descrevendo os "resultados incríveis" que obteve. Não mencionou em nenhuma publicação que recebia pagamento da marca. Meses depois, o ICAP recebeu denúncias de seguidores.</div>
+        <div class="case-analysis">
+          <h4>Problema ético identificado</h4><p>Violação do princípio de transparência publicitária. Comunicação comercial não identificada como tal, induzindo os seguidores em erro sobre a natureza da relação com a marca.</p>
+          <h4>Quadro normativo aplicável</h4><p>Código da Publicidade, Guia de Boas Práticas para Influenciadores (2019), Orientações da UE (2024) sobre literacia mediática. A APPM e a AMD também exigem veracidade e transparência.</p>
+          <h4>O que deveria ter feito</h4><p>Identificar claramente cada publicação como "publicidade", "em parceria com [marca]" ou #publi/#ad, de forma clara e inequívoca, não enterrada nas hashtags.</p>
+          <h4>Impacto reputacional</h4><p>Quebra de confiança com a audiência. Uma vez revelada a falta de transparência, a credibilidade do influencer — o activo que justificava a parceria — fica seriamente comprometida.</p>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="case-card">
+      <div class="case-header"><span>🏢 Caso 2: Empresa que comunicou RSO mas tinha práticas laborais duvidosas</span><span class="case-toggle">+</span></div>
+      <div class="case-body"><div class="case-inner">
+        <div class="case-scenario">Uma grande empresa de retalho lançou uma campanha de sustentabilidade premiada, com relatórios de impacto ambiental exemplares. Meses depois, um jornalista investigativo expôs condições de trabalho precárias nas suas cadeias de fornecimento.</div>
+        <div class="case-analysis">
+          <h4>Conceito central</h4><p>Teresa Ruão descreve este fenómeno: empresas que usam identidade visual socialmente responsável mas "falham ao não conseguirem viver de acordo com essa projecção". A identidade ética só se torna viável através da acção.</p>
+          <h4>O paradoxo da RSO</h4><p>Quanto mais a empresa exibiu as suas ambições éticas, mais exposta ficou ao escrutínio crítico. A comunicação da RSO não substitui a acção — requer consistência total entre o que se comunica e o que se pratica.</p>
+          <h4>Modelo de Carroll aplicado</h4><p>A empresa cumpriu parcialmente as responsabilidades ambientais (ética dos negócios) mas falhou na gestão de stakeholders (trabalhadores da cadeia) e na sustentabilidade social genuína.</p>
+          <h4>Lição estratégica</h4><p>O "alinhamento ético" (Schlegelmilch & Pollach) requer que a ética esteja imbuída na cultura, estrutura e comunicação de toda a organização — não apenas no departamento de comunicação.</p>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="case-card">
+      <div class="case-header"><span>📺 Caso 3: Jornal que usou IA para gerar notícias sem o revelar</span><span class="case-toggle">+</span></div>
+      <div class="case-body"><div class="case-inner">
+        <div class="case-scenario">Um meio de comunicação online português começou a publicar notícias de síntese geradas por IA sem qualquer indicação disso. Um erro factual numa peça levou leitores a descobrir que o conteúdo era gerado automaticamente.</div>
+        <div class="case-analysis">
+          <h4>Princípio violado</h4><p>Transparência — princípio central dos guidelines do Expresso/SIC sobre IA: "serão sempre transparentes e claros para com o leitor sobre o uso que fizer de IA."</p>
+          <h4>Problema deontológico</h4><p>O Código Deontológico obriga a relatar factos com rigor, comprovar informação e assumir responsabilidade. Um sistema de IA sem supervisão não garante nenhum destes pontos.</p>
+          <h4>Propriedade intelectual</h4><p>A IA pode ter agregado e reproduzido conteúdo de outras publicações sem reconhecimento das fontes, configurando potencial plágio.</p>
+          <h4>Solução correcta</h4><p>Usar IA como ferramenta auxiliar (pesquisa, triagem, draft), com supervisão e revisão humana obrigatória antes de publicação, e indicar claramente quando o conteúdo foi produzido com assistência de IA.</p>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="case-card">
+      <div class="case-header"><span>🗞 Caso 4: Jornalista que publicou nome de menor vítima de crime</span><span class="case-toggle">+</span></div>
+      <div class="case-body"><div class="case-inner">
+        <div class="case-scenario">Um jornalista publicou uma reportagem sobre um crime, identificando pelo nome completo e com fotografia uma menor de 14 anos que era vítima. A informação foi obtida através de fontes policiais. A família não foi contactada.</div>
+        <div class="case-analysis">
+          <h4>Múltiplas violações</h4><p>Violação da protecção de pessoas em situação de fragilidade, do direito à vida privada e à imagem, e falha no dever de ouvir partes com interesses atendíveis.</p>
+          <h4>Limite do interesse público</h4><p>O "mal" causado pelo jornalismo justifica-se na responsabilidade social da imprensa — mas proteger a identidade de menores vítimas é precisamente um dos limites que o código estabelece.</p>
+          <h4>Tensão ética central</h4><p>Direito à informação vs. respeito pela pessoa humana. Ambos têm de coexistir — e a protecção de vulneráveis é prioritária.</p>
+          <h4>Processo deontológico</h4><p>O caso pode ser levado ao Conselho Deontológico dos Jornalistas. O jornalista tem a obrigação de promover a rectificação e assumir a responsabilidade.</p>
+        </div>
+      </div></div>
+    </div>
+
+    <div class="case-card">
+      <div class="case-header"><span>💼 Caso 5: Gestor de RP que revelou informação confidencial do cliente</span><span class="case-toggle">+</span></div>
+      <div class="case-body"><div class="case-inner">
+        <div class="case-scenario">Um profissional de RP que trabalhava para uma empresa farmacêutica revelou a um jornalista amigo informação confidencial sobre um processo interno de crise, antes de o cliente ter autorizado qualquer comunicação pública.</div>
+        <div class="case-analysis">
+          <h4>Violação do código APCE</h4><p>Confidencialidade: o gestor de comunicação protege a informação confidencial relativa à entidade para quem trabalha, não a utilizando para seu benefício ou de terceiros.</p>
+          <h4>Conflito de lealdades</h4><p>O profissional encontrou-se entre a lealdade ao cliente (confidencialidade) e relações pessoais (o jornalista amigo). O código é claro: a confidencialidade profissional prevalece.</p>
+          <h4>Implicações</h4><p>Danos reputacionais ao cliente, quebra de confiança, possível acção legal por violação de NDA. E perda da própria credibilidade profissional.</p>
+          <h4>Tensão com liberdade de informação</h4><p>Diferente seria se a informação revelasse ilegalidade ou dano público — aí entraria o interesse público vs. confidencialidade, um dilema genuíno.</p>
+        </div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== QUIZ ====== -->
+<section id="quiz" class="section">
+  <div class="content-wrap">
+    <div class="section-title">Quiz</div>
+    <div class="section-subtitle" id="quiz-subtitle">— Perguntas filtráveis por tema</div>
+
+    <div class="mode-bar" id="quiz-mode-bar">
+      <div class="quiz-filter active" data-mode="normal">Treino</div>
+      <div class="quiz-filter" data-mode="errors">Modo Erros</div>
+    </div>
+
+    <div class="quiz-filters" id="quiz-filters"><!-- por JS --></div>
+
+    <div id="quiz-main">
+      <div class="quiz-progress"><div class="quiz-progress-bar" id="quiz-progress-bar"></div></div>
+      <div class="quiz-counter"><span id="quiz-counter">Pergunta 1</span><span id="quiz-streak"></span></div>
+      <div class="quiz-question" id="quiz-question"></div>
+      <div class="quiz-options" id="quiz-options"></div>
+      <div class="quiz-explanation" id="quiz-explanation"></div>
+      <div class="quiz-actions">
+        <button class="btn btn-primary" id="quiz-next" style="display:none">Próxima →</button>
+        <button class="btn btn-outline" id="quiz-end">Ver Resultados</button>
+      </div>
+    </div>
+
+    <div class="quiz-score" id="quiz-score">
+      <div class="score-number" id="score-display"></div>
+      <div class="score-label" id="score-label"></div>
+      <div class="score-stats">
+        <div><div class="score-stat-number" id="score-correct">0</div><div class="score-stat-label">Certas</div></div>
+        <div><div class="score-stat-number" id="score-wrong">0</div><div class="score-stat-label">Erradas</div></div>
+        <div><div class="score-stat-number" id="score-total">0</div><div class="score-stat-label">Total</div></div>
+      </div>
+      <button class="btn btn-primary" id="quiz-restart">↺ Recomeçar</button>
+    </div>
+  </div>
+</section>
+
+<!-- ====== EXAME ====== -->
+<section id="exame" class="section">
+  <div class="content-wrap">
+    <div class="section-title">Simulador de Exame</div>
+    <div class="section-subtitle">— Condições de prova: cronómetro e nota final</div>
+
+    <div class="exam-setup" id="exam-setup">
+      <div class="field-label">Número de perguntas</div>
+      <div class="chip-row" id="exam-count">
+        <div class="chip sel" data-n="10">10</div>
+        <div class="chip" data-n="20">20</div>
+        <div class="chip" data-n="30">30</div>
+      </div>
+      <div class="field-label">Tempo</div>
+      <div class="chip-row" id="exam-time">
+        <div class="chip" data-t="0">Sem limite</div>
+        <div class="chip sel" data-t="600">10 min</div>
+        <div class="chip" data-t="1200">20 min</div>
+        <div class="chip" data-t="1800">30 min</div>
+      </div>
+      <div class="field-label">Temas</div>
+      <div class="chip-row" id="exam-themes"><!-- por JS --></div>
+      <div style="margin-top:1.8rem"><button class="btn btn-primary" id="exam-start">Iniciar Exame</button></div>
+    </div>
+
+    <div id="exam-running" style="display:none">
+      <div class="quiz-counter"><span id="exam-counter"></span><span class="exam-timer" id="exam-timer"></span></div>
+      <div class="quiz-progress"><div class="quiz-progress-bar" id="exam-progress-bar"></div></div>
+      <div class="quiz-question" id="exam-question"></div>
+      <div class="quiz-options" id="exam-options"></div>
+      <div class="quiz-actions">
+        <button class="btn btn-primary" id="exam-next">Seguinte →</button>
+        <button class="btn btn-outline" id="exam-finish">Terminar agora</button>
+      </div>
+    </div>
+
+    <div class="quiz-score" id="exam-score" style="display:none">
+      <div class="score-number" id="exam-score-display"></div>
+      <div class="score-label" id="exam-score-label"></div>
+      <div class="score-stats">
+        <div><div class="score-stat-number" id="exam-correct">0</div><div class="score-stat-label">Certas</div></div>
+        <div><div class="score-stat-number" id="exam-wrong">0</div><div class="score-stat-label">Erradas</div></div>
+        <div><div class="score-stat-number" id="exam-time-used">—</div><div class="score-stat-label">Tempo</div></div>
+      </div>
+      <button class="btn btn-primary" id="exam-review-btn" style="margin-right:0.5rem">Rever respostas</button>
+      <button class="btn btn-outline" id="exam-again">Novo exame</button>
+      <div id="exam-review" style="margin-top:2rem;text-align:left"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== EXERCÍCIOS ====== -->
+<section id="exercicios" class="section">
+  <div class="content-wrap">
+    <div class="section-title">Exercícios</div>
+    <div class="section-subtitle">— Ordenação, associação, completar, quem disse e V/F</div>
+
+    <div class="inner-tabs">
+      <div class="inner-tab active" data-inner-tab="ordenacao">Ordenação</div>
+      <div class="inner-tab" data-inner-tab="matching">Associação</div>
+      <div class="inner-tab" data-inner-tab="completar">Completar</div>
+      <div class="inner-tab" data-inner-tab="quemdisse">Quem Disse?</div>
+      <div class="inner-tab" data-inner-tab="vf">Verdadeiro/Falso</div>
+    </div>
+
+    <div id="inner-ordenacao" class="inner-tab-content"></div>
+    <div id="inner-matching" class="inner-tab-content" style="display:none">
+      <p style="font-size:0.88rem; color:var(--muted); margin-bottom:1.2rem">Clica num conceito da esquerda e depois na definição correspondente à direita.</p>
+      <div id="matching-game"></div>
+      <button class="btn btn-outline" style="margin-top:1.2rem" id="matching-check">Verificar</button>
+      <button class="btn btn-outline" style="margin-top:1.2rem" id="matching-reset">Reiniciar</button>
+      <div id="matching-result" class="order-result"></div>
+    </div>
+    <div id="inner-completar" class="inner-tab-content" style="display:none"></div>
+    <div id="inner-quemdisse" class="inner-tab-content" style="display:none"></div>
+    <div id="inner-vf" class="inner-tab-content" style="display:none"></div>
+  </div>
+</section>
+
+<!-- ====== FLASHCARDS ====== -->
+<section id="flashcards" class="section">
+  <div class="content-wrap">
+    <div class="section-title">Flashcards</div>
+    <div class="section-subtitle">— Clica para revelar; marca o que já sabes (repetição espaçada)</div>
+    <div class="mode-bar">
+      <div class="quiz-filter active" id="fc-all" data-fcmode="all">Todos</div>
+      <div class="quiz-filter" id="fc-review" data-fcmode="review">Rever os que falho</div>
+      <div class="quiz-filter" id="fc-shuffle">↺ Baralhar</div>
+    </div>
+  </div>
+  <div class="content-wrap" style="padding-top:0">
+    <div class="flashcard-grid" id="flashcard-grid"></div>
+    <p class="empty-note" id="fc-empty" style="display:none;margin-top:1rem">Sem cartões para rever — já sabes todos! 🎉</p>
+  </div>
+</section>
+
+<!-- ====== GLOSSÁRIO ====== -->
+<section id="glossario" class="section">
+  <div class="content-wrap">
+    <div class="section-title">Glossário</div>
+    <div class="section-subtitle">— Termos-chave da matéria</div>
+    <input type="text" id="gloss-search" class="fb-input" style="width:100%;border:1px solid var(--line);border-radius:6px;padding:0.8rem 1rem;font-size:1rem;margin-bottom:2rem" placeholder="Pesquisar termo...">
+    <div id="glossary-list"></div>
+  </div>
+</section>
+
+<!-- ====== LOGIN / SIGN UP ====== -->
+<div class="auth-overlay" id="auth-overlay">
+  <div class="auth-card">
+    <div class="auth-logo">EDC · Módulo II</div>
+    <h2 class="auth-title" id="auth-title">Entrar</h2>
+    <p class="auth-sub" id="auth-sub">Inicia sessão para continuar o teu progresso</p>
+    <form id="auth-form" autocomplete="off" novalidate>
+      <label class="auth-label" for="auth-user">Nome de utilizador</label>
+      <input type="text" id="auth-user" class="auth-input" maxlength="20" placeholder="o teu nome" autocapitalize="off" spellcheck="false">
+      <label class="auth-label" for="auth-pin">PIN</label>
+      <input type="password" id="auth-pin" class="auth-input" inputmode="numeric" maxlength="8" placeholder="4 a 8 dígitos">
+      <div class="auth-error" id="auth-error"></div>
+      <button type="submit" class="btn btn-primary auth-submit" id="auth-submit">Entrar</button>
+    </form>
+    <div class="auth-switch">
+      <span id="auth-switch-text">Ainda não tens conta?</span>
+      <a href="#" id="auth-switch-btn">Criar conta</a>
+    </div>
+    <p class="auth-note">⚠ Sem segurança real — o PIN serve apenas para separar perfis de estudo neste navegador.</p>
+  </div>
+</div>
+
+<!-- ====== SEARCH OVERLAY ====== -->
+<div class="search-overlay" id="search-overlay">
+  <div class="search-panel">
+    <input type="text" class="search-input" id="search-input" placeholder="Pesquisar em toda a plataforma...">
+    <div class="search-results" id="search-results"></div>
+    <div class="search-hint">Enter para ir ao primeiro resultado · Esc para fechar</div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toast-wrap"></div>
+<canvas id="confetti-canvas"></canvas>
+
+<script src="config.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
