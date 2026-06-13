@@ -97,6 +97,20 @@
     });
   }
 
+  /* ---- registo de utilização (visitas por secção) ---- */
+  var EVENTS_ENDPOINT = REMOTE ? URL + '/rest/v1/usage_events' : '';
+  function logVisit() {
+    if (!REMOTE) return;
+    try {
+      fetch(EVENTS_ENDPOINT, {
+        method: 'POST',
+        headers: Object.assign({ 'Prefer': 'return=minimal' }, HEADERS),
+        body: JSON.stringify({ section: opts.section, user_name: currentUser() }),
+        keepalive: true,
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
   /* ---------- fatia (slice) de localStorage da secção ---------- */
   // Lê as chaves configuradas do localStorage para um objeto { chave: valorString }.
   function readLocalSlice() {
@@ -344,6 +358,7 @@
       if (legacy && !localStorage.getItem(SESSION_KEY)) setSession(legacy);
 
       installStorageHook();
+      logVisit();
 
       var start = function () { renderChip(); };
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
