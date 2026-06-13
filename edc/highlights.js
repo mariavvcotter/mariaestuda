@@ -45,7 +45,7 @@
   .edchl-hint{color:#999;font-weight:600;font-size:.8rem}
   .edchl-floatbtn{position:absolute;z-index:9000;transform:translate(-50%,-100%);border:none;cursor:pointer;background:#f5a623;color:#fff;font-weight:800;font-size:.85rem;padding:7px 14px;border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.25);font-family:inherit}
   .edchl-floatbtn::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#f5a623}
-  .edchl-overlay{position:fixed;inset:0;z-index:99990;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(20,22,28,.55);backdrop-filter:blur(3px)}
+  .edchl-overlay{position:fixed;inset:0;z-index:99990;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(20,22,28,.55);backdrop-filter:blur(3px);-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
   .edchl-overlay.open{display:flex}
   .edchl-modal{width:100%;max-width:560px;background:#fff;color:#222;border-radius:20px;padding:20px;box-shadow:0 24px 60px rgba(0,0,0,.35)}
   .edchl-modal h3{font-size:1.15rem;margin:0 0 14px;color:#333}
@@ -61,7 +61,7 @@
   .edchl-tbtn:hover{background:#f3f3f3}
   .edchl-canvaswrap{border:1.5px dashed #cdcdcd;border-radius:12px;background:#fffef9;overflow:hidden}
   .edchl-canvas{display:block;width:100%;height:48vh;max-height:420px;touch-action:none;cursor:crosshair}
-  .edchl-ta{width:100%;min-height:160px;border:1.5px solid #e3e3e3;border-radius:12px;padding:12px;font:inherit;font-size:1rem;resize:vertical}
+  .edchl-ta{width:100%;min-height:160px;border:1.5px solid #e3e3e3;border-radius:12px;padding:12px;font:inherit;font-size:1rem;resize:vertical;-webkit-user-select:text;user-select:text}
   .edchl-foot{display:flex;justify-content:flex-end;gap:10px;margin-top:14px}
   .edchl-btn{border:none;cursor:pointer;font:inherit;font-weight:800;padding:11px 18px;border-radius:11px}
   .edchl-btn.primary{background:#4a9b8e;color:#fff}
