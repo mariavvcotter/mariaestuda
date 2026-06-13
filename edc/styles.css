@@ -57,7 +57,7 @@ nav {
   z-index: 100;
   background: var(--white);
   border-bottom: 1px solid var(--line);
-  padding: 0 1.5rem;
+  padding: 0 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -79,7 +79,7 @@ nav {
 .nav-right { display: flex; align-items: center; }
 
 .nav-links {
-  display: flex;
+  display: none;
   gap: 0;
   list-style: none;
   overflow-x: auto;
@@ -122,7 +122,7 @@ nav {
   cursor: pointer;
   font-size: 0.95rem;
   display: flex; align-items: center; justify-content: center;
-  margin-left: 0.6rem;
+  margin-left: 0.4rem;
   transition: background 0.2s, transform 0.2s;
   flex-shrink: 0;
 }
@@ -130,7 +130,7 @@ nav {
 
 /* ===== HAMBURGER ===== */
 .nav-hamburger {
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 4px;
   cursor: pointer;
@@ -177,7 +177,7 @@ nav {
 .section.active { display: block; }
 
 /* ===== HERO ===== */
-.hero { padding: 6rem 2.5rem 3rem; max-width: 900px; }
+.hero { padding: 3.5rem 1.2rem 2rem; max-width: 900px; }
 .hero-tag {
   display: inline-block;
   background: var(--black); color: var(--white);
@@ -187,7 +187,7 @@ nav {
 }
 .hero h1 {
   font-family: 'Instrument Serif', serif;
-  font-size: clamp(3rem, 7vw, 6rem);
+  font-size: clamp(2.2rem, 9vw, 3.4rem);
   font-weight: 400; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 1.5rem;
 }
 .hero h1 em { font-style: italic; color: var(--muted); }
@@ -197,7 +197,7 @@ nav {
 .hero-stats {
   display: flex; flex-wrap: wrap; gap: 1px;
   background: var(--line); border: 1px solid var(--line);
-  max-width: 900px; margin: 0 2.5rem 0;
+  max-width: 900px; margin: 0 1.2rem;
 }
 .hero-stat { background: var(--card); padding: 1rem 1.4rem; flex: 1; min-width: 120px; }
 .hero-stat .hs-num { font-family: 'Instrument Serif', serif; font-size: 1.8rem; line-height: 1; }
@@ -205,9 +205,9 @@ nav {
 
 .hero-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 1px; background: var(--line); border: 1px solid var(--line);
-  max-width: 900px; margin: 1.5rem 2.5rem 3rem;
+  max-width: 900px; margin: 1.2rem;
 }
 .hero-card { background: var(--card); padding: 1.8rem; cursor: pointer; transition: background 0.2s; }
 .hero-card:hover { background: var(--warm); }
@@ -216,12 +216,12 @@ nav {
 .hero-card p { font-size: 0.75rem; color: var(--muted); }
 
 /* ===== CONTENT ===== */
-.content-wrap { max-width: 880px; margin: 0 auto; padding: 4rem 2rem; }
-.section-title { font-family: 'Instrument Serif', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 400; line-height: 1.1; margin-bottom: 0.5rem; }
+.content-wrap { max-width: 880px; margin: 0 auto; padding: 2.5rem 1.2rem; }
+.section-title { font-family: 'Instrument Serif', serif; font-size: clamp(1.8rem, 7vw, 2.8rem); font-weight: 400; line-height: 1.1; margin-bottom: 0.5rem; }
 .section-subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 2.5rem; font-family: 'DM Mono', monospace; letter-spacing: 0.05em; }
 
 /* ===== RESUMOS ===== */
-.resumo-block { border-left: 2px solid var(--black); padding-left: 2rem; margin-bottom: 3rem; }
+.resumo-block { border-left: 2px solid var(--black); padding-left: 1.2rem; margin-bottom: 2.2rem; }
 .resumo-block h3 { font-family: 'Instrument Serif', serif; font-size: 1.4rem; font-weight: 400; margin-bottom: 0.8rem; }
 .resumo-block p { font-size: 0.9rem; color: var(--accent); margin-bottom: 0.8rem; line-height: 1.7; }
 .resumo-block ul { list-style: none; margin-top: 1rem; }
@@ -238,7 +238,7 @@ nav {
 .story-tab:hover, .story-tab.active, .inner-tab:hover, .inner-tab.active { background: var(--black); color: var(--white); }
 .story-content { display: none; }
 .story-content.active { display: block; }
-.story-box { background: var(--warm); border: 1px solid var(--line); padding: 2.5rem; line-height: 1.8; }
+.story-box { background: var(--warm); border: 1px solid var(--line); padding: 1.6rem 1.3rem; line-height: 1.8; }
 .story-box h2 { font-family: 'Instrument Serif', serif; font-size: 1.8rem; font-weight: 400; margin: 1.4rem 0 1.2rem; line-height: 1.2; }
 .story-box h3 { font-size: 1rem; font-weight: 600; margin: 1.4rem 0 0.5rem; }
 .story-box p { font-size: 0.92rem; margin-bottom: 1rem; }
@@ -293,9 +293,9 @@ nav {
 .quiz-explanation.show { display: block; }
 .quiz-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
 .quiz-score { display: none; text-align: center; padding: 3rem 2rem; }
-.score-number { font-family: 'Instrument Serif', serif; font-size: 6rem; line-height: 1; margin-bottom: 0.5rem; }
+.score-number { font-family: 'Instrument Serif', serif; font-size: 4.2rem; line-height: 1; margin-bottom: 0.5rem; }
 .score-label { font-size: 0.85rem; color: var(--muted); margin-bottom: 2rem; }
-.score-stats { display: flex; justify-content: center; gap: 2.5rem; margin-bottom: 2rem; }
+.score-stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.4rem; margin-bottom: 2rem; }
 .score-stat-number { font-family: 'Instrument Serif', serif; font-size: 2rem; }
 .score-stat-label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 .empty-note { padding: 2rem; border: 1px dashed var(--line); color: var(--muted); font-size: 0.9rem; text-align: center; }
@@ -335,7 +335,7 @@ nav {
 .order-result.wrong-order { background: var(--warm); border: 1px solid var(--line); }
 
 /* ===== MATCHING / FILL ===== */
-.match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.match-grid { display: grid; grid-template-columns: 1fr; gap: 0.5rem; }
 .fb-block { margin-bottom: 2rem; padding: 1.5rem; border: 1px solid var(--line); }
 .fb-label { font-size: 0.7rem; font-family: 'DM Mono', monospace; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.8rem; }
 .fb-text { font-size: 1rem; line-height: 2; margin-bottom: 1rem; }
@@ -418,7 +418,7 @@ table.cmp tr:nth-child(even) td { background: var(--warm); }
 table.cmp td:first-child { font-weight: 600; }
 
 /* ===== EXAM ===== */
-.exam-setup { border: 1px solid var(--line); padding: 2rem; margin-bottom: 2rem; background: var(--card); }
+.exam-setup { border: 1px solid var(--line); padding: 1.3rem; margin-bottom: 2rem; background: var(--card); }
 .exam-timer { font-family: 'DM Mono', monospace; font-size: 0.9rem; padding: 0.3rem 0.8rem; border: 1px solid var(--line); border-radius: 4px; }
 .exam-timer.low { color: #c0392b; border-color: #c0392b; }
 .field-label { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 1.2rem 0 0.5rem; }
@@ -472,31 +472,38 @@ mark { background: var(--gold); color: inherit; padding: 0 2px; }
 ::-webkit-scrollbar-track { background: var(--white); }
 ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-  nav { padding: 0 1rem; }
-  .nav-links { display: none; }
-  .nav-hamburger { display: flex; }
-  .hero { padding: 3.5rem 1.2rem 2rem; }
-  .hero h1 { font-size: clamp(2.2rem, 10vw, 3.5rem); }
-  .hero-sub { font-size: 0.9rem; }
-  .hero-grid { margin: 1.2rem; grid-template-columns: 1fr 1fr; }
-  .hero-stats { margin: 0 1.2rem; }
-  .content-wrap { padding: 2.5rem 1.2rem; }
-  .section-title { font-size: clamp(1.8rem, 8vw, 2.8rem); }
-  .match-grid { grid-template-columns: 1fr; }
-  .score-stats { gap: 1.4rem; }
-  .nav-user { max-width: 90px; }
+/* ===== RESPONSIVE (mobile-first) =====
+   A base do ficheiro é desenhada para telemóvel.
+   Este bloco acrescenta as melhorias para ecrãs maiores (tablet/desktop). */
+@media (min-width: 769px) {
+  nav { padding: 0 1.5rem; }
+  .nav-links { display: flex; }
+  .nav-hamburger { display: none; }
+  .icon-btn { margin-left: 0.6rem; }
+  .nav-user { display: inline-block; margin-left: 0.6rem; max-width: 140px; }
+  .hero { padding: 6rem 2.5rem 3rem; }
+  .hero h1 { font-size: clamp(3rem, 7vw, 6rem); }
+  .hero-stats { margin: 0 2.5rem; }
+  .hero-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); margin: 1.5rem 2.5rem 3rem; }
+  .content-wrap { padding: 4rem 2rem; }
+  .section-title { font-size: clamp(2rem, 5vw, 3.5rem); }
+  .resumo-block { padding-left: 2rem; margin-bottom: 3rem; }
+  .story-box { padding: 2.5rem; }
+  .match-grid { grid-template-columns: 1fr 1fr; }
+  .score-number { font-size: 6rem; }
+  .score-stats { gap: 2.5rem; }
+  .exam-setup { padding: 2rem; }
 }
 
 /* ===== AUTH (login / sign up) ===== */
 .nav-user {
+  display: none;
   font-family: 'DM Mono', monospace;
   font-size: 0.7rem;
   letter-spacing: 0.04em;
   color: var(--muted);
-  margin-left: 0.6rem;
-  max-width: 140px;
+  margin-left: 0.4rem;
+  max-width: 90px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
