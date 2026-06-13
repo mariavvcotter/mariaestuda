@@ -1,18 +1,27 @@
 /* ============================================================
-   EDC — Highlights nos Resumos + notas (desenho SVG / texto)
+   EDC — Highlights + notas (desenho SVG / texto)
    ------------------------------------------------------------
+   Secções suportadas: Resumos, Mapas, História, Casos, Glossário.
    • Modo marcador: selecionar texto cria um highlight; enquanto
-     o modo estiver ligado, qualquer seleção fica marcada.
+     ligado, qualquer seleção fica marcada.
    • Cada highlight abre uma caixa para escrever à mão (Apple
      Pencil / rato / dedo) — guardada em SVG — ou escrever texto.
    • Clicar num highlight mostra a nota + apagar nota / apagar tudo.
-   • Persistido em localStorage 'edc_highlights' (sincronizado
-     pela conta partilhada — ver edc/app.js Account.init).
+   • Ancorado por ASSINATURA do bloco (texto inicial), por isso
+     sobrevive a conteúdo gerado por JS, filtros e reordenações.
+   • Persistido em 'edc_highlights' (sincronizado pela conta).
    ============================================================ */
 (function () {
   'use strict';
 
-  var ROOT_SEL = '#resumos';
+  // key: id lógico · sec: <section> (onde mora a toolbar) · root: contentor dos blocos · block: seletor de bloco
+  var SECTIONS = [
+    { key: 'resumos',   sec: '#resumos',   root: '#resumos',       block: '.resumo-block' },
+    { key: 'casos',     sec: '#casos',     root: '#casos',         block: '.case-card' },
+    { key: 'historia',  sec: '#historia',  root: '#historia',      block: '.story-box' },
+    { key: 'mapas',     sec: '#mapas',     root: '#mapas',         block: '.mindmap, .tl-item, .cmp-table-wrap' },
+    { key: 'glossario', sec: '#glossario', root: '#glossary-list', block: '.resumo-block' }
+  ];
   var STORAGE_KEY = 'edc_highlights';
   var COLORS = ['#ffe98a', '#a5d8ff', '#b2f2bb', '#ffc9c9', '#e5c8ff'];
   var PEN_COLORS = ['#1a1a1a', '#2563eb', '#dc2626', '#16a34a'];
@@ -20,10 +29,11 @@
   var markerMode = false;
   var currentColor = COLORS[0];
   var highlights = loadStore();
+  var toolbars = [];
+  var glossObserver = null;
 
-  /* ---------------- estilos ---------------- */
   var CSS = `
-  mark.edchl-mark{background:var(--edchl-c,#ffe98a);color:#1a1a1a;border-radius:3px;padding:0 1px;cursor:pointer;position:relative;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+  mark.edchl-mark{background:var(--edchl-c,#ffe98a);color:#1a1a1a;border-radius:3px;padding:0 1px;cursor:pointer;-webkit-box-decoration-break:clone;box-decoration-break:clone}
   mark.edchl-mark.edchl-has-note{box-shadow:inset 0 -2px 0 rgba(0,0,0,.45)}
   mark.edchl-mark.edchl-has-note::after{content:"✎";font-size:.7em;vertical-align:super;margin-left:1px;opacity:.6}
   .edchl-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:0 0 22px;padding:12px 16px;background:var(--card-bg,#fff);border:1.5px solid rgba(0,0,0,.08);border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.05);font-size:.9rem}
@@ -66,34 +76,29 @@
   .edchl-pop .acts button{width:100%;border:none;cursor:pointer;font:inherit;font-weight:700;padding:9px;border-radius:9px}
   `;
 
-  /* ---------------- arranque ---------------- */
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 
-  var root, floatBtn, overlay, pop;
+  var floatBtn, overlay, pop;
 
   function init() {
-    root = document.querySelector(ROOT_SEL);
-    if (!root) return;
+    if (!document.querySelector('#resumos')) return; // não é a página do edc
     injectCSS(CSS);
-    buildToolbar();
+    SECTIONS.forEach(buildToolbar);
     buildFloatBtn();
     applyAll();
+    watchGlossary();
 
-    // seleção de texto
     document.addEventListener('mouseup', onSelectEnd);
     document.addEventListener('touchend', onSelectEnd);
     document.addEventListener('selectionchange', function () {
       var s = window.getSelection();
       if (!s || s.isCollapsed) hideFloatBtn();
     });
-    // clique num highlight
-    root.addEventListener('click', function (e) {
-      var m = e.target.closest && e.target.closest('mark.edchl-mark');
-      if (m) { e.preventDefault(); openPopover(m.dataset.hlId, m); }
-    });
     document.addEventListener('click', function (e) {
-      if (pop && pop.style.display === 'block' && !pop.contains(e.target) && !(e.target.closest && e.target.closest('mark.edchl-mark'))) hidePopover();
+      var m = e.target.closest && e.target.closest('mark.edchl-mark');
+      if (m) { e.preventDefault(); openPopover(m.dataset.hlId, m); return; }
+      if (pop && pop.style.display === 'block' && !pop.contains(e.target)) hidePopover();
     });
     window.addEventListener('scroll', hidePopover, true);
   }
@@ -102,43 +107,64 @@
   function loadStore() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch (e) { return []; } }
   function saveStore() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(highlights)); } catch (e) {} }
   function genId() { return 'h_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+  function byId(id) { for (var i = 0; i < highlights.length; i++) if (highlights[i].id === id) return highlights[i]; return null; }
+  function cfgByKey(k) { for (var i = 0; i < SECTIONS.length; i++) if (SECTIONS[i].key === k) return SECTIONS[i]; return null; }
+  function secOfHl(h) { return h.sec || 'resumos'; }
 
-  /* ---------------- blocos / offsets ---------------- */
-  function blocks() { return Array.prototype.slice.call(root.querySelectorAll('.resumo-block')); }
-  function closestBlock(node) {
+  /* ---------------- resolução de blocos ---------------- */
+  function resolve(node) {
     var el = (node.nodeType === 1) ? node : node.parentElement;
-    return el ? el.closest('.resumo-block') : null;
+    if (!el) return null;
+    for (var i = 0; i < SECTIONS.length; i++) {
+      var cfg = SECTIONS[i], rootEl = document.querySelector(cfg.root);
+      if (rootEl && rootEl.contains(el)) {
+        var block = el.closest(cfg.block);
+        return (block && rootEl.contains(block)) ? { cfg: cfg, root: rootEl, block: block } : null;
+      }
+    }
+    return null;
+  }
+  function blocksOf(root, sel) { return Array.prototype.slice.call(root.querySelectorAll(sel)); }
+  function blockSig(block) {
+    var t = (block.textContent || '').replace(/\s+/g, ' ').trim();
+    return t.slice(0, 80) + '|' + t.length;
+  }
+  function findBlockBySig(root, sel, sig) {
+    var bs = blocksOf(root, sel);
+    for (var i = 0; i < bs.length; i++) if (blockSig(bs[i]) === sig) return bs[i];
+    return null;
   }
   function textOffset(block, container, offset) {
     var total = 0, walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT, null), n;
-    while ((n = walker.nextNode())) {
-      if (n === container) return total + offset;
-      total += n.nodeValue.length;
-    }
-    // container é um elemento: soma até ele
+    while ((n = walker.nextNode())) { if (n === container) return total + offset; total += n.nodeValue.length; }
     return total;
   }
 
-  /* ---------------- aplicar highlights ao DOM ---------------- */
-  function applyAll() {
-    var bl = blocks();
-    highlights.slice().sort(function (a, b) { return a.block - b.block || a.start - b.start; })
-      .forEach(function (h) { if (bl[h.block]) wrap(bl[h.block], h); });
+  /* ---------------- aplicar ao DOM ---------------- */
+  function applyAll() { SECTIONS.forEach(function (c) { applySection(c.key); }); }
+  function applySection(key) {
+    var cfg = cfgByKey(key), root = document.querySelector(cfg.root);
+    if (!root) return;
+    if (glossObserver) glossObserver.disconnect();
+    highlights.filter(function (h) { return secOfHl(h) === key; }).forEach(function (h) {
+      unwrap(h.id);
+      var block = h.sig ? findBlockBySig(root, cfg.block, h.sig)
+        : (h.block != null ? blocksOf(root, cfg.block)[h.block] : null); // compat. versão antiga (resumos por índice)
+      if (block) wrap(block, h);
+    });
+    if (glossObserver) glossObserver.observe(document.querySelector('#glossary-list'), { childList: true, subtree: true });
   }
   function wrap(block, h) {
-    var segs = [], total = 0;
-    var walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT, null), n;
+    var segs = [], total = 0, walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT, null), n;
     while ((n = walker.nextNode())) {
-      var len = n.nodeValue.length, ns = total, ne = total + len;
-      total = ne;
+      var len = n.nodeValue.length, ns = total, ne = total + len; total = ne;
       var from = Math.max(h.start, ns), to = Math.min(h.end, ne);
       if (to > from) segs.push({ node: n, from: from - ns, to: to - ns });
     }
     segs.forEach(function (s) { wrapPortion(s.node, s.from, s.to, h); });
   }
   function wrapPortion(textNode, from, to, h) {
-    var v = textNode.nodeValue;
-    var before = v.slice(0, from), mid = v.slice(from, to), after = v.slice(to);
+    var v = textNode.nodeValue, before = v.slice(0, from), mid = v.slice(from, to), after = v.slice(to);
     var mark = document.createElement('mark');
     mark.className = 'edchl-mark' + (h.note ? ' edchl-has-note' : '');
     mark.dataset.hlId = h.id;
@@ -151,41 +177,42 @@
     textNode.parentNode.replaceChild(frag, textNode);
   }
   function unwrap(id) {
-    root.querySelectorAll('mark.edchl-mark[data-hl-id="' + id + '"]').forEach(function (m) {
-      var t = document.createTextNode(m.textContent);
-      var p = m.parentNode; p.replaceChild(t, m); p.normalize();
+    document.querySelectorAll('mark.edchl-mark[data-hl-id="' + id + '"]').forEach(function (m) {
+      var t = document.createTextNode(m.textContent), p = m.parentNode; p.replaceChild(t, m); p.normalize();
     });
   }
   function refreshNoteFlag(id) {
     var h = byId(id), has = !!(h && h.note);
-    root.querySelectorAll('mark.edchl-mark[data-hl-id="' + id + '"]').forEach(function (m) {
-      m.classList.toggle('edchl-has-note', has);
-    });
+    document.querySelectorAll('mark.edchl-mark[data-hl-id="' + id + '"]').forEach(function (m) { m.classList.toggle('edchl-has-note', has); });
   }
-  function byId(id) { for (var i = 0; i < highlights.length; i++) if (highlights[i].id === id) return highlights[i]; return null; }
+
+  /* ---------------- glossário (re-render com pesquisa) ---------------- */
+  function watchGlossary() {
+    var gl = document.querySelector('#glossary-list');
+    if (!gl || !window.MutationObserver) return;
+    glossObserver = new MutationObserver(function () { applySection('glossario'); });
+    glossObserver.observe(gl, { childList: true, subtree: true });
+  }
 
   /* ---------------- seleção → highlight ---------------- */
   function onSelectEnd() {
     setTimeout(function () {
       var sel = window.getSelection();
       if (!sel || sel.isCollapsed || sel.rangeCount === 0) { hideFloatBtn(); return; }
-      var range = sel.getRangeAt(0);
-      var block = closestBlock(range.commonAncestorContainer);
-      if (!block || !root.contains(block)) { hideFloatBtn(); return; }
-      if (markerMode) { createHighlight(sel, range, block); }
-      else { showFloatBtn(range); }
+      var range = sel.getRangeAt(0), r = resolve(range.commonAncestorContainer);
+      if (!r) { hideFloatBtn(); return; }
+      if (markerMode) createHighlight(sel, range, r);
+      else showFloatBtn(range);
     }, 10);
   }
-  function createHighlight(sel, range, block) {
-    var bl = blocks(), idx = bl.indexOf(block);
-    var start = textOffset(block, range.startContainer, range.startOffset);
-    var end = textOffset(block, range.endContainer, range.endOffset);
+  function createHighlight(sel, range, r) {
+    var start = textOffset(r.block, range.startContainer, range.startOffset);
+    var end = textOffset(r.block, range.endContainer, range.endOffset);
     if (end <= start) { sel.removeAllRanges(); return; }
-    var h = { id: genId(), block: idx, start: start, end: end, color: currentColor, note: null };
+    var h = { id: genId(), sec: r.cfg.key, sig: blockSig(r.block), start: start, end: end, color: currentColor, note: null };
     highlights.push(h); saveStore();
-    wrap(block, h);
-    sel.removeAllRanges();
-    hideFloatBtn();
+    wrap(r.block, h);
+    sel.removeAllRanges(); hideFloatBtn();
     openEditor(h.id);
   }
 
@@ -199,8 +226,8 @@
       markerMode = true; updateToggleUI();
       var sel = window.getSelection();
       if (!sel || sel.isCollapsed) return;
-      var range = sel.getRangeAt(0), block = closestBlock(range.commonAncestorContainer);
-      if (block) createHighlight(sel, range, block);
+      var range = sel.getRangeAt(0), r = resolve(range.commonAncestorContainer);
+      if (r) createHighlight(sel, range, r);
     });
     document.body.appendChild(floatBtn);
   }
@@ -212,9 +239,11 @@
   }
   function hideFloatBtn() { if (floatBtn) floatBtn.style.display = 'none'; }
 
-  /* ---------------- toolbar ---------------- */
-  function buildToolbar() {
-    var wrapEl = root.querySelector('.content-wrap') || root;
+  /* ---------------- toolbar (uma por secção) ---------------- */
+  function buildToolbar(cfg) {
+    var secEl = document.querySelector(cfg.sec);
+    if (!secEl) return;
+    var host = secEl.querySelector('.content-wrap') || secEl;
     var bar = document.createElement('div');
     bar.className = 'edchl-toolbar';
     var sw = COLORS.map(function (c, i) {
@@ -224,28 +253,26 @@
       '<button class="edchl-toggle" type="button">✏️ Modo marcador: <span class="edchl-state">desligado</span></button>' +
       '<span class="edchl-swatches">' + sw + '</span>' +
       '<span class="edchl-hint">Seleciona texto para marcar. Cada marca abre uma nota (caneta ou texto).</span>';
-    var firstTitle = wrapEl.querySelector('.section-subtitle') || wrapEl.querySelector('.section-title');
-    if (firstTitle && firstTitle.nextSibling) wrapEl.insertBefore(bar, firstTitle.nextSibling);
-    else wrapEl.insertBefore(bar, wrapEl.firstChild);
+    var anchor = host.querySelector('.section-subtitle') || host.querySelector('.section-title');
+    if (anchor && anchor.nextSibling) host.insertBefore(bar, anchor.nextSibling);
+    else host.insertBefore(bar, host.firstChild);
 
-    bar.querySelector('.edchl-toggle').addEventListener('click', function () {
-      markerMode = !markerMode; updateToggleUI();
-    });
+    bar.querySelector('.edchl-toggle').addEventListener('click', function () { markerMode = !markerMode; updateToggleUI(); });
     bar.querySelectorAll('.edchl-swatch').forEach(function (s) {
-      s.addEventListener('click', function () {
-        currentColor = s.dataset.c;
-        bar.querySelectorAll('.edchl-swatch').forEach(function (x) { x.classList.remove('sel'); });
-        s.classList.add('sel');
-      });
+      s.addEventListener('click', function () { currentColor = s.dataset.c; syncSwatches(); });
     });
-    toolbarEl = bar;
+    toolbars.push(bar);
   }
-  var toolbarEl;
   function updateToggleUI() {
-    if (!toolbarEl) return;
-    var t = toolbarEl.querySelector('.edchl-toggle');
-    t.classList.toggle('on', markerMode);
-    toolbarEl.querySelector('.edchl-state').textContent = markerMode ? 'LIGADO' : 'desligado';
+    toolbars.forEach(function (bar) {
+      bar.querySelector('.edchl-toggle').classList.toggle('on', markerMode);
+      bar.querySelector('.edchl-state').textContent = markerMode ? 'LIGADO' : 'desligado';
+    });
+  }
+  function syncSwatches() {
+    toolbars.forEach(function (bar) {
+      bar.querySelectorAll('.edchl-swatch').forEach(function (x) { x.classList.toggle('sel', x.dataset.c === currentColor); });
+    });
   }
 
   /* ---------------- editor de nota (desenho / texto) ---------------- */
@@ -281,29 +308,23 @@
       '</div>';
     document.body.appendChild(overlay);
     overlay.addEventListener('click', function (e) { if (e.target === overlay) closeEditor(); });
-    overlay.querySelectorAll('.edchl-tab').forEach(function (tb) {
-      tb.addEventListener('click', function () { selectPane(tb.dataset.pane); });
-    });
+    overlay.querySelectorAll('.edchl-tab').forEach(function (tb) { tb.addEventListener('click', function () { selectPane(tb.dataset.pane); }); });
     overlay.querySelector('[data-act="cancel"]').addEventListener('click', closeEditor);
   }
   function selectPane(name) {
     overlay.querySelectorAll('.edchl-tab').forEach(function (t) { t.classList.toggle('sel', t.dataset.pane === name); });
     overlay.querySelectorAll('.edchl-pane').forEach(function (p) { p.classList.toggle('sel', p.dataset.pane === name); });
   }
-
   function openEditor(id) {
     ensureOverlay();
-    var h = byId(id);
-    var ta = overlay.querySelector('.edchl-ta');
+    var h = byId(id), ta = overlay.querySelector('.edchl-ta');
     ta.value = (h && h.note && h.note.type === 'text') ? h.note.text : '';
     selectPane(h && h.note && h.note.type === 'text' ? 'text' : 'draw');
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
-    var svg = overlay.querySelector('.edchl-canvas');
-    drawPad = makeDrawPad(svg, h && h.note && h.note.type === 'draw' ? h.note.svg : null);
+    drawPad = makeDrawPad(overlay.querySelector('.edchl-canvas'), h && h.note && h.note.type === 'draw' ? h.note.svg : null);
     setupTools();
-    var saveBtn = overlay.querySelector('[data-act="save"]');
-    saveBtn.onclick = function () { saveNote(id); };
+    overlay.querySelector('[data-act="save"]').onclick = function () { saveNote(id); };
   }
   function setupTools() {
     overlay.querySelectorAll('.edchl-pen').forEach(function (p) {
@@ -340,11 +361,7 @@
   function openPopover(id, markEl) {
     hideFloatBtn();
     var h = byId(id); if (!h) return;
-    if (!pop) {
-      pop = document.createElement('div');
-      pop.className = 'edchl-pop';
-      document.body.appendChild(pop);
-    }
+    if (!pop) { pop = document.createElement('div'); pop.className = 'edchl-pop'; document.body.appendChild(pop); }
     var view;
     if (h.note && h.note.type === 'draw') view = '<div class="note-view">' + h.note.svg + '</div>';
     else if (h.note && h.note.type === 'text') view = '<div class="note-view"><div class="txt">' + esc(h.note.text) + '</div></div>';
@@ -357,8 +374,7 @@
       '</div>';
     var r = markEl.getBoundingClientRect();
     pop.style.display = 'block';
-    var left = window.scrollX + r.left;
-    var maxLeft = window.scrollX + document.documentElement.clientWidth - 272;
+    var left = window.scrollX + r.left, maxLeft = window.scrollX + document.documentElement.clientWidth - 272;
     pop.style.left = Math.max(8, Math.min(left, maxLeft)) + 'px';
     pop.style.top = (window.scrollY + r.bottom + 8) + 'px';
     pop.querySelector('[data-a="edit"]').onclick = function () { hidePopover(); openEditor(id); };
@@ -391,24 +407,23 @@
         svg.appendChild(np); stack.push(np);
       });
     }
-    var color = '#1a1a1a', width = 3, drawing = false, pts = [], cur = null;
+    var color = '#1a1a1a', width = 3, drawing = false, cur = null;
     function pt(e) {
       var rect = svg.getBoundingClientRect();
       return [Math.round((e.clientX - rect.left) * 10) / 10, Math.round((e.clientY - rect.top) * 10) / 10];
     }
     function down(e) {
-      e.preventDefault(); drawing = true; pts = [pt(e)];
+      e.preventDefault(); drawing = true; var p = pt(e);
       var wv = width * (e.pressure && e.pointerType === 'pen' ? (0.6 + e.pressure) : 1);
       cur = document.createElementNS(NS, 'path');
       cur.setAttribute('stroke', color); cur.setAttribute('stroke-width', (Math.round(wv * 10) / 10));
       cur.setAttribute('fill', 'none'); cur.setAttribute('stroke-linecap', 'round'); cur.setAttribute('stroke-linejoin', 'round');
-      cur.setAttribute('d', 'M' + pts[0][0] + ' ' + pts[0][1]);
+      cur.setAttribute('d', 'M' + p[0] + ' ' + p[1]);
       svg.appendChild(cur); stack.push(cur);
     }
     function move(e) {
       if (!drawing) return; e.preventDefault();
-      var p = pt(e); pts.push(p);
-      cur.setAttribute('d', cur.getAttribute('d') + ' L' + p[0] + ' ' + p[1]);
+      var p = pt(e); cur.setAttribute('d', cur.getAttribute('d') + ' L' + p[0] + ' ' + p[1]);
     }
     function up(e) { if (drawing) { e.preventDefault(); drawing = false; cur = null; } }
     svg.addEventListener('pointerdown', down);
