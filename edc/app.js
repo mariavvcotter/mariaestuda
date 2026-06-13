@@ -911,7 +911,7 @@ renderTF();
 if (window.Account) {
   Account.init({
     section: 'edc',
-    keys: [STORE_KEY],
+    keys: [STORE_KEY, 'edc_highlights'],
     mount: '#user-slot',
     label: 'EDC · Módulo II',
     accent: getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#4A9B8E',
