@@ -102,45 +102,50 @@
   }
   .card:hover { transform: translateY(-4px); box-shadow: 0 10px 34px rgba(44,32,21,0.14); }
 
-  /* PHOTO — imagem transparente a "flutuar" sobre painel pastel, estilo PDF */
-  .card-photo {
+  /* HERO — foto ao lado do nome, estilo PDF */
+  .card-hero {
     position: relative;
-    height: 270px;
     display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    padding: 26px 24px 22px;
     overflow: hidden;
   }
-  .card-photo::before {           /* glow suave por trás do copo */
+  .card-hero::before {            /* círculo decorativo esbatido no canto */
     content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(circle at 50% 42%, rgba(255,255,255,0.65) 0%, transparent 58%);
-  }
-  .card-photo .ghost {            /* palavra "smoothie" esbatida atrás, como no PDF */
-    position: absolute;
-    top: 14px; left: 0; right: 0;
-    text-align: center;
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-weight: 700;
-    font-size: 46px;
-    letter-spacing: 1px;
-    color: #fff;
-    opacity: 0.55;
-    user-select: none;
+    position: absolute; right: -50px; top: -50px;
+    width: 170px; height: 170px; border-radius: 50%;
+    background: rgba(255,255,255,0.45);
     pointer-events: none;
   }
-  .card-photo img {
+  .card-hero .ghost {             /* palavra "smoothie" esbatida ao fundo, como no PDF */
+    position: absolute;
+    bottom: 4px; right: 18px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic; font-weight: 900;
+    font-size: 30px; letter-spacing: 1px;
+    color: #fff; opacity: 0.5;
+    user-select: none; pointer-events: none;
+  }
+  .hero-img {
     position: relative;
-    max-height: 250px;
-    max-width: 82%;
+    width: 116px; height: 150px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-img::after {              /* sombra/elipse de apoio no chão */
+    content: '';
+    position: absolute; bottom: 6px; left: 14%; right: 14%; height: 14px;
+    background: radial-gradient(ellipse at center, rgba(44,32,21,0.20), transparent 72%);
+  }
+  .hero-img img {
+    position: relative;
+    max-height: 150px; max-width: 100%;
     object-fit: contain;
-    filter: drop-shadow(0 14px 18px rgba(44,32,21,0.22));
+    filter: drop-shadow(0 10px 14px rgba(44,32,21,0.22));
     transition: transform .3s ease;
   }
-  .card:hover .card-photo img { transform: translateY(-4px) scale(1.03); }
-
-  .card-header { padding: 22px 28px 18px; }
+  .card:hover .hero-img img { transform: translateY(-3px) scale(1.05) rotate(-1.5deg); }
+  .hero-text { position: relative; flex: 1; min-width: 0; }
   .card-tag {
     display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.2em;
     text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
@@ -148,7 +153,7 @@
   }
   .card-name {
     font-family: 'Playfair Display', serif; font-style: italic;
-    font-size: 30px; font-weight: 700; line-height: 1.1;
+    font-size: 25px; font-weight: 700; line-height: 1.12;
   }
   .card-name span {
     display: block; font-family: 'DM Sans', sans-serif; font-style: normal;
@@ -351,6 +356,7 @@ function esc(s) {
 function buildCard(s, i) {
   const card = document.createElement('article');
   card.className = 'card';
+  card.style.borderTop = '4px solid ' + s.color;
   const adjs = s.adjs.map(a =>
     `<span class="adj" style="color:${s.color};border-color:${s.color}">${a}</span>`).join('');
   const ings = s.ingredients.map(ing => `<li>${esc(ing)}</li>`).join('');
@@ -360,14 +366,14 @@ function buildCard(s, i) {
        <div class="step-text"><span class="step-title">${esc(st.title)}</span>${esc(st.text)}</div>
      </div>`).join('');
   card.innerHTML = `
-    <div class="card-photo" style="background:${s.bg}">
+    <div class="card-hero" style="background:linear-gradient(135deg, #ffffff 0%, ${s.bg} 70%)">
       <span class="ghost">smoothie</span>
-      <img src="${s.img}" alt="${esc(s.name)}" loading="lazy">
-    </div>
-    <div class="card-header">
-      <span class="card-tag" style="background:${s.color}">${esc(s.tag)}</span>
-      <h2 class="card-name" style="color:${s.color}">${esc(s.name)}<span>${esc(s.sub)}</span></h2>
-      <div class="adjectives">${adjs}</div>
+      <div class="hero-img"><img src="${s.img}" alt="${esc(s.name)}" loading="lazy"></div>
+      <div class="hero-text">
+        <span class="card-tag" style="background:${s.color}">${esc(s.tag)}</span>
+        <h2 class="card-name" style="color:${s.color}">${esc(s.name)}<span>${esc(s.sub)}</span></h2>
+        <div class="adjectives">${adjs}</div>
+      </div>
     </div>
     <div class="card-divider"></div>
     <div style="background:${s.bg};display:flex;align-items:center;justify-content:space-between;padding:14px 28px;">
