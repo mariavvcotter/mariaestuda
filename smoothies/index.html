@@ -242,6 +242,20 @@
   }
   .cmt-del:hover { opacity: 1; text-decoration: underline; }
   .cmt-del:disabled { opacity: 0.4; cursor: default; }
+  .reactions { display: flex; gap: 6px; margin-top: 8px; }
+  .rx {
+    display: inline-flex; align-items: center; gap: 5px;
+    border: 1px solid rgba(44,32,21,0.16); background: #fff; border-radius: 999px;
+    padding: 3px 10px; font: inherit; font-size: 13px; line-height: 1; cursor: pointer;
+    transition: border-color .15s, background .15s, transform .12s;
+  }
+  .rx span { font-weight: 600; font-size: 11.5px; color: #7A6A5A; }
+  .rx:not(.own):hover { transform: translateY(-1px); border-color: rgba(44,32,21,0.4); }
+  .rx.own { cursor: default; opacity: 0.6; }
+  .rx.active[data-kind="like"]    { background: #e9f6ec; border-color: #4A7C59; }
+  .rx.active[data-kind="dislike"] { background: #fdeceb; border-color: #C0392B; }
+  .rx.active[data-kind="heart"]   { background: #fdeaf1; border-color: #C0506F; }
+  .rx.active span { color: var(--dark); }
   .comment-body { font-size: 13.5px; line-height: 1.5; font-weight: 300; white-space: pre-wrap; word-wrap: break-word; }
   .cmt-empty { text-align: center; color: #b3a896; font-size: 13px; font-weight: 300; padding: 14px; }
 
@@ -437,7 +451,9 @@ document.querySelectorAll('.card').forEach(card => observer.observe(card));
   var KEY = CFG.SUPABASE_ANON_KEY || '';
   var REMOTE = !!(URL && KEY);
   var EP = URL + '/rest/v1/smoothie_comments';
+  var RX = URL + '/rest/v1/smoothie_reactions';
   var H = { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY, 'Content-Type': 'application/json' };
+  var KINDS = [['like','👍'], ['dislike','👎'], ['heart','❤️']];
 
   function esc(s) {
     return String(s).replace(/[&<>"]/g, function (c) {
@@ -460,7 +476,20 @@ document.querySelectorAll('.card').forEach(card => observer.observe(card));
     return (window.Account && Account.user) ? Account.user() : null;
   }
 
-  function commentHTML(c, accent, own) {
+  function reactionsHTML(c, own, rx) {
+    rx = rx || { like: 0, dislike: 0, heart: 0, mine: null };
+    var title = own ? 'Não podes reagir ao teu comentário' : '';
+    var btns = KINDS.map(function (k) {
+      var active = rx.mine === k[0] ? ' active' : '';
+      return '<button class="rx' + active + (own ? ' own' : '') + '" type="button"' +
+        ' data-id="' + esc(c.id) + '" data-kind="' + k[0] + '"' +
+        (own ? ' disabled' : '') + (title ? ' title="' + title + '"' : '') + '>' +
+        k[1] + ' <span>' + (rx[k[0]] || 0) + '</span></button>';
+    }).join('');
+    return '<div class="reactions">' + btns + '</div>';
+  }
+
+  function commentHTML(c, accent, own, rx) {
     var initial = (c.user_name || '?').trim().charAt(0).toUpperCase();
     var del = own ? '<button class="cmt-del" data-id="' + esc(c.id) + '" title="Apagar o teu comentário">apagar</button>' : '';
     return '<div class="comment">' +
@@ -469,17 +498,29 @@ document.querySelectorAll('.card').forEach(card => observer.observe(card));
         '<div class="comment-head"><span class="comment-name">' + esc(c.user_name) + '</span>' +
         '<span class="comment-time">' + esc(timeAgo(c.created_at)) + '</span>' + del + '</div>' +
         '<div class="comment-body">' + esc(c.body) + '</div>' +
+        reactionsHTML(c, own, rx) +
       '</div></div>';
   }
 
-  function renderList(t, rows) {
+  function aggregateReactions(rx) {
+    var u = currentUser(), ul = u ? u.toLowerCase() : null, m = {};
+    (rx || []).forEach(function (x) {
+      var e = m[x.comment_id] || (m[x.comment_id] = { like: 0, dislike: 0, heart: 0, mine: null });
+      if (e[x.kind] != null) e[x.kind]++;
+      if (ul && String(x.user_name).toLowerCase() === ul) e.mine = x.kind;
+    });
+    return m;
+  }
+
+  function renderList(t, rows, rmap) {
+    rmap = rmap || {};
     if (!rows || !rows.length) {
       t.listEl.innerHTML = '<p class="cmt-empty">Ainda não há comentários. Sê o primeiro! 🥤</p>';
     } else {
       var u = currentUser();
       t.listEl.innerHTML = rows.map(function (c) {
         var own = !!(u && c.user_name && u.toLowerCase() === String(c.user_name).toLowerCase());
-        return commentHTML(c, t.accent, own);
+        return commentHTML(c, t.accent, own, rmap[c.id]);
       }).join('');
     }
     if (t.countEl) t.countEl.textContent = rows && rows.length ? '(' + rows.length + ')' : '';
@@ -545,8 +586,38 @@ document.querySelectorAll('.card').forEach(card => observer.observe(card));
               '&select=id,user_name,body,created_at&order=created_at.desc&limit=200';
     fetch(url, { headers: H })
       .then(function (r) { if (!r.ok) throw new Error('rede'); return r.json(); })
-      .then(function (rows) { renderList(t, rows); })
+      .then(function (rows) {
+        if (!rows.length) { renderList(t, rows, {}); return; }
+        var ids = rows.map(function (c) { return c.id; });
+        return fetch(RX + '?comment_id=in.(' + ids.join(',') + ')&select=comment_id,user_name,kind', { headers: H })
+          .then(function (r) { return r.ok ? r.json() : []; })
+          .catch(function () { return []; })
+          .then(function (rx) { renderList(t, rows, aggregateReactions(rx)); });
+      })
       .catch(function () { t.listEl.innerHTML = '<p class="cmt-empty">Não foi possível carregar os comentários.</p>'; });
+  }
+
+  // mine = a reação atual do utilizador neste comentário (ou null)
+  function react(t, commentId, kind, mine) {
+    var user = currentUser();
+    if (!user) { if (window.Account && Account.open) Account.open(); return; }
+    var req;
+    if (mine === kind) {
+      // clicou na reação que já tinha → remover
+      req = fetch(RX + '?comment_id=eq.' + encodeURIComponent(commentId) +
+                  '&user_name=eq.' + encodeURIComponent(user), {
+        method: 'DELETE', headers: Object.assign({ 'Prefer': 'return=minimal' }, H)
+      });
+    } else {
+      // nova reação ou troca de tipo → upsert (uma por utilizador/comentário)
+      req = fetch(RX + '?on_conflict=comment_id,user_name', {
+        method: 'POST',
+        headers: Object.assign({ 'Prefer': 'resolution=merge-duplicates,return=minimal' }, H),
+        body: JSON.stringify({ comment_id: commentId, user_name: user, kind: kind })
+      });
+    }
+    req.then(function (r) { if (!r.ok) throw new Error('rede'); load(t); })
+       .catch(function () { alert('Não foi possível reagir. Tenta novamente.'); });
   }
 
   function start() {
@@ -560,7 +631,13 @@ document.querySelectorAll('.card').forEach(card => observer.observe(card));
       threads[t.key] = t;
       list.addEventListener('click', function (e) {
         var del = e.target.closest('.cmt-del');
-        if (del) deleteComment(t, del.dataset.id, del);
+        if (del) { deleteComment(t, del.dataset.id, del); return; }
+        var rxb = e.target.closest('.rx');
+        if (rxb && !rxb.disabled && !rxb.classList.contains('own')) {
+          var bar = rxb.closest('.reactions');
+          var active = bar ? bar.querySelector('.rx.active') : null;
+          react(t, rxb.dataset.id, rxb.dataset.kind, active ? active.dataset.kind : null);
+        }
       });
       renderBox(t);
       load(t);

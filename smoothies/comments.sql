@@ -44,3 +44,41 @@ grant select, insert, delete on public.smoothie_comments to anon;
 
 create index if not exists smoothie_comments_created_idx
   on public.smoothie_comments (created_at desc);
+
+-- ============================================================
+-- Reações aos comentários (👍 like / 👎 dislike / ❤️ coração)
+-- Uma reação por utilizador por comentário (pode trocar de tipo).
+-- O cliente impede reagir ao próprio comentário; ao nível da BD,
+-- mesmo modelo "sem segurança real" do resto do site.
+-- ============================================================
+create table if not exists public.smoothie_reactions (
+  id          bigint generated always as identity primary key,
+  comment_id  bigint not null references public.smoothie_comments(id) on delete cascade,
+  user_name   text not null,
+  kind        text not null check (kind in ('like','dislike','heart')),
+  created_at  timestamptz not null default now(),
+  unique (comment_id, user_name)
+);
+
+alter table public.smoothie_reactions enable row level security;
+
+drop policy if exists "anon read reactions" on public.smoothie_reactions;
+create policy "anon read reactions" on public.smoothie_reactions
+  for select to anon using (true);
+
+drop policy if exists "anon insert reactions" on public.smoothie_reactions;
+create policy "anon insert reactions" on public.smoothie_reactions
+  for insert to anon with check (char_length(user_name) between 1 and 40);
+
+drop policy if exists "anon update reactions" on public.smoothie_reactions;
+create policy "anon update reactions" on public.smoothie_reactions
+  for update to anon using (true) with check (true);
+
+drop policy if exists "anon delete reactions" on public.smoothie_reactions;
+create policy "anon delete reactions" on public.smoothie_reactions
+  for delete to anon using (true);
+
+grant select, insert, update, delete on public.smoothie_reactions to anon;
+
+create index if not exists smoothie_reactions_comment_idx
+  on public.smoothie_reactions (comment_id);
