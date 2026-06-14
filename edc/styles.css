@@ -245,6 +245,14 @@ nav {
 .story-box em { font-style: italic; }
 .story-box .story-label { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; display: block; }
 .blog-meta { display: flex; flex-wrap: wrap; gap: 1rem; font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; }
+.blog-posts-nav { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+.blog-post-chip { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.55rem 0.9rem; border: 1px solid var(--line); background: var(--white); color: var(--muted); cursor: pointer; transition: background 0.15s, color 0.15s; }
+.blog-post-chip:hover { color: var(--black); border-color: var(--black); }
+.blog-post-chip.active { background: var(--black); color: var(--white); border-color: var(--black); }
+.blog-post { display: none; }
+.blog-post.active { display: block; }
+.story-box ul, .story-box ol { margin: 0 0 1rem 1.2rem; font-size: 0.92rem; }
+.story-box li { margin-bottom: 0.5rem; line-height: 1.7; }
 .highlight-box { background: var(--black); color: var(--white); padding: 1.5rem; margin: 1.5rem 0; font-family: 'Instrument Serif', serif; font-size: 1.15rem; line-height: 1.4; }
 
 /* ===== GOSSIP ===== */

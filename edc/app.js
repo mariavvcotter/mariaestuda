@@ -231,6 +231,12 @@ $$('.story-tab').forEach(tab => tab.addEventListener('click', () => {
   tab.classList.add('active');
   $('#tab-' + tab.dataset.tab).classList.add('active');
 }));
+$$('.blog-post-chip').forEach(chip => chip.addEventListener('click', () => {
+  $$('.blog-post-chip').forEach(c => c.classList.remove('active'));
+  $$('.blog-post').forEach(p => p.classList.remove('active'));
+  chip.classList.add('active');
+  $('#post-' + chip.dataset.post).classList.add('active');
+}));
 $$('.inner-tab').forEach(tab => tab.addEventListener('click', () => {
   $$('.inner-tab').forEach(t => t.classList.remove('active'));
   $$('.inner-tab-content').forEach(c => c.style.display = 'none');
