@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smoothies — Só os Melhores</title>
+<link rel="stylesheet" href="/account/account.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --cream: #FDF6EC;
+    --dark: #2C2015;
+    --c-green:   #4A7C59;
+    --c-choco:   #6B3A2A;
+    --c-berry:   #7B4A8A;
+    --c-bunny:   #C97B2A;
+    --c-detox:   #3A6B4A;
+    --c-sleepy:  #A07850;
+    --c-pinky:   #C05878;
+    --c-summer:  #E05A3A;
+    --bg-green:  #EDF7F0;
+    --bg-choco:  #F7EDE8;
+    --bg-berry:  #F3EAF7;
+    --bg-bunny:  #FBF3E3;
+    --bg-detox:  #E8F5EC;
+    --bg-sleepy: #F5EFE6;
+    --bg-pinky:  #FCE8EF;
+    --bg-summer: #FEF0EB;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .home-link {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    color: var(--c-pinky);
+    opacity: 0.85;
+  }
+  .home-link:hover { opacity: 1; }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 50px 24px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(74,124,89,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 30%, rgba(192,88,120,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--c-pinky);
+    margin-bottom: 16px;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 10vw, 100px);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--dark);
+    letter-spacing: -1px;
+  }
+  .hero-sub {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(20px, 4vw, 32px);
+    color: var(--c-pinky);
+    margin-top: 8px;
+  }
+  .hero-desc {
+    margin-top: 24px;
+    font-size: 15px;
+    font-weight: 300;
+    color: #7A6A5A;
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+  }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* CARD */
+  .card {
+    border-radius: 20px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(44,32,21,0.07);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  .card.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.25s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(44,32,21,0.13);
+  }
+  .card-photo {
+    height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 22px;
+  }
+  .card-photo img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 16px rgba(44,32,21,0.18));
+  }
+  .card-header {
+    padding: 24px 28px 20px;
+  }
+  .card-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+    color: #fff;
+  }
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--dark);
+  }
+  .card-name span {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 2px;
+    opacity: 0.5;
+  }
+  .adjectives {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 14px 0;
+  }
+  .adj {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1.5px solid currentColor;
+    opacity: 0.75;
+  }
+  .cal-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .cal-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+  }
+  .cal-unit { font-size: 12px; font-weight: 400; opacity: 0.6; }
+  .card-divider {
+    height: 1px;
+    margin: 0 28px;
+    opacity: 0.12;
+    background: var(--dark);
+  }
+  .section-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 16px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dark);
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+  .section-toggle:hover { opacity: 1; }
+  .section-toggle .arrow { transition: transform 0.3s ease; font-size: 16px; }
+  .section-toggle.open .arrow { transform: rotate(180deg); }
+  .section-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+  .section-body.open { max-height: 600px; }
+  .ingredients-list {
+    padding: 0 28px 20px;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .ingredients-list li {
+    font-size: 13px;
+    font-weight: 400;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: var(--cream);
+    color: var(--dark);
+  }
+  .prep-steps { padding: 0 28px 24px; }
+  .prep-step { display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start; }
+  .step-num {
+    min-width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-text { font-size: 13.5px; line-height: 1.6; font-weight: 300; padding-top: 3px; }
+  .step-title {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 2px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.6;
+  }
+
+  /* COMMENTS */
+  .comments {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 20px 24px 90px;
+  }
+  .comments-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 34px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--dark);
+  }
+  .comments-sub {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 300;
+    color: #7A6A5A;
+    margin: 8px 0 28px;
+  }
+  .comment-box {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(44,32,21,0.07);
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+  .comment-box textarea {
+    width: 100%;
+    border: 1.5px solid #ece4d8;
+    border-radius: 12px;
+    background: #fafafa;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 70px;
+    transition: border-color .15s;
+  }
+  .comment-box textarea:focus { outline: none; border-color: var(--c-pinky); background: #fff; }
+  .comment-box-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    gap: 10px;
+  }
+  .comment-box-as { font-size: 13px; color: #7A6A5A; }
+  .comment-box-as b { color: var(--c-pinky); }
+  .btn-pink {
+    border: none;
+    cursor: pointer;
+    background: var(--c-pinky);
+    color: #fff;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 999px;
+    transition: filter .15s, transform .12s;
+  }
+  .btn-pink:hover { filter: brightness(1.07); transform: translateY(-1px); }
+  .btn-pink:disabled { opacity: .55; cursor: default; transform: none; }
+  .login-prompt {
+    text-align: center;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(44,32,21,0.07);
+    padding: 26px 20px;
+    margin-bottom: 28px;
+  }
+  .login-prompt p { font-size: 14px; color: #7A6A5A; margin-bottom: 14px; }
+  .comment {
+    display: flex;
+    gap: 14px;
+    padding: 16px 4px;
+    border-bottom: 1px solid rgba(44,32,21,0.08);
+  }
+  .comment:last-child { border-bottom: none; }
+  .comment-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #fff;
+    font-size: 16px;
+    background: var(--c-pinky);
+  }
+  .comment-main { flex: 1; min-width: 0; }
+  .comment-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .comment-name { font-weight: 600; font-size: 14px; }
+  .comment-time { font-size: 12px; color: #aa9; }
+  .comment-body { font-size: 14px; line-height: 1.55; font-weight: 300; white-space: pre-wrap; word-wrap: break-word; }
+  .comments-empty { text-align: center; color: #aa9; font-size: 14px; font-weight: 300; padding: 20px; }
+
+  footer {
+    text-align: center;
+    padding: 32px;
+    font-size: 12px;
+    opacity: 0.4;
+    font-weight: 300;
+  }
+  @media (max-width: 420px) {
+    .grid { grid-template-columns: 1fr; padding: 0 12px 60px; }
+    .hero { padding: 30px 16px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="home-link" href="/">← mariaestuda</a>
+  <span id="user-slot"></span>
+</div>
+
+<header class="hero">
+  <p class="hero-eyebrow">Receituário pessoal</p>
+  <h1 class="hero-title">Smoothies</h1>
+  <p class="hero-sub">só os melhores</p>
+  <p class="hero-desc">8 receitas com ingredientes simples, calorias calculadas e modo de preparação passo a passo.</p>
+</header>
+
+<main class="grid" id="grid"></main>
+
+<section class="comments" id="comentarios">
+  <h2 class="comments-title">Comentários</h2>
+  <p class="comments-sub">Inicia sessão para deixar a tua opinião sobre as receitas.</p>
+  <div id="comment-box"></div>
+  <div id="comment-list"><p class="comments-empty">A carregar comentários…</p></div>
+</section>
+
+<footer>feito com fruta fresca e muita banana congelada</footer>
+
+<script>
+const smoothies = [
+  { name: "Green Power", sub: "smoothie", tag: "verde", color: "var(--c-green)", bg: "var(--bg-green)",
+    img: "images/green-power.png",
+    adjs: ["energizante", "anti-inflamatório", "refrescante"], calories: 180,
+    ingredients: ["Espinafres", "Pepino", "Banana", "Leite de Aveia", "Gengibre em Pó", "Cúrcuma", "Mel"],
+    steps: [
+      { title: "Preparar", text: "Lava os espinafres e o pepino. Descasca a banana e corta em rodelas." },
+      { title: "Montar", text: "Coloca o leite de aveia primeiro, depois o pepino, espinafres, banana, cúrcuma, gengibre e mel." },
+      { title: "Triturar", text: "Tritura 60–90 segundos em potência máxima até ficar completamente homogéneo." },
+      { title: "Servir", text: "Serve frio imediatamente. Podes adicionar gelo se preferires mais fresco." }
+    ] },
+  { name: "Nauthy Choco", sub: "smoothie", tag: "chocolate", color: "var(--c-choco)", bg: "var(--bg-choco)",
+    img: "images/nauthy-choco.png",
+    adjs: ["cremoso", "saciante", "nutritivo"], calories: 380,
+    ingredients: ["Banana", "Cacau em pó", "Manteiga de amendoim", "Kefir", "Leite de Aveia", "Canela", "Baunilha"],
+    steps: [
+      { title: "Demolhar", text: "Opcional: deixa a banana de molho no leite de aveia 5 minutos para suavizar." },
+      { title: "Montar", text: "Coloca o leite de aveia, kefir, banana, cacau, manteiga de amendoim, canela e baunilha." },
+      { title: "Triturar", text: "Tritura 90 segundos. O cacau precisa de tempo para se integrar bem." },
+      { title: "Provar", text: "Ajusta o cacau ou mel a gosto. Serve imediatamente." }
+    ] },
+  { name: "Berry Boost", sub: "smoothie", tag: "bagas", color: "var(--c-berry)", bg: "var(--bg-berry)",
+    img: "images/berry-boost.png",
+    adjs: ["refrescante", "antioxidante", "cremoso"], calories: 210,
+    ingredients: ["Frutos Vermelhos congelados", "Banana", "Kefir", "Mel", "Baunilha"],
+    steps: [
+      { title: "Preparar", text: "Os frutos vermelhos vão direto do congelador — não descongeles." },
+      { title: "Montar", text: "Coloca o kefir, banana, frutos vermelhos congelados, mel e baunilha na liquidificadora." },
+      { title: "Triturar", text: "Tritura 60 segundos. A cor deve ficar uniformemente roxa." },
+      { title: "Servir", text: "Serve imediatamente num copo frio." }
+    ] },
+  { name: "Bunny Monkey", sub: "smoothie", tag: "cenoura", color: "var(--c-bunny)", bg: "var(--bg-bunny)",
+    img: "images/bunny-monkey.png",
+    adjs: ["energizante", "anti-inflamatório", "rico"], calories: 240,
+    ingredients: ["Cenoura", "Banana", "Leite de Aveia", "Kefir", "Cúrcuma", "Gengibre", "Canela", "Mel"],
+    steps: [
+      { title: "Preparar cenoura", text: "Descasca e corta a cenoura em pedaços. Para textura mais suave, coze 2 minutos no micro-ondas." },
+      { title: "Montar", text: "Coloca o leite de aveia, kefir, cenoura, banana, cúrcuma, gengibre, canela e mel." },
+      { title: "Triturar", text: "Tritura 90 segundos em potência máxima. A cenoura crua é densa." },
+      { title: "Ajustar", text: "Prova e ajusta o mel. Se estiver espesso, adiciona leite de aveia." }
+    ] },
+  { name: "Detox Verde", sub: "smoothie", tag: "detox", color: "var(--c-detox)", bg: "var(--bg-detox)",
+    img: "images/detox-verde.png",
+    adjs: ["purificante", "leve", "intestinal"], calories: 160,
+    ingredients: ["Espinafres", "Pepino", "Cenoura", "Leite de Aveia", "Gengibre em Pó", "Limão", "Mel"],
+    steps: [
+      { title: "Preparar", text: "Lava os vegetais. Corta o pepino e a cenoura em pedaços pequenos." },
+      { title: "Montar", text: "Coloca o leite de aveia primeiro. Adiciona todos os vegetais, gengibre e mel." },
+      { title: "Triturar", text: "Tritura 90 segundos. Os vegetais precisam de tempo." },
+      { title: "Limão no fim", text: "Adiciona o sumo de limão e tritura 10 segundos. Serve de imediato." }
+    ] },
+  { name: "Sleepy Bear", sub: "smoothie", tag: "aveia", color: "var(--c-sleepy)", bg: "var(--bg-sleepy)",
+    img: "images/sleepy-bear.png",
+    adjs: ["saciante", "reconfortante", "matinal"], calories: 420,
+    ingredients: ["Aveia", "Banana", "Leite de Aveia", "Canela", "Baunilha", "Mel", "Manteiga de Amendoim"],
+    steps: [
+      { title: "Demolhar", text: "Deixa a aveia de molho no leite de aveia durante 10 minutos. Faz toda a diferença na textura." },
+      { title: "Montar", text: "Adiciona a banana, manteiga de amendoim, canela, baunilha e mel." },
+      { title: "Triturar", text: "Tritura 90 segundos em potência máxima." },
+      { title: "Consistência", text: "Se estiver muito espesso, adiciona leite de aveia em fio. Serve imediatamente — a aveia engrossa." }
+    ] },
+  { name: "Pinky Oat", sub: "smoothie", tag: "aveia + bagas", color: "var(--c-pinky)", bg: "var(--bg-pinky)",
+    img: "images/pinky-oat.png",
+    adjs: ["frutado", "fresco", "leve"], calories: 285,
+    ingredients: ["Frutos Vermelhos congelados", "Banana", "Aveia", "Leite de Aveia", "Canela", "Mel", "Gengibre"],
+    steps: [
+      { title: "Sem demolhar", text: "Os frutos vermelhos congelados ajudam a triturar a aveia — não precisas de demolhar." },
+      { title: "Montar", text: "Coloca o leite de aveia primeiro, depois banana, frutos vermelhos, aveia, canela, mel e gengibre." },
+      { title: "Triturar", text: "Tritura 60–90 segundos até a cor ficar uniformemente roxa." },
+      { title: "Servir rápido", text: "Serve imediatamente. A aveia engrossa se ficares à espera." }
+    ] },
+  { name: "Colour Summer", sub: "smoothie", tag: "verão", color: "var(--c-summer)", bg: "var(--bg-summer)",
+    img: "images/colour-summer.png",
+    adjs: ["refrescante", "luminoso", "estival"], calories: 195,
+    ingredients: ["Pepino", "Banana", "Frutos Vermelhos", "Leite de Aveia", "Limão (sumo)", "Mel", "Gelo"],
+    steps: [
+      { title: "Preparar", text: "Lava o pepino e corta em pedaços. Não precisas de descascar se a casca for fina." },
+      { title: "Montar", text: "Coloca o leite de aveia, banana, pepino, frutos vermelhos, limão e mel." },
+      { title: "Triturar", text: "Tritura 60 segundos." },
+      { title: "Gelo no fim", text: "Adiciona gelo e tritura mais 10 segundos. Serve bem frio — é o sabor do verão." }
+    ] }
+];
+
+function esc(s) {
+  return String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));
+}
+
+function buildCard(s, i) {
+  const card = document.createElement('article');
+  card.className = 'card';
+  const adjs = s.adjs.map(a =>
+    `<span class="adj" style="color:${s.color};border-color:${s.color}">${a}</span>`).join('');
+  const ings = s.ingredients.map(ing => `<li>${esc(ing)}</li>`).join('');
+  const steps = s.steps.map((st, idx) =>
+    `<div class="prep-step">
+       <div class="step-num" style="background:${s.color}">${idx+1}</div>
+       <div class="step-text"><span class="step-title">${esc(st.title)}</span>${esc(st.text)}</div>
+     </div>`).join('');
+  card.innerHTML = `
+    <div class="card-photo" style="background:${s.bg}">
+      <img src="${s.img}" alt="${esc(s.name)}" loading="lazy">
+    </div>
+    <div class="card-header" style="background:${s.bg}">
+      <span class="card-tag" style="background:${s.color}">${esc(s.tag)}</span>
+      <h2 class="card-name">${esc(s.name)}<span>${esc(s.sub)}</span></h2>
+      <div class="adjectives">${adjs}</div>
+    </div>
+    <div class="card-divider"></div>
+    <div class="cal-bar" style="background:${s.bg};display:flex;align-items:center;justify-content:space-between;padding:14px 28px;">
+      <span class="cal-label">Calorias por dose</span>
+      <span class="cal-value" style="color:${s.color}">${s.calories} <span class="cal-unit">kcal</span></span>
+    </div>
+    <div class="card-divider"></div>
+    <button class="section-toggle" data-target="ing-${i}">Ingredientes <span class="arrow">⌄</span></button>
+    <div class="section-body" id="ing-${i}"><ul class="ingredients-list">${ings}</ul></div>
+    <div class="card-divider"></div>
+    <button class="section-toggle" data-target="prep-${i}">Modo de preparação <span class="arrow">⌄</span></button>
+    <div class="section-body" id="prep-${i}"><div class="prep-steps">${steps}</div></div>
+  `;
+  return card;
+}
+
+const grid = document.getElementById('grid');
+smoothies.forEach((s, i) => grid.appendChild(buildCard(s, i)));
+
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.section-toggle');
+  if (!btn) return;
+  const body = document.getElementById(btn.dataset.target);
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), 60);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.card').forEach(card => observer.observe(card));
+</script>
+
+<!-- Conta partilhada (Nome + PIN) — o mesmo login de todo o mariaestuda -->
+<script src="/account/config.js"></script>
+<script src="/account/account.js"></script>
+<script>
+  Account.init({ section: 'smoothies', keys: [], mount: '#user-slot', label: 'Smoothies', accent: '#C05878' });
+</script>
+
+<!-- Comentários (Supabase) -->
+<script>
+(function () {
+  var CFG = window.MARIAESTUDA_CONFIG || {};
+  var URL = (CFG.SUPABASE_URL || '').replace(/\/+$/, '');
+  var KEY = CFG.SUPABASE_ANON_KEY || '';
+  var REMOTE = !!(URL && KEY);
+  var ENDPOINT = URL + '/rest/v1/smoothie_comments';
+  var HEADERS = {
+    'apikey': KEY,
+    'Authorization': 'Bearer ' + KEY,
+    'Content-Type': 'application/json',
+  };
+
+  var listEl = document.getElementById('comment-list');
+  var boxEl = document.getElementById('comment-box');
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c];
+    });
+  }
+  function timeAgo(iso) {
+    var d = new Date(iso), now = new Date(), s = Math.floor((now - d) / 1000);
+    if (isNaN(s)) return '';
+    if (s < 60) return 'agora mesmo';
+    var m = Math.floor(s / 60); if (m < 60) return 'há ' + m + ' min';
+    var h = Math.floor(m / 60); if (h < 24) return 'há ' + h + 'h';
+    var dd = Math.floor(h / 24); if (dd < 30) return 'há ' + dd + (dd === 1 ? ' dia' : ' dias');
+    return d.toLocaleDateString('pt-PT');
+  }
+
+  function renderList(rows) {
+    if (!rows || !rows.length) {
+      listEl.innerHTML = '<p class="comments-empty">Ainda não há comentários. Sê o primeiro! 🥤</p>';
+      return;
+    }
+    listEl.innerHTML = rows.map(function (c) {
+      var initial = (c.user_name || '?').trim().charAt(0).toUpperCase();
+      return '<div class="comment">' +
+        '<div class="comment-avatar">' + esc(initial) + '</div>' +
+        '<div class="comment-main">' +
+          '<div class="comment-head">' +
+            '<span class="comment-name">' + esc(c.user_name) + '</span>' +
+            '<span class="comment-time">' + esc(timeAgo(c.created_at)) + '</span>' +
+          '</div>' +
+          '<div class="comment-body">' + esc(c.body) + '</div>' +
+        '</div></div>';
+    }).join('');
+  }
+
+  function loadComments() {
+    if (!REMOTE) {
+      listEl.innerHTML = '<p class="comments-empty">Comentários indisponíveis (Supabase não configurado).</p>';
+      return;
+    }
+    fetch(ENDPOINT + '?select=user_name,body,created_at&order=created_at.desc&limit=200', { headers: HEADERS })
+      .then(function (r) { if (!r.ok) throw new Error('rede'); return r.json(); })
+      .then(renderList)
+      .catch(function () {
+        listEl.innerHTML = '<p class="comments-empty">Não foi possível carregar os comentários.</p>';
+      });
+  }
+
+  function renderBox() {
+    var user = (window.Account && Account.user) ? Account.user() : null;
+    if (!REMOTE) { boxEl.innerHTML = ''; return; }
+    if (user) {
+      boxEl.innerHTML =
+        '<div class="comment-box">' +
+          '<textarea id="c-text" maxlength="2000" placeholder="Escreve um comentário…"></textarea>' +
+          '<div class="comment-box-foot">' +
+            '<span class="comment-box-as">a comentar como <b>' + esc(user) + '</b></span>' +
+            '<button class="btn-pink" id="c-send">Publicar</button>' +
+          '</div>' +
+        '</div>';
+      var ta = document.getElementById('c-text');
+      var btn = document.getElementById('c-send');
+      btn.addEventListener('click', function () {
+        var text = ta.value.trim();
+        if (!text) { ta.focus(); return; }
+        btn.disabled = true; btn.textContent = '…';
+        fetch(ENDPOINT, {
+          method: 'POST',
+          headers: Object.assign({ 'Prefer': 'return=minimal' }, HEADERS),
+          body: JSON.stringify({ smoothie: 'geral', user_name: user, body: text }),
+        }).then(function (r) {
+          if (!r.ok) throw new Error('rede');
+          ta.value = '';
+          btn.disabled = false; btn.textContent = 'Publicar';
+          loadComments();
+        }).catch(function () {
+          btn.disabled = false; btn.textContent = 'Publicar';
+          alert('Não foi possível publicar. Tenta novamente.');
+        });
+      });
+    } else {
+      boxEl.innerHTML =
+        '<div class="login-prompt">' +
+          '<p>Tens de iniciar sessão para comentar.</p>' +
+          '<button class="btn-pink" id="c-login">Entrar para comentar</button>' +
+        '</div>';
+      document.getElementById('c-login').addEventListener('click', function () {
+        if (window.Account && Account.open) Account.open();
+      });
+    }
+  }
+
+  function start() { renderBox(); loadComments(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
+})();
+</script>
+
+</body>
+</html>
