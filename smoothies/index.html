@@ -236,6 +236,12 @@
   .comment-head { display: flex; align-items: baseline; gap: 9px; margin-bottom: 3px; }
   .comment-name { font-weight: 600; font-size: 13.5px; }
   .comment-time { font-size: 11.5px; color: #b3a896; }
+  .cmt-del {
+    margin-left: auto; border: none; background: none; cursor: pointer; font: inherit;
+    font-size: 11.5px; color: #c0506f; opacity: 0.6; padding: 2px 4px; flex-shrink: 0;
+  }
+  .cmt-del:hover { opacity: 1; text-decoration: underline; }
+  .cmt-del:disabled { opacity: 0.4; cursor: default; }
   .comment-body { font-size: 13.5px; line-height: 1.5; font-weight: 300; white-space: pre-wrap; word-wrap: break-word; }
   .cmt-empty { text-align: center; color: #b3a896; font-size: 13px; font-weight: 300; padding: 14px; }
 
@@ -450,13 +456,18 @@ document.querySelectorAll('.card').forEach(card => observer.observe(card));
 
   var threads = {}; // key -> { el, accent, listEl, boxEl, countEl }
 
-  function commentHTML(c, accent) {
+  function currentUser() {
+    return (window.Account && Account.user) ? Account.user() : null;
+  }
+
+  function commentHTML(c, accent, own) {
     var initial = (c.user_name || '?').trim().charAt(0).toUpperCase();
+    var del = own ? '<button class="cmt-del" data-id="' + esc(c.id) + '" title="Apagar o teu comentário">apagar</button>' : '';
     return '<div class="comment">' +
       '<div class="comment-avatar" style="background:' + accent + '">' + esc(initial) + '</div>' +
       '<div class="comment-main">' +
         '<div class="comment-head"><span class="comment-name">' + esc(c.user_name) + '</span>' +
-        '<span class="comment-time">' + esc(timeAgo(c.created_at)) + '</span></div>' +
+        '<span class="comment-time">' + esc(timeAgo(c.created_at)) + '</span>' + del + '</div>' +
         '<div class="comment-body">' + esc(c.body) + '</div>' +
       '</div></div>';
   }
@@ -465,13 +476,32 @@ document.querySelectorAll('.card').forEach(card => observer.observe(card));
     if (!rows || !rows.length) {
       t.listEl.innerHTML = '<p class="cmt-empty">Ainda não há comentários. Sê o primeiro! 🥤</p>';
     } else {
-      t.listEl.innerHTML = rows.map(function (c) { return commentHTML(c, t.accent); }).join('');
+      var u = currentUser();
+      t.listEl.innerHTML = rows.map(function (c) {
+        var own = !!(u && c.user_name && u.toLowerCase() === String(c.user_name).toLowerCase());
+        return commentHTML(c, t.accent, own);
+      }).join('');
     }
     if (t.countEl) t.countEl.textContent = rows && rows.length ? '(' + rows.length + ')' : '';
   }
 
+  function deleteComment(t, id, btn) {
+    if (!confirm('Apagar o teu comentário?')) return;
+    if (btn) btn.disabled = true;
+    fetch(EP + '?id=eq.' + encodeURIComponent(id), {
+      method: 'DELETE',
+      headers: Object.assign({ 'Prefer': 'return=minimal' }, H)
+    }).then(function (r) {
+      if (!r.ok) throw new Error('rede');
+      load(t);
+    }).catch(function () {
+      if (btn) btn.disabled = false;
+      alert('Não foi possível apagar. Tenta novamente.');
+    });
+  }
+
   function renderBox(t) {
-    var user = (window.Account && Account.user) ? Account.user() : null;
+    var user = currentUser();
     if (!REMOTE) { t.boxEl.innerHTML = ''; return; }
     if (user) {
       t.boxEl.innerHTML =
@@ -512,7 +542,7 @@ document.querySelectorAll('.card').forEach(card => observer.observe(card));
   function load(t) {
     if (!REMOTE) { t.listEl.innerHTML = '<p class="cmt-empty">Comentários indisponíveis.</p>'; return; }
     var url = EP + '?smoothie=eq.' + encodeURIComponent(t.key) +
-              '&select=user_name,body,created_at&order=created_at.desc&limit=200';
+              '&select=id,user_name,body,created_at&order=created_at.desc&limit=200';
     fetch(url, { headers: H })
       .then(function (r) { if (!r.ok) throw new Error('rede'); return r.json(); })
       .then(function (rows) { renderList(t, rows); })
@@ -528,6 +558,10 @@ document.querySelectorAll('.card').forEach(card => observer.observe(card));
       var countEl = el.closest('.section-body').previousElementSibling.querySelector('.cmt-count');
       var t = { key: el.dataset.smoothie, accent: el.dataset.accent, el: el, boxEl: box, listEl: list, countEl: countEl };
       threads[t.key] = t;
+      list.addEventListener('click', function (e) {
+        var del = e.target.closest('.cmt-del');
+        if (del) deleteComment(t, del.dataset.id, del);
+      });
       renderBox(t);
       load(t);
     });
