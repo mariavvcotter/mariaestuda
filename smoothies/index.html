@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Smoothies — Só os Melhores</title>
 <link rel="stylesheet" href="/account/account.css">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -46,68 +46,40 @@
     margin: 0 auto;
   }
   .home-link {
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-decoration: none;
-    color: var(--c-pinky);
-    opacity: 0.85;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.06em;
+    text-decoration: none; color: var(--c-pinky); opacity: 0.85;
   }
   .home-link:hover { opacity: 1; }
 
   /* HERO */
-  .hero {
-    text-align: center;
-    padding: 50px 24px 56px;
-    position: relative;
-    overflow: hidden;
-  }
+  .hero { text-align: center; padding: 50px 24px 56px; position: relative; overflow: hidden; }
   .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
+    content: ''; position: absolute; inset: 0; pointer-events: none;
     background: radial-gradient(ellipse at 20% 50%, rgba(74,124,89,0.08) 0%, transparent 60%),
                 radial-gradient(ellipse at 80% 30%, rgba(192,88,120,0.08) 0%, transparent 60%);
-    pointer-events: none;
   }
   .hero-eyebrow {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--c-pinky);
-    margin-bottom: 16px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--c-pinky); margin-bottom: 16px;
   }
   .hero-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(52px, 10vw, 100px);
-    font-weight: 700;
-    line-height: 1;
-    color: var(--dark);
-    letter-spacing: -1px;
+    font-family: 'Playfair Display', serif; font-size: clamp(52px, 10vw, 100px);
+    font-weight: 700; line-height: 1; color: var(--dark); letter-spacing: -1px;
   }
   .hero-sub {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: clamp(20px, 4vw, 32px);
-    color: var(--c-pinky);
-    margin-top: 8px;
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: clamp(20px, 4vw, 32px); color: var(--c-pinky); margin-top: 8px;
   }
   .hero-desc {
-    margin-top: 24px;
-    font-size: 15px;
-    font-weight: 300;
-    color: #7A6A5A;
-    max-width: 420px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.7;
+    margin-top: 24px; font-size: 15px; font-weight: 300; color: #7A6A5A;
+    max-width: 440px; margin-left: auto; margin-right: auto; line-height: 1.7;
   }
 
-  /* GRID */
+  /* GRID — align-items:start evita que abrir um cartão estique os vizinhos */
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    align-items: start;
     gap: 24px;
     max-width: 1200px;
     margin: 0 auto;
@@ -116,282 +88,157 @@
 
   /* CARD */
   .card {
-    border-radius: 20px;
+    border-radius: 22px;
     overflow: hidden;
     background: #fff;
-    box-shadow: 0 2px 12px rgba(44,32,21,0.07);
+    box-shadow: 0 2px 14px rgba(44,32,21,0.08);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
     opacity: 0;
     transform: translateY(28px);
   }
   .card.visible {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: 1; transform: translateY(0);
     transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.25s ease;
   }
-  .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 32px rgba(44,32,21,0.13);
-  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 10px 34px rgba(44,32,21,0.14); }
+
+  /* PHOTO — imagem transparente a "flutuar" sobre painel pastel, estilo PDF */
   .card-photo {
-    height: 240px;
+    position: relative;
+    height: 270px;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
-    padding: 22px;
+    overflow: hidden;
   }
-  .card-photo img {
-    max-height: 100%;
-    max-width: 100%;
-    object-fit: contain;
-    filter: drop-shadow(0 10px 16px rgba(44,32,21,0.18));
+  .card-photo::before {           /* glow suave por trás do copo */
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 42%, rgba(255,255,255,0.65) 0%, transparent 58%);
   }
-  .card-header {
-    padding: 24px 28px 20px;
-  }
-  .card-tag {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 20px;
-    margin-bottom: 12px;
-    color: #fff;
-  }
-  .card-name {
+  .card-photo .ghost {            /* palavra "smoothie" esbatida atrás, como no PDF */
+    position: absolute;
+    top: 14px; left: 0; right: 0;
+    text-align: center;
     font-family: 'Playfair Display', serif;
     font-style: italic;
-    font-size: 28px;
     font-weight: 700;
-    line-height: 1.15;
-    color: var(--dark);
+    font-size: 46px;
+    letter-spacing: 1px;
+    color: #fff;
+    opacity: 0.55;
+    user-select: none;
+    pointer-events: none;
+  }
+  .card-photo img {
+    position: relative;
+    max-height: 250px;
+    max-width: 82%;
+    object-fit: contain;
+    filter: drop-shadow(0 14px 18px rgba(44,32,21,0.22));
+    transition: transform .3s ease;
+  }
+  .card:hover .card-photo img { transform: translateY(-4px) scale(1.03); }
+
+  .card-header { padding: 22px 28px 18px; }
+  .card-tag {
+    display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
+    margin-bottom: 10px; color: #fff;
+  }
+  .card-name {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 30px; font-weight: 700; line-height: 1.1;
   }
   .card-name span {
-    display: block;
-    font-family: 'DM Sans', sans-serif;
-    font-style: normal;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-top: 2px;
-    opacity: 0.5;
+    display: block; font-family: 'DM Sans', sans-serif; font-style: normal;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+    margin-top: 3px; opacity: 0.5; color: var(--dark);
   }
-  .adjectives {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-    margin: 14px 0;
-  }
+  .adjectives { display: flex; gap: 6px; flex-wrap: wrap; margin: 14px 0 0; }
   .adj {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 20px;
-    border: 1.5px solid currentColor;
-    opacity: 0.75;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 20px; border: 1.5px solid currentColor; opacity: 0.78;
   }
-  .cal-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    opacity: 0.7;
-  }
-  .cal-value {
-    font-family: 'Playfair Display', serif;
-    font-size: 26px;
-    font-weight: 700;
-  }
+  .cal-label { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.7; }
+  .cal-value { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; }
   .cal-unit { font-size: 12px; font-weight: 400; opacity: 0.6; }
-  .card-divider {
-    height: 1px;
-    margin: 0 28px;
-    opacity: 0.12;
-    background: var(--dark);
-  }
+  .card-divider { height: 1px; margin: 0 28px; opacity: 0.12; background: var(--dark); }
+
   .section-toggle {
-    width: 100%;
-    background: none;
-    border: none;
-    padding: 16px 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--dark);
-    opacity: 0.6;
-    transition: opacity 0.2s;
+    width: 100%; background: none; border: none; padding: 16px 28px;
+    display: flex; align-items: center; justify-content: space-between; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--dark);
+    opacity: 0.6; transition: opacity 0.2s;
   }
   .section-toggle:hover { opacity: 1; }
+  .section-toggle .label-wrap { display: flex; align-items: center; gap: 8px; }
   .section-toggle .arrow { transition: transform 0.3s ease; font-size: 16px; }
   .section-toggle.open .arrow { transform: rotate(180deg); }
-  .section-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
-  .section-body.open { max-height: 600px; }
+  .cmt-count { font-size: 11px; opacity: 0.7; font-weight: 700; }
+  .section-body { max-height: 0; overflow: hidden; transition: max-height 0.45s ease; }
+  .section-body.open { max-height: 2200px; }
+
   .ingredients-list {
-    padding: 0 28px 20px;
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
+    padding: 0 28px 20px; list-style: none; display: flex; flex-wrap: wrap; gap: 6px;
   }
   .ingredients-list li {
-    font-size: 13px;
-    font-weight: 400;
-    padding: 5px 12px;
-    border-radius: 20px;
-    background: var(--cream);
-    color: var(--dark);
+    font-size: 13px; font-weight: 400; padding: 5px 12px; border-radius: 20px;
+    background: var(--cream); color: var(--dark);
   }
   .prep-steps { padding: 0 28px 24px; }
   .prep-step { display: flex; gap: 14px; margin-bottom: 14px; align-items: flex-start; }
   .step-num {
-    min-width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 700;
-    color: #fff;
-    flex-shrink: 0;
-    margin-top: 1px;
+    min-width: 26px; height: 26px; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; font-size: 11px; font-weight: 700;
+    color: #fff; flex-shrink: 0; margin-top: 1px;
   }
   .step-text { font-size: 13.5px; line-height: 1.6; font-weight: 300; padding-top: 3px; }
   .step-title {
-    font-weight: 600;
-    display: block;
-    margin-bottom: 2px;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    opacity: 0.6;
+    font-weight: 600; display: block; margin-bottom: 2px; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6;
   }
 
-  /* COMMENTS */
-  .comments {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 20px 24px 90px;
-  }
-  .comments-title {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 34px;
-    font-weight: 700;
-    text-align: center;
-    color: var(--dark);
-  }
-  .comments-sub {
-    text-align: center;
-    font-size: 14px;
-    font-weight: 300;
-    color: #7A6A5A;
-    margin: 8px 0 28px;
-  }
-  .comment-box {
-    background: #fff;
-    border-radius: 18px;
-    box-shadow: 0 2px 12px rgba(44,32,21,0.07);
-    padding: 20px;
-    margin-bottom: 28px;
-  }
-  .comment-box textarea {
-    width: 100%;
-    border: 1.5px solid #ece4d8;
-    border-radius: 12px;
-    background: #fafafa;
-    padding: 12px 14px;
-    font-family: inherit;
-    font-size: 14px;
-    resize: vertical;
-    min-height: 70px;
+  /* COMMENTS (por smoothie) */
+  .cmt { padding: 4px 24px 22px; }
+  .cmt-box { margin-bottom: 14px; }
+  .cmt-box textarea {
+    width: 100%; border: 1.5px solid #ece4d8; border-radius: 12px; background: #fafafa;
+    padding: 10px 12px; font-family: inherit; font-size: 13.5px; resize: vertical; min-height: 58px;
     transition: border-color .15s;
   }
-  .comment-box textarea:focus { outline: none; border-color: var(--c-pinky); background: #fff; }
-  .comment-box-foot {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 12px;
-    gap: 10px;
+  .cmt-box textarea:focus { outline: none; background: #fff; }
+  .cmt-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; gap: 10px; }
+  .cmt-as { font-size: 12px; color: #7A6A5A; }
+  .cmt-as b { color: var(--dark); }
+  .btn-mini {
+    border: none; cursor: pointer; color: #fff; font-family: inherit; font-weight: 600;
+    font-size: 13px; padding: 8px 16px; border-radius: 999px; transition: filter .15s, transform .12s;
   }
-  .comment-box-as { font-size: 13px; color: #7A6A5A; }
-  .comment-box-as b { color: var(--c-pinky); }
-  .btn-pink {
-    border: none;
-    cursor: pointer;
-    background: var(--c-pinky);
-    color: #fff;
-    font-family: inherit;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 10px 20px;
-    border-radius: 999px;
-    transition: filter .15s, transform .12s;
-  }
-  .btn-pink:hover { filter: brightness(1.07); transform: translateY(-1px); }
-  .btn-pink:disabled { opacity: .55; cursor: default; transform: none; }
-  .login-prompt {
-    text-align: center;
-    background: #fff;
-    border-radius: 18px;
-    box-shadow: 0 2px 12px rgba(44,32,21,0.07);
-    padding: 26px 20px;
-    margin-bottom: 28px;
-  }
-  .login-prompt p { font-size: 14px; color: #7A6A5A; margin-bottom: 14px; }
-  .comment {
-    display: flex;
-    gap: 14px;
-    padding: 16px 4px;
-    border-bottom: 1px solid rgba(44,32,21,0.08);
-  }
+  .btn-mini:hover { filter: brightness(1.08); transform: translateY(-1px); }
+  .btn-mini:disabled { opacity: .55; cursor: default; transform: none; }
+  .cmt-login { text-align: center; background: var(--cream); border-radius: 14px; padding: 18px 14px; margin-bottom: 14px; }
+  .cmt-login p { font-size: 13px; color: #7A6A5A; margin-bottom: 12px; }
+  .cmt-list { max-height: 340px; overflow-y: auto; }
+  .comment { display: flex; gap: 12px; padding: 12px 2px; border-bottom: 1px solid rgba(44,32,21,0.07); }
   .comment:last-child { border-bottom: none; }
   .comment-avatar {
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    color: #fff;
-    font-size: 16px;
-    background: var(--c-pinky);
+    width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; display: flex;
+    align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 14px;
   }
   .comment-main { flex: 1; min-width: 0; }
-  .comment-head {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    margin-bottom: 4px;
-  }
-  .comment-name { font-weight: 600; font-size: 14px; }
-  .comment-time { font-size: 12px; color: #aa9; }
-  .comment-body { font-size: 14px; line-height: 1.55; font-weight: 300; white-space: pre-wrap; word-wrap: break-word; }
-  .comments-empty { text-align: center; color: #aa9; font-size: 14px; font-weight: 300; padding: 20px; }
+  .comment-head { display: flex; align-items: baseline; gap: 9px; margin-bottom: 3px; }
+  .comment-name { font-weight: 600; font-size: 13.5px; }
+  .comment-time { font-size: 11.5px; color: #b3a896; }
+  .comment-body { font-size: 13.5px; line-height: 1.5; font-weight: 300; white-space: pre-wrap; word-wrap: break-word; }
+  .cmt-empty { text-align: center; color: #b3a896; font-size: 13px; font-weight: 300; padding: 14px; }
 
-  footer {
-    text-align: center;
-    padding: 32px;
-    font-size: 12px;
-    opacity: 0.4;
-    font-weight: 300;
-  }
+  footer { text-align: center; padding: 32px; font-size: 12px; opacity: 0.4; font-weight: 300; }
   @media (max-width: 420px) {
     .grid { grid-template-columns: 1fr; padding: 0 12px 60px; }
     .hero { padding: 30px 16px 40px; }
+    .card-photo .ghost { font-size: 38px; }
   }
 </style>
 </head>
@@ -406,23 +253,16 @@
   <p class="hero-eyebrow">Receituário pessoal</p>
   <h1 class="hero-title">Smoothies</h1>
   <p class="hero-sub">só os melhores</p>
-  <p class="hero-desc">8 receitas com ingredientes simples, calorias calculadas e modo de preparação passo a passo.</p>
+  <p class="hero-desc">8 receitas com ingredientes simples, calorias calculadas, modo de preparação e comentários — entra com a tua conta para deixar opinião em cada smoothie.</p>
 </header>
 
 <main class="grid" id="grid"></main>
-
-<section class="comments" id="comentarios">
-  <h2 class="comments-title">Comentários</h2>
-  <p class="comments-sub">Inicia sessão para deixar a tua opinião sobre as receitas.</p>
-  <div id="comment-box"></div>
-  <div id="comment-list"><p class="comments-empty">A carregar comentários…</p></div>
-</section>
 
 <footer>feito com fruta fresca e muita banana congelada</footer>
 
 <script>
 const smoothies = [
-  { name: "Green Power", sub: "smoothie", tag: "verde", color: "var(--c-green)", bg: "var(--bg-green)",
+  { key: "green-power", name: "Green Power", sub: "smoothie", tag: "verde", color: "var(--c-green)", bg: "var(--bg-green)",
     img: "images/green-power.png",
     adjs: ["energizante", "anti-inflamatório", "refrescante"], calories: 180,
     ingredients: ["Espinafres", "Pepino", "Banana", "Leite de Aveia", "Gengibre em Pó", "Cúrcuma", "Mel"],
@@ -432,7 +272,7 @@ const smoothies = [
       { title: "Triturar", text: "Tritura 60–90 segundos em potência máxima até ficar completamente homogéneo." },
       { title: "Servir", text: "Serve frio imediatamente. Podes adicionar gelo se preferires mais fresco." }
     ] },
-  { name: "Nauthy Choco", sub: "smoothie", tag: "chocolate", color: "var(--c-choco)", bg: "var(--bg-choco)",
+  { key: "nauthy-choco", name: "Nauthy Choco", sub: "smoothie", tag: "chocolate", color: "var(--c-choco)", bg: "var(--bg-choco)",
     img: "images/nauthy-choco.png",
     adjs: ["cremoso", "saciante", "nutritivo"], calories: 380,
     ingredients: ["Banana", "Cacau em pó", "Manteiga de amendoim", "Kefir", "Leite de Aveia", "Canela", "Baunilha"],
@@ -442,7 +282,7 @@ const smoothies = [
       { title: "Triturar", text: "Tritura 90 segundos. O cacau precisa de tempo para se integrar bem." },
       { title: "Provar", text: "Ajusta o cacau ou mel a gosto. Serve imediatamente." }
     ] },
-  { name: "Berry Boost", sub: "smoothie", tag: "bagas", color: "var(--c-berry)", bg: "var(--bg-berry)",
+  { key: "berry-boost", name: "Berry Boost", sub: "smoothie", tag: "bagas", color: "var(--c-berry)", bg: "var(--bg-berry)",
     img: "images/berry-boost.png",
     adjs: ["refrescante", "antioxidante", "cremoso"], calories: 210,
     ingredients: ["Frutos Vermelhos congelados", "Banana", "Kefir", "Mel", "Baunilha"],
@@ -452,7 +292,7 @@ const smoothies = [
       { title: "Triturar", text: "Tritura 60 segundos. A cor deve ficar uniformemente roxa." },
       { title: "Servir", text: "Serve imediatamente num copo frio." }
     ] },
-  { name: "Bunny Monkey", sub: "smoothie", tag: "cenoura", color: "var(--c-bunny)", bg: "var(--bg-bunny)",
+  { key: "bunny-monkey", name: "Bunny Monkey", sub: "smoothie", tag: "cenoura", color: "var(--c-bunny)", bg: "var(--bg-bunny)",
     img: "images/bunny-monkey.png",
     adjs: ["energizante", "anti-inflamatório", "rico"], calories: 240,
     ingredients: ["Cenoura", "Banana", "Leite de Aveia", "Kefir", "Cúrcuma", "Gengibre", "Canela", "Mel"],
@@ -462,7 +302,7 @@ const smoothies = [
       { title: "Triturar", text: "Tritura 90 segundos em potência máxima. A cenoura crua é densa." },
       { title: "Ajustar", text: "Prova e ajusta o mel. Se estiver espesso, adiciona leite de aveia." }
     ] },
-  { name: "Detox Verde", sub: "smoothie", tag: "detox", color: "var(--c-detox)", bg: "var(--bg-detox)",
+  { key: "detox-verde", name: "Detox Verde", sub: "smoothie", tag: "detox", color: "var(--c-detox)", bg: "var(--bg-detox)",
     img: "images/detox-verde.png",
     adjs: ["purificante", "leve", "intestinal"], calories: 160,
     ingredients: ["Espinafres", "Pepino", "Cenoura", "Leite de Aveia", "Gengibre em Pó", "Limão", "Mel"],
@@ -472,7 +312,7 @@ const smoothies = [
       { title: "Triturar", text: "Tritura 90 segundos. Os vegetais precisam de tempo." },
       { title: "Limão no fim", text: "Adiciona o sumo de limão e tritura 10 segundos. Serve de imediato." }
     ] },
-  { name: "Sleepy Bear", sub: "smoothie", tag: "aveia", color: "var(--c-sleepy)", bg: "var(--bg-sleepy)",
+  { key: "sleepy-bear", name: "Sleepy Bear", sub: "smoothie", tag: "aveia", color: "var(--c-sleepy)", bg: "var(--bg-sleepy)",
     img: "images/sleepy-bear.png",
     adjs: ["saciante", "reconfortante", "matinal"], calories: 420,
     ingredients: ["Aveia", "Banana", "Leite de Aveia", "Canela", "Baunilha", "Mel", "Manteiga de Amendoim"],
@@ -482,7 +322,7 @@ const smoothies = [
       { title: "Triturar", text: "Tritura 90 segundos em potência máxima." },
       { title: "Consistência", text: "Se estiver muito espesso, adiciona leite de aveia em fio. Serve imediatamente — a aveia engrossa." }
     ] },
-  { name: "Pinky Oat", sub: "smoothie", tag: "aveia + bagas", color: "var(--c-pinky)", bg: "var(--bg-pinky)",
+  { key: "pinky-oat", name: "Pinky Oat", sub: "smoothie", tag: "aveia + bagas", color: "var(--c-pinky)", bg: "var(--bg-pinky)",
     img: "images/pinky-oat.png",
     adjs: ["frutado", "fresco", "leve"], calories: 285,
     ingredients: ["Frutos Vermelhos congelados", "Banana", "Aveia", "Leite de Aveia", "Canela", "Mel", "Gengibre"],
@@ -492,7 +332,7 @@ const smoothies = [
       { title: "Triturar", text: "Tritura 60–90 segundos até a cor ficar uniformemente roxa." },
       { title: "Servir rápido", text: "Serve imediatamente. A aveia engrossa se ficares à espera." }
     ] },
-  { name: "Colour Summer", sub: "smoothie", tag: "verão", color: "var(--c-summer)", bg: "var(--bg-summer)",
+  { key: "colour-summer", name: "Colour Summer", sub: "smoothie", tag: "verão", color: "var(--c-summer)", bg: "var(--bg-summer)",
     img: "images/colour-summer.png",
     adjs: ["refrescante", "luminoso", "estival"], calories: 195,
     ingredients: ["Pepino", "Banana", "Frutos Vermelhos", "Leite de Aveia", "Limão (sumo)", "Mel", "Gelo"],
@@ -521,24 +361,28 @@ function buildCard(s, i) {
      </div>`).join('');
   card.innerHTML = `
     <div class="card-photo" style="background:${s.bg}">
+      <span class="ghost">smoothie</span>
       <img src="${s.img}" alt="${esc(s.name)}" loading="lazy">
     </div>
-    <div class="card-header" style="background:${s.bg}">
+    <div class="card-header">
       <span class="card-tag" style="background:${s.color}">${esc(s.tag)}</span>
-      <h2 class="card-name">${esc(s.name)}<span>${esc(s.sub)}</span></h2>
+      <h2 class="card-name" style="color:${s.color}">${esc(s.name)}<span>${esc(s.sub)}</span></h2>
       <div class="adjectives">${adjs}</div>
     </div>
     <div class="card-divider"></div>
-    <div class="cal-bar" style="background:${s.bg};display:flex;align-items:center;justify-content:space-between;padding:14px 28px;">
+    <div style="background:${s.bg};display:flex;align-items:center;justify-content:space-between;padding:14px 28px;">
       <span class="cal-label">Calorias por dose</span>
       <span class="cal-value" style="color:${s.color}">${s.calories} <span class="cal-unit">kcal</span></span>
     </div>
     <div class="card-divider"></div>
-    <button class="section-toggle" data-target="ing-${i}">Ingredientes <span class="arrow">⌄</span></button>
+    <button class="section-toggle" data-target="ing-${i}"><span class="label-wrap">Ingredientes</span><span class="arrow">⌄</span></button>
     <div class="section-body" id="ing-${i}"><ul class="ingredients-list">${ings}</ul></div>
     <div class="card-divider"></div>
-    <button class="section-toggle" data-target="prep-${i}">Modo de preparação <span class="arrow">⌄</span></button>
+    <button class="section-toggle" data-target="prep-${i}"><span class="label-wrap">Modo de preparação</span><span class="arrow">⌄</span></button>
     <div class="section-body" id="prep-${i}"><div class="prep-steps">${steps}</div></div>
+    <div class="card-divider"></div>
+    <button class="section-toggle" data-target="cmt-${i}"><span class="label-wrap">Comentários <span class="cmt-count"></span></span><span class="arrow">⌄</span></button>
+    <div class="section-body" id="cmt-${i}"><div class="cmt" data-smoothie="${s.key}" data-accent="${s.color}"></div></div>
   `;
   return card;
 }
@@ -573,22 +417,15 @@ document.querySelectorAll('.card').forEach(card => observer.observe(card));
   Account.init({ section: 'smoothies', keys: [], mount: '#user-slot', label: 'Smoothies', accent: '#C05878' });
 </script>
 
-<!-- Comentários (Supabase) -->
+<!-- Comentários por smoothie (Supabase) -->
 <script>
 (function () {
   var CFG = window.MARIAESTUDA_CONFIG || {};
   var URL = (CFG.SUPABASE_URL || '').replace(/\/+$/, '');
   var KEY = CFG.SUPABASE_ANON_KEY || '';
   var REMOTE = !!(URL && KEY);
-  var ENDPOINT = URL + '/rest/v1/smoothie_comments';
-  var HEADERS = {
-    'apikey': KEY,
-    'Authorization': 'Bearer ' + KEY,
-    'Content-Type': 'application/json',
-  };
-
-  var listEl = document.getElementById('comment-list');
-  var boxEl = document.getElementById('comment-box');
+  var EP = URL + '/rest/v1/smoothie_comments';
+  var H = { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY, 'Content-Type': 'application/json' };
 
   function esc(s) {
     return String(s).replace(/[&<>"]/g, function (c) {
@@ -596,92 +433,99 @@ document.querySelectorAll('.card').forEach(card => observer.observe(card));
     });
   }
   function timeAgo(iso) {
-    var d = new Date(iso), now = new Date(), s = Math.floor((now - d) / 1000);
+    var d = new Date(iso), s = Math.floor((new Date() - d) / 1000);
     if (isNaN(s)) return '';
     if (s < 60) return 'agora mesmo';
-    var m = Math.floor(s / 60); if (m < 60) return 'há ' + m + ' min';
-    var h = Math.floor(m / 60); if (h < 24) return 'há ' + h + 'h';
-    var dd = Math.floor(h / 24); if (dd < 30) return 'há ' + dd + (dd === 1 ? ' dia' : ' dias');
+    var m = Math.floor(s/60); if (m < 60) return 'há ' + m + ' min';
+    var h = Math.floor(m/60); if (h < 24) return 'há ' + h + 'h';
+    var dd = Math.floor(h/24); if (dd < 30) return 'há ' + dd + (dd === 1 ? ' dia' : ' dias');
     return d.toLocaleDateString('pt-PT');
   }
 
-  function renderList(rows) {
+  var threads = {}; // key -> { el, accent, listEl, boxEl, countEl }
+
+  function commentHTML(c, accent) {
+    var initial = (c.user_name || '?').trim().charAt(0).toUpperCase();
+    return '<div class="comment">' +
+      '<div class="comment-avatar" style="background:' + accent + '">' + esc(initial) + '</div>' +
+      '<div class="comment-main">' +
+        '<div class="comment-head"><span class="comment-name">' + esc(c.user_name) + '</span>' +
+        '<span class="comment-time">' + esc(timeAgo(c.created_at)) + '</span></div>' +
+        '<div class="comment-body">' + esc(c.body) + '</div>' +
+      '</div></div>';
+  }
+
+  function renderList(t, rows) {
     if (!rows || !rows.length) {
-      listEl.innerHTML = '<p class="comments-empty">Ainda não há comentários. Sê o primeiro! 🥤</p>';
-      return;
+      t.listEl.innerHTML = '<p class="cmt-empty">Ainda não há comentários. Sê o primeiro! 🥤</p>';
+    } else {
+      t.listEl.innerHTML = rows.map(function (c) { return commentHTML(c, t.accent); }).join('');
     }
-    listEl.innerHTML = rows.map(function (c) {
-      var initial = (c.user_name || '?').trim().charAt(0).toUpperCase();
-      return '<div class="comment">' +
-        '<div class="comment-avatar">' + esc(initial) + '</div>' +
-        '<div class="comment-main">' +
-          '<div class="comment-head">' +
-            '<span class="comment-name">' + esc(c.user_name) + '</span>' +
-            '<span class="comment-time">' + esc(timeAgo(c.created_at)) + '</span>' +
-          '</div>' +
-          '<div class="comment-body">' + esc(c.body) + '</div>' +
-        '</div></div>';
-    }).join('');
+    if (t.countEl) t.countEl.textContent = rows && rows.length ? '(' + rows.length + ')' : '';
   }
 
-  function loadComments() {
-    if (!REMOTE) {
-      listEl.innerHTML = '<p class="comments-empty">Comentários indisponíveis (Supabase não configurado).</p>';
-      return;
-    }
-    fetch(ENDPOINT + '?select=user_name,body,created_at&order=created_at.desc&limit=200', { headers: HEADERS })
-      .then(function (r) { if (!r.ok) throw new Error('rede'); return r.json(); })
-      .then(renderList)
-      .catch(function () {
-        listEl.innerHTML = '<p class="comments-empty">Não foi possível carregar os comentários.</p>';
-      });
-  }
-
-  function renderBox() {
+  function renderBox(t) {
     var user = (window.Account && Account.user) ? Account.user() : null;
-    if (!REMOTE) { boxEl.innerHTML = ''; return; }
+    if (!REMOTE) { t.boxEl.innerHTML = ''; return; }
     if (user) {
-      boxEl.innerHTML =
-        '<div class="comment-box">' +
-          '<textarea id="c-text" maxlength="2000" placeholder="Escreve um comentário…"></textarea>' +
-          '<div class="comment-box-foot">' +
-            '<span class="comment-box-as">a comentar como <b>' + esc(user) + '</b></span>' +
-            '<button class="btn-pink" id="c-send">Publicar</button>' +
-          '</div>' +
+      t.boxEl.innerHTML =
+        '<div class="cmt-box">' +
+          '<textarea maxlength="2000" placeholder="O que achaste deste smoothie?" style="border-color:#ece4d8" onfocus="this.style.borderColor=\'' + t.accent + '\'" onblur="this.style.borderColor=\'#ece4d8\'"></textarea>' +
+          '<div class="cmt-foot"><span class="cmt-as">como <b>' + esc(user) + '</b></span>' +
+          '<button class="btn-mini" style="background:' + t.accent + '">Publicar</button></div>' +
         '</div>';
-      var ta = document.getElementById('c-text');
-      var btn = document.getElementById('c-send');
+      var ta = t.boxEl.querySelector('textarea');
+      var btn = t.boxEl.querySelector('button');
       btn.addEventListener('click', function () {
         var text = ta.value.trim();
         if (!text) { ta.focus(); return; }
         btn.disabled = true; btn.textContent = '…';
-        fetch(ENDPOINT, {
+        fetch(EP, {
           method: 'POST',
-          headers: Object.assign({ 'Prefer': 'return=minimal' }, HEADERS),
-          body: JSON.stringify({ smoothie: 'geral', user_name: user, body: text }),
+          headers: Object.assign({ 'Prefer': 'return=minimal' }, H),
+          body: JSON.stringify({ smoothie: t.key, user_name: user, body: text })
         }).then(function (r) {
           if (!r.ok) throw new Error('rede');
-          ta.value = '';
-          btn.disabled = false; btn.textContent = 'Publicar';
-          loadComments();
+          ta.value = ''; btn.disabled = false; btn.textContent = 'Publicar';
+          load(t);
         }).catch(function () {
           btn.disabled = false; btn.textContent = 'Publicar';
           alert('Não foi possível publicar. Tenta novamente.');
         });
       });
     } else {
-      boxEl.innerHTML =
-        '<div class="login-prompt">' +
-          '<p>Tens de iniciar sessão para comentar.</p>' +
-          '<button class="btn-pink" id="c-login">Entrar para comentar</button>' +
-        '</div>';
-      document.getElementById('c-login').addEventListener('click', function () {
+      t.boxEl.innerHTML =
+        '<div class="cmt-login"><p>Inicia sessão para comentar este smoothie.</p>' +
+        '<button class="btn-mini" style="background:' + t.accent + '">Entrar para comentar</button></div>';
+      t.boxEl.querySelector('button').addEventListener('click', function () {
         if (window.Account && Account.open) Account.open();
       });
     }
   }
 
-  function start() { renderBox(); loadComments(); }
+  function load(t) {
+    if (!REMOTE) { t.listEl.innerHTML = '<p class="cmt-empty">Comentários indisponíveis.</p>'; return; }
+    var url = EP + '?smoothie=eq.' + encodeURIComponent(t.key) +
+              '&select=user_name,body,created_at&order=created_at.desc&limit=200';
+    fetch(url, { headers: H })
+      .then(function (r) { if (!r.ok) throw new Error('rede'); return r.json(); })
+      .then(function (rows) { renderList(t, rows); })
+      .catch(function () { t.listEl.innerHTML = '<p class="cmt-empty">Não foi possível carregar os comentários.</p>'; });
+  }
+
+  function start() {
+    document.querySelectorAll('.cmt').forEach(function (el) {
+      var box = document.createElement('div');
+      var list = document.createElement('div'); list.className = 'cmt-list';
+      list.innerHTML = '<p class="cmt-empty">A carregar…</p>';
+      el.appendChild(box); el.appendChild(list);
+      var countEl = el.closest('.section-body').previousElementSibling.querySelector('.cmt-count');
+      var t = { key: el.dataset.smoothie, accent: el.dataset.accent, el: el, boxEl: box, listEl: list, countEl: countEl };
+      threads[t.key] = t;
+      renderBox(t);
+      load(t);
+    });
+  }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 })();
