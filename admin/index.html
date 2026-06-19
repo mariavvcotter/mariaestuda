@@ -67,6 +67,28 @@
   .note{background:#fff6e6;border:1.5px solid #f3d79a;border-radius:14px;padding:16px 18px;font-weight:600;font-size:.9rem;color:#8a6d1f;line-height:1.5}
   .note code{background:#fff;padding:1px 6px;border-radius:5px;font-size:.82rem}
   .loading{text-align:center;color:var(--text-light);font-weight:700;padding:40px}
+
+  /* ----- utilizadores ----- */
+  .u-create{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;background:#fbf7ee;border:1.5px solid #ece5d4;border-radius:14px;padding:16px;margin-bottom:18px}
+  .u-field{display:flex;flex-direction:column;gap:5px}
+  .u-field label{font-weight:800;font-size:.78rem;color:var(--text-light)}
+  .u-field input{padding:11px 13px;border:1.5px solid #e3ddcd;border-radius:11px;font-size:.95rem;font-family:inherit;background:#fff}
+  .u-field input:focus{outline:none;border-color:var(--teal)}
+  .u-create button{border:none;cursor:pointer;background:var(--teal);color:#fff;font-weight:800;font-size:.95rem;padding:11px 20px;border-radius:11px;font-family:inherit}
+  .u-create button:hover{background:var(--teal-dark)}
+  .u-create button:disabled{opacity:.6;cursor:default}
+  .u-msg{flex-basis:100%;font-weight:700;font-size:.85rem;min-height:18px}
+  .u-msg.ok{color:var(--teal-dark)}
+  .u-msg.err{color:#d23f3f}
+  .u-table{width:100%;border-collapse:collapse;font-size:.92rem}
+  .u-table th{text-align:left;font-weight:800;color:var(--text-light);font-size:.78rem;text-transform:uppercase;letter-spacing:.03em;padding:8px 10px;border-bottom:2px solid #ece5d4}
+  .u-table td{padding:10px;border-bottom:1px dashed #e3ddcd;font-weight:600;vertical-align:middle}
+  .u-table tr:last-child td{border-bottom:none}
+  .u-pin{font-family:'Courier New',monospace;font-weight:800;background:rgba(245,166,35,.14);color:#9a6a0f;padding:2px 9px;border-radius:7px;letter-spacing:.08em}
+  .u-key{color:#aaa;font-size:.82rem}
+  .u-secs{display:flex;flex-wrap:wrap;gap:5px}
+  .u-secs .badge{font-size:.7rem;padding:1px 8px}
+  .u-empty{text-align:center;color:var(--text-light);font-weight:700;padding:24px}
 </style>
 </head>
 <body>
@@ -93,6 +115,23 @@
   </div>
 
   <div id="content"><div class="loading">A carregar dados…</div></div>
+
+  <div class="card">
+    <h3>👥 Utilizadores</h3>
+    <form class="u-create" id="u-form" autocomplete="off">
+      <div class="u-field">
+        <label for="u-name">Nome</label>
+        <input type="text" id="u-name" maxlength="20" placeholder="nome" autocapitalize="off" spellcheck="false">
+      </div>
+      <div class="u-field">
+        <label for="u-pin">PIN</label>
+        <input type="text" id="u-pin" inputmode="numeric" maxlength="8" placeholder="4 a 8 dígitos">
+      </div>
+      <button type="submit" id="u-submit">＋ Criar utilizador</button>
+      <div class="u-msg" id="u-msg"></div>
+    </form>
+    <div id="users-list"><div class="loading">A carregar utilizadores…</div></div>
+  </div>
 </div>
 
 <script src="/account/config.js"></script>
@@ -118,7 +157,8 @@ const SECTIONS = {
   edc:'EDC · Ética e Deontologia', ci:'Comunicação Interpessoal',
   hgp1:'HGP · 1383–1385', eco:'Economia', eng:'Inglês',
   pt1:'Português · GP Gramática', rp:'Relações Públicas',
-  tc:'Teorias dos Media', uplayback:'uPlayback'
+  tc:'Teorias dos Media', uplayback:'uPlayback',
+  portugues:'Português 5.º–12.º', smoothies:'Smoothies'
 };
 
 /* ---------- gate ---------- */
@@ -141,7 +181,7 @@ document.getElementById('lock-btn').addEventListener('click', ()=>{
   sessionStorage.removeItem('me_admin_ok');
   location.reload();
 });
-function unlock(){ gate.classList.add('hidden'); dash.classList.remove('hidden'); load(); }
+function unlock(){ gate.classList.add('hidden'); dash.classList.remove('hidden'); load(); loadUsers(); }
 if (sessionStorage.getItem('me_admin_ok') === '1') unlock();
 
 /* ---------- data ---------- */
@@ -241,6 +281,88 @@ function render(d){
     <div class="card"><h3>🕒 Atividade recente</h3><ul class="feed">${feedHtml}</ul></div>
   `;
 }
+
+/* ============================================================
+   Utilizadores — listar (nome + PIN) e criar
+   Tabela edc_users: username_key, name, pin, progress, updated_at.
+   ============================================================ */
+const USERS_EP = URL + '/rest/v1/' + (CFG.TABLE || 'edc_users');
+
+async function loadUsers(){
+  const box = document.getElementById('users-list');
+  try {
+    const r = await fetch(
+      USERS_EP + '?select=username_key,name,pin,progress,updated_at&order=updated_at.desc.nullslast',
+      { headers: HEADERS }
+    );
+    if (!r.ok) throw new Error('http ' + r.status);
+    renderUsers(await r.json());
+  } catch (e){
+    box.innerHTML = '<div class="note">⚠ Não consegui ler os utilizadores da tabela <code>' +
+      esc(CFG.TABLE || 'edc_users') + '</code>. Confirma que a política de leitura (RLS) permite à chave anon fazer <code>select</code>.</div>';
+  }
+}
+
+function renderUsers(rows){
+  const box = document.getElementById('users-list');
+  if (!rows || !rows.length){
+    box.innerHTML = '<div class="u-empty">Ainda não há utilizadores. Cria o primeiro acima.</div>';
+    return;
+  }
+  const body = rows.map(u=>{
+    const secs = (u.progress && typeof u.progress === 'object') ? Object.keys(u.progress) : [];
+    const secsHtml = secs.length
+      ? '<div class="u-secs">' + secs.map(s=>`<span class="badge">${esc(SECTIONS[s]||s)}</span>`).join('') + '</div>'
+      : '<span class="u-key">—</span>';
+    const when = u.updated_at ? new Date(u.updated_at).toLocaleString('pt-PT') : '—';
+    return `<tr>
+      <td>${esc(u.name)}<div class="u-key">${esc(u.username_key)}</div></td>
+      <td><span class="u-pin">${esc(u.pin)}</span></td>
+      <td>${secsHtml}</td>
+      <td class="u-key">${esc(when)}</td>
+    </tr>`;
+  }).join('');
+  box.innerHTML = `
+    <table class="u-table">
+      <thead><tr><th>Nome</th><th>PIN</th><th>Secções com progresso</th><th>Última atividade</th></tr></thead>
+      <tbody>${body}</tbody>
+    </table>`;
+}
+
+document.getElementById('u-form').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const nameIn = document.getElementById('u-name');
+  const pinIn = document.getElementById('u-pin');
+  const msg = document.getElementById('u-msg');
+  const btn = document.getElementById('u-submit');
+  const name = nameIn.value.trim();
+  const pin = pinIn.value.trim();
+  msg.className = 'u-msg';
+  if (name.length < 2){ msg.classList.add('err'); msg.textContent = 'O nome precisa de pelo menos 2 caracteres.'; return; }
+  if (!/^\d{4,8}$/.test(pin)){ msg.classList.add('err'); msg.textContent = 'O PIN tem de ter 4 a 8 dígitos.'; return; }
+  const key = name.toLowerCase();
+
+  btn.disabled = true;
+  const label = btn.textContent; btn.textContent = 'A criar…';
+  try {
+    const r = await fetch(USERS_EP, {
+      method: 'POST',
+      headers: Object.assign({ 'Content-Type':'application/json', Prefer:'return=minimal' }, HEADERS),
+      body: JSON.stringify({ username_key: key, name: name, pin: pin, progress: {} })
+    });
+    if (r.status === 409){ msg.classList.add('err'); msg.textContent = 'Já existe um utilizador com esse nome.'; }
+    else if (!r.ok){ throw new Error('http ' + r.status); }
+    else {
+      msg.classList.add('ok'); msg.textContent = `Utilizador "${name}" criado (PIN ${pin}).`;
+      nameIn.value = ''; pinIn.value = ''; nameIn.focus();
+      loadUsers();
+    }
+  } catch (err){
+    msg.classList.add('err'); msg.textContent = 'Não foi possível criar o utilizador. Verifica a ligação e as permissões de inserção.';
+  } finally {
+    btn.disabled = false; btn.textContent = label;
+  }
+});
 </script>
 </body>
 </html>

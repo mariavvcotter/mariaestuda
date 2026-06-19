@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Português 5.º–12.º · Plataforma de Estudo</title>
+<link rel="stylesheet" href="/account/account.css">
 <style>
   :root{
     --azul:#2d4d7a; --azul2:#3a6ea5; --azul-claro:#eaf1fb;
@@ -183,6 +184,7 @@
       <div class="barra-mini"><span id="barraTopo"></span></div>
       <span id="percTopo">0%</span>
     </div>
+    <span id="user-slot"></span>
     <button class="toggle-menu" onclick="document.querySelector('nav.lateral').classList.toggle('aberto')">☰</button>
   </div>
 </header>
@@ -574,5 +576,16 @@ window.addEventListener('DOMContentLoaded',()=>{
 <script src="dados/dados-10.js"></script>
 <script src="dados/dados-11.js"></script>
 <script src="dados/dados-12.js"></script>
+<script src="/account/config.js"></script>
+<script src="/account/account.js"></script>
+<script>
+  Account.init({
+    section: 'portugues',
+    keys: ['plataformaPT'],
+    mount: '#user-slot',
+    label: 'Português',
+    accent: '#3a6ea5',
+  });
+</script>
 </body>
 </html>
