@@ -220,7 +220,12 @@ async function load(){
 
     render({ total, today, last7, secKeys, secCounts, recent, startToday });
   } catch (e){
-    content.innerHTML = '<div class="note">⚠ Não consegui ler os dados. Provavelmente a tabela <code>usage_events</code> ainda não existe no Supabase. Corre o SQL que te dei no painel Supabase → SQL Editor e recarrega.</div>';
+    // Registo de visitas ainda não ativo (tabela usage_events ausente):
+    // degradar com elegância — a gestão de utilizadores funciona à mesma.
+    const now = new Date();
+    const startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const secKeys = Object.keys(SECTIONS);
+    render({ total:0, today:0, last7:0, secKeys, secCounts:secKeys.map(()=>0), recent:[], startToday, usageMissing:true });
   }
 }
 
@@ -266,10 +271,15 @@ function render(d){
       <span class="when">${timeAgo(r.created_at)}</span>
     </li>`).join('') || '<li><span class="who">Ainda sem visitas registadas.</span></li>';
 
-  document.getElementById('sub').textContent =
-    'Atualizado ' + new Date().toLocaleString('pt-PT') + (d.recent.length>=1000 ? ' · feed limitado às 1000 visitas mais recentes' : '');
+  document.getElementById('sub').textContent = d.usageMissing
+    ? 'Gestão de utilizadores ativa · estatísticas de visitas por ativar'
+    : 'Atualizado ' + new Date().toLocaleString('pt-PT') + (d.recent.length>=1000 ? ' · feed limitado às 1000 visitas mais recentes' : '');
 
-  document.getElementById('content').innerHTML = `
+  const usageNote = d.usageMissing
+    ? '<div class="note" style="margin-bottom:24px">ℹ As estatísticas de visitas ainda não estão ativas — falta criar a tabela <code>usage_events</code> no Supabase (SQL em <code>account/usage_events.sql</code>). A <strong>gestão de utilizadores</strong> em baixo funciona normalmente.</div>'
+    : '';
+
+  document.getElementById('content').innerHTML = usageNote + `
     <div class="stats">
       <div class="stat"><div class="n">${d.total}</div><div class="l">Visitas totais</div></div>
       <div class="stat"><div class="n">${d.today}</div><div class="l">Hoje</div></div>
