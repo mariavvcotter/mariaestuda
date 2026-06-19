@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Português 5.º–12.º · Plataforma de Estudo</title>
+<style>
+  :root{
+    --azul:#2d4d7a; --azul2:#3a6ea5; --azul-claro:#eaf1fb;
+    --verde:#2e9e6b; --verde-claro:#e6f7ee;
+    --vermelho:#d64545; --vermelho-claro:#fdecec;
+    --amarelo:#f3b73b; --roxo:#7a5bc2; --roxo-claro:#f0eafb;
+    --cinza:#5a6472; --cinza-claro:#f4f6fa; --borda:#dfe5ee;
+    --sombra:0 4px 18px rgba(45,77,122,.10);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:linear-gradient(135deg,#eef3fb 0%,#f7f9fc 100%);color:#26303d;line-height:1.6;min-height:100vh}
+
+  /* Cabeçalho */
+  header{background:linear-gradient(120deg,var(--azul) 0%,var(--azul2) 100%);color:#fff;padding:18px 26px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;box-shadow:0 4px 20px rgba(45,77,122,.25);position:sticky;top:0;z-index:50}
+  header h1{font-size:1.35rem;display:flex;align-items:center;gap:12px;cursor:pointer}
+  header .logo{background:#fff;color:var(--azul);width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-weight:800;font-size:1.2rem;flex-shrink:0}
+  header .sub{font-size:.78rem;opacity:.85;font-weight:400;display:block}
+  .top-dir{display:flex;align-items:center;gap:14px}
+  .anobadge{background:rgba(255,255,255,.18);padding:6px 14px;border-radius:20px;font-size:.9rem;font-weight:600}
+  .progresso-topo{display:flex;align-items:center;gap:10px;font-size:.82rem}
+  .barra-mini{width:130px;height:9px;background:rgba(255,255,255,.25);border-radius:6px;overflow:hidden}
+  .barra-mini span{display:block;height:100%;background:var(--amarelo);width:0%;transition:width .5s}
+  .toggle-menu{display:none;background:rgba(255,255,255,.2);border:none;color:#fff;font-size:1.3rem;padding:5px 11px;border-radius:8px;cursor:pointer}
+
+  .wrap{display:flex;max-width:1300px;margin:0 auto;gap:22px;padding:22px}
+  nav.lateral{width:255px;flex-shrink:0;position:sticky;top:100px;align-self:flex-start;max-height:calc(100vh - 122px);overflow-y:auto}
+  nav.lateral .voltar{display:flex;align-items:center;gap:8px;color:var(--azul);font-weight:600;text-decoration:none;cursor:pointer;padding:8px 12px;border-radius:10px;margin-bottom:14px;font-size:.9rem}
+  nav.lateral .voltar:hover{background:var(--azul-claro)}
+  nav.lateral .grupo{margin-bottom:16px}
+  nav.lateral .grupo h3{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--cinza);margin:0 8px 8px;font-weight:700}
+  nav.lateral a{display:flex;align-items:center;gap:10px;padding:9px 13px;border-radius:10px;color:#3a4756;text-decoration:none;font-size:.9rem;font-weight:500;transition:.15s;cursor:pointer;margin-bottom:2px}
+  nav.lateral a:hover{background:var(--azul-claro);color:var(--azul)}
+  nav.lateral a.ativo{background:var(--azul);color:#fff;box-shadow:var(--sombra)}
+  nav.lateral a .ic{font-size:1.02rem;width:22px;text-align:center}
+  nav.lateral a .check{margin-left:auto;color:var(--verde);font-weight:800;display:none}
+  nav.lateral a.feito .check{display:inline}
+  nav.lateral a.ativo .check{color:#bff5d8}
+
+  main{flex:1;min-width:0}
+  section.pagina{animation:aparece .35s ease}
+  @keyframes aparece{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  .card{background:#fff;border-radius:var(--radius);box-shadow:var(--sombra);padding:26px 30px;margin-bottom:22px;border:1px solid var(--borda)}
+  .card h2{color:var(--azul);font-size:1.5rem;margin-bottom:6px;display:flex;align-items:center;gap:12px}
+  .card h2 .emoji{font-size:1.7rem}
+  .card .lead{color:var(--cinza);margin-bottom:16px}
+  h3.bloco{color:var(--azul2);font-size:1.18rem;margin:24px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--azul-claro)}
+  h4.sub{color:var(--roxo);font-size:1.02rem;margin:18px 0 8px}
+  p{margin-bottom:12px} ul,ol{margin:0 0 14px 22px} li{margin-bottom:6px}
+  strong{color:var(--azul)} em.termo{color:var(--roxo);font-style:normal;font-weight:600}
+
+  .caixa{border-radius:12px;padding:15px 18px;margin:16px 0;border-left:5px solid}
+  .caixa.dica{background:var(--verde-claro);border-color:var(--verde)}
+  .caixa.atencao{background:var(--vermelho-claro);border-color:var(--vermelho)}
+  .caixa.exemplo{background:var(--azul-claro);border-color:var(--azul2)}
+  .caixa.nota{background:var(--roxo-claro);border-color:var(--roxo)}
+  .caixa b.rotulo{display:block;margin-bottom:4px;text-transform:uppercase;font-size:.72rem;letter-spacing:.06em}
+
+  table.tab{width:100%;border-collapse:collapse;margin:16px 0;font-size:.9rem;overflow:hidden;border-radius:10px;box-shadow:var(--sombra)}
+  table.tab th{background:var(--azul);color:#fff;padding:10px 12px;text-align:left;font-weight:600}
+  table.tab td{padding:9px 12px;border-bottom:1px solid var(--borda)}
+  table.tab tr:nth-child(even) td{background:var(--cinza-claro)}
+  table.tab tr:hover td{background:var(--azul-claro)}
+
+  /* Home — seleção de ano */
+  .hero{text-align:center;padding:14px 0 4px}
+  .hero h2{font-size:1.8rem;color:var(--azul);border:none;justify-content:center}
+  .ciclo-bloco{margin-bottom:26px}
+  .ciclo-bloco h3{color:var(--cinza);font-size:.9rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;padding-left:4px}
+  .grid-anos{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px}
+  .cartao-ano{background:#fff;border:1px solid var(--borda);border-radius:var(--radius);padding:20px;cursor:pointer;transition:.2s;box-shadow:var(--sombra);position:relative;overflow:hidden}
+  .cartao-ano:hover{transform:translateY(-5px);border-color:var(--azul2)}
+  .cartao-ano::before{content:'';position:absolute;top:0;left:0;width:100%;height:6px;background:var(--cor,#3a6ea5)}
+  .cartao-ano .ano-n{font-size:2.4rem;font-weight:800;color:var(--cor,var(--azul));line-height:1}
+  .cartao-ano .ano-l{font-size:.92rem;color:var(--cinza);margin:4px 0 12px}
+  .cartao-ano .barra{height:8px;background:var(--cinza-claro);border-radius:5px;overflow:hidden;margin-bottom:6px}
+  .cartao-ano .barra span{display:block;height:100%;background:var(--verde);width:0%}
+  .cartao-ano .ano-p{font-size:.78rem;color:var(--cinza)}
+  .cartao-ano .ano-mods{font-size:.74rem;color:var(--azul2);margin-top:8px;font-weight:600}
+
+  .grid-cartoes{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:8px}
+  .cartao-tema{background:#fff;border:1px solid var(--borda);border-radius:var(--radius);padding:18px;cursor:pointer;transition:.2s;box-shadow:var(--sombra);position:relative;overflow:hidden}
+  .cartao-tema:hover{transform:translateY(-4px);border-color:var(--azul2)}
+  .cartao-tema::before{content:'';position:absolute;top:0;left:0;width:100%;height:5px;background:var(--c,#3a6ea5)}
+  .cartao-tema .ic{font-size:1.7rem;margin-bottom:6px}
+  .cartao-tema h4{font-size:1rem;color:var(--azul);margin-bottom:4px}
+  .cartao-tema p{font-size:.82rem;color:var(--cinza);margin:0}
+  .cartao-tema .estado{font-size:.72rem;margin-top:9px;font-weight:600;color:var(--cinza)}
+  .cartao-tema.feito .estado{color:var(--verde)}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:14px;margin:18px 0}
+  .stat{background:#fff;border:1px solid var(--borda);border-radius:12px;padding:15px;text-align:center;box-shadow:var(--sombra)}
+  .stat .n{font-size:1.9rem;font-weight:800;color:var(--azul)}
+  .stat .l{font-size:.76rem;color:var(--cinza);text-transform:uppercase;letter-spacing:.04em}
+
+  /* Quiz */
+  .pergunta{background:var(--cinza-claro);border:1px solid var(--borda);border-radius:12px;padding:17px 19px;margin-bottom:15px}
+  .pergunta .q{font-weight:600;margin-bottom:11px;display:flex;gap:8px}
+  .pergunta .q .num{background:var(--azul);color:#fff;width:25px;height:25px;border-radius:50%;display:grid;place-items:center;font-size:.82rem;flex-shrink:0}
+  .opcoes{display:flex;flex-direction:column;gap:8px}
+  .opcao{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border:2px solid var(--borda);border-radius:10px;cursor:pointer;transition:.15s;font-size:.92rem}
+  .opcao:hover{border-color:var(--azul2);background:var(--azul-claro)}
+  .opcao .letra{width:23px;height:23px;border-radius:6px;background:var(--cinza-claro);display:grid;place-items:center;font-weight:700;font-size:.8rem;flex-shrink:0}
+  .opcao.certa{border-color:var(--verde);background:var(--verde-claro)}
+  .opcao.certa .letra{background:var(--verde);color:#fff}
+  .opcao.errada{border-color:var(--vermelho);background:var(--vermelho-claro)}
+  .opcao.errada .letra{background:var(--vermelho);color:#fff}
+  .opcao.bloqueada{pointer-events:none}
+  .feedback{margin-top:9px;padding:10px 14px;border-radius:8px;font-size:.86rem;display:none}
+  .feedback.mostra{display:block}
+  .feedback.ok{background:var(--verde-claro);color:#1d6b47;border-left:4px solid var(--verde)}
+  .feedback.no{background:var(--vermelho-claro);color:#a02b2b;border-left:4px solid var(--vermelho)}
+
+  .btn{background:var(--azul);color:#fff;border:none;padding:10px 20px;border-radius:10px;font-size:.92rem;font-weight:600;cursor:pointer;transition:.2s;font-family:inherit;display:inline-flex;align-items:center;gap:8px}
+  .btn:hover{background:var(--azul2);transform:translateY(-1px)}
+  .btn.sec{background:#fff;color:var(--azul);border:2px solid var(--azul)}
+  .btn.sec:hover{background:var(--azul-claro)}
+  .barra-acoes{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .resultado-quiz{display:none;margin-top:16px;padding:18px;border-radius:12px;text-align:center;font-weight:600}
+  .resultado-quiz.mostra{display:block}
+
+  /* Leitura */
+  .texto-leitura{background:#fffdf7;border:1px solid #f0e6cc;border-radius:12px;padding:22px 26px;margin:16px 0;line-height:1.75}
+  .texto-leitura h4{color:var(--azul);font-size:1.12rem;margin-bottom:4px}
+  .texto-leitura .autor{font-style:italic;color:var(--cinza);margin-bottom:14px;font-size:.88rem}
+  .texto-leitura p{text-align:justify}
+  .verso{font-style:italic;white-space:pre-line;line-height:1.9}
+
+  /* Escrita */
+  .criterios{background:var(--azul-claro);border-radius:10px;padding:14px 18px;margin:14px 0}
+  .criterios li{margin-bottom:5px}
+  textarea.redacao{width:100%;min-height:240px;border:2px solid var(--borda);border-radius:12px;padding:16px;font-family:'Georgia',serif;font-size:1rem;line-height:1.7;resize:vertical}
+  textarea.redacao:focus{outline:none;border-color:var(--azul2)}
+  .contador{font-size:.82rem;color:var(--cinza);text-align:right;margin-top:6px}
+  .guardado{color:var(--verde);font-size:.84rem;font-weight:600;display:none}
+  .guardado.mostra{display:inline}
+
+  .glossario dt{font-weight:700;color:var(--azul);margin-top:10px}
+  .glossario dd{margin:0 0 6px 0;color:#3a4756}
+  .tag{display:inline-block;background:var(--azul-claro);color:var(--azul);font-size:.74rem;padding:2px 9px;border-radius:20px;font-weight:600;margin:2px 4px 2px 0}
+  .obra-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:10px}
+  .obra{background:var(--cinza-claro);border-radius:10px;padding:12px 14px;border-left:4px solid var(--roxo)}
+  .obra b{color:var(--azul)} .obra span{font-size:.82rem;color:var(--cinza)}
+
+  footer{text-align:center;padding:24px;color:var(--cinza);font-size:.82rem}
+
+  @media(max-width:920px){
+    .wrap{flex-direction:column;padding:14px}
+    nav.lateral{width:100%;position:static;max-height:none;display:none}
+    nav.lateral.aberto{display:block}
+    .toggle-menu{display:block}
+    .progresso-topo,.anobadge{display:none}
+  }
+  /* Impressão */
+  @media print{
+    header,nav.lateral,.barra-acoes,.toggle-menu,footer,.btn{display:none!important}
+    .wrap{display:block;padding:0;max-width:none}
+    .card{box-shadow:none;border:1px solid #ccc;page-break-inside:avoid}
+    .opcao{border:1px solid #999} .feedback{display:none!important}
+    body{background:#fff}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 onclick="irHome()">
+    <span class="logo">Pt</span>
+    <span>Plataforma de Português
+      <span class="sub">5.º ao 12.º ano · Gramática · Leitura · Educação Literária · Escrita</span>
+    </span>
+  </h1>
+  <div class="top-dir">
+    <span class="anobadge" id="anobadge" style="display:none"></span>
+    <div class="progresso-topo" id="progTopo" style="display:none">
+      <div class="barra-mini"><span id="barraTopo"></span></div>
+      <span id="percTopo">0%</span>
+    </div>
+    <button class="toggle-menu" onclick="document.querySelector('nav.lateral').classList.toggle('aberto')">☰</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="lateral" id="nav" style="display:none"></nav>
+  <main id="main"></main>
+</div>
+
+<footer>
+  Plataforma de estudo de Português · 5.º–12.º ano · Conteúdos baseados nas Aprendizagens Essenciais (DGE).
+  O teu progresso e os teus textos ficam guardados neste dispositivo.
+</footer>
+
+<!-- ====== MOTOR ====== -->
+<script>
+window.CURRICULO = window.CURRICULO || {};
+
+const CORES = {'5':'#2e9e6b','6':'#3aa0a0','7':'#3a6ea5','8':'#2d4d7a','9':'#5a5bc2','10':'#7a5bc2','11':'#a14bb0','12':'#c2487a'};
+const CICLOS = [
+  {nome:'2.º Ciclo do Ensino Básico', anos:['5','6']},
+  {nome:'3.º Ciclo do Ensino Básico', anos:['7','8','9']},
+  {nome:'Ensino Secundário', anos:['10','11','12']}
+];
+const AREAS = {
+  gramatica:{nome:'Gramática', cor:'#3a6ea5'},
+  literaria:{nome:'Educação Literária', cor:'#7a5bc2'},
+  leitura:{nome:'Compreensão de Leitura', cor:'#2e9e6b'},
+  escrita:{nome:'Oficina de Escrita', cor:'#f3b73b'},
+  outros:{nome:'Praticar & Rever', cor:'#c2487a'}
+};
+
+let estado = JSON.parse(localStorage.getItem('plataformaPT') || '{}');
+estado.feitos = estado.feitos || {};
+estado.acertos = estado.acertos || {};
+estado.escrita = estado.escrita || {};
+function guardar(){ localStorage.setItem('plataformaPT', JSON.stringify(estado)); }
+
+let anoAtual = null;
+let moduloAtual = null;
+const RESP = {}; // respostas da sessão: RESP[ano+'/'+modId] = {qi:bool}
+
+const main = document.getElementById('main');
+const nav = document.getElementById('nav');
+
+/* ---------- HOME ---------- */
+function irHome(){
+  anoAtual = null; moduloAtual = null;
+  nav.style.display='none';
+  document.getElementById('anobadge').style.display='none';
+  document.getElementById('progTopo').style.display='none';
+  let html = `<section class="pagina"><div class="card hero">
+    <h2><span class="emoji">📚</span> Escolhe o teu ano de escolaridade</h2>
+    <p class="lead">Tudo o que precisas para estudar Português, do 5.º ao 12.º ano: explicações claras, exercícios com correção automática, textos para interpretar e oficinas de escrita.</p>
+  </div>`;
+  CICLOS.forEach(ciclo=>{
+    const anosDisp = ciclo.anos.filter(a=>CURRICULO[a]);
+    if(!anosDisp.length) return;
+    html += `<div class="card ciclo-bloco"><h3>${ciclo.nome}</h3><div class="grid-anos">`;
+    anosDisp.forEach(a=>{
+      const c = CURRICULO[a];
+      const cor = CORES[a];
+      const mods = c.modulos.filter(m=>m.area!=='outros');
+      const feitos = mods.filter(m=>estado.feitos[a+'/'+m.id]).length;
+      const perc = mods.length? Math.round(feitos/mods.length*100):0;
+      html += `<div class="cartao-ano" style="--cor:${cor}" onclick="abrirAno('${a}')">
+        <div class="ano-n">${a}.º</div><div class="ano-l">${c.subtitulo||'ano'}</div>
+        <div class="barra"><span style="width:${perc}%"></span></div>
+        <div class="ano-p">${perc}% concluído</div>
+        <div class="ano-mods">${mods.length} módulos · ${c.obras?c.obras.length+' obras':''}</div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  });
+  html += `</section>`;
+  main.innerHTML = html;
+  window.scrollTo(0,0);
+}
+
+/* ---------- ABRIR ANO ---------- */
+function abrirAno(a){
+  anoAtual = a; moduloAtual = null;
+  const c = CURRICULO[a];
+  document.getElementById('anobadge').style.display='inline-block';
+  document.getElementById('anobadge').textContent = a+'.º ano';
+  document.getElementById('progTopo').style.display='flex';
+  construirNav();
+  nav.style.display='block';
+  // página de visão geral do ano
+  renderVisaoAno();
+  atualizarProgresso();
+  window.scrollTo(0,0);
+}
+
+function construirNav(){
+  const c = CURRICULO[anoAtual];
+  let html = `<a class="voltar" onclick="irHome()">← Todos os anos</a>`;
+  html += `<a class="${moduloAtual===null?'ativo':''}" onclick="renderVisaoAno()"><span class="ic">🏠</span> Início do ${anoAtual}.º ano</a>`;
+  const ordem = ['gramatica','literaria','leitura','escrita'];
+  ordem.forEach(area=>{
+    const mods = c.modulos.filter(m=>m.area===area);
+    if(!mods.length) return;
+    html += `<div class="grupo"><h3>${AREAS[area].nome}</h3>`;
+    mods.forEach(m=>{
+      const feito = estado.feitos[anoAtual+'/'+m.id];
+      html += `<a data-mod="${m.id}" class="${feito?'feito':''} ${moduloAtual===m.id?'ativo':''}" onclick="abrirModulo('${m.id}')">
+        <span class="ic">${m.icone||'📄'}</span> ${m.titulo} <span class="check">✓</span></a>`;
+    });
+    html += `</div>`;
+  });
+  // praticar
+  html += `<div class="grupo"><h3>Praticar & Rever</h3>
+    <a class="${moduloAtual==='__teste'?'ativo':''}" onclick="abrirTeste()"><span class="ic">📝</span> Teste global</a>`;
+  if(c.obras) html += `<a class="${moduloAtual==='__obras'?'ativo':''}" onclick="abrirObras()"><span class="ic">📖</span> Obras do ano</a>`;
+  if(c.glossario) html += `<a class="${moduloAtual==='__gloss'?'ativo':''}" onclick="abrirGloss()"><span class="ic">📚</span> Glossário</a>`;
+  html += `</div>`;
+  nav.innerHTML = html;
+}
+
+/* ---------- VISÃO GERAL DO ANO ---------- */
+function renderVisaoAno(){
+  moduloAtual = null;
+  const c = CURRICULO[anoAtual];
+  const mods = c.modulos.filter(m=>m.area!=='outros');
+  const feitos = mods.filter(m=>estado.feitos[anoAtual+'/'+m.id]).length;
+  const perc = mods.length?Math.round(feitos/mods.length*100):0;
+  let acertosTot=0; Object.keys(estado.acertos).forEach(k=>{if(k.startsWith(anoAtual+'/'))acertosTot+=estado.acertos[k];});
+  let html = `<section class="pagina"><div class="card">
+    <h2><span class="emoji">${c.icone||'🎓'}</span> Português · ${anoAtual}.º ano</h2>
+    <p class="lead">${c.intro||''}</p>
+    <div class="stats">
+      <div class="stat"><div class="n">${feitos}/${mods.length}</div><div class="l">Módulos estudados</div></div>
+      <div class="stat"><div class="n">${acertosTot}</div><div class="l">Exercícios certos</div></div>
+      <div class="stat"><div class="n">${perc}%</div><div class="l">Progresso do ano</div></div>
+      <div class="stat"><div class="n">${anoAtual}.º</div><div class="l">${c.ciclo||''}</div></div>
+    </div>
+    <div class="caixa dica"><b class="rotulo">Como estudar</b>
+      Escolhe um módulo no menu. Lê a explicação e faz o quiz no fim — acertando ≥70% o módulo fica com ✓.
+      Na <b>Oficina de Escrita</b> treinas a redação; na <b>Compreensão de Leitura</b> interpretas textos como num teste.</div>
+  </div>`;
+  // cartões por área
+  ['gramatica','literaria','leitura','escrita'].forEach(area=>{
+    const ms = c.modulos.filter(m=>m.area===area);
+    if(!ms.length) return;
+    html += `<div class="card"><h3 class="bloco">${areaEmoji(area)} ${AREAS[area].nome}</h3><div class="grid-cartoes">`;
+    ms.forEach(m=>{
+      const feito = estado.feitos[anoAtual+'/'+m.id];
+      html += `<div class="cartao-tema ${feito?'feito':''}" style="--c:${AREAS[area].cor}" onclick="abrirModulo('${m.id}')">
+        <div class="ic">${m.icone||'📄'}</div><h4>${m.titulo}</h4><p>${m.resumo||''}</p>
+        <div class="estado">${feito?'✓ Estudado':'Por estudar'}</div></div>`;
+    });
+    html += `</div></div>`;
+  });
+  html += `</section>`;
+  main.innerHTML = html;
+  construirNav(); atualizarProgresso();
+  window.scrollTo(0,0);
+}
+function areaEmoji(a){return {gramatica:'🔤',literaria:'📖',leitura:'🔍',escrita:'✍️'}[a]||'📄';}
+
+/* ---------- ABRIR MÓDULO ---------- */
+function abrirModulo(id){
+  const c = CURRICULO[anoAtual];
+  const m = c.modulos.find(x=>x.id===id);
+  if(!m) return;
+  moduloAtual = id;
+  let html = `<section class="pagina">`;
+  if(m.texto){ html += renderLeitura(m); }
+  else if(m.enunciado){ html += renderEscrita(m); }
+  else { html += renderTeoria(m); }
+  html += `</section>`;
+  main.innerHTML = html;
+  if(m.quiz) montarQuiz('quiz-'+id, m.quiz, id);
+  if(m.enunciado) iniciarEscrita(m);
+  construirNav();
+  document.querySelector('nav.lateral').classList.remove('aberto');
+  window.scrollTo(0,0);
+}
+
+function renderTeoria(m){
+  let h = `<div class="card">
+    <h2><span class="emoji">${m.icone||'📄'}</span> ${m.titulo}</h2>
+    ${m.html||''}`;
+  h += `<div class="barra-acoes"><button class="btn sec" onclick="window.print()">🖨️ Imprimir ficha</button></div></div>`;
+  if(m.quiz) h += `<div class="card" id="quiz-${m.id}"></div>`;
+  return h;
+}
+function renderLeitura(m){
+  let h = `<div class="card">
+    <h2><span class="emoji">${m.icone||'🔍'}</span> ${m.titulo}</h2>
+    <p class="lead">${m.lead||'Lê o texto com atenção e responde às questões.'}</p>
+    <div class="texto-leitura"><h4>${m.texto.titulo}</h4><div class="autor">${m.texto.autor||''}</div>${m.texto.corpo}</div>
+    <div class="barra-acoes"><button class="btn sec" onclick="window.print()">🖨️ Imprimir texto</button></div></div>`;
+  if(m.quiz) h += `<div class="card" id="quiz-${m.id}"></div>`;
+  return h;
+}
+function renderEscrita(m){
+  return `<div class="card">
+    <h2><span class="emoji">${m.icone||'✍️'}</span> ${m.titulo}</h2>
+    <p class="lead">${m.lead||''}</p>
+    <div class="caixa exemplo"><b class="rotulo">Proposta de escrita</b>${m.enunciado}</div>
+    <h4 class="sub">✅ Critérios de avaliação</h4>
+    <div class="criterios"><ul>${(m.criterios||[]).map(c=>`<li>${c}</li>`).join('')}</ul></div>
+    ${m.modelo?`<div class="caixa nota"><b class="rotulo">Estrutura sugerida</b>${m.modelo}</div>`:''}
+    <h4 class="sub">📝 Escreve aqui o teu texto</h4>
+    <textarea class="redacao" id="red-${m.id}" placeholder="Começa a escrever..."></textarea>
+    <div class="contador"><span id="cont-${m.id}">0</span> palavras &nbsp;·&nbsp; <span class="guardado" id="gv-${m.id}">✓ guardado</span></div>
+    <div class="barra-acoes">
+      <button class="btn" onclick="marcarEscritaFeita('${m.id}')">✓ Concluí esta oficina</button>
+      <button class="btn sec" onclick="window.print()">🖨️ Imprimir</button>
+    </div></div>`;
+}
+function iniciarEscrita(m){
+  const ta = document.getElementById('red-'+m.id);
+  const key = anoAtual+'/'+m.id;
+  if(estado.escrita[key]) ta.value = estado.escrita[key];
+  const atualiza=()=>{
+    const txt = ta.value.trim();
+    document.getElementById('cont-'+m.id).textContent = txt? txt.split(/\s+/).length:0;
+  };
+  atualiza();
+  let t;
+  ta.addEventListener('input',()=>{
+    atualiza();
+    clearTimeout(t);
+    t=setTimeout(()=>{
+      estado.escrita[key]=ta.value; guardar();
+      const g=document.getElementById('gv-'+m.id); g.classList.add('mostra');
+      setTimeout(()=>g.classList.remove('mostra'),1500);
+    },600);
+  });
+}
+function marcarEscritaFeita(id){
+  estado.feitos[anoAtual+'/'+id]=true; guardar();
+  construirNav(); atualizarProgresso();
+  const b=event.target; b.textContent='✓ Concluída!'; b.disabled=true;
+}
+
+/* ---------- QUIZ ---------- */
+function montarQuiz(idCont, perguntas, modId){
+  const cont = document.getElementById(idCont);
+  if(!cont) return;
+  RESP[anoAtual+'/'+modId] = {};
+  let html = `<h3 class="bloco">📝 Verifica o que aprendeste</h3>
+    <p class="lead">Responde às ${perguntas.length} questões. Clica numa opção para veres logo a correção.</p>`;
+  perguntas.forEach((p,i)=>{
+    html += `<div class="pergunta" data-i="${i}">
+      <div class="q"><span class="num">${i+1}</span><span>${p.q}</span></div><div class="opcoes">`;
+    p.o.forEach((op,j)=>{
+      html += `<div class="opcao" onclick="responder('${modId}',${i},${j})"><span class="letra">${'ABCD'[j]}</span><span>${op}</span></div>`;
+    });
+    html += `</div><div class="feedback"></div></div>`;
+  });
+  html += `<div class="barra-acoes"><button class="btn sec" onclick="abrirModulo('${modId}')">↻ Recomeçar</button></div>
+    <div class="resultado-quiz" id="res-${modId}"></div>`;
+  cont.innerHTML = html;
+}
+function responder(modId, qi, ji){
+  const c = CURRICULO[anoAtual];
+  const m = c.modulos.find(x=>x.id===modId);
+  const perguntas = m? m.quiz : null;
+  if(!perguntas) return;
+  const p = perguntas[qi];
+  const bloco = document.querySelector(`#quiz-${modId} .pergunta[data-i="${qi}"]`);
+  if(!bloco || bloco.dataset.r) return;
+  bloco.dataset.r='1';
+  const ops = bloco.querySelectorAll('.opcao');
+  ops.forEach(o=>o.classList.add('bloqueada'));
+  ops[p.c].classList.add('certa');
+  if(ji!==p.c) ops[ji].classList.add('errada');
+  const fb = bloco.querySelector('.feedback');
+  fb.className='feedback mostra '+(ji===p.c?'ok':'no');
+  fb.innerHTML=(ji===p.c?'✅ <b>Certo!</b> ':'❌ <b>Não é essa.</b> ')+(p.e||'');
+  const key=anoAtual+'/'+modId;
+  RESP[key][qi]=(ji===p.c);
+  if(Object.keys(RESP[key]).length===perguntas.length) concluirQuiz(modId, perguntas);
+}
+function concluirQuiz(modId, perguntas){
+  const key=anoAtual+'/'+modId;
+  const certas=Object.values(RESP[key]).filter(Boolean).length;
+  const total=perguntas.length;
+  const perc=Math.round(certas/total*100);
+  const res=document.getElementById('res-'+modId);
+  if(res){
+    res.className='resultado-quiz mostra';
+    res.style.background = perc>=80?'var(--verde-claro)':perc>=50?'#fff7e6':'var(--vermelho-claro)';
+    const t = perc>=80?'🎉 Excelente!':perc>=50?'👍 Bom — revê o que falhaste.':'📚 Revê a matéria e tenta de novo.';
+    res.innerHTML=`${t}<br>Acertaste <b>${certas}</b> de <b>${total}</b> (${perc}%).`;
+  }
+  if(perc>=70) estado.feitos[key]=true;
+  estado.acertos[key]=certas;
+  guardar(); construirNav(); atualizarProgresso();
+}
+
+/* ---------- TESTE GLOBAL ---------- */
+let TESTE=[];
+function abrirTeste(){
+  moduloAtual='__teste';
+  const c=CURRICULO[anoAtual];
+  TESTE=[];
+  c.modulos.forEach(m=>{ if(m.quiz && m.quiz.length){ TESTE.push(m.quiz[0]); if(m.quiz[1])TESTE.push(m.quiz[1]); }});
+  RESP[anoAtual+'/__teste']={};
+  let html=`<section class="pagina"><div class="card">
+    <h2><span class="emoji">📝</span> Teste global · ${anoAtual}.º ano</h2>
+    <p class="lead">Perguntas de todos os módulos. Tenta responder sem consultar! No fim vês a tua pontuação.</p>
+    <div id="quiz-__teste"></div></div></section>`;
+  main.innerHTML=html;
+  // construir manualmente (perguntas vêm de vários módulos)
+  const cont=document.getElementById('quiz-__teste');
+  let h='';
+  TESTE.forEach((p,i)=>{
+    h+=`<div class="pergunta" data-i="${i}"><div class="q"><span class="num">${i+1}</span><span>${p.q}</span></div><div class="opcoes">`;
+    p.o.forEach((op,j)=>{h+=`<div class="opcao" onclick="responderTeste(${i},${j})"><span class="letra">${'ABCD'[j]}</span><span>${op}</span></div>`;});
+    h+=`</div><div class="feedback"></div></div>`;
+  });
+  h+=`<div class="barra-acoes"><button class="btn sec" onclick="abrirTeste()">↻ Recomeçar</button><button class="btn sec" onclick="window.print()">🖨️ Imprimir</button></div><div class="resultado-quiz" id="res-__teste"></div>`;
+  cont.innerHTML=h;
+  construirNav(); window.scrollTo(0,0);
+}
+function responderTeste(qi,ji){
+  const p=TESTE[qi];
+  const bloco=document.querySelector(`#quiz-__teste .pergunta[data-i="${qi}"]`);
+  if(!bloco||bloco.dataset.r)return; bloco.dataset.r='1';
+  const ops=bloco.querySelectorAll('.opcao'); ops.forEach(o=>o.classList.add('bloqueada'));
+  ops[p.c].classList.add('certa'); if(ji!==p.c)ops[ji].classList.add('errada');
+  const fb=bloco.querySelector('.feedback'); fb.className='feedback mostra '+(ji===p.c?'ok':'no');
+  fb.innerHTML=(ji===p.c?'✅ <b>Certo!</b> ':'❌ <b>Não.</b> ')+(p.e||'');
+  const key=anoAtual+'/__teste'; RESP[key][qi]=(ji===p.c);
+  if(Object.keys(RESP[key]).length===TESTE.length){
+    const certas=Object.values(RESP[key]).filter(Boolean).length, total=TESTE.length, perc=Math.round(certas/total*100);
+    const res=document.getElementById('res-__teste'); res.className='resultado-quiz mostra';
+    res.style.background=perc>=80?'var(--verde-claro)':perc>=50?'#fff7e6':'var(--vermelho-claro)';
+    const t=perc>=80?'🎉 Excelente domínio da matéria!':perc>=50?'👍 Bom — revê os temas que falhaste.':'📚 Continua a estudar os módulos.';
+    res.innerHTML=`${t}<br>Acertaste <b>${certas}</b> de <b>${total}</b> (${perc}%).`;
+  }
+}
+
+/* ---------- OBRAS ---------- */
+function abrirObras(){
+  moduloAtual='__obras';
+  const c=CURRICULO[anoAtual];
+  let html=`<section class="pagina"><div class="card">
+    <h2><span class="emoji">📖</span> Obras e textos · ${anoAtual}.º ano</h2>
+    <p class="lead">Lista de referência das obras e textos de educação literária deste ano (Aprendizagens Essenciais / PNL).</p>
+    <div class="obra-lista">`;
+  c.obras.forEach(o=>{ html+=`<div class="obra"><b>${o.t}</b><br><span>${o.a||''}${o.g?' · '+o.g:''}</span></div>`;});
+  html+=`</div><div class="barra-acoes"><button class="btn sec" onclick="window.print()">🖨️ Imprimir lista</button></div></div></section>`;
+  main.innerHTML=html; construirNav(); window.scrollTo(0,0);
+}
+/* ---------- GLOSSÁRIO ---------- */
+function abrirGloss(){
+  moduloAtual='__gloss';
+  const c=CURRICULO[anoAtual];
+  let html=`<section class="pagina"><div class="card">
+    <h2><span class="emoji">📚</span> Glossário · ${anoAtual}.º ano</h2>
+    <p class="lead">Os termos essenciais para revisão antes do teste.</p><dl class="glossario">`;
+  c.glossario.forEach(g=>{ html+=`<dt>${g.t}</dt><dd>${g.d}</dd>`;});
+  html+=`</dl><div class="barra-acoes"><button class="btn sec" onclick="window.print()">🖨️ Imprimir</button></div></div></section>`;
+  main.innerHTML=html; construirNav(); window.scrollTo(0,0);
+}
+
+/* ---------- PROGRESSO ---------- */
+function atualizarProgresso(){
+  if(!anoAtual)return;
+  const c=CURRICULO[anoAtual];
+  const mods=c.modulos.filter(m=>m.area!=='outros');
+  const feitos=mods.filter(m=>estado.feitos[anoAtual+'/'+m.id]).length;
+  const perc=mods.length?Math.round(feitos/mods.length*100):0;
+  document.getElementById('barraTopo').style.width=perc+'%';
+  document.getElementById('percTopo').textContent=perc+'%';
+}
+
+/* ---------- ARRANQUE ---------- */
+window.addEventListener('DOMContentLoaded',()=>{
+  if(Object.keys(CURRICULO).length===0){
+    main.innerHTML='<div class="card"><h2>⚠️ Dados não carregados</h2><p>Os ficheiros da pasta <b>dados/</b> não foram encontrados. Abre o <b>index.html</b> a partir da pasta completa.</p></div>';
+    return;
+  }
+  irHome();
+});
+</script>
+
+<!-- ====== DADOS DE CADA ANO ====== -->
+<script src="dados/dados-5.js"></script>
+<script src="dados/dados-6.js"></script>
+<script src="dados/dados-7.js"></script>
+<script src="dados/dados-8.js"></script>
+<script src="dados/dados-9.js"></script>
+<script src="dados/dados-10.js"></script>
+<script src="dados/dados-11.js"></script>
+<script src="dados/dados-12.js"></script>
+</body>
+</html>
