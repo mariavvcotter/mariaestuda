@@ -129,7 +129,6 @@
   .opt.correct{background:rgba(46,207,164,0.25);border-color:var(--mint);}
   .opt.wrong{background:rgba(255,92,92,0.25);border-color:var(--coral);}
   .opt.removed{opacity:.25;pointer-events:none;text-decoration:line-through;}
-  .opt.selected{border-color:var(--sky);background:rgba(0,174,239,0.18);box-shadow:0 0 0 2px rgba(0,174,239,0.4) inset;}
   .opt:disabled{cursor:default;}
 
   .jokers{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
@@ -145,7 +144,7 @@
   }
   .joker-btn:disabled{opacity:.3;cursor:not-allowed;border-color:#555;color:#777;background:none;}
 
-  .controls{display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:10px;flex-wrap:wrap;}
+  .controls{display:flex;justify-content:space-between;align-items:center;margin-top:20px;}
 
   .history{max-height:220px;overflow-y:auto;font-size:.85rem;}
   .history-row{
@@ -184,7 +183,7 @@
   <h2>Equipas</h2>
   <div class="teams-row" id="teamsRow"></div>
   <div class="add-team">
-    <input type="text" id="newTeamName" placeholder="Nome da equipa" onkeydown="if(event.key==='Enter') addTeam();">
+    <input type="text" id="newTeamName" placeholder="Nome da equipa">
     <button class="btn" onclick="addTeam()">Adicionar equipa</button>
   </div>
 </div>
@@ -209,7 +208,6 @@
 
     <div class="controls">
       <button class="btn ghost" onclick="resetGame()">Reiniciar jogo</button>
-      <button class="btn" id="confirmBtn" onclick="confirmAnswer()" disabled>Confirmar resposta</button>
       <button class="btn" id="nextBtn" onclick="nextQuestion()">Próxima pergunta</button>
     </div>
   </div>
@@ -218,7 +216,7 @@
 <div class="panel">
   <h2>Histórico (guardado neste dispositivo)</h2>
   <div class="history" id="historyBox"><div class="empty">Sem respostas registadas ainda.</div></div>
-  <div class="footer-note">O histórico fica guardado automaticamente quando este artifact corre dentro do Claude.ai. Se abrires este ficheiro fora do Claude.ai (download direto), o jogo funciona normalmente mas sem guardar entre sessões.</div>
+  <div class="footer-note">O histórico e as equipas ficam guardados automaticamente — podes fechar e voltar a abrir esta página.</div>
 </div>
 
 <script>
@@ -243,41 +241,34 @@ const QUESTIONS = [
 
 // ---------- Estado ----------
 let state = {
-  teams: [],          // {id, name, score, jokers:{5050:1, skip:1, ajuda:1}}
+  teams: [],          // {id, name, score, jokers:{5050:2, skip:2, ajuda:2}}
   activeTeamId: null,
   qOrder: [],
   qPointer: -1,
   currentRemoved: [],  // indices removed by 50/50
   answeredCurrent: false,
   usedJokerOnCurrent: false, // se true, resposta certa vale 1 ponto em vez de 2
-  selectedOption: null // opção escolhida mas ainda não confirmada
   history: []          // {team, question, result:'ok'|'fail'|'skip', date}
 };
 
 const STORAGE_KEY = 'joker-game-state';
 const HISTORY_KEY = 'joker-game-history';
-const HAS_STORAGE = (typeof window !== 'undefined' && window.storage && typeof window.storage.get === 'function');
 
 async function loadState(){
-  if(HAS_STORAGE){
-    try{
-      const s = await window.storage.get(STORAGE_KEY);
-      if(s && s.value){
-        const parsed = JSON.parse(s.value);
-        state.teams = parsed.teams || [];
-        state.activeTeamId = parsed.activeTeamId || null;
-        state.qOrder = parsed.qOrder || [];
-        state.qPointer = (typeof parsed.qPointer === 'number') ? parsed.qPointer : -1;
-      }
-    }catch(e){ /* sem estado anterior */ }
-    try{
-      const h = await window.storage.get(HISTORY_KEY);
-      if(h && h.value){ state.history = JSON.parse(h.value); }
-    }catch(e){ state.history = []; }
-  } else {
-    console.warn('window.storage não está disponível neste contexto — o jogo funciona, mas sem guardar histórico entre sessões.');
-    setStatus('Aviso: a guardar apenas durante esta sessão (sem persistência neste contexto).');
-  }
+  try{
+    const s = await window.storage.get(STORAGE_KEY);
+    if(s && s.value){
+      const parsed = JSON.parse(s.value);
+      state.teams = parsed.teams || [];
+      state.activeTeamId = parsed.activeTeamId || null;
+      state.qOrder = parsed.qOrder || [];
+      state.qPointer = (typeof parsed.qPointer === 'number') ? parsed.qPointer : -1;
+    }
+  }catch(e){ /* sem estado anterior */ }
+  try{
+    const h = await window.storage.get(HISTORY_KEY);
+    if(h && h.value){ state.history = JSON.parse(h.value); }
+  }catch(e){ state.history = []; }
   if(state.qOrder.length === 0){
     state.qOrder = shuffle([...Array(QUESTIONS.length).keys()]);
   }
@@ -285,7 +276,6 @@ async function loadState(){
 }
 
 async function saveState(){
-  if(!HAS_STORAGE) return;
   try{
     await window.storage.set(STORAGE_KEY, JSON.stringify({
       teams: state.teams,
@@ -297,7 +287,6 @@ async function saveState(){
 }
 
 async function saveHistory(){
-  if(!HAS_STORAGE) return;
   try{
     await window.storage.set(HISTORY_KEY, JSON.stringify(state.history));
   }catch(e){ console.error('Erro a guardar histórico', e); }
@@ -314,20 +303,15 @@ function shuffle(arr){
 function newTeamJokers(){ return {"5050":2,"skip":2,"ajuda":2}; }
 
 function addTeam(){
-  try{
-    const input = document.getElementById('newTeamName');
-    const name = input.value.trim();
-    if(!name) return;
-    const id = 't'+Date.now();
-    state.teams.push({id, name, score:0, jokers:newTeamJokers()});
-    if(!state.activeTeamId) state.activeTeamId = id;
-    input.value='';
-    saveState();
-    render();
-  }catch(err){
-    console.error('Erro ao adicionar equipa:', err);
-    setStatus('Ocorreu um erro ao adicionar a equipa — abre a consola do browser (F12) para detalhes.');
-  }
+  const input = document.getElementById('newTeamName');
+  const name = input.value.trim();
+  if(!name) return;
+  const id = 't'+Date.now();
+  state.teams.push({id, name, score:0, jokers:newTeamJokers()});
+  if(!state.activeTeamId) state.activeTeamId = id;
+  input.value='';
+  saveState();
+  render();
 }
 
 function removeTeam(id){
@@ -361,7 +345,6 @@ function nextQuestion(){
   state.currentRemoved = [];
   state.answeredCurrent = false;
   state.usedJokerOnCurrent = false;
-  state.selectedOption = null;
   setStatus("");
   saveState();
   render();
@@ -371,28 +354,16 @@ function activeTeam(){
   return state.teams.find(t=>t.id===state.activeTeamId);
 }
 
-function selectOption(optIndex){
+function answer(optIndex){
   if(state.answeredCurrent) return;
-  if(state.currentRemoved.includes(optIndex)) return;
-  state.selectedOption = optIndex;
-  const q = currentQuestion();
-  renderOptions(q);
-  document.getElementById('confirmBtn').disabled = false;
-  setStatus("Resposta selecionada — confirma quando a equipa estiver decidida.");
-}
-
-function confirmAnswer(){
-  if(state.answeredCurrent || state.selectedOption===null) return;
   const q = currentQuestion();
   const team = activeTeam();
   if(!q || !team) return;
   state.answeredCurrent = true;
-  const correct = state.selectedOption === q.correct;
+  const correct = optIndex === q.correct;
   if(correct) team.score += (state.usedJokerOnCurrent ? 1 : 2);
   logHistory(team.name, q.q, correct ? 'ok' : 'fail');
-  renderOptions(q, state.selectedOption);
-  document.getElementById('confirmBtn').disabled = true;
-  setStatus(correct ? "Correto!" : "Errado.");
+  renderOptions(q, optIndex);
   saveState();
   renderTeams();
   renderHistory();
@@ -412,7 +383,6 @@ function useJoker(type){
     shuffle(wrongIdx);
     state.currentRemoved = wrongIdx.slice(0,2);
     state.usedJokerOnCurrent = true;
-    state.selectedOption = null;
     setStatus(team.name+" usou o joker 50/50 — esta pergunta vale 1 ponto se acertar.");
     renderOptions(q);
   } else if(type==='skip'){
@@ -453,7 +423,6 @@ function resetGame(){
   state.currentRemoved = [];
   state.answeredCurrent = false;
   state.usedJokerOnCurrent = false;
-  state.selectedOption = null;
   document.getElementById('winnerBanner').innerHTML='';
   setStatus("Jogo reiniciado.");
   saveState();
@@ -495,14 +464,12 @@ function renderQuestion(){
       ? "Acabaram as perguntas do banco."
       : "Carrega em \"Próxima pergunta\" para começar.";
     document.getElementById('optionsBox').innerHTML = '';
-    document.getElementById('confirmBtn').disabled = true;
     updateJokerButtons(null);
     return;
   }
   document.getElementById('qText').textContent = q.q;
   renderOptions(q);
   updateJokerButtons(activeTeam());
-  document.getElementById('confirmBtn').disabled = state.answeredCurrent || state.selectedOption===null;
 }
 
 function renderOptions(q, answeredIndex){
@@ -518,8 +485,7 @@ function renderOptions(q, answeredIndex){
       if(i===q.correct) b.classList.add('correct');
       if(answeredIndex!==undefined && i===answeredIndex && i!==q.correct) b.classList.add('wrong');
     } else {
-      if(state.selectedOption===i) b.classList.add('selected');
-      b.onclick = ()=>selectOption(i);
+      b.onclick = ()=>answer(i);
     }
     box.appendChild(b);
   });
