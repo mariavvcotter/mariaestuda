@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<title>JOKER · English Summer Days</title>
+<style>
+  :root{
+    --navy:#1A1A2E;
+    --navy2:#23234a;
+    --sky:#00AEEF;
+    --yellow:#FFCC00;
+    --coral:#FF5C5C;
+    --mint:#2ECFA4;
+    --white:#F7F8FC;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:radial-gradient(circle at 50% -10%, var(--navy2), var(--navy) 60%);
+    font-family:'Outfit',Arial,sans-serif;
+    color:var(--white);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:24px 16px 60px;
+  }
+  h1{
+    font-family:'Big Shoulders Display','Outfit',sans-serif;
+    font-weight:800;
+    font-size:clamp(2rem,6vw,3.2rem);
+    letter-spacing:1px;
+    color:var(--yellow);
+    margin:4px 0 0;
+    text-shadow:0 4px 0 var(--coral);
+  }
+  .sub{
+    color:#aeb4d0;
+    margin-bottom:20px;
+    font-size:.95rem;
+  }
+  .panel{
+    width:100%;
+    max-width:760px;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:18px;
+  }
+  .panel h2{
+    margin:0 0 12px;
+    font-size:1rem;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--mint);
+  }
+  .teams-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;}
+  .team-pill{
+    background:rgba(255,255,255,0.06);
+    border:2px solid transparent;
+    border-radius:999px;
+    padding:8px 16px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:600;
+    transition:.15s;
+  }
+  .team-pill.active{border-color:var(--yellow);background:rgba(255,204,0,0.12);}
+  .team-pill .score{color:var(--yellow);font-weight:800;}
+  .team-pill button{
+    background:none;border:none;color:#c9577e;cursor:pointer;font-size:.85rem;padding:0 2px;
+  }
+  .add-team{display:flex;gap:8px;margin-top:4px;}
+  input[type=text],input[type=number]{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.15);
+    color:var(--white);
+    border-radius:10px;
+    padding:9px 12px;
+    font-family:inherit;
+    font-size:.95rem;
+  }
+  button.btn{
+    background:var(--sky);
+    border:none;
+    color:var(--navy);
+    font-weight:700;
+    border-radius:10px;
+    padding:9px 16px;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.9rem;
+    transition:.15s;
+  }
+  button.btn:hover{transform:translateY(-1px);}
+  button.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.25);color:var(--white);}
+  button.btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+
+  .question-box{
+    background:linear-gradient(135deg,var(--navy2),#161630);
+    border-radius:20px;
+    padding:26px;
+    border:1px solid rgba(255,255,255,0.08);
+  }
+  .qmeta{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;color:#9aa3c9;font-size:.85rem;}
+  .qtext{
+    font-size:1.3rem;
+    font-weight:700;
+    margin:6px 0 20px;
+    line-height:1.35;
+  }
+  .options{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media (max-width:560px){.options{grid-template-columns:1fr;}}
+  .opt{
+    background:rgba(255,255,255,0.05);
+    border:2px solid rgba(255,255,255,0.12);
+    border-radius:12px;
+    padding:14px 16px;
+    cursor:pointer;
+    font-size:1rem;
+    text-align:left;
+    color:var(--white);
+    transition:.15s;
+  }
+  .opt:hover{border-color:var(--sky);}
+  .opt.correct{background:rgba(46,207,164,0.25);border-color:var(--mint);}
+  .opt.wrong{background:rgba(255,92,92,0.25);border-color:var(--coral);}
+  .opt.removed{opacity:.25;pointer-events:none;text-decoration:line-through;}
+  .opt.selected{border-color:var(--sky);background:rgba(0,174,239,0.18);box-shadow:0 0 0 2px rgba(0,174,239,0.4) inset;}
+  .opt:disabled{cursor:default;}
+
+  .jokers{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
+  .joker-btn{
+    background:rgba(255,204,0,0.12);
+    border:1px solid var(--yellow);
+    color:var(--yellow);
+    border-radius:10px;
+    padding:9px 14px;
+    font-weight:700;
+    cursor:pointer;
+    font-size:.85rem;
+  }
+  .joker-btn:disabled{opacity:.3;cursor:not-allowed;border-color:#555;color:#777;background:none;}
+
+  .controls{display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:10px;flex-wrap:wrap;}
+
+  .history{max-height:220px;overflow-y:auto;font-size:.85rem;}
+  .history-row{
+    display:flex;justify-content:space-between;gap:8px;
+    padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06);color:#cfd3ea;
+  }
+  .history-row b{color:var(--white);}
+  .badge{
+    display:inline-block;padding:2px 8px;border-radius:999px;font-size:.7rem;font-weight:700;
+  }
+  .badge.ok{background:rgba(46,207,164,0.2);color:var(--mint);}
+  .badge.fail{background:rgba(255,92,92,0.2);color:var(--coral);}
+  .empty{color:#8a90b3;font-style:italic;font-size:.9rem;}
+  .winner-banner{
+    background:linear-gradient(90deg,var(--yellow),var(--coral));
+    color:var(--navy);
+    font-weight:800;
+    padding:14px 18px;
+    border-radius:14px;
+    text-align:center;
+    margin-bottom:16px;
+    font-size:1.1rem;
+  }
+  .footer-note{color:#7d83a8;font-size:.78rem;margin-top:6px;}
+  .status-msg{font-size:.85rem;color:var(--mint);min-height:1.2em;margin-top:8px;}
+</style>
+</head>
+<body>
+
+<h1>🎯 JOKER</h1>
+<div class="sub">English Summer Days · Concurso de Perguntas</div>
+
+<div id="winnerBanner"></div>
+
+<div class="panel">
+  <h2>Equipas</h2>
+  <div class="teams-row" id="teamsRow"></div>
+  <div class="add-team">
+    <input type="text" id="newTeamName" placeholder="Nome da equipa" onkeydown="if(event.key==='Enter') addTeam();">
+    <button class="btn" onclick="addTeam()">Adicionar equipa</button>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>Pergunta</h2>
+  <div class="question-box">
+    <div class="qmeta">
+      <span id="qIndexLabel">Pergunta 1 de 0</span>
+      <span id="pointsLabel" style="color:var(--yellow);font-weight:700;">Vale 2 pts</span>
+      <span id="activeTeamLabel">Equipa: —</span>
+    </div>
+    <div class="qtext" id="qText">Adiciona equipas e carrega em "Próxima pergunta" para começar.</div>
+    <div class="options" id="optionsBox"></div>
+
+    <div class="jokers">
+      <button class="joker-btn" id="joker5050" onclick="useJoker('5050')">50/50</button>
+      <button class="joker-btn" id="jokerSkip" onclick="useJoker('skip')">Saltar pergunta</button>
+      <button class="joker-btn" id="jokerTeam" onclick="useJoker('ajuda')">Ajuda da equipa</button>
+    </div>
+    <div class="status-msg" id="statusMsg"></div>
+
+    <div class="controls">
+      <button class="btn ghost" onclick="resetGame()">Reiniciar jogo</button>
+      <button class="btn" id="confirmBtn" onclick="confirmAnswer()" disabled>Confirmar resposta</button>
+      <button class="btn" id="nextBtn" onclick="nextQuestion()">Próxima pergunta</button>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>Histórico (guardado neste dispositivo)</h2>
+  <div class="history" id="historyBox"><div class="empty">Sem respostas registadas ainda.</div></div>
+  <div class="footer-note">O histórico fica guardado automaticamente quando este artifact corre dentro do Claude.ai. Se abrires este ficheiro fora do Claude.ai (download direto), o jogo funciona normalmente mas sem guardar entre sessões.</div>
+</div>
+
+<script>
+// ---------- Banco de perguntas (dificuldade crescente) ----------
+const QUESTIONS = [
+  {q:"What is the English word for 'praia'?", opts:["Beach","Bench","Bridge","Branch"], correct:0},
+  {q:"Choose the correct sentence:", opts:["She have a dog.","She has a dog.","She having a dog.","She is have a dog."], correct:1},
+  {q:"What's the opposite of 'hot'?", opts:["Warm","Cold","Wet","Tall"], correct:1},
+  {q:"Complete: 'I ___ going to the park tomorrow.'", opts:["am","is","be","was"], correct:0},
+  {q:"Which word is a fruit?", opts:["Carrot","Pineapple","Potato","Onion"], correct:1},
+  {q:"What is the plural of 'child'?", opts:["Childs","Childes","Children","Childen"], correct:2},
+  {q:"'She is taller ___ her brother.'", opts:["that","then","than","as"], correct:2},
+  {q:"What do you call a person who teaches?", opts:["Student","Teacher","Doctor","Driver"], correct:1},
+  {q:"Choose the correct past tense of 'go':", opts:["Goed","Went","Gone","Going"], correct:1},
+  {q:"What is the capital of England?", opts:["Manchester","Liverpool","London","Birmingham"], correct:2},
+  {q:"'If I ___ rich, I would travel the world.'", opts:["am","was","were","be"], correct:2},
+  {q:"Which sentence uses the present perfect correctly?", opts:["I have seen that movie.","I have see that movie.","I has seen that movie.","I having seen that movie."], correct:0},
+  {q:"What's a synonym for 'happy'?", opts:["Sad","Angry","Joyful","Tired"], correct:2},
+  {q:"'They ___ been friends since 2020.'", opts:["have","has","had","having"], correct:0},
+  {q:"Choose the correctly spelled word:", opts:["Recieve","Receive","Receeve","Receve"], correct:1}
+];
+
+// ---------- Estado ----------
+let state = {
+  teams: [],          // {id, name, score, jokers:{5050:1, skip:1, ajuda:1}}
+  activeTeamId: null,
+  qOrder: [],
+  qPointer: -1,
+  currentRemoved: [],  // indices removed by 50/50
+  answeredCurrent: false,
+  usedJokerOnCurrent: false, // se true, resposta certa vale 1 ponto em vez de 2
+  selectedOption: null // opção escolhida mas ainda não confirmada
+  history: []          // {team, question, result:'ok'|'fail'|'skip', date}
+};
+
+const STORAGE_KEY = 'joker-game-state';
+const HISTORY_KEY = 'joker-game-history';
+const HAS_STORAGE = (typeof window !== 'undefined' && window.storage && typeof window.storage.get === 'function');
+
+async function loadState(){
+  if(HAS_STORAGE){
+    try{
+      const s = await window.storage.get(STORAGE_KEY);
+      if(s && s.value){
+        const parsed = JSON.parse(s.value);
+        state.teams = parsed.teams || [];
+        state.activeTeamId = parsed.activeTeamId || null;
+        state.qOrder = parsed.qOrder || [];
+        state.qPointer = (typeof parsed.qPointer === 'number') ? parsed.qPointer : -1;
+      }
+    }catch(e){ /* sem estado anterior */ }
+    try{
+      const h = await window.storage.get(HISTORY_KEY);
+      if(h && h.value){ state.history = JSON.parse(h.value); }
+    }catch(e){ state.history = []; }
+  } else {
+    console.warn('window.storage não está disponível neste contexto — o jogo funciona, mas sem guardar histórico entre sessões.');
+    setStatus('Aviso: a guardar apenas durante esta sessão (sem persistência neste contexto).');
+  }
+  if(state.qOrder.length === 0){
+    state.qOrder = shuffle([...Array(QUESTIONS.length).keys()]);
+  }
+  render();
+}
+
+async function saveState(){
+  if(!HAS_STORAGE) return;
+  try{
+    await window.storage.set(STORAGE_KEY, JSON.stringify({
+      teams: state.teams,
+      activeTeamId: state.activeTeamId,
+      qOrder: state.qOrder,
+      qPointer: state.qPointer
+    }));
+  }catch(e){ console.error('Erro a guardar estado', e); }
+}
+
+async function saveHistory(){
+  if(!HAS_STORAGE) return;
+  try{
+    await window.storage.set(HISTORY_KEY, JSON.stringify(state.history));
+  }catch(e){ console.error('Erro a guardar histórico', e); }
+}
+
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+function newTeamJokers(){ return {"5050":2,"skip":2,"ajuda":2}; }
+
+function addTeam(){
+  try{
+    const input = document.getElementById('newTeamName');
+    const name = input.value.trim();
+    if(!name) return;
+    const id = 't'+Date.now();
+    state.teams.push({id, name, score:0, jokers:newTeamJokers()});
+    if(!state.activeTeamId) state.activeTeamId = id;
+    input.value='';
+    saveState();
+    render();
+  }catch(err){
+    console.error('Erro ao adicionar equipa:', err);
+    setStatus('Ocorreu um erro ao adicionar a equipa — abre a consola do browser (F12) para detalhes.');
+  }
+}
+
+function removeTeam(id){
+  state.teams = state.teams.filter(t=>t.id!==id);
+  if(state.activeTeamId===id) state.activeTeamId = state.teams[0]?.id || null;
+  saveState();
+  render();
+}
+
+function setActiveTeam(id){
+  state.activeTeamId = id;
+  saveState();
+  render();
+}
+
+function currentQuestion(){
+  if(state.qPointer<0 || state.qPointer>=state.qOrder.length) return null;
+  return QUESTIONS[state.qOrder[state.qPointer]];
+}
+
+function nextQuestion(){
+  if(state.teams.length===0){
+    setStatus("Adiciona pelo menos uma equipa primeiro.");
+    return;
+  }
+  if(state.qPointer+1 >= state.qOrder.length){
+    setStatus("Já não há mais perguntas no banco — todas foram usadas.");
+    return;
+  }
+  state.qPointer++;
+  state.currentRemoved = [];
+  state.answeredCurrent = false;
+  state.usedJokerOnCurrent = false;
+  state.selectedOption = null;
+  setStatus("");
+  saveState();
+  render();
+}
+
+function activeTeam(){
+  return state.teams.find(t=>t.id===state.activeTeamId);
+}
+
+function selectOption(optIndex){
+  if(state.answeredCurrent) return;
+  if(state.currentRemoved.includes(optIndex)) return;
+  state.selectedOption = optIndex;
+  const q = currentQuestion();
+  renderOptions(q);
+  document.getElementById('confirmBtn').disabled = false;
+  setStatus("Resposta selecionada — confirma quando a equipa estiver decidida.");
+}
+
+function confirmAnswer(){
+  if(state.answeredCurrent || state.selectedOption===null) return;
+  const q = currentQuestion();
+  const team = activeTeam();
+  if(!q || !team) return;
+  state.answeredCurrent = true;
+  const correct = state.selectedOption === q.correct;
+  if(correct) team.score += (state.usedJokerOnCurrent ? 1 : 2);
+  logHistory(team.name, q.q, correct ? 'ok' : 'fail');
+  renderOptions(q, state.selectedOption);
+  document.getElementById('confirmBtn').disabled = true;
+  setStatus(correct ? "Correto!" : "Errado.");
+  saveState();
+  renderTeams();
+  renderHistory();
+  checkWinnerHint();
+}
+
+function useJoker(type){
+  const team = activeTeam();
+  const q = currentQuestion();
+  if(!team || !q) return;
+  if(state.answeredCurrent){ setStatus("Já foi respondido a esta pergunta."); return; }
+  if(team.jokers[type] <= 0){ setStatus("Esta equipa já não tem este joker."); return; }
+  team.jokers[type]--;
+
+  if(type==='5050'){
+    const wrongIdx = q.opts.map((_,i)=>i).filter(i=>i!==q.correct);
+    shuffle(wrongIdx);
+    state.currentRemoved = wrongIdx.slice(0,2);
+    state.usedJokerOnCurrent = true;
+    state.selectedOption = null;
+    setStatus(team.name+" usou o joker 50/50 — esta pergunta vale 1 ponto se acertar.");
+    renderOptions(q);
+  } else if(type==='skip'){
+    logHistory(team.name, q.q, 'skip');
+    setStatus(team.name+" saltou a pergunta.");
+    saveState();
+    renderHistory();
+    nextQuestion();
+    return;
+  } else if(type==='ajuda'){
+    state.usedJokerOnCurrent = true;
+    setStatus(team.name+" pediu ajuda à equipa (esta pergunta vale 1 ponto) — discutam em conjunto antes de responder.");
+  }
+  saveState();
+  render();
+}
+
+function logHistory(teamName, question, result){
+  state.history.unshift({team:teamName, question, result, date:new Date().toLocaleString('pt-PT')});
+  saveHistory();
+}
+
+function checkWinnerHint(){
+  if(state.qPointer+1 >= state.qOrder.length){
+    const sorted = [...state.teams].sort((a,b)=>b.score-a.score);
+    if(sorted.length){
+      document.getElementById('winnerBanner').innerHTML =
+        `<div class="winner-banner">🏆 Fim das perguntas! Equipa com mais pontos: ${sorted[0].name} (${sorted[0].score} pts)</div>`;
+    }
+  }
+}
+
+function resetGame(){
+  if(!confirm("Isto reinicia pontuações, jokers e o índice de perguntas (o histórico geral mantém-se). Continuar?")) return;
+  state.teams.forEach(t=>{ t.score=0; t.jokers=newTeamJokers(); });
+  state.qOrder = shuffle([...Array(QUESTIONS.length).keys()]);
+  state.qPointer = -1;
+  state.currentRemoved = [];
+  state.answeredCurrent = false;
+  state.usedJokerOnCurrent = false;
+  state.selectedOption = null;
+  document.getElementById('winnerBanner').innerHTML='';
+  setStatus("Jogo reiniciado.");
+  saveState();
+  render();
+}
+
+function setStatus(msg){
+  document.getElementById('statusMsg').textContent = msg;
+}
+
+// ---------- Render ----------
+function render(){
+  renderTeams();
+  renderQuestion();
+  renderHistory();
+}
+
+function renderTeams(){
+  const row = document.getElementById('teamsRow');
+  row.innerHTML = '';
+  state.teams.forEach(t=>{
+    const pill = document.createElement('div');
+    pill.className = 'team-pill'+(t.id===state.activeTeamId?' active':'');
+    pill.onclick = (e)=>{ if(e.target.tagName!=='BUTTON') setActiveTeam(t.id); };
+    pill.innerHTML = `${t.name} <span class="score">${t.score} pts</span> <button onclick="removeTeam('${t.id}')" title="Remover">✕</button>`;
+    row.appendChild(pill);
+  });
+  document.getElementById('activeTeamLabel').textContent = 'Equipa: ' + (activeTeam()?.name || '—');
+}
+
+function renderQuestion(){
+  const q = currentQuestion();
+  document.getElementById('qIndexLabel').textContent =
+    `Pergunta ${state.qPointer+1<1?0:state.qPointer+1} de ${state.qOrder.length}`;
+  document.getElementById('pointsLabel').textContent =
+    state.usedJokerOnCurrent ? 'Vale 1 pt (ajuda usada)' : 'Vale 2 pts';
+  if(!q){
+    document.getElementById('qText').textContent = state.qPointer+1 > state.qOrder.length
+      ? "Acabaram as perguntas do banco."
+      : "Carrega em \"Próxima pergunta\" para começar.";
+    document.getElementById('optionsBox').innerHTML = '';
+    document.getElementById('confirmBtn').disabled = true;
+    updateJokerButtons(null);
+    return;
+  }
+  document.getElementById('qText').textContent = q.q;
+  renderOptions(q);
+  updateJokerButtons(activeTeam());
+  document.getElementById('confirmBtn').disabled = state.answeredCurrent || state.selectedOption===null;
+}
+
+function renderOptions(q, answeredIndex){
+  const box = document.getElementById('optionsBox');
+  box.innerHTML = '';
+  q.opts.forEach((opt,i)=>{
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.textContent = opt;
+    if(state.currentRemoved.includes(i)) b.classList.add('removed');
+    if(state.answeredCurrent){
+      b.disabled = true;
+      if(i===q.correct) b.classList.add('correct');
+      if(answeredIndex!==undefined && i===answeredIndex && i!==q.correct) b.classList.add('wrong');
+    } else {
+      if(state.selectedOption===i) b.classList.add('selected');
+      b.onclick = ()=>selectOption(i);
+    }
+    box.appendChild(b);
+  });
+}
+
+function updateJokerButtons(team){
+  document.getElementById('joker5050').disabled = !team || team.jokers['5050']<=0 || state.answeredCurrent;
+  document.getElementById('jokerSkip').disabled = !team || team.jokers['skip']<=0 || state.answeredCurrent;
+  document.getElementById('jokerTeam').disabled = !team || team.jokers['ajuda']<=0 || state.answeredCurrent;
+}
+
+function renderHistory(){
+  const box = document.getElementById('historyBox');
+  if(state.history.length===0){
+    box.innerHTML = '<div class="empty">Sem respostas registadas ainda.</div>';
+    return;
+  }
+  box.innerHTML = state.history.slice(0,50).map(h=>{
+    const badge = h.result==='ok' ? '<span class="badge ok">Certo</span>'
+      : h.result==='fail' ? '<span class="badge fail">Errado</span>'
+      : '<span class="badge">Saltada</span>';
+    return `<div class="history-row"><span><b>${h.team}</b> — ${h.question}</span>${badge}</div>`;
+  }).join('');
+}
+
+loadState();
+</script>
+</body>
+</html>
