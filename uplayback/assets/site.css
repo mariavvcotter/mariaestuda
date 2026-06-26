@@ -61,7 +61,8 @@ section{padding:80px 24px}
 @media(min-width:700px){section{padding:104px 40px}}
 .eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--o1);margin-bottom:18px}
 .section-head{max-width:660px;margin:0 auto 48px}
-.section-head.left{margin-left:0}
+.section-head.left{max-width:var(--maxw)}
+.section-head.left p{max-width:640px}
 .section-head h2{font-size:clamp(28px,4vw,44px);letter-spacing:.3px;margin-bottom:16px;line-height:1.12}
 .section-head p{font-size:16px;color:var(--muted);line-height:1.75;font-family:'DM Sans',sans-serif}
 .lead{font-size:17px;color:var(--muted);line-height:1.8}
