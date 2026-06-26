@@ -219,7 +219,8 @@ section{padding:80px 24px}
 .article-wrap li{font-size:16px;line-height:1.7;color:#2a2520}
 .article-wrap blockquote{border-left:4px solid var(--o1);padding:6px 0 6px 24px;margin:28px 0;font-size:20px;line-height:1.6;color:var(--ink);font-style:italic}
 .article-wrap .lede{font-size:20px;line-height:1.7;color:var(--ink);margin-bottom:30px}
-.article-wrap a{color:var(--o3);text-decoration:underline;text-underline-offset:3px}
+.article-wrap a:not(.btn){color:var(--o3);text-decoration:underline;text-underline-offset:3px}
+.article-wrap .btn{text-decoration:none}
 .article-meta{display:flex;gap:14px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--muted);margin-bottom:8px;letter-spacing:.04em}
 .article-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--o1)}
 .article-divider{height:1px;background:var(--line);margin:44px 0}
