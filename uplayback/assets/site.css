@@ -281,6 +281,7 @@ footer{background:var(--ink);color:var(--white);padding:56px 24px 36px}
 @media(min-width:760px){.footer-top{grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}}
 .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:26px;font-weight:400;letter-spacing:1px;margin-bottom:12px}
 .footer-logo em{font-style:normal;color:var(--o1)}
+.footer-logo img{height:26px;width:auto;display:block}
 .footer-tagline{font-size:13px;color:rgba(255,255,255,.34);line-height:1.65;max-width:260px}
 .footer-col h5{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.34);margin-bottom:16px}
 .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:9px}
