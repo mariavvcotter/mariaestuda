@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist MiFID II · uPlayback</title>
+<meta name="description" content="Autoavaliação em 2 minutos: está pronto para a próxima auditoria MiFID II? Sete perguntas, resultado imediato.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/account/account.css">
+<link rel="stylesheet" href="/uplayback/assets/site.css">
+<style>
+.quiz-section{background:var(--warm)}
+.quiz-progress-bar{height:3px;background:var(--warm2);border-radius:2px;margin:0 auto 28px;overflow:hidden;max-width:620px}
+.quiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--o3),var(--o2));border-radius:2px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.quiz-card-wrap{max-width:620px;margin:0 auto}
+.quiz-step{display:none;background:var(--white);border:1px solid var(--line);border-radius:20px;padding:28px 24px;box-shadow:0 4px 28px rgba(0,0,0,.06)}
+@media(min-width:600px){.quiz-step{padding:40px 44px}}
+.quiz-step.active{display:block}
+.quiz-q-num{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--o1);margin-bottom:12px}
+.quiz-q-text{font-family:'DM Sans',sans-serif;font-size:clamp(18px,2.5vw,22px);font-weight:600;letter-spacing:-.2px;margin-bottom:7px;line-height:1.3}
+.quiz-q-hint{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.6}
+.quiz-options{display:grid;grid-template-columns:1fr;gap:9px}
+@media(min-width:500px){.quiz-options{grid-template-columns:1fr 1fr}}
+.quiz-opt{padding:14px 16px;border-radius:11px;border:1.5px solid var(--warm2);background:var(--warm);cursor:pointer;text-align:left;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink);transition:all .18s;line-height:1.4}
+.quiz-opt:hover{border-color:var(--o1);background:rgba(245,110,15,.04)}
+.quiz-opt.selected{border-color:var(--o1);background:rgba(245,110,15,.07);color:var(--o3);font-weight:500}
+.quiz-back{font-size:12px;color:var(--muted);cursor:pointer;margin-top:16px;text-align:center;display:block;background:none;border:none;width:100%;transition:color .2s;font-family:'DM Sans',sans-serif}
+.quiz-back:hover{color:var(--ink)}
+.quiz-result{display:none;max-width:580px;margin:0 auto;text-align:center;padding:16px 0}
+.quiz-result.active{display:block}
+.quiz-score-ring{width:120px;height:120px;margin:0 auto 24px;position:relative}
+.quiz-score-ring svg{transform:rotate(-90deg)}
+.quiz-score-ring circle{fill:none;stroke-width:8}
+.ring-bg{stroke:var(--warm2)}
+.ring-fill{stroke:var(--o1);stroke-linecap:round;transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)}
+.ring-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.ring-pct{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:1px;color:var(--ink);line-height:1}
+.ring-label{font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.quiz-result h3{font-size:30px;letter-spacing:.4px;margin-bottom:9px}
+.quiz-result>p{font-size:14px;color:var(--muted);max-width:440px;margin:0 auto 24px;line-height:1.7}
+.quiz-result-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="/uplayback/" class="nav-logo">u<em>P</em>layback</a>
+  <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+  <ul class="nav-links">
+    <li><a href="/uplayback/plataforma/">Plataforma</a></li>
+    <li><a href="/uplayback/#lente">Soluções</a></li>
+    <li><a href="/uplayback/guia/">Guia</a></li>
+    <li><a href="/uplayback/blog/">Blog</a></li>
+    <li><a href="/uplayback/sobre/">Sobre</a></li>
+    <li><a href="/uplayback/demo/" class="nav-cta">Marcar Demo</a></li>
+  </ul>
+</nav>
+
+<header class="page-hero">
+  <div class="hero-blobs"><div class="hero-blob hero-blob-1"></div><div class="hero-blob hero-blob-3"></div></div>
+  <div class="wrap">
+    <p class="breadcrumb"><a href="/uplayback/">Início</a> / Checklist MiFID II</p>
+    <p class="ph-eyebrow">Autoavaliação · 2 minutos</p>
+    <h1>Está pronto para a próxima auditoria MiFID II?</h1>
+    <p>Sete perguntas. Resultado imediato. Baseado em mais de 100M de gravações geridas para os principais bancos e seguradoras portugueses.</p>
+  </div>
+</header>
+
+<section class="quiz-section">
+  <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quizProgress" style="width:0%"></div></div>
+  <div class="quiz-card-wrap">
+    <div class="quiz-step active" data-q="1"><p class="quiz-q-num">1 / 7</p><p class="quiz-q-text">Consegue recuperar uma interação específica sem abrir vários sistemas?</p><p class="quiz-q-hint">A MiFID II exige retenção mínima de 5 anos. Armazenamento sem indexação é prova que não consegue alcançar.</p><div class="quiz-options"><button class="quiz-opt" data-score="2">Sim, num único portal centralizado</button><button class="quiz-opt" data-score="1">Sim, mas tenho de consultar 2–3 sistemas</button><button class="quiz-opt" data-score="0">Não, o processo é manual e demorado</button><button class="quiz-opt" data-score="0">Nunca foi testado</button></div></div>
+    <div class="quiz-step" data-q="2"><p class="quiz-q-num">2 / 7</p><p class="quiz-q-text">O seu audit trail regista quem acedeu a que interação, quando e porquê?</p><p class="quiz-q-hint">Provar quem ouviu uma chamada ou descarregou um email é tão importante como capturá-la.</p><div class="quiz-options"><button class="quiz-opt" data-score="2">Sim, com registo completo e inviolável</button><button class="quiz-opt" data-score="1">Parcialmente — só para algumas ações</button><button class="quiz-opt" data-score="0">Não temos audit trail detalhado</button><button class="quiz-opt" data-score="0">Não sei</button></div><button class="quiz-back" onclick="quizBack()">← Anterior</button></div>
+    <div class="quiz-step" data-q="3"><p class="quiz-q-num">3 / 7</p><p class="quiz-q-text">A retenção é configurável por jurisdição e por canal de forma independente?</p><p class="quiz-q-hint">MiFID II pede 5 anos. DORA pode pedir mais. RGPD pede o oposto. As falhas amplificam-se entre canais.</p><div class="quiz-options"><button class="quiz-opt" data-score="2">Sim, por canal, jurisdição e tipo de interação</button><button class="quiz-opt" data-score="1">Sim, mas de forma global — não granular</button><button class="quiz-opt" data-score="0">Não é configurável, é uma política única</button><button class="quiz-opt" data-score="0">Não sei como está configurado</button></div><button class="quiz-back" onclick="quizBack()">← Anterior</button></div>
+    <div class="quiz-step" data-q="4"><p class="quiz-q-num">4 / 7</p><p class="quiz-q-text">As suas interações ficam alojadas em solo europeu, em todos os canais?</p><p class="quiz-q-hint">Auditorias de soberania exigem cobertura nas três frentes: voz, chat e email.</p><div class="quiz-options"><button class="quiz-opt" data-score="2">Sim, todos os canais em território europeu</button><button class="quiz-opt" data-score="1">A maioria sim, mas alguns canais estão fora</button><button class="quiz-opt" data-score="0">Não tenho certeza da localização dos dados</button><button class="quiz-opt" data-score="0">Não, alguns dados estão em servidores americanos</button></div><button class="quiz-back" onclick="quizBack()">← Anterior</button></div>
+    <div class="quiz-step" data-q="5"><p class="quiz-q-num">5 / 7</p><p class="quiz-q-text">Consegue integrar voz, email e chat num único arquivo de longa duração?</p><p class="quiz-q-hint">A coexistência nas três camadas é o que torna um projeto de compliance verdadeiramente exequível.</p><div class="quiz-options"><button class="quiz-opt" data-score="2">Sim, os três canais num único portal</button><button class="quiz-opt" data-score="1">Dois dos três canais integrados</button><button class="quiz-opt" data-score="0">Cada canal tem o seu próprio sistema</button><button class="quiz-opt" data-score="0">Ainda não temos integração multi-canal</button></div><button class="quiz-back" onclick="quizBack()">← Anterior</button></div>
+    <div class="quiz-step" data-q="6"><p class="quiz-q-num">6 / 7</p><p class="quiz-q-text">Se mudar de fornecedor, os seus dados migram em todos os canais?</p><p class="quiz-q-hint">O lock-in é o segundo maior risco depois da não conformidade regulatória.</p><div class="quiz-options"><button class="quiz-opt" data-score="2">Sim, temos garantia contratual de portabilidade</button><button class="quiz-opt" data-score="1">Para alguns canais, não para todos</button><button class="quiz-opt" data-score="0">Não foi negociado no contrato</button><button class="quiz-opt" data-score="0">Nunca pensámos nisso</button></div><button class="quiz-back" onclick="quizBack()">← Anterior</button></div>
+    <div class="quiz-step" data-q="7"><p class="quiz-q-num">7 / 7</p><p class="quiz-q-text">Se o site primário falhar, tem RPO e RTO documentados para cada pipeline de captura?</p><p class="quiz-q-hint">O DORA, em vigor desde Janeiro 2025, transforma a resiliência operacional num resultado regulatório.</p><div class="quiz-options"><button class="quiz-opt" data-score="2">Sim, RPO e RTO definidos e testados regularmente</button><button class="quiz-opt" data-score="1">Temos um plano, mas não foi testado recentemente</button><button class="quiz-opt" data-score="0">Existe um plano genérico de DR, não específico</button><button class="quiz-opt" data-score="0">Não temos plano de resiliência formal</button></div><button class="quiz-back" onclick="quizBack()">← Anterior</button></div>
+    <div class="quiz-result" id="quizResult">
+      <div class="quiz-score-ring"><svg viewBox="0 0 120 120" width="120" height="120"><circle class="ring-bg" r="52" cx="60" cy="60"/><circle class="ring-fill" id="ringFill" r="52" cx="60" cy="60" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg><div class="ring-text"><span class="ring-pct" id="ringPct">0%</span><span class="ring-label">Score</span></div></div>
+      <h3 id="resultTitle">A avaliar...</h3>
+      <p id="resultMsg"></p>
+      <div class="quiz-result-cta"><a href="/uplayback/demo/" class="btn btn-primary">Resolver já — Marcar Demo</a><button class="btn btn-dark" onclick="resetQuiz()">Repetir avaliação</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="nextstep">
+  <div class="section-head left reveal" style="margin-bottom:32px"><p class="eyebrow">Continuar a explorar</p><h2>Próximo passo.</h2></div>
+  <div class="nextstep-grid">
+    <a href="/uplayback/guia/" class="nextstep-card reveal"><p class="ns-k">Guia</p><h3>O que é um compliance recording archive?</h3><p>As sete perguntas que distinguem um arquivo de compliance de uma gravadora de chamadas.</p></a>
+    <a href="/uplayback/compliance/" class="nextstep-card reveal"><p class="ns-k">Para Compliance</p><h3>Requisitos legais por design</h3><p>MiFID II, DORA e RGPD alinhados sem heroísmo manual.</p></a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div><p class="footer-logo">u<em>P</em>layback</p><p class="footer-tagline">Unified Management and Archive · um produto Grupês. Três décadas de experiência em compliance recording no mercado onde mais importa.</p></div>
+    <div class="footer-col"><h5>Plataforma</h5><ul>
+      <li><a href="/uplayback/plataforma/">Voz, Chat e Email</a></li>
+      <li><a href="/uplayback/guia/">O que é um archive</a></li>
+      <li><a href="/uplayback/checklist/">Checklist MiFID II</a></li>
+      <li><a href="/uplayback/demo/">Marcar Demo</a></li>
+    </ul></div>
+    <div class="footer-col"><h5>Por perfil</h5><ul>
+      <li><a href="/uplayback/compliance/">Compliance Officer</a></li>
+      <li><a href="/uplayback/it/">CIO / CISO</a></li>
+      <li><a href="/uplayback/operacoes/">COO / Operações</a></li>
+      <li><a href="/uplayback/blog/">Blog</a></li>
+    </ul></div>
+    <div class="footer-col"><h5>Contactos</h5><ul>
+      <li><a href="mailto:info@uplayback.com">info@uplayback.com</a></li>
+      <li><a href="tel:+351218141515">+351 218 141 515</a></li>
+      <li><a href="/uplayback/sobre/">Rua Maria Andrade 5, Lisboa</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 uPlayback · Grupês. All rights reserved.</span><a href="#">Política de Privacidade</a></div>
+</footer>
+
+<script>
+/* QUIZ */
+const questions = document.querySelectorAll('.quiz-step');
+const progress = document.getElementById('quizProgress');
+let scores = new Array(7).fill(null), qCur = 0;
+questions.forEach((step, qi) => {
+  step.querySelectorAll('.quiz-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      step.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      scores[qi] = parseInt(opt.dataset.score);
+      setTimeout(() => {
+        if (qi === questions.length - 1) { showResult(); }
+        else { step.classList.remove('active'); qCur++; questions[qCur].classList.add('active'); progress.style.width = ((qCur / 7) * 100) + '%'; }
+      }, 300);
+    });
+  });
+});
+function quizBack() {
+  if (qCur > 0) { questions[qCur].classList.remove('active'); qCur--; questions[qCur].classList.add('active'); progress.style.width = ((qCur / 7) * 100) + '%'; }
+}
+function showResult() {
+  questions[qCur].classList.remove('active');
+  progress.style.width = '100%';
+  const pct = Math.round((scores.reduce((a,b) => a+(b||0), 0) / 14) * 100);
+  document.getElementById('quizResult').classList.add('active');
+  const circ = 326.7;
+  setTimeout(() => {
+    document.getElementById('ringFill').style.strokeDashoffset = circ - (pct/100)*circ;
+    let n = 0;
+    const iv = setInterval(() => { n = Math.min(n+2, pct); document.getElementById('ringPct').textContent = n+'%'; if (n>=pct) clearInterval(iv); }, 20);
+  }, 200);
+  const msgs = [
+    ['Risco regulatório significativo.','Os resultados indicam vulnerabilidades que precisam de atenção antes da próxima auditoria. Marque já uma demo — resolvemos em semanas.'],
+    ['Há lacunas relevantes a resolver.','A sua organização tem bases, mas existem pontos críticos que podem expor a empresa numa auditoria. Recomendamos uma conversa com a nossa equipa.'],
+    ['Organização bem preparada.','O seu nível de maturidade em compliance recording é sólido. Mesmo assim, há margem para otimizar — a nossa equipa pode validar os pontos em aberto.']
+  ];
+  const [title,msg] = msgs[pct>=80?2:pct>=50?1:0];
+  document.getElementById('resultTitle').textContent = title;
+  document.getElementById('resultMsg').textContent = msg;
+}
+function resetQuiz() {
+  scores = new Array(7).fill(null); qCur = 0;
+  questions.forEach(s => { s.classList.remove('active'); s.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('selected')); });
+  document.getElementById('quizResult').classList.remove('active');
+  document.getElementById('ringFill').style.strokeDashoffset = '326.7';
+  document.getElementById('ringPct').textContent = '0%';
+  progress.style.width = '0%';
+  questions[0].classList.add('active');
+}
+</script>
+<script src="/uplayback/assets/site.js"></script>
+<script src="/account/config.js"></script>
+<script src="/account/account.js"></script>
+<script>
+  Account.init({ section: 'uplayback', keys: [], mount: '#nav', label: 'uPlayback', accent: '#F56E0F' });
+</script>
+</body>
+</html>
