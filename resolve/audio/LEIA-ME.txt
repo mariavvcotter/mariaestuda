@@ -1,0 +1,1 @@
+﻿Aqui vão os ficheiros de voz gerados no Speechify: rui.mp3, fina.mp3, toze.mp3, nando.mp3 (e opcionais intro.mp3, final.mp3).
