@@ -1,0 +1,194 @@
+/* ============================================================
+   O CASO DA ESTRELA DO MAR — Portal /resolve
+   Sistema de design "dossier de detetive" · Vila Solmar
+   ============================================================ */
+
+:root{
+  --navy-900:#081726;
+  --navy-800:#0d2b45;
+  --navy-700:#12385a;
+  --navy-600:#1b4a72;
+  --brass:#e0a924;
+  --brass-lt:#f4c65a;
+  --brass-dk:#a9781a;
+  --cream:#f4ecd8;
+  --paper:#efe6cf;
+  --kraft:#c8a97e;
+  --ink:#20180f;
+  --ink-soft:#4a3d2c;
+  --danger:#c0392b;
+  --ok:#3a7d4a;
+  --shadow:rgba(0,0,0,.45);
+  --font-title:"Anton",Impact,sans-serif;
+  --font-head:"Oswald",sans-serif;
+  --font-body:"Inter",system-ui,sans-serif;
+  --font-serif:"Playfair Display",Georgia,serif;
+  --font-type:"Special Elite","Courier New",monospace;
+  --font-hand:"Caveat",cursive;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--font-body);
+  color:var(--cream);
+  background:
+    radial-gradient(1200px 700px at 50% -10%, #14405f 0%, transparent 60%),
+    radial-gradient(900px 600px at 80% 110%, #0a2135 0%, transparent 55%),
+    linear-gradient(180deg, var(--navy-900) 0%, var(--navy-800) 45%, #061320 100%);
+  background-attachment:fixed;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* estrelas de fundo animadas */
+.stars,.stars::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 20% 30%, #fff6, transparent),
+    radial-gradient(1.5px 1.5px at 70% 20%, #fff4, transparent),
+    radial-gradient(2px 2px at 40% 70%, #fff5, transparent),
+    radial-gradient(1px 1px at 85% 60%, #fff6, transparent),
+    radial-gradient(1.5px 1.5px at 15% 85%, #fff4, transparent),
+    radial-gradient(1px 1px at 55% 45%, #fff5, transparent);
+  background-size:cover;
+  animation:twinkle 6s ease-in-out infinite alternate;
+}
+.stars::after{animation-delay:-3s;opacity:.6}
+@keyframes twinkle{from{opacity:.35}to{opacity:.9}}
+
+.wrap{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:28px 18px 80px}
+
+/* ---------- Cabeçalho / brasão ---------- */
+.brand{text-align:center;margin:18px 0 6px}
+.badge{
+  width:96px;height:96px;margin:0 auto 10px;position:relative;
+  display:grid;place-items:center;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, var(--brass-lt), var(--brass) 45%, var(--brass-dk) 100%);
+  box-shadow:0 8px 26px var(--shadow), inset 0 2px 6px #fff8, inset 0 -6px 12px #0006;
+  border:3px solid #f6d98a;
+}
+.badge .star{font-size:44px;filter:drop-shadow(0 2px 2px #0007)}
+.brand h1{
+  font-family:var(--font-title);font-weight:400;letter-spacing:.5px;
+  font-size:clamp(26px,6vw,44px);line-height:.95;margin:6px 0 2px;color:var(--cream);
+  text-shadow:0 3px 0 #0006, 0 0 22px #e0a92455;
+}
+.brand h1 b{color:var(--brass-lt);font-weight:400}
+.brand .sub{font-family:var(--font-head);text-transform:uppercase;letter-spacing:3px;
+  font-size:13px;color:#bcd3e6;opacity:.85}
+
+/* ---------- Caixa de código ---------- */
+.codebox{
+  margin:26px auto;max-width:520px;background:linear-gradient(180deg,#0f3350,#0b2338);
+  border:1px solid #ffffff1a;border-radius:18px;padding:22px 20px 24px;
+  box-shadow:0 18px 50px var(--shadow), inset 0 1px 0 #ffffff22;
+}
+.codebox h2{font-family:var(--font-head);font-weight:600;text-transform:uppercase;
+  letter-spacing:2px;font-size:16px;margin:0 0 4px;color:var(--brass-lt)}
+.codebox p{margin:0 0 14px;font-size:14px;color:#cfe0ee;opacity:.9}
+.code-row{display:flex;gap:10px;flex-wrap:wrap}
+.code-input{
+  flex:1;min-width:180px;font-family:var(--font-type);font-size:22px;letter-spacing:4px;
+  text-transform:uppercase;text-align:center;color:var(--ink);background:var(--paper);
+  border:none;border-radius:12px;padding:14px 12px;outline:3px solid transparent;
+  box-shadow:inset 0 2px 6px #0005;transition:outline-color .2s;
+}
+.code-input:focus{outline-color:var(--brass)}
+.btn{
+  font-family:var(--font-head);font-weight:600;text-transform:uppercase;letter-spacing:1.5px;
+  font-size:15px;cursor:pointer;border:none;border-radius:12px;padding:14px 22px;
+  color:#20180f;background:linear-gradient(180deg,var(--brass-lt),var(--brass));
+  box-shadow:0 6px 0 var(--brass-dk),0 10px 20px #0006;transition:transform .06s, box-shadow .06s;
+}
+.btn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--brass-dk),0 6px 12px #0006}
+.btn.ghost{background:transparent;color:var(--cream);border:1px solid #ffffff33;box-shadow:none}
+.hint{margin-top:12px;font-size:12.5px;color:#9fb6c9}
+.msg{margin-top:12px;min-height:20px;font-family:var(--font-head);letter-spacing:1px;font-size:14px}
+.msg.err{color:#ff9b8f}
+.msg.ok{color:#9be3a8}
+
+/* ---------- Palco de conteúdo revelado ---------- */
+.stage{margin-top:26px;display:grid;gap:22px}
+.reveal{animation:rise .5s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+
+/* Cartão-dossier genérico */
+.card{
+  background:linear-gradient(180deg,#12385a,#0d2b45);border:1px solid #ffffff1a;
+  border-radius:16px;padding:20px 20px 22px;box-shadow:0 14px 36px var(--shadow), inset 0 1px 0 #ffffff18;
+}
+.card .kicker{font-family:var(--font-head);text-transform:uppercase;letter-spacing:2px;
+  font-size:12px;color:var(--brass-lt);margin-bottom:6px}
+.card h3{font-family:var(--font-serif);font-weight:800;font-size:22px;margin:0 0 10px;color:#fff}
+.card p{font-size:15.5px;line-height:1.55;color:#e8eef4}
+.tag{display:inline-block;font-family:var(--font-head);letter-spacing:1px;text-transform:uppercase;
+  font-size:11px;padding:4px 10px;border-radius:999px;background:#00000030;border:1px solid #ffffff22;color:#bcd3e6}
+.tag.ok{color:#bff0c6;border-color:#3a7d4a99;background:#173a22}
+.tag.warn{color:#ffd7a1;border-color:#a9781a99;background:#3a2a11}
+
+/* Balão da Inspetora (chat) */
+.inspetora{display:flex;gap:14px;align-items:flex-start}
+.avatar{
+  flex:none;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-size:30px;
+  background:radial-gradient(circle at 35% 30%,#5aa0d8,#204e78);border:2px solid #ffffff40;box-shadow:0 6px 16px #0006;
+}
+.bubble{background:#0b2338;border:1px solid #ffffff1a;border-radius:4px 16px 16px 16px;padding:14px 16px;flex:1}
+.bubble .who{font-family:var(--font-head);text-transform:uppercase;letter-spacing:1.5px;font-size:12px;color:var(--brass-lt);margin-bottom:4px}
+
+/* Leitor de áudio (chamada) */
+.call{display:flex;align-items:center;gap:14px;background:#0b2338;border:1px solid #ffffff1a;border-radius:14px;padding:14px}
+.call .play{width:52px;height:52px;flex:none;border-radius:50%;border:none;cursor:pointer;
+  background:linear-gradient(180deg,var(--brass-lt),var(--brass));color:#20180f;font-size:20px;
+  box-shadow:0 5px 0 var(--brass-dk)}
+.call .who{font-family:var(--font-head);letter-spacing:1px;font-size:15px}
+.call .num{font-family:var(--font-type);font-size:12px;color:#9fb6c9}
+.transcript{margin-top:10px;font-family:var(--font-type);font-size:14px;line-height:1.6;color:#dfe7ee;
+  border-left:3px solid var(--brass);padding-left:12px}
+
+/* Mural / pesquisa online */
+.post{background:#0e2c46;border:1px solid #ffffff14;border-radius:14px;padding:14px;margin-bottom:12px}
+.post .hd{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.post .pfp{width:38px;height:38px;border-radius:50%;background:#204e78;display:grid;place-items:center;font-size:18px}
+.post .name{font-weight:700}
+.post .time{font-size:12px;color:#9fb6c9}
+.post .body{font-size:14.5px;line-height:1.5}
+.post .meta{margin-top:8px;font-size:12px;color:#9fb6c9}
+
+/* Progresso / episódios */
+.progress{display:flex;gap:8px;justify-content:center;margin:16px 0 4px}
+.dot{width:10px;height:10px;border-radius:50%;background:#ffffff2a}
+.dot.on{background:var(--brass);box-shadow:0 0 10px var(--brass)}
+
+/* Final */
+.finale{text-align:center}
+.diploma{background:var(--paper);color:var(--ink);border-radius:14px;padding:26px;border:6px double var(--brass-dk);
+  box-shadow:0 16px 40px #0007}
+.diploma h3{font-family:var(--font-serif);color:var(--ink);font-size:26px}
+.confetti{font-size:34px;letter-spacing:6px}
+
+/* Cabeçalho de secção */
+.section-head{margin:8px 0 -4px;text-align:center}
+.section-head span{font-family:var(--font-head);text-transform:uppercase;letter-spacing:2px;
+  font-size:15px;color:var(--brass-lt);display:block}
+.section-head small{color:#9fb6c9;font-size:12.5px}
+
+/* Gate depois de desbloqueado */
+.codebox.unlocked{opacity:.55;filter:saturate(.7)}
+.codebox.unlocked p,.codebox.unlocked .hint{display:none}
+
+/* Quiz "Resolver o caso" */
+.qz{background:#0b2338;border:1px solid #ffffff14;border-radius:12px;padding:12px 14px;margin:10px 0}
+.qz-h{font-family:var(--font-head);font-weight:600;font-size:15px;color:#fff;margin-bottom:6px}
+.qz-o{display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:8px;cursor:pointer;font-size:14.5px}
+.qz-o:hover{background:#ffffff0d}
+.qz-o input{width:18px;height:18px;accent-color:var(--brass);flex:none}
+#accuse[disabled]{opacity:.5;filter:grayscale(.5)}
+
+footer{text-align:center;margin-top:40px;font-size:12px;color:#7f97ab}
+a{color:var(--brass-lt)}
+
+@media(max-width:520px){
+  .brand h1{font-size:30px}
+  .code-input{font-size:18px}
+}

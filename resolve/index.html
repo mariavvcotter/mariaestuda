@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brigada de Detetives · O Caso da Estrela do Mar</title>
+<meta name="description" content="Insere o código do teu caso para ouvir os testemunhos e resolver o mistério da Estrela do Mar, em Vila Solmar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800;900&family=Special+Elite&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="stars"></div>
+<div class="wrap">
+
+  <header class="brand">
+    <div class="badge"><span class="star">⭐</span></div>
+    <h1>O CASO DA <b>ESTRELA DO MAR</b></h1>
+    <div class="sub">Brigada de Jovens Detetives · Vila Solmar</div>
+  </header>
+
+  <section class="codebox" id="gate" aria-label="Introduzir código do caso">
+    <h2>🔑 Código do caso</h2>
+    <p>Escreve o código que vem na <b>Folha de Entrada</b> do teu jogo para abrires os testemunhos deste caso.</p>
+    <div class="code-row">
+      <input id="code" class="code-input" maxlength="14" placeholder="· · · · · · ·" autocomplete="off" spellcheck="false" aria-label="Código do caso">
+      <button id="go" class="btn">Entrar</button>
+    </div>
+    <div id="msg" class="msg" role="status"></div>
+    <div class="hint">O código separa este caso de outros. Só precisas de o meter <b>uma vez</b>.</div>
+  </section>
+
+  <main id="stage" class="stage" aria-live="polite"></main>
+
+  <footer>
+    Vila Solmar · mariaestuda.eu/resolve — Um jogo de detetives para imprimir e jogar em casa.
+  </footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
