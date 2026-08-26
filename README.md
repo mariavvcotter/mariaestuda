@@ -12,6 +12,8 @@ assets/img/           retrato e fotografias
 assets/js/main.js     idioma, revelação ao scroll, barra de topo, flashcards e quiz
 assets/js/i18n.js     traduções inglesas (o português vive no HTML)
 cv/                   redireciona para a raiz (o CV viveu aqui)
+tools/cv-en.html      versão curta do CV, em inglês, feita para imprimir
+tools/build-cv-pdf.mjs  gera o PDF a partir dela
 ```
 
 As restantes pastas (`ci/`, `explicacoes/`, `lpuplayback/`, `portugues/`, ...)
@@ -46,3 +48,16 @@ Testar localmente a partir da raiz, porque há ligações absolutas entre secç�
 ```sh
 python3 -m http.server 8000
 ```
+
+## Gerar o CV em PDF
+
+A versão curta em inglês, para anexar a candidaturas, vive em `tools/cv-en.html`
+e não está ligada a partir do site.
+
+```sh
+npm i playwright
+node tools/build-cv-pdf.mjs maria-cotter-cv.pdf
+```
+
+Sai uma página A4. O ficheiro não é versionado: regenera-se sempre que a fonte
+mudar, para não haver duas versões a divergir.
