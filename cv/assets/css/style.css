@@ -565,22 +565,39 @@ h1 .surname { display: inline-block; }
   list-style: none; margin: 0; padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
-  gap: .5rem clamp(1rem, 3vw, 2.5rem);
+  gap: clamp(1rem, 2.5vw, 1.75rem);
 }
 .grades li {
-  display: flex; align-items: baseline; justify-content: space-between;
-  gap: 1rem;
-  padding: .7rem 0;
-  border-bottom: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: .3rem;
+  padding: 1.35rem clamp(1.15rem, 2.5vw, 1.6rem) 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--blue);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow);
 }
-.g-name { color: var(--ink-soft); font-size: .9375rem; }
+.grades li:first-child { border-top-color: var(--accent); }
 .g-val {
+  margin: 0;
   font-family: var(--body);
   font-weight: 600;
-  font-size: 1.2rem;
+  font-size: 2.4rem;
+  line-height: 1;
+  letter-spacing: -.03em;
+  color: var(--blue);
   font-variant-numeric: tabular-nums lining-nums;
 }
 .g-val.top { color: var(--accent); }
+.g-name {
+  margin: 0;
+  font-family: var(--display);
+  font-optical-sizing: none;
+  font-variation-settings: var(--display-opsz);
+  font-style: italic; font-weight: 700;
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+.g-why { margin: .35rem 0 0; color: var(--ink-soft); font-size: .9375rem; line-height: 1.55; }
 
 /* ---------- Competências ---------- */
 .skills {
