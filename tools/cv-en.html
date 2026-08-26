@@ -25,6 +25,8 @@
     -webkit-font-smoothing: antialiased;
   }
   a { color: inherit; text-decoration: none; }
+  /* clicáveis no PDF, sem sublinhado nem endereço à vista */
+  .link { color: inherit; }
 
   /* ---------- cabeçalho ---------- */
   header { border-bottom: 1.5pt solid var(--ink); padding-bottom: 7pt; margin-bottom: 11pt; }
@@ -89,9 +91,10 @@
   <p class="meta">
     <span>Lisbon, Portugal</span>
     <span>Remote, open to travel</span>
-    <span><b>maria.leonor.cotter@gmail.com</b></span>
-    <span><b>mariaestuda.eu</b></span>
-    <span>linkedin.com/in/maria-leonor-cotter-5a2a64324</span>
+    <span><a class="link" href="tel:+351929255360"><b>+351 929 255 360</b></a></span>
+    <span><a class="link" href="mailto:maria.leonor.cotter@gmail.com"><b>maria.leonor.cotter@gmail.com</b></a></span>
+    <span><a class="link" href="https://mariaestuda.eu"><b>mariaestuda.eu</b></a></span>
+    <span><a class="link" href="https://www.linkedin.com/in/maria-leonor-cotter-5a2a64324"><b>LinkedIn</b></a></span>
   </p>
 </header>
 
@@ -128,8 +131,8 @@
   </div>
 
   <div class="item">
-    <h3>Founding team, “The Company”</h3>
-    <p class="where">Junior Achievement</p>
+    <h3>Founding team, LetItHappen</h3>
+    <p class="where">Junior Achievement, “The Company” programme</p>
     <p>Built a company from scratch: product, brand, communications plan and real sales. Ended with the
     final pitch on stage at ISEG, Lisbon School of Economics &amp; Management.</p>
   </div>
@@ -182,7 +185,7 @@
 
 <footer>
   <span>Maria Leonor Cotter</span>
-  <span>Full CV, in Portuguese and English: mariaestuda.eu</span>
+  <span>Full CV, in Portuguese and English, at <a class="link" href="https://mariaestuda.eu">mariaestuda.eu</a></span>
 </footer>
 
 </body>

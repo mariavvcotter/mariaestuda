@@ -70,7 +70,7 @@ window.EN = {
   "percurso.5.area": "Digital content",
   "percurso.5.note": "Writing, image and editing, for brands with different voices.",
   "percurso.6.area": "Pitching and stage",
-  "percurso.6.note": "From ISEG at fifteen to the Junior Achievement final pitch.",
+  "percurso.6.note": "From ISEG at fifteen to the LetItHappen final pitch.",
 
   "xp.title": "Experience",
 
@@ -91,7 +91,7 @@ window.EN = {
   "xp.2.t4": "Merchandise",
 
   "xp.3.kicker": "Entrepreneurship",
-  "xp.3.title": "The Company project, by Junior Achievement",
+  "xp.3.title": "LetItHappen, our Junior Achievement company",
   "xp.3.body": "From idea to pitch: building the team, defining the product, the brand, the communications plan and real sales. It ended with the final presentation on stage at ISEG, Lisbon School of Economics &amp; Management.",
   "xp.3.t1": "Teamwork",
   "xp.3.t2": "Brand and communications",
