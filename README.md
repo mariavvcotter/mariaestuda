@@ -7,9 +7,9 @@ partir do `main`.
 index.html            candidatura / CV
 assets/css/style.css  design: tokens, tipografia, layout
 assets/css/fonts.css  @font-face das fontes locais (gerado)
-assets/fonts/         Bodoni Moda e Outfit, variáveis, 212 KB
+assets/fonts/         Playfair Display, Dancing Script e Inter, 332 KB
 assets/img/           retrato e fotografias
-assets/js/main.js     revelação ao scroll, barra de topo, flashcards e quiz
+assets/js/main.js     revelação ao scroll, barra de topo, flashcards e quiz em slides
 cv/                   redireciona para a raiz (o CV viveu aqui)
 ```
 
@@ -23,10 +23,13 @@ são projetos independentes, cada um com o seu design.
 - **Sem JavaScript continua legível.** As animações só escondem elementos
   depois de `main.js` marcar `<html class="js">`, e o quiz é substituído por um
   resumo em texto.
-- **Flashcards**: viram com o rato (`:hover`, só em dispositivos com ponteiro),
-  com o teclado (`:focus-visible`) e ao toque (`aria-expanded`, via JS).
-- **O eixo óptico do Bodoni está fixo**: em `auto` o browser afina os traços
-  finos até a travessa do «t» desaparecer.
+- **Flashcards**: viram só ao clique, nunca ao passar o rato. Sem JavaScript
+  as duas faces aparecem empilhadas, para as razões não se perderem.
+- **Quiz em slides**: uma pergunta de cada vez, a caixa acompanha a altura do
+  slide visível. O resultado é honesto: quando há desencontros de fundo,
+  di-lo em vez de agradar.
+- **Uma só cor de acento**, um laranja escuro escolhido para ser legível em
+  texto pequeno. Onde havia frisos, há sombras dessa cor.
 - **Folha de estilo de impressão**: esconde navegação e quiz, e abre os
   flashcards para o verso aparecer no papel.
 

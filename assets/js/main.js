@@ -1,11 +1,11 @@
-/* Revelação ao scroll, barra de topo, flashcards e quiz. Sem dependências. */
+/* Revelação ao scroll, barra de topo, flashcards e quiz em slides. Sem dependências. */
 (function () {
   "use strict";
 
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---------- Revelação ao entrar no ecrã ---------- */
-  var targets = document.querySelectorAll(".reveal");
+  var targets = document.querySelectorAll(".reveal, .tags");
   if (reduced || !("IntersectionObserver" in window)) {
     Array.prototype.forEach.call(targets, function (el) { el.classList.add("in"); });
   } else {
@@ -13,6 +13,16 @@
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
         e.target.classList.add("in");
+        // as setas das palavras-chave entram uma a uma
+        if (e.target.classList.contains("tags")) {
+          Array.prototype.forEach.call(e.target.children, function (li, i) {
+            li.style.transitionDelay = (i * 0.09) + "s";
+            var paths = li.querySelectorAll("path");
+            Array.prototype.forEach.call(paths, function (pth, j) {
+              pth.style.animationDelay = (i * 0.09 + j * 0.12) + "s";
+            });
+          });
+        }
         io.unobserve(e.target);
       });
     }, { rootMargin: "0px 0px -6% 0px", threshold: 0.1 });
@@ -36,29 +46,47 @@
     }
   }
 
-  /* ---------- Flashcards ----------
-     O hover trata do rato via CSS. Aqui só o toque e o teclado, que precisam
-     de um estado explícito para o cartão ficar virado. */
-  Array.prototype.forEach.call(document.querySelectorAll(".card-btn"), function (btn) {
-    btn.addEventListener("click", function () {
-      var open = btn.getAttribute("aria-expanded") === "true";
-      btn.setAttribute("aria-expanded", open ? "false" : "true");
+  /* ---------- Flashcards: viram só ao clique ---------- */
+  Array.prototype.forEach.call(document.querySelectorAll(".card"), function (card) {
+    var toggle = card.querySelector(".card-toggle");
+    var close = card.querySelector(".card-close");
+    // tudo o que é focável no verso, ligações incluídas
+    var backFocusable = card.querySelectorAll(".card-back a, .card-back button");
+
+    function setFlipped(on) {
+      card.classList.toggle("flipped", on);
+      toggle.setAttribute("aria-expanded", on ? "true" : "false");
+      // a face escondida não deve apanhar o foco por tabulação
+      toggle.tabIndex = on ? -1 : 0;
+      Array.prototype.forEach.call(backFocusable, function (el) { el.tabIndex = on ? 0 : -1; });
+    }
+
+    setFlipped(false);
+    toggle.addEventListener("click", function () { setFlipped(true); close.focus(); });
+    if (close) close.addEventListener("click", function () { setFlipped(false); toggle.focus(); });
+    card.addEventListener("keydown", function (ev) {
+      if (ev.key === "Escape" && card.classList.contains("flipped")) {
+        setFlipped(false); toggle.focus();
+      }
     });
   });
 
-  /* ---------- Quiz ---------- */
+  /* ---------- Quiz em slides ---------- */
   var quiz = document.getElementById("quiz");
   if (!quiz) return;
 
-  var status = document.getElementById("quizStatus");
-  var submit = document.getElementById("quizSubmit");
+  var slides = Array.prototype.slice.call(quiz.querySelectorAll(".slide"));
+  var bar = document.getElementById("quizBar");
+  var count = document.getElementById("quizCount");
+  var prev = document.getElementById("quizPrev");
   var result = document.getElementById("result");
   var verdict = document.getElementById("resultVerdict");
   var body = document.getElementById("resultBody");
   var notes = document.getElementById("resultNotes");
   var reset = document.getElementById("quizReset");
 
-  var QUESTIONS = ["q1", "q2", "q3", "q4", "q5"];
+  var TOTAL = slides.length;
+  var at = 0;
 
   /* Cada resposta vale 0, 1 ou 2. As ressalvas existem para o resultado ser
      útil em vez de bajulador: um desencontro real é dito, não escondido. */
@@ -76,36 +104,44 @@
     q5: "Sem exigência de anos formais, o que conta é o trabalho, e esse mostro-o."
   };
 
-  function answered() {
-    return QUESTIONS.filter(function (n) {
-      return quiz.querySelector('input[name="' + n + '"]:checked');
+  var track = document.getElementById("slides");
+
+  // a caixa acompanha a altura do slide visível, em vez de ficar pela mais alta
+  function fitHeight() {
+    var active = slides[at];
+    if (active) track.style.height = active.getBoundingClientRect().height + "px";
+  }
+  window.addEventListener("resize", fitHeight);
+
+  function show(i, back) {
+    slides.forEach(function (s, k) {
+      s.classList.toggle("is-active", k === i);
+      s.classList.toggle("leaving-left", k < i && !back);
+      // só o slide visível é alcançável por tabulação
+      Array.prototype.forEach.call(s.querySelectorAll("input"), function (inp) {
+        inp.tabIndex = k === i ? 0 : -1;
+      });
     });
+    at = i;
+    fitHeight();
+    count.textContent = "Pergunta " + (i + 1) + " de " + TOTAL;
+    bar.style.width = ((i + 1) / TOTAL * 100) + "%";
+    prev.hidden = i === 0;
   }
 
-  function refresh() {
-    var n = QUESTIONS.length - answered().length;
-    submit.disabled = n > 0;
-    status.textContent = n === 0
-      ? "Prontas as 5 respostas."
-      : "Falta" + (n === 1 ? " 1 resposta." : "m " + n + " respostas.");
-  }
-
-  quiz.addEventListener("change", refresh);
-  refresh();
-
-  quiz.addEventListener("submit", function (ev) {
-    ev.preventDefault();
-    if (answered().length < QUESTIONS.length) return;
-
+  function finish() {
     var score = 0, strong = [], weak = [];
-    QUESTIONS.forEach(function (name) {
-      var v = parseInt(quiz.querySelector('input[name="' + name + '"]:checked').value, 10);
+    slides.forEach(function (s) {
+      var picked = s.querySelector("input:checked");
+      if (!picked) return;
+      var v = parseInt(picked.value, 10);
+      var name = picked.name;
       score += v;
       if (v === 2 && STRENGTHS[name]) strong.push(STRENGTHS[name]);
       if (v === 0 && CAVEATS[name]) weak.push(CAVEATS[name]);
     });
 
-    var max = QUESTIONS.length * 2;
+    var max = TOTAL * 2;
     if (weak.length >= 2) {
       verdict.textContent = "Provavelmente não sou a pessoa certa.";
       body.textContent = "Há mais do que um ponto de fundo que não bate certo. Prefiro dizê-lo agora a fazer-lhe perder tempo numa entrevista.";
@@ -129,14 +165,31 @@
       notes.appendChild(li);
     });
 
+    quiz.hidden = true;
     result.hidden = false;
     result.focus();
+  }
+
+  quiz.addEventListener("change", function (ev) {
+    if (ev.target.type !== "radio") return;
+    // deixa ver a escolha marcada antes de avançar
+    var wait = reduced ? 0 : 320;
+    setTimeout(function () {
+      if (at < TOTAL - 1) show(at + 1);
+      else finish();
+    }, wait);
   });
+
+  quiz.addEventListener("submit", function (ev) { ev.preventDefault(); });
+  prev.addEventListener("click", function () { if (at > 0) show(at - 1, true); });
 
   reset.addEventListener("click", function () {
     quiz.reset();
     result.hidden = true;
-    refresh();
-    quiz.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+    quiz.hidden = false;
+    show(0);
+    quiz.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "center" });
   });
+
+  show(0);
 })();
