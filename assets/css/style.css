@@ -338,7 +338,11 @@ html:not(.js) .card-cue, html:not(.js) .card-close { display: none; }
   display: inline-flex; align-items: center; gap: .45rem;
   font-size: .9375rem; font-weight: 500; color: var(--ink);
 }
-.arr { width: 34px; height: 18px; flex: none; color: var(--accent); overflow: visible; }
+.arr {
+  width: 34px; height: 18px; flex: none;
+  color: var(--accent); overflow: visible;
+  transform: scaleY(-1);   /* a curva sobe em vez de descer */
+}
 .js .tags li { opacity: 0; transform: translateY(6px); }
 .js .tags.in li { opacity: 1; transform: none; transition: opacity .5s ease, transform .5s ease; }
 .js .tags .a-line, .js .tags .a-head { stroke-dasharray: 46; stroke-dashoffset: 46; }
