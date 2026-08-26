@@ -9,7 +9,8 @@ assets/css/style.css  design: tokens, tipografia, layout
 assets/css/fonts.css  @font-face das fontes locais (gerado)
 assets/fonts/         Playfair Display, Dancing Script e Inter, 332 KB
 assets/img/           retrato e fotografias
-assets/js/main.js     revelação ao scroll, barra de topo, flashcards e quiz em slides
+assets/js/main.js     idioma, revelação ao scroll, barra de topo, flashcards e quiz
+assets/js/i18n.js     traduções inglesas (o português vive no HTML)
 cv/                   redireciona para a raiz (o CV viveu aqui)
 ```
 
@@ -30,6 +31,13 @@ são projetos independentes, cada um com o seu design.
   di-lo em vez de agradar.
 - **Uma só cor de acento**, um laranja escuro escolhido para ser legível em
   texto pequeno. Onde havia frisos, há sombras dessa cor.
+- **Português e inglês.** O português é o que está escrito no HTML e é lido de
+  lá na primeira passagem, por isso `i18n.js` só contém o inglês. Cada texto
+  traduzível tem um `data-i18n`; para acrescentar um, basta pôr o atributo e a
+  entrada correspondente no dicionário.
+- **Sem cookies.** A escolha de idioma fica em `localStorage`, que não é um
+  cookie, não é enviado em pedidos e nunca sai do navegador de quem visita. O
+  acesso está dentro de `try/catch`, para o site não partir em modo privado.
 - **Folha de estilo de impressão**: esconde navegação e quiz, e abre os
   flashcards para o verso aparecer no papel.
 

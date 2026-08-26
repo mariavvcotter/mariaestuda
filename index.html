@@ -18,6 +18,23 @@
 </head>
 <body>
 
+<dialog class="lang-dialog" id="langDialog" aria-labelledby="langDialogTitle">
+  <h2 class="lang-dialog-title" id="langDialogTitle">
+    <span>Escolha o idioma</span>
+    <span class="lang-dialog-alt">Choose your language</span>
+  </h2>
+  <div class="lang-dialog-actions">
+    <button class="btn" type="button" data-set-lang="pt">Português</button>
+    <button class="btn ghost" type="button" data-set-lang="en">English</button>
+  </div>
+  <p class="lang-dialog-note">
+    Este site não usa cookies nem recolhe dados sobre si. A escolha de idioma
+    fica guardada apenas no seu navegador.
+    <span class="lang-dialog-alt">This site uses no cookies and collects no data about you.
+    Your language choice is stored only in your browser.</span>
+  </p>
+</dialog>
+
 <a class="skip" href="#main">Saltar para o conteúdo</a>
 
 <svg class="sprite" aria-hidden="true" focusable="false">
@@ -32,12 +49,16 @@
 <header class="topbar" id="topbar">
   <a class="mark" href="#top" aria-label="Início">MC</a>
   <nav aria-label="Secções">
-    <a href="#sou">Quem sou</a>
-    <a href="#experiencia">Experiência</a>
-    <a href="#formacao">Formação</a>
-    <a href="#como">Como trabalho</a>
-    <a class="nav-cta" href="#encaixo">Encaixo?</a>
+    <a href="#sou" data-i18n="nav.sou">Quem sou</a>
+    <a href="#experiencia" data-i18n="nav.xp">Experiência</a>
+    <a href="#formacao" data-i18n="nav.edu">Formação</a>
+    <a href="#como" data-i18n="nav.como">Como trabalho</a>
+    <a class="nav-cta" href="#encaixo" data-i18n="nav.quiz">Encaixo?</a>
   </nav>
+  <div class="lang-switch" role="group" aria-label="Idioma">
+      <button type="button" data-set-lang="pt" aria-pressed="true">PT</button>
+      <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+    </div>
 </header>
 
 <main id="main">
@@ -46,17 +67,21 @@
 <section class="hero" id="top">
   <div class="hero-inner">
     <div class="hero-type">
-      <p class="eyebrow reveal">Lisboa · Trabalho remoto · Disponível já</p>
+      <div class="lang-switch" role="group" aria-label="Idioma">
+        <button type="button" data-set-lang="pt" aria-pressed="true">PT</button>
+        <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <p class="eyebrow reveal" data-i18n="hero.eyebrow">Lisboa · Trabalho remoto · Disponível já</p>
       <h1 class="reveal d1">Maria&nbsp;Leonor<br>Cotter</h1>
-      <p class="lede reveal d2">Produção de <em>conteúdo</em>, marketing,
+      <p class="lede reveal d2" data-i18n="hero.lede">Produção de <em>conteúdo</em>, marketing,
         assistência pessoal.</p>
-      <p class="hero-sub reveal d3">Sempre trabalhei em diversas áreas, mas sempre em contexto
+      <p class="hero-sub reveal d3" data-i18n="hero.sub">Sempre trabalhei em diversas áreas, mas sempre em contexto
         informal, ainda que rigoroso: criação de conteúdo para uma agência de comunicação e os
         seus clientes, organização de agenda e viagens corporativas de uma empresa familiar,
         criação de branding para uma conferência internacional. Estou pronta para o próximo
         desafio.</p>
       <div class="hero-actions reveal d4">
-        <a class="btn" href="#encaixo">Ver se encaixo no que procura</a>
+        <a class="btn" href="#encaixo" data-i18n="hero.cta">Ver se encaixo no que procura</a>
         <a class="btn ghost" href="https://www.linkedin.com/in/maria-leonor-cotter-5a2a64324" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
       </div>
       <p class="hero-mail reveal d4"><a href="mailto:maria.leonor.cotter@gmail.com?subject=Candidatura%20%E2%80%93%20Maria%20Leonor%20Cotter">maria.leonor.cotter@gmail.com</a></p>
@@ -72,10 +97,10 @@
 <!-- ─────────────────── FLASHCARDS "SOU..." ─────────────────── -->
 <section class="band alt" id="sou">
   <div class="wrap">
-    <h2 class="section-title reveal">Quem sou</h2>
-    <p class="section-lede reveal">Oito afirmações. Cada uma tem uma história por trás,
+    <h2 class="section-title reveal" data-i18n="sou.title">Quem sou</h2>
+    <p class="section-lede reveal" data-i18n="sou.lede">Oito afirmações. Cada uma tem uma história por trás,
       não é um adjetivo solto num currículo.
-      <span class="hint">Clique num cartão para ver porquê.</span></p>
+      <span class="hint" data-i18n="sou.hint">Clique num cartão para ver porquê.</span></p>
 
     <ul class="cards" id="cards">
 
@@ -83,15 +108,15 @@
         <div class="card-inner">
           <div class="card-face card-front">
             <button class="card-toggle" type="button" aria-expanded="false" aria-controls="why-1">
-              <span class="card-claim">Sou <em>proativa</em></span>
-              <span class="card-cue">Veja porquê</span>
+              <span class="card-claim" data-i18n="card.1.claim">Sou <em>proativa</em></span>
+              <span class="card-cue" data-i18n="card.1.cue">Veja porquê</span>
             </button>
           </div>
           <div class="card-face card-back" id="why-1">
-            <p class="card-why">Aos 10 anos aprendi Braille por iniciativa própria e traduzi
+            <p class="card-why" data-i18n="card.1.why">Aos 10 anos aprendi Braille por iniciativa própria e traduzi
               livros para a minha escola inclusiva. Ninguém me pediu. Mexi o que era preciso
               mexer até estar feito.</p>
-            <button class="card-close" type="button">Voltar</button>
+            <button class="card-close" type="button" data-i18n="card.1.close">Voltar</button>
           </div>
         </div>
       </li>
@@ -100,15 +125,15 @@
         <div class="card-inner">
           <div class="card-face card-front">
             <button class="card-toggle" type="button" aria-expanded="false" aria-controls="why-2">
-              <span class="card-claim">Sou <em>boa comunicadora</em></span>
-              <span class="card-cue">Veja porquê</span>
+              <span class="card-claim" data-i18n="card.2.claim">Sou <em>boa comunicadora</em></span>
+              <span class="card-cue" data-i18n="card.2.cue">Veja porquê</span>
             </button>
           </div>
           <div class="card-face card-back" id="why-2">
-            <p class="card-why">Aos 15 anos fiz um pitch no ISEG que ainda hoje é lembrado, com
+            <p class="card-why" data-i18n="card.2.why">Aos 15 anos fiz um pitch no ISEG que ainda hoje é lembrado, com
               elogios do <a href="https://www.rotary.org/" target="_blank" rel="noopener">Rotary</a>,
               da Microsoft e da ONU. Falar em palco, para desconhecidos, nunca foi o meu problema.</p>
-            <button class="card-close" type="button">Voltar</button>
+            <button class="card-close" type="button" data-i18n="card.2.close">Voltar</button>
           </div>
         </div>
       </li>
@@ -117,15 +142,15 @@
         <div class="card-inner">
           <div class="card-face card-front">
             <button class="card-toggle" type="button" aria-expanded="false" aria-controls="why-3">
-              <span class="card-claim">Sou <em>rápida</em></span>
-              <span class="card-cue">Veja porquê</span>
+              <span class="card-claim" data-i18n="card.3.claim">Sou <em>rápida</em></span>
+              <span class="card-cue" data-i18n="card.3.cue">Veja porquê</span>
             </button>
           </div>
           <div class="card-face card-back" id="why-3">
-            <p class="card-why">Uso IA a um nível pouco comum para a minha idade. Trabalho que
+            <p class="card-why" data-i18n="card.3.why">Uso IA a um nível pouco comum para a minha idade. Trabalho que
               levaria semanas sai em horas, sem que a qualidade caia. Este site é um exemplo do
               que consigo produzir sozinha.</p>
-            <button class="card-close" type="button">Voltar</button>
+            <button class="card-close" type="button" data-i18n="card.3.close">Voltar</button>
           </div>
         </div>
       </li>
@@ -134,15 +159,15 @@
         <div class="card-inner">
           <div class="card-face card-front">
             <button class="card-toggle" type="button" aria-expanded="false" aria-controls="why-4">
-              <span class="card-claim">Sou <em>paciente</em></span>
-              <span class="card-cue">Veja porquê</span>
+              <span class="card-claim" data-i18n="card.4.claim">Sou <em>paciente</em></span>
+              <span class="card-cue" data-i18n="card.4.cue">Veja porquê</span>
             </button>
           </div>
           <div class="card-face card-back" id="why-4">
-            <p class="card-why">Dou explicações a crianças neurodivergentes e funciona. Isso
+            <p class="card-why" data-i18n="card.4.why">Dou explicações a crianças neurodivergentes e funciona. Isso
               exige ler a pessoa à frente, mudar de método a meio e nunca perder a calma. Serve
               para alunos e serve para clientes.</p>
-            <button class="card-close" type="button">Voltar</button>
+            <button class="card-close" type="button" data-i18n="card.4.close">Voltar</button>
           </div>
         </div>
       </li>
@@ -151,15 +176,15 @@
         <div class="card-inner">
           <div class="card-face card-front">
             <button class="card-toggle" type="button" aria-expanded="false" aria-controls="why-5">
-              <span class="card-claim">Sou <em>desenrascada</em></span>
-              <span class="card-cue">Veja porquê</span>
+              <span class="card-claim" data-i18n="card.5.claim">Sou <em>desenrascada</em></span>
+              <span class="card-cue" data-i18n="card.5.cue">Veja porquê</span>
             </button>
           </div>
           <div class="card-face card-back" id="why-5">
-            <p class="card-why">Programo o suficiente para resolver os meus próprios problemas e
+            <p class="card-why" data-i18n="card.5.why">Programo o suficiente para resolver os meus próprios problemas e
               desenrasco-me bem em IT. Quando algo trava, procuro a solução em vez de esperar que
               alguém a traga.</p>
-            <button class="card-close" type="button">Voltar</button>
+            <button class="card-close" type="button" data-i18n="card.5.close">Voltar</button>
           </div>
         </div>
       </li>
@@ -168,15 +193,15 @@
         <div class="card-inner">
           <div class="card-face card-front">
             <button class="card-toggle" type="button" aria-expanded="false" aria-controls="why-6">
-              <span class="card-claim">Sou <em>organizada</em></span>
-              <span class="card-cue">Veja porquê</span>
+              <span class="card-claim" data-i18n="card.6.claim">Sou <em>organizada</em></span>
+              <span class="card-cue" data-i18n="card.6.cue">Veja porquê</span>
             </button>
           </div>
           <div class="card-face card-back" id="why-6">
-            <p class="card-why">Trato da agenda de quem trabalho comigo e marco viagens
+            <p class="card-why" data-i18n="card.6.why">Trato da agenda de quem trabalho comigo e marco viagens
               corporativas. Encontrar o melhor preço, encaixar voos em reuniões e prever o que
               corre mal é rotina, não teoria.</p>
-            <button class="card-close" type="button">Voltar</button>
+            <button class="card-close" type="button" data-i18n="card.6.close">Voltar</button>
           </div>
         </div>
       </li>
@@ -185,15 +210,15 @@
         <div class="card-inner">
           <div class="card-face card-front">
             <button class="card-toggle" type="button" aria-expanded="false" aria-controls="why-7">
-              <span class="card-claim">Invisto em <em>mim</em></span>
-              <span class="card-cue">Veja porquê</span>
+              <span class="card-claim" data-i18n="card.7.claim">Invisto em <em>mim</em></span>
+              <span class="card-cue" data-i18n="card.7.cue">Veja porquê</span>
             </button>
           </div>
           <div class="card-face card-back" id="why-7">
-            <p class="card-why">Pago do meu bolso as licenças Adobe e Claude Max com que
+            <p class="card-why" data-i18n="card.7.why">Pago do meu bolso as licenças Adobe e Claude Max com que
               trabalho. Acredito no retorno porque já o vi: as explicações que dou nasceram do
               mesmo raciocínio e resultaram.</p>
-            <button class="card-close" type="button">Voltar</button>
+            <button class="card-close" type="button" data-i18n="card.7.close">Voltar</button>
           </div>
         </div>
       </li>
@@ -202,15 +227,15 @@
         <div class="card-inner">
           <div class="card-face card-front">
             <button class="card-toggle" type="button" aria-expanded="false" aria-controls="why-8">
-              <span class="card-claim">Sou <em>curiosa</em></span>
-              <span class="card-cue">Veja porquê</span>
+              <span class="card-claim" data-i18n="card.8.claim">Sou <em>curiosa</em></span>
+              <span class="card-cue" data-i18n="card.8.cue">Veja porquê</span>
             </button>
           </div>
           <div class="card-face card-back" id="why-8">
-            <p class="card-why">Programação, design, um canal de YouTube, televisão, explicações
+            <p class="card-why" data-i18n="card.8.why">Programação, design, um canal de YouTube, televisão, explicações
               e conteúdo digital. Entro em áreas novas sem medo e trago de cada uma alguma coisa
               que fica.</p>
-            <button class="card-close" type="button">Voltar</button>
+            <button class="card-close" type="button" data-i18n="card.8.close">Voltar</button>
           </div>
         </div>
       </li>
@@ -218,16 +243,16 @@
     </ul>
 
     <div class="percurso reveal">
-      <h3 class="mini-title">Porque sou assim</h3>
-      <p class="percurso-lede">Cresci a saltar entre áreas. Nenhuma foi tempo perdido: cada uma
+      <h3 class="mini-title" data-i18n="percurso.title">Porque sou assim</h3>
+      <p class="percurso-lede" data-i18n="percurso.lede">Cresci a saltar entre áreas. Nenhuma foi tempo perdido: cada uma
         deixou uma ferramenta que uso na seguinte.</p>
       <ul class="percurso-list">
-        <li><span class="p-area">Aplicações e programação</span><span class="p-note">Percebo o que se pede a quem constrói, e construo o que preciso.</span></li>
-        <li><span class="p-area">Design</span><span class="p-note">Identidade visual, materiais impressos e digitais, ferramentas Adobe.</span></li>
-        <li><span class="p-area">Canal de YouTube, Noa Bird</span><span class="p-note">Produção regular para câmara, que me levou a aparecer na televisão.</span></li>
-        <li><span class="p-area">Explicações</span><span class="p-note">Explicar bem obriga a perceber primeiro quem está do outro lado.</span></li>
-        <li><span class="p-area">Criação de conteúdo digital</span><span class="p-note">Escrita, imagem e edição, para marcas com tons diferentes.</span></li>
-        <li><span class="p-area">Pitch e palco</span><span class="p-note">Do ISEG aos 15 anos ao pitch final da Junior Achievement.</span></li>
+        <li><span class="p-area" data-i18n="percurso.1.area">Aplicações e programação</span><span class="p-note" data-i18n="percurso.1.note">Percebo o que se pede a quem constrói, e construo o que preciso.</span></li>
+        <li><span class="p-area" data-i18n="percurso.2.area">Design</span><span class="p-note" data-i18n="percurso.2.note">Identidade visual, materiais impressos e digitais, ferramentas Adobe.</span></li>
+        <li><span class="p-area" data-i18n="percurso.3.area">Canal de YouTube, Noa Bird</span><span class="p-note" data-i18n="percurso.3.note">Produção regular para câmara, que me levou a aparecer na televisão.</span></li>
+        <li><span class="p-area" data-i18n="percurso.4.area">Explicações</span><span class="p-note" data-i18n="percurso.4.note">Explicar bem obriga a perceber primeiro quem está do outro lado.</span></li>
+        <li><span class="p-area" data-i18n="percurso.5.area">Criação de conteúdo digital</span><span class="p-note" data-i18n="percurso.5.note">Escrita, imagem e edição, para marcas com tons diferentes.</span></li>
+        <li><span class="p-area" data-i18n="percurso.6.area">Pitch e palco</span><span class="p-note" data-i18n="percurso.6.note">Do ISEG aos 15 anos ao pitch final da Junior Achievement.</span></li>
       </ul>
     </div>
   </div>
@@ -236,36 +261,36 @@
 <!-- ───────────────────── EXPERIÊNCIA ───────────────────── -->
 <section class="band" id="experiencia">
   <div class="wrap">
-    <h2 class="section-title reveal">Experiência</h2>
+    <h2 class="section-title reveal" data-i18n="xp.title">Experiência</h2>
 
     <article class="xp reveal">
       <div class="xp-text">
-        <p class="kicker">Agência · Conteúdo</p>
-        <h3>Produção de conteúdo na In&#8209;Pacto</h3>
-        <p>Responsável por todo o conteúdo da agência e dos seus clientes durante o período em
+        <p class="kicker" data-i18n="xp.1.kicker">Agência · Conteúdo</p>
+        <h3 data-i18n="xp.1.title">Produção de conteúdo na In&#8209;Pacto</h3>
+        <p data-i18n="xp.1.body">Responsável por todo o conteúdo da agência e dos seus clientes durante o período em
           que lá trabalhei. Vários clientes ao mesmo tempo, cada um com o seu tom, e prazos que
           não esperam.</p>
         <ul class="tags">
-          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg>Escrita</li>
-          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg>Conteúdo para redes</li>
-          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg>Edição multimédia</li>
-          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg>Vários clientes</li>
+          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg><span data-i18n="xp.1.t1">Escrita</span></li>
+          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg><span data-i18n="xp.1.t2">Conteúdo para redes</span></li>
+          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg><span data-i18n="xp.1.t3">Edição multimédia</span></li>
+          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg><span data-i18n="xp.1.t4">Vários clientes</span></li>
         </ul>
       </div>
     </article>
 
     <article class="xp reveal">
       <div class="xp-text">
-        <p class="kicker">Branding · Evento internacional</p>
-        <h3>Identidade visual da uPlayback para um summit internacional</h3>
-        <p>Identidade e todos os materiais de stand: roll&#8209;ups, apresentação de produto,
+        <p class="kicker" data-i18n="xp.2.kicker">Branding · Evento internacional</p>
+        <h3 data-i18n="xp.2.title">Identidade visual da uPlayback para um summit internacional</h3>
+        <p data-i18n="xp.2.body">Identidade e todos os materiais de stand: roll&#8209;ups, apresentação de produto,
           merchandising e sinalética, com uma linguagem coerente do primeiro cartaz ao último
           detalhe.</p>
         <ul class="tags">
-          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg>Identidade visual</li>
-          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg>Materiais de stand</li>
-          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg>Apresentação de produto</li>
-          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg>Merchandising</li>
+          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg><span data-i18n="xp.2.t1">Identidade visual</span></li>
+          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg><span data-i18n="xp.2.t2">Materiais de stand</span></li>
+          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg><span data-i18n="xp.2.t3">Apresentação de produto</span></li>
+          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg><span data-i18n="xp.2.t4">Merchandising</span></li>
         </ul>
         <p class="xp-link"><a href="https://uplayback.com" target="_blank" rel="noopener">uplayback.com <span aria-hidden="true">↗</span></a></p>
       </div>
@@ -278,16 +303,16 @@
 
     <article class="xp flip reveal">
       <div class="xp-text">
-        <p class="kicker">Empreendedorismo</p>
-        <h3>Projeto <em>A Empresa</em>, da Junior Achievement</h3>
-        <p>Da ideia ao pitch: constituição da equipa, definição do produto, marca, plano de
+        <p class="kicker" data-i18n="xp.3.kicker">Empreendedorismo</p>
+        <h3 data-i18n="xp.3.title">Projeto <em>A Empresa</em>, da Junior Achievement</h3>
+        <p data-i18n="xp.3.body">Da ideia ao pitch: constituição da equipa, definição do produto, marca, plano de
           comunicação e vendas reais. Terminou com a apresentação final em palco no ISEG,
           Lisbon School of Economics &amp; Management.</p>
         <ul class="tags">
-          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg>Trabalho em equipa</li>
-          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg>Marca e comunicação</li>
-          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg>Pitch em palco</li>
-          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg>Vendas</li>
+          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg><span data-i18n="xp.3.t1">Trabalho em equipa</span></li>
+          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg><span data-i18n="xp.3.t2">Marca e comunicação</span></li>
+          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg><span data-i18n="xp.3.t3">Pitch em palco</span></li>
+          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg><span data-i18n="xp.3.t4">Vendas</span></li>
         </ul>
       </div>
       <figure class="xp-shot">
@@ -299,15 +324,15 @@
 
     <article class="xp reveal">
       <div class="xp-text">
-        <p class="kicker">Ensino</p>
-        <h3>Explicadora, incluindo alunos neurodivergentes</h3>
-        <p>Acompanhamento individual a Português, Matemática e Inglês, com planos de aula e
+        <p class="kicker" data-i18n="xp.4.kicker">Ensino</p>
+        <h3 data-i18n="xp.4.title">Explicadora, incluindo alunos neurodivergentes</h3>
+        <p data-i18n="xp.4.body">Acompanhamento individual a Português, Matemática e Inglês, com planos de aula e
           fichas feitos à medida de cada aluno. O que aprendi a explicar a quem processa o mundo
           de outra maneira aplica-se a qualquer público.</p>
         <ul class="tags">
-          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg>Planeamento pedagógico</li>
-          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg>Comunicação 1 para 1</li>
-          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg>Produção de materiais</li>
+          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg><span data-i18n="xp.4.t1">Planeamento pedagógico</span></li>
+          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg><span data-i18n="xp.4.t2">Comunicação 1 para 1</span></li>
+          <li><svg class="arr" aria-hidden="true"><use href="#arrow"></use></svg><span data-i18n="xp.4.t3">Produção de materiais</span></li>
         </ul>
       </div>
     </article>
@@ -317,19 +342,19 @@
 <!-- ───────────────────── FORMAÇÃO ───────────────────── -->
 <section class="band alt" id="formacao">
   <div class="wrap">
-    <h2 class="section-title reveal">Formação</h2>
+    <h2 class="section-title reveal" data-i18n="edu.title">Formação</h2>
 
     <div class="edu reveal">
       <div class="edu-head">
-        <h3>Licenciatura em Ciências da Comunicação</h3>
-        <p class="edu-org">Faculdade de Ciências Humanas, Universidade Católica Portuguesa, Lisboa</p>
-        <p class="edu-note">A terminar · 3.º ano</p>
+        <h3 data-i18n="edu.degree">Licenciatura em Ciências da Comunicação</h3>
+        <p class="edu-org" data-i18n="edu.org">Faculdade de Ciências Humanas, Universidade Católica Portuguesa, Lisboa</p>
+        <p class="edu-note" data-i18n="edu.note">A terminar · 3.º ano</p>
       </div>
 
       <dl class="stats">
-        <div><dt>Média atual</dt><dd>16</dd></div>
-        <div><dt>ECTS concluídos</dt><dd>145</dd></div>
-        <div><dt>Curso completo</dt><dd>83<span class="unit">%</span></dd></div>
+        <div><dt data-i18n="edu.stat1">Média atual</dt><dd>16</dd></div>
+        <div><dt data-i18n="edu.stat2">ECTS concluídos</dt><dd>145</dd></div>
+        <div><dt data-i18n="edu.stat3">Curso completo</dt><dd>83<span class="unit">%</span></dd></div>
       </dl>
 
       <div class="progress" role="img" aria-label="83 por cento da licenciatura concluída">
@@ -337,25 +362,25 @@
       </div>
     </div>
 
-    <h4 class="mini-title reveal">Cadeiras em destaque</h4>
+    <h4 class="mini-title reveal" data-i18n="edu.grades">Cadeiras em destaque</h4>
     <ul class="grades reveal">
       <li>
         <p class="g-val top">20</p>
-        <h5 class="g-name">Marketing</h5>
-        <p class="g-why">A nota mais alta do curso, na cadeira que sustenta o trabalho que quero
+        <h5 class="g-name" data-i18n="edu.g1.name">Marketing</h5>
+        <p class="g-why" data-i18n="edu.g1.why">A nota mais alta do curso, na cadeira que sustenta o trabalho que quero
           fazer: posicionamento, campanha e a ponte entre aquilo que uma marca é e aquilo que
           comunica.</p>
       </li>
       <li>
         <p class="g-val">18</p>
-        <h5 class="g-name">História dos Média</h5>
-        <p class="g-why">Saber como os meios se transformaram é o que permite escolher hoje o
+        <h5 class="g-name" data-i18n="edu.g2.name">História dos Média</h5>
+        <p class="g-why" data-i18n="edu.g2.why">Saber como os meios se transformaram é o que permite escolher hoje o
           canal certo, e reconhecer o que já foi tentado antes de o propor como novo.</p>
       </li>
       <li>
         <p class="g-val">18</p>
-        <h5 class="g-name">Inglês</h5>
-        <p class="g-why">A língua de trabalho dos projetos internacionais, como o branding que
+        <h5 class="g-name" data-i18n="edu.g3.name">Inglês</h5>
+        <p class="g-why" data-i18n="edu.g3.why">A língua de trabalho dos projetos internacionais, como o branding que
           desenvolvi para a presença da uPlayback num summit fora de Portugal.</p>
       </li>
     </ul>
@@ -365,24 +390,24 @@
 <!-- ───────────────────── COMO TRABALHO ───────────────────── -->
 <section class="band" id="como">
   <div class="wrap">
-    <h2 class="section-title reveal">Como trabalho</h2>
+    <h2 class="section-title reveal" data-i18n="como.title">Como trabalho</h2>
 
     <div class="how">
       <article class="reveal">
-        <h3>Remoto, com deslocações quando fazem falta</h3>
-        <p>Procuro trabalho remoto para poder usar as minhas ferramentas nos ambientes onde
+        <h3 data-i18n="como.1.title">Remoto, com deslocações quando fazem falta</h3>
+        <p data-i18n="como.1.body">Procuro trabalho remoto para poder usar as minhas ferramentas nos ambientes onde
           rendo mais. Deslocações pontuais ou regulares mas reduzidas não são problema: gravar
           conteúdo, reuniões, pitches ou trabalho presencial quando a ocasião o justifica.</p>
       </article>
       <article class="reveal d1">
-        <h3>Disponível agora</h3>
-        <p>Com o curso a terminar tenho menos cadeiras e menos carga horária, portanto mais
+        <h3 data-i18n="como.2.title">Disponível agora</h3>
+        <p data-i18n="como.2.body">Com o curso a terminar tenho menos cadeiras e menos carga horária, portanto mais
           tempo real. Quero juntar dinheiro para o mestrado e começar já a construir carreira,
           o que significa que venho para ficar e para crescer.</p>
       </article>
       <article class="reveal d2">
-        <h3>Primeiro vínculo formal</h3>
-        <p>Sempre trabalhei em contexto informal, por isso este seria o meu primeiro emprego.
+        <h3 data-i18n="como.3.title">Primeiro vínculo formal</h3>
+        <p data-i18n="como.3.body">Sempre trabalhei em contexto informal, por isso este seria o meu primeiro emprego.
           Para o empregador, isso abre a porta aos benefícios de IRC previstos para a criação de
           primeiro emprego.</p>
       </article>
@@ -393,11 +418,11 @@
 <!-- ───────────────────── QUIZ ───────────────────── -->
 <section class="band alt quiz-band" id="encaixo">
   <div class="wrap wrap-narrow">
-    <h2 class="section-title reveal">Encaixo no que procura?</h2>
-    <p class="section-lede reveal">Cinco perguntas sobre a vaga, não sobre mim. No fim tem uma
+    <h2 class="section-title reveal" data-i18n="quiz.title">Encaixo no que procura?</h2>
+    <p class="section-lede reveal" data-i18n="quiz.lede">Cinco perguntas sobre a vaga, não sobre mim. No fim tem uma
       resposta honesta, incluindo as partes em que talvez não seja a pessoa certa.</p>
 
-    <p class="quiz-nojs">O quiz precisa de JavaScript para calcular o resultado. Sem ele, fica o
+    <p class="quiz-nojs" data-i18n="quiz.nojs">O quiz precisa de JavaScript para calcular o resultado. Sem ele, fica o
       essencial: procuro remoto com deslocações reduzidas, quero conteúdo e marketing no centro
       da função, trabalho melhor com autonomia, uso IA todos os dias e este seria o meu primeiro
       vínculo formal. Se isso encaixa, <a href="#contacto">falemos</a>.</p>
@@ -411,49 +436,49 @@
       <div class="slides" id="slides">
 
         <fieldset class="slide is-active" data-q="1">
-          <legend>O trabalho pode ser feito à distância?</legend>
-          <label><input type="radio" name="q1" value="2"><span>Sim, é remoto</span></label>
-          <label><input type="radio" name="q1" value="2"><span>Híbrido, com idas pontuais</span></label>
-          <label><input type="radio" name="q1" value="1"><span>Híbrido, com presença regular</span></label>
-          <label><input type="radio" name="q1" value="0"><span>Presencial todos os dias</span></label>
+          <legend data-i18n="quiz.q1">O trabalho pode ser feito à distância?</legend>
+          <label><input type="radio" name="q1" value="2"><span data-i18n="quiz.q1.o1">Sim, é remoto</span></label>
+          <label><input type="radio" name="q1" value="2"><span data-i18n="quiz.q1.o2">Híbrido, com idas pontuais</span></label>
+          <label><input type="radio" name="q1" value="1"><span data-i18n="quiz.q1.o3">Híbrido, com presença regular</span></label>
+          <label><input type="radio" name="q1" value="0"><span data-i18n="quiz.q1.o4">Presencial todos os dias</span></label>
         </fieldset>
 
         <fieldset class="slide" data-q="2">
-          <legend>Que peso tem a produção de conteúdo e o marketing?</legend>
-          <label><input type="radio" name="q2" value="2"><span>É o centro da função</span></label>
-          <label><input type="radio" name="q2" value="2"><span>Metade do trabalho</span></label>
-          <label><input type="radio" name="q2" value="1"><span>Uma parte pequena</span></label>
-          <label><input type="radio" name="q2" value="1"><span>Nenhum, é sobretudo apoio e logística</span></label>
+          <legend data-i18n="quiz.q2">Que peso tem a produção de conteúdo e o marketing?</legend>
+          <label><input type="radio" name="q2" value="2"><span data-i18n="quiz.q2.o1">É o centro da função</span></label>
+          <label><input type="radio" name="q2" value="2"><span data-i18n="quiz.q2.o2">Metade do trabalho</span></label>
+          <label><input type="radio" name="q2" value="1"><span data-i18n="quiz.q2.o3">Uma parte pequena</span></label>
+          <label><input type="radio" name="q2" value="1"><span data-i18n="quiz.q2.o4">Nenhum, é sobretudo apoio e logística</span></label>
         </fieldset>
 
         <fieldset class="slide" data-q="3">
-          <legend>Quanta autonomia vai dar a quem contratar?</legend>
-          <label><input type="radio" name="q3" value="2"><span>Muita, quero quem proponha</span></label>
-          <label><input type="radio" name="q3" value="2"><span>Alguma, com validação no fim</span></label>
-          <label><input type="radio" name="q3" value="1"><span>Pouca, seguimos um processo fixo</span></label>
-          <label><input type="radio" name="q3" value="0"><span>Nenhuma, executa-se o que é mandado</span></label>
+          <legend data-i18n="quiz.q3">Quanta autonomia vai dar a quem contratar?</legend>
+          <label><input type="radio" name="q3" value="2"><span data-i18n="quiz.q3.o1">Muita, quero quem proponha</span></label>
+          <label><input type="radio" name="q3" value="2"><span data-i18n="quiz.q3.o2">Alguma, com validação no fim</span></label>
+          <label><input type="radio" name="q3" value="1"><span data-i18n="quiz.q3.o3">Pouca, seguimos um processo fixo</span></label>
+          <label><input type="radio" name="q3" value="0"><span data-i18n="quiz.q3.o4">Nenhuma, executa-se o que é mandado</span></label>
         </fieldset>
 
         <fieldset class="slide" data-q="4">
-          <legend>Usar IA para acelerar o trabalho é bem-vindo?</legend>
-          <label><input type="radio" name="q4" value="2"><span>Sim, é uma vantagem</span></label>
-          <label><input type="radio" name="q4" value="1"><span>Sim, com regras definidas</span></label>
-          <label><input type="radio" name="q4" value="1"><span>Indiferente</span></label>
-          <label><input type="radio" name="q4" value="0"><span>Não, preferimos evitar</span></label>
+          <legend data-i18n="quiz.q4">Usar IA para acelerar o trabalho é bem-vindo?</legend>
+          <label><input type="radio" name="q4" value="2"><span data-i18n="quiz.q4.o1">Sim, é uma vantagem</span></label>
+          <label><input type="radio" name="q4" value="1"><span data-i18n="quiz.q4.o2">Sim, com regras definidas</span></label>
+          <label><input type="radio" name="q4" value="1"><span data-i18n="quiz.q4.o3">Indiferente</span></label>
+          <label><input type="radio" name="q4" value="0"><span data-i18n="quiz.q4.o4">Não, preferimos evitar</span></label>
         </fieldset>
 
         <fieldset class="slide" data-q="5">
-          <legend>Que experiência formal é indispensável?</legend>
-          <label><input type="radio" name="q5" value="2"><span>Nenhuma, avaliamos pelo trabalho</span></label>
-          <label><input type="radio" name="q5" value="2"><span>Um ou dois anos</span></label>
-          <label><input type="radio" name="q5" value="1"><span>Três a cinco anos</span></label>
-          <label><input type="radio" name="q5" value="0"><span>Mais de cinco anos</span></label>
+          <legend data-i18n="quiz.q5">Que experiência formal é indispensável?</legend>
+          <label><input type="radio" name="q5" value="2"><span data-i18n="quiz.q5.o1">Nenhuma, avaliamos pelo trabalho</span></label>
+          <label><input type="radio" name="q5" value="2"><span data-i18n="quiz.q5.o2">Um ou dois anos</span></label>
+          <label><input type="radio" name="q5" value="1"><span data-i18n="quiz.q5.o3">Três a cinco anos</span></label>
+          <label><input type="radio" name="q5" value="0"><span data-i18n="quiz.q5.o4">Mais de cinco anos</span></label>
         </fieldset>
 
       </div>
 
       <div class="quiz-nav">
-        <button class="link-btn" type="button" id="quizPrev" hidden>Pergunta anterior</button>
+        <button class="link-btn" type="button" id="quizPrev" hidden data-i18n="quiz.prev">Pergunta anterior</button>
       </div>
     </form>
 
@@ -462,9 +487,9 @@
       <p class="result-body" id="resultBody"></p>
       <ul class="result-notes" id="resultNotes"></ul>
       <div class="result-cta">
-        <a class="btn" href="mailto:maria.leonor.cotter@gmail.com?subject=Candidatura%20%E2%80%93%20Maria%20Leonor%20Cotter">Enviar email</a>
+        <a class="btn" href="mailto:maria.leonor.cotter@gmail.com?subject=Candidatura%20%E2%80%93%20Maria%20Leonor%20Cotter" data-i18n="quiz.mail">Enviar email</a>
         <a class="btn ghost" href="https://www.linkedin.com/in/maria-leonor-cotter-5a2a64324" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
-        <button class="link-btn" type="button" id="quizReset">Repetir</button>
+        <button class="link-btn" type="button" id="quizReset" data-i18n="quiz.reset">Repetir</button>
       </div>
     </div>
   </div>
@@ -473,8 +498,8 @@
 <!-- ───────────────────── CONTACTO ───────────────────── -->
 <section class="band contact" id="contacto">
   <div class="wrap">
-    <h2 class="section-title reveal">Falar comigo</h2>
-    <p class="section-lede reveal">Se acha que faz sentido, o passo seguinte é uma conversa.</p>
+    <h2 class="section-title reveal" data-i18n="contacto.title">Falar comigo</h2>
+    <p class="section-lede reveal" data-i18n="contacto.lede">Se acha que faz sentido, o passo seguinte é uma conversa.</p>
     <div class="contact-links reveal">
       <a class="btn" href="mailto:maria.leonor.cotter@gmail.com?subject=Candidatura%20%E2%80%93%20Maria%20Leonor%20Cotter">maria.leonor.cotter@gmail.com</a>
       <a class="btn ghost" href="https://www.linkedin.com/in/maria-leonor-cotter-5a2a64324" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
@@ -486,8 +511,10 @@
 
 <footer class="foot">
   <p>Maria Leonor Cotter · Lisboa</p>
+  <p class="foot-note" id="footNote">Este site não usa cookies nem recolhe dados sobre si.</p>
 </footer>
 
+<script src="assets/js/i18n.js"></script>
 <script src="assets/js/main.js"></script>
 </body>
 </html>
