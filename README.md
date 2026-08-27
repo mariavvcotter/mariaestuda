@@ -37,9 +37,11 @@ são projetos independentes, cada um com o seu design.
   lá na primeira passagem, por isso `i18n.js` só contém o inglês. Cada texto
   traduzível tem um `data-i18n`; para acrescentar um, basta pôr o atributo e a
   entrada correspondente no dicionário.
-- **Sem cookies.** A escolha de idioma fica em `localStorage`, que não é um
-  cookie, não é enviado em pedidos e nunca sai do navegador de quem visita. O
-  acesso está dentro de `try/catch`, para o site não partir em modo privado.
+- **Não guarda nada.** Sem cookies, sem `localStorage`, sem `sessionStorage`.
+  A escolha de idioma vive no endereço (`?lang=pt` ou `?lang=en`), escrito com
+  `history.replaceState`. Sobrevive a um recarregamento e pode ser partilhada
+  já na língua certa, mas não deixa rasto no navegador de quem visita. O custo
+  é que uma visita nova, sem parâmetro, volta a ver o diálogo.
 - **Folha de estilo de impressão**: esconde navegação e quiz, e abre os
   flashcards para o verso aparecer no papel.
 

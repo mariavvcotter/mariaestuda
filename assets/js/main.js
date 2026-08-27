@@ -6,9 +6,9 @@
 
   /* ---------- Idioma ----------
      O português é o que está escrito no HTML: é lido daí na primeira passagem,
-     por isso só o inglês vive no dicionário. Guardado em localStorage, que não
-     é um cookie e nunca sai deste navegador. */
-  var STORE = "lang";
+     por isso só o inglês vive no dicionário. A escolha fica no endereço da
+     página (?lang=en) e não no navegador: o site não guarda nada do lado de
+     quem visita. */
   var EN = window.EN || {};
   var PT = {};
   var lang = "pt";
@@ -27,7 +27,7 @@
     "aria.progress": "83 por cento da licenciatura concluída",
     "aria.lang": "Idioma",
     "quiz.count": "Pergunta {n} de {total}",
-    "foot.note": "Este site não usa cookies nem recolhe dados sobre si.",
+    "foot.note": "Este site não usa cookies e não guarda nada no seu navegador.",
     "res.no": "Provavelmente não sou a pessoa certa.",
     "res.no.body": "Há mais do que um ponto de fundo que não bate certo. Prefiro dizê-lo agora a fazer-lhe perder tempo numa entrevista.",
     "res.one": "Encaixo, com uma ressalva.",
@@ -86,7 +86,15 @@
       }
     });
 
-    try { localStorage.setItem(STORE, lang); } catch (e) { /* modo privado */ }
+    // a escolha viaja no endereço, para sobreviver a um recarregamento e para
+    // poder ser partilhada já na língua certa
+    if (window.history && history.replaceState) {
+      try {
+        var url = new URL(window.location.href);
+        url.searchParams.set("lang", lang);
+        history.replaceState(null, "", url.toString());
+      } catch (e) { /* file:// e afins */ }
+    }
     document.dispatchEvent(new CustomEvent("langchange"));
   }
 
@@ -98,10 +106,10 @@
     });
   });
 
-  var saved = null;
-  try { saved = localStorage.getItem(STORE); } catch (e) { /* modo privado */ }
-  if (saved === "en" || saved === "pt") {
-    applyLang(saved);
+  var asked = null;
+  try { asked = new URL(window.location.href).searchParams.get("lang"); } catch (e) { /* URL exótico */ }
+  if (asked === "en" || asked === "pt") {
+    applyLang(asked);
   } else {
     var dlg = document.getElementById("langDialog");
     // sugere pelo browser, mas quem decide é a pessoa

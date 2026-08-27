@@ -178,6 +178,7 @@ window.EN = {
   "aria.progress": "83 per cent of the degree completed",
   "aria.lang": "Language",
   "quiz.count": "Question {n} of {total}",
+  "foot.note": "This site uses no cookies and stores nothing in your browser.",
 
   /* resultados do quiz */
   "res.no": "I am probably not the right person.",
