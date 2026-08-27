@@ -125,8 +125,8 @@ window.EN = {
   "como.1.body": "I am looking for remote work so I can use my own tools in the settings where I do my best work. Occasional travel, or regular but limited travel, is not a problem: recording content, meetings, pitches or on-site work when the occasion calls for it.",
   "como.2.title": "Available now",
   "como.2.body": "With my degree ending I have fewer courses and fewer contact hours, so more real time. I want to save for my master's and start building a career now, which means I am here to stay and to grow.",
-  "como.3.title": "First formal contract",
-  "como.3.body": "I have always worked informally, so this would be my first job. For an employer, that opens the door to the Portuguese corporate tax benefits for creating a first job.",
+  "como.3.title": "Corporate tax benefits",
+  "como.3.body": "Hiring me opens the door to the Portuguese corporate tax benefits for creating a first job, because I have always worked informally and this would be my first formal contract.",
 
   "quiz.title": "Do I fit what you need?",
   "quiz.lede": "Five questions about the role, not about me. At the end you get an honest answer, including the parts where I may not be the right person.",
