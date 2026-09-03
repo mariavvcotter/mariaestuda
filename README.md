@@ -12,8 +12,10 @@ assets/img/           retrato e fotografias
 assets/js/main.js     idioma, revelação ao scroll, barra de topo, flashcards e quiz
 assets/js/i18n.js     traduções inglesas (o português vive no HTML)
 cv/                   redireciona para a raiz (o CV viveu aqui)
-tools/cv-en.html      versão curta do CV, em inglês, feita para imprimir
-tools/build-cv-pdf.mjs  gera o PDF a partir dela
+tools/cv-pt.html      versão curta do CV, em português, feita para imprimir
+tools/cv-en.html      a mesma, em inglês
+tools/cv-print.css    folha de estilo partilhada pelas duas
+tools/build-cv-pdf.mjs  gera os PDF a partir delas
 ```
 
 As restantes pastas (`ci/`, `explicacoes/`, `lpuplayback/`, `portugues/`, ...)
@@ -53,13 +55,18 @@ python3 -m http.server 8000
 
 ## Gerar o CV em PDF
 
-A versão curta em inglês, para anexar a candidaturas, vive em `tools/cv-en.html`
-e não está ligada a partir do site.
+As versões curtas, para anexar a candidaturas, vivem em `tools/cv-pt.html` e
+`tools/cv-en.html`. Não estão ligadas a partir do site e levam `noindex`.
 
 ```sh
 npm i playwright
-node tools/build-cv-pdf.mjs maria-cotter-cv.pdf
+node tools/build-cv-pdf.mjs              # os dois PDF
+node tools/build-cv-pdf.mjs pt           # só o português
+node tools/build-cv-pdf.mjs en saida.pdf # o inglês, com nome escolhido
 ```
 
-Sai uma página A4. O ficheiro não é versionado: regenera-se sempre que a fonte
-mudar, para não haver duas versões a divergir.
+Cada um sai numa folha A4. As duas partilham `cv-print.css`, para não
+divergirem no aspeto: o português é cerca de 15% mais longo, e é por isso que
+o espaçamento está apertado o suficiente para os dois caberem.
+
+Os PDF não são versionados: regeneram-se sempre que a fonte mudar.
