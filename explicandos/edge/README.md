@@ -2,8 +2,8 @@
 
 Criar contas e redefinir palavras-passe precisa da `service_role key` do
 Supabase. Essa chave dá acesso total à base de dados, por cima de todas as
-políticas de RLS, e por isso **não pode estar no site**: o `/explicandos/` é
-servido pelo GitHub Pages, onde tudo o que o browser carrega é público.
+políticas de RLS, e por isso **não pode estar no site**: a aplicação é servida
+pelo GitHub Pages, onde tudo o que o browser carrega é público.
 
 Esta função é o pedaço de servidor que falta. A chave vive no ambiente da
 função, e a função só age depois de confirmar na base de dados que quem
@@ -28,6 +28,6 @@ mensagem a dizê-lo. O caminho alternativo:
 
 1. Painel Supabase → **Authentication → Users → Add user**, com email e
    palavra-passe, e **Auto Confirm User** ligado.
-2. Voltar a `/explicandos/` → separador **Contas** → a conta nova aparece
+2. Voltar à aplicação → separador **Contas** → a conta nova aparece
    sem permissões → abrir e dar-lhe o que deve ver.
 3. Ligar a conta ao aluno, na ficha dele.

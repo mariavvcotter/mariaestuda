@@ -84,7 +84,7 @@ dadas) e assinala-o quando se afasta do preço de tabela.
     where id = (select id from auth.users where email = 'o-teu@email');
    ```
 
-4. Abrir `/explicandos/` e entrar.
+4. Abrir a aplicação no browser e entrar.
 5. Opcional, mas recomendado: publicar a função `admin-contas` (ver
    `edge/README.md`) para poderes criar contas sem sair da aplicação.
 
@@ -111,6 +111,10 @@ arquivar.
 ## Notas
 
 - Não está ligada a partir de lado nenhum do site e leva `noindex, nofollow`.
+- **O nome da pasta não está preso em lado nenhum.** Os ficheiros são todos
+  irmãos do `index.html` e as ligações entre eles são relativas, por isso a
+  pasta serve em `/explicandos/`, em `/exp/` ou onde a puseres. Os testes de
+  navegador aceitam `APP=/exp/` para confirmar isso.
 - **O horário semanal é decorativo.** Serve para veres o dia e pré-preencher o
   formulário. Uma explicação só existe depois de a registares, e registar é o
   mesmo que dizer que aconteceu — não há segundo passo.
