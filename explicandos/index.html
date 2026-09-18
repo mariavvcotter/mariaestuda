@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#4A9B8E">
+<title>Explicandos · mariaestuda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/explicandos/style.css">
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div class="gate" id="gate">
+  <h1>Explicandos</h1>
+  <p class="sub">Área privada. Entra para ver os teus alunos.</p>
+  <form id="gate-form" novalidate>
+    <div class="field">
+      <label for="gate-email">Email</label>
+      <input type="email" id="gate-email" autocomplete="username" required>
+    </div>
+    <div class="field">
+      <label for="gate-pw">Palavra-passe</label>
+      <input type="password" id="gate-pw" autocomplete="current-password" required>
+    </div>
+    <div class="err" id="gate-err"></div>
+    <button class="btn" type="submit" id="gate-btn">Entrar</button>
+  </form>
+</div>
+
+<!-- ============ APLICAÇÃO ============ -->
+<div id="app" class="hidden">
+
+  <header class="topbar">
+    <div>
+      <h1 id="top-title">Painel</h1>
+      <div class="sub" id="top-sub"></div>
+    </div>
+    <button type="button" id="logout">Sair</button>
+  </header>
+
+  <main class="wrap">
+    <!-- ---- Painel ---- -->
+    <section class="view" id="view-painel">
+      <div class="stats">
+        <div class="stat"><div class="n" id="s-alunos">—</div><div class="l">alunos ativos</div></div>
+        <div class="stat"><div class="n" id="s-horas">—</div><div class="l">horas dadas este mês</div></div>
+        <div class="stat"><div class="n" id="s-receita">—</div><div class="l">recebido este mês</div></div>
+        <div class="stat"><div class="n" id="s-divida">—</div><div class="l">por cobrar</div></div>
+      </div>
+
+      <div class="card">
+        <h3>A precisar de atenção</h3>
+        <div id="atencao"></div>
+      </div>
+
+      <div class="card">
+        <h3>Últimas aulas</h3>
+        <ul class="hist" id="ultimas-aulas"></ul>
+      </div>
+    </section>
+
+    <!-- ---- Alunos ---- -->
+    <section class="view hidden" id="view-alunos">
+      <h2 class="view-title">Alunos</h2>
+      <div id="lista-alunos"></div>
+      <div class="btn-row">
+        <button class="btn" type="button" id="novo-aluno">+ Novo aluno</button>
+      </div>
+      <p class="muted" style="margin-top:14px">
+        O saldo é em horas: cada pagamento acrescenta as horas compradas,
+        cada aula dada gasta as horas da aula. Negativo quer dizer que já
+        teve aulas que ainda não pagou.
+      </p>
+    </section>
+
+    <!-- ---- Aulas ---- -->
+    <section class="view hidden" id="view-aulas">
+      <h2 class="view-title">Aulas</h2>
+      <div class="btn-row" style="margin-bottom:16px">
+        <button class="btn" type="button" id="nova-aula">+ Registar aula</button>
+      </div>
+      <div class="card">
+        <h3>Histórico</h3>
+        <ul class="hist" id="lista-aulas"></ul>
+      </div>
+    </section>
+
+    <!-- ---- Dinheiro ---- -->
+    <section class="view hidden" id="view-dinheiro">
+      <h2 class="view-title">Dinheiro</h2>
+      <div class="btn-row" style="margin-bottom:16px">
+        <button class="btn amber" type="button" id="novo-pagamento">+ Registar pagamento</button>
+      </div>
+      <div class="card">
+        <h3>Por mês</h3>
+        <ul class="hist" id="meses"></ul>
+      </div>
+      <div class="card">
+        <h3>Pagamentos</h3>
+        <ul class="hist" id="lista-pagamentos"></ul>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabs">
+    <button type="button" data-tab="painel"   class="on"><span class="ico">🏠</span>Painel</button>
+    <button type="button" data-tab="alunos"><span class="ico">🧒</span>Alunos</button>
+    <button type="button" data-tab="aulas"><span class="ico">📚</span>Aulas</button>
+    <button type="button" data-tab="dinheiro"><span class="ico">💰</span>Dinheiro</button>
+  </nav>
+</div>
+
+<!-- Ecrã de formulário, preenchido por JavaScript -->
+<div id="sheet" class="sheet hidden" role="dialog" aria-modal="true"></div>
+
+<script src="/explicandos/config.js"></script>
+<script src="/explicandos/app.js"></script>
+</body>
+</html>
