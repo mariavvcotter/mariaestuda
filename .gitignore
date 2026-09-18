@@ -1,3 +1,7 @@
 
 # o PDF gera-se a partir de tools/cv-en.html
 *.pdf
+
+# dependências de teste: o Playwright instala-se quando é preciso
+node_modules/
+package-lock.json

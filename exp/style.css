@@ -1,0 +1,263 @@
+/* ============================================================
+   mariaestuda — Explicações
+   Tokens do resto do site. Feito primeiro para telemóvel: é onde
+   a explicação é registada, a seguir à aula, e é onde o aluno vai
+   buscar o material.
+   ============================================================ */
+:root{
+  --cream:#F5EFE0; --teal:#4A9B8E; --teal-dark:#3a7d72;
+  --amber:#F5A623; --amber-dark:#e09510;
+  --text:#2C2C2C; --text-light:#6B6B6B;
+  --card:#FDFAF4; --line:#e3ddcd;
+  --red:#c8442f; --red-soft:#fbeae6;
+  --green:#2f7d5f; --green-soft:#e6f2ec;
+  --nav-h:66px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:'Nunito',system-ui,sans-serif;
+  background:var(--cream); color:var(--text);
+  padding:0 0 calc(var(--nav-h) + 24px);
+  -webkit-tap-highlight-color:transparent;
+}
+body.sem-tabs{padding-bottom:40px}
+h1,h2,h3{font-family:'Fredoka One',cursive;font-weight:400;color:var(--teal);line-height:1.15}
+a{color:var(--teal-dark)}
+.hidden{display:none !important}
+
+/* ---------- estrutura ---------- */
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+.topbar{
+  background:var(--teal);color:#fff;padding:18px 16px 16px;margin-bottom:18px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.topbar h1{color:#fff;font-size:1.45rem}
+.topbar .sub{font-weight:700;font-size:.78rem;opacity:.85}
+.topbar-acoes{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.topbar button{
+  background:rgba(255,255,255,.18);color:#fff;border:none;font-family:inherit;
+  font-weight:800;font-size:.76rem;padding:7px 13px;border-radius:20px;cursor:pointer;
+}
+.topbar button:hover{background:rgba(255,255,255,.3)}
+
+.view{animation:fade .22s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h2.view-title{font-size:1.35rem;margin:4px 0 4px}
+h3.sec{font-size:1.05rem;margin:26px 0 10px}
+
+.dica{color:var(--text-light);font-weight:600;font-size:.82rem;line-height:1.45;margin-top:8px}
+.info{margin:0 0 8px;font-size:.92rem}
+.info strong{color:var(--text-light)}
+.empty{
+  background:var(--card);border:1.5px dashed var(--line);border-radius:18px;
+  padding:24px 20px;text-align:center;color:var(--text-light);font-weight:700;font-size:.9rem;
+}
+
+/* ---------- avisos ---------- */
+.aviso{
+  max-width:760px;margin:0 auto 14px;padding:12px 16px;border-radius:14px;
+  font-weight:800;font-size:.9rem;
+}
+.aviso.ok{background:var(--green-soft);color:var(--green)}
+.aviso.mau{background:var(--red-soft);color:var(--red)}
+.aviso-linha{margin-top:12px;font-weight:800;font-size:.88rem;color:var(--red)}
+
+/* ---------- cartões e números ---------- */
+.card{
+  background:var(--card);border-radius:20px;padding:20px;
+  box-shadow:0 4px 16px rgba(0,0,0,.06);margin-bottom:16px;
+}
+.card h3{font-size:1.08rem;margin-bottom:14px}
+
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:18px}
+@media(min-width:620px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{
+  background:var(--card);border-radius:18px;padding:16px 14px;
+  box-shadow:0 4px 16px rgba(0,0,0,.06);position:relative;overflow:hidden;
+}
+.stat::before{content:'';position:absolute;inset:0 0 auto 0;height:4px;
+  background:linear-gradient(90deg,var(--teal),var(--amber))}
+.stat .n{font-family:'Fredoka One',cursive;font-size:1.6rem;color:var(--teal);line-height:1.05}
+.stat .n.debt{color:var(--red)} .stat .n.warn{color:var(--amber-dark)}
+.stat .l{font-weight:700;color:var(--text-light);font-size:.73rem;margin-top:6px;line-height:1.3}
+
+.banner{
+  background:#ece5d4;border-radius:14px;padding:12px 16px;
+  font-weight:700;font-size:.86rem;color:var(--text-light);margin-bottom:16px;
+}
+
+/* ---------- linhas clicáveis ---------- */
+.row{
+  display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+  background:var(--card);border:none;border-radius:18px;padding:14px 16px;
+  box-shadow:0 3px 12px rgba(0,0,0,.05);margin-bottom:10px;
+  font-family:inherit;font-size:1rem;color:var(--text);cursor:pointer;
+}
+.row:hover{box-shadow:0 6px 18px rgba(0,0,0,.09)}
+.row.inativo{opacity:.55}
+.avatar{
+  flex:0 0 42px;height:42px;border-radius:50%;background:var(--teal);color:#fff;
+  font-family:'Fredoka One',cursive;font-size:1.05rem;
+  display:flex;align-items:center;justify-content:center;
+}
+.avatar.debt{background:var(--red)}
+.avatar.admin{background:var(--amber)}
+.avatar.ficheiro{background:#ece5d4;font-size:1.1rem}
+.row .main{flex:1;min-width:0}
+.row .name{font-weight:800;overflow:hidden;text-overflow:ellipsis}
+.row .meta{font-size:.78rem;color:var(--text-light);font-weight:700;margin-top:3px}
+.row .side{text-align:right;flex:0 0 auto;max-width:38%}
+.row .saldo{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--teal)}
+.row .saldo.debt{color:var(--red)}
+.row .saldo-l{font-size:.68rem;color:var(--text-light);font-weight:700;line-height:1.3}
+
+/* ---------- previsões do horário ---------- */
+.prev{
+  display:flex;align-items:center;gap:14px;padding:12px 0;
+  border-bottom:1px dashed var(--line);
+}
+.prev:last-of-type{border-bottom:none}
+.prev.feita{opacity:.55}
+.prev-hora{font-family:'Fredoka One',cursive;color:var(--teal);font-size:1.1rem}
+.prev-dur{font-size:.7rem;color:var(--text-light);font-weight:700}
+.prev-main{flex:1;min-width:0}
+.prev-main .name{font-weight:800}
+.prev-main .meta{font-size:.78rem;color:var(--text-light);font-weight:700;margin-top:2px}
+
+/* ---------- etiquetas ---------- */
+.tag{
+  display:inline-block;font-size:.69rem;font-weight:800;padding:3px 9px;
+  border-radius:20px;background:#ece5d4;color:var(--text-light);margin-right:5px;
+}
+.tag.ok{background:var(--green-soft);color:var(--green)}
+.tag.bad{background:var(--red-soft);color:var(--red)}
+.tag.warn{background:#fdf0d8;color:var(--amber-dark)}
+
+/* ---------- destaque (saldo e nota da próxima) ---------- */
+.destaque{
+  background:var(--card);border-radius:20px;padding:20px;margin-bottom:16px;
+  box-shadow:0 4px 16px rgba(0,0,0,.06);border-left:5px solid var(--amber);
+}
+.destaque.bom{border-left-color:var(--green)}
+.destaque.mau{border-left-color:var(--red)}
+.destaque-t{font-weight:800;font-size:.76rem;color:var(--text-light);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.destaque-n{font-family:'Fredoka One',cursive;font-size:2.1rem;color:var(--teal);line-height:1.05}
+.destaque.mau .destaque-n{color:var(--red)}
+.destaque p{font-weight:600;font-size:.92rem;margin-top:6px;line-height:1.45}
+.nota-viva{font-weight:700;font-size:1rem;line-height:1.5;margin-bottom:4px}
+
+/* ---------- listas de histórico ---------- */
+.hist{list-style:none}
+.hist li{
+  display:flex;justify-content:space-between;gap:12px;align-items:flex-start;
+  padding:11px 0;border-bottom:1px dashed var(--line);font-size:.9rem;
+}
+.hist li:last-child{border-bottom:none}
+.hist .when{font-weight:800;line-height:1.35}
+.hist .what{color:var(--text-light);font-weight:600;font-size:.82rem;margin-top:3px;line-height:1.45}
+.hist .amt{font-weight:800;white-space:nowrap;text-align:right;display:flex;
+  align-items:center;gap:6px;flex-shrink:0}
+.hist .amt.plus{color:var(--green)}
+.hist .amt.minus{color:var(--text-light)}
+.hist .del{background:none;border:none;color:var(--text-light);cursor:pointer;
+  font-size:.95rem;padding:0 0 0 4px;line-height:1}
+.hist .del:hover{color:var(--red)}
+
+/* ---------- formulários ---------- */
+label{display:block;font-weight:800;font-size:.82rem;margin:0 0 5px;color:var(--text-light)}
+input,select,textarea{
+  width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:12px;
+  font-size:16px;font-family:inherit;background:#fff;color:var(--text);
+}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--teal)}
+input[type=file]{padding:10px;background:#fff}
+textarea{resize:vertical;min-height:80px}
+.field{margin-bottom:14px}
+.fields-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.check{display:flex;align-items:center;gap:9px;font-weight:700;font-size:.92rem;
+  color:var(--text);margin-bottom:10px}
+.check input{width:auto;margin:0;flex:0 0 auto}
+
+button.btn{
+  border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:1rem;
+  padding:13px 20px;border-radius:14px;background:var(--teal);color:#fff;width:100%;
+}
+button.btn:hover{background:var(--teal-dark)}
+button.btn:disabled{opacity:.55;cursor:default}
+button.btn.amber{background:var(--amber)} button.btn.amber:hover{background:var(--amber-dark)}
+button.btn.ghost{background:transparent;color:var(--text-light);border:1.5px solid var(--line)}
+button.btn.ghost:hover{background:#ece5d4;color:var(--text)}
+button.btn.danger{background:transparent;color:var(--red);border:1.5px solid var(--red)}
+button.btn.danger:hover{background:var(--red);color:#fff}
+button.btn.pequeno{width:auto;font-size:.82rem;padding:8px 14px;border-radius:20px;flex-shrink:0}
+.btn-row{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+.btn-row .btn{flex:1;min-width:130px}
+
+.err{color:var(--red);font-weight:800;font-size:.85rem;min-height:20px}
+
+/* ---------- escolha múltipla ---------- */
+.escolher{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.chip{
+  border:1.5px solid var(--line);background:#fff;color:var(--text-light);
+  font-family:inherit;font-weight:800;font-size:.88rem;padding:9px 15px;
+  border-radius:22px;cursor:pointer;
+}
+.chip:hover{border-color:var(--teal)}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff}
+
+.valores{margin-bottom:14px}
+.valor-linha{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.valor-nome{flex:1;font-weight:700;font-size:.92rem}
+.valor-input{width:96px;flex:0 0 96px;text-align:right}
+.valor-unid{font-weight:800;color:var(--text-light)}
+
+.credencial{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:1.05rem;
+  background:#fff;border:1.5px solid var(--line);border-radius:10px;
+  padding:11px 13px;margin-bottom:8px;word-break:break-all;
+}
+
+/* ---------- entrada ---------- */
+.gate{
+  max-width:360px;margin:11vh auto;background:var(--card);border-radius:22px;
+  padding:32px 26px;box-shadow:0 12px 40px rgba(0,0,0,.12);
+}
+.gate h1{font-size:1.7rem;text-align:center}
+.gate .sub{text-align:center;color:var(--text-light);font-weight:700;
+  font-size:.85rem;margin:6px 0 22px}
+
+/* ---------- navegação ---------- */
+nav.tabs{
+  position:fixed;left:0;right:0;bottom:0;height:var(--nav-h);
+  background:var(--card);border-top:1.5px solid var(--line);
+  display:flex;z-index:20;padding-bottom:env(safe-area-inset-bottom);
+}
+nav.tabs button{
+  flex:1;background:none;border:none;cursor:pointer;font-family:inherit;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  color:var(--text-light);font-weight:800;font-size:.66rem;
+}
+nav.tabs button .ico{font-size:1.2rem;line-height:1}
+nav.tabs button.on{color:var(--teal)}
+
+/* ---------- ecrã de formulário ---------- */
+.sheet{
+  position:fixed;inset:0;z-index:30;background:var(--cream);
+  overflow-y:auto;padding:0 0 60px;animation:sobe .2s ease;
+}
+@keyframes sobe{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
+.sheet .sheet-top{
+  position:sticky;top:0;background:var(--teal);color:#fff;z-index:1;
+  padding:16px;display:flex;align-items:center;gap:12px;
+}
+.sheet .sheet-top h2{color:#fff;font-size:1.12rem;flex:1;min-width:0}
+.sheet .sheet-top button{
+  background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:20px;
+  font-family:inherit;font-weight:800;font-size:.82rem;padding:8px 14px;
+  cursor:pointer;flex-shrink:0;
+}
+.sheet .sheet-body{max-width:760px;margin:0 auto;padding:20px 16px 0}
+
+@media print{nav.tabs,.topbar-acoes,.btn-row,.del{display:none}}

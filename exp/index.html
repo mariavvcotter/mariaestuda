@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#4A9B8E">
+<title>Explicações · mariaestuda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ ENTRADA ============ -->
+<div class="gate" id="gate">
+  <h1>Explicações</h1>
+  <p class="sub">Área privada.</p>
+  <form id="gate-form" novalidate>
+    <div class="field">
+      <label for="gate-email">Email</label>
+      <input type="email" id="gate-email" autocomplete="username" required>
+    </div>
+    <div class="field">
+      <label for="gate-pw">Palavra-passe</label>
+      <input type="password" id="gate-pw" autocomplete="current-password" required>
+    </div>
+    <div class="err" id="gate-err"></div>
+    <button class="btn" type="submit" id="gate-btn">Entrar</button>
+  </form>
+  <p class="dica" style="text-align:center;margin-top:18px">
+    Perdeste a palavra-passe? Fala com a Maria — não há recuperação por email.
+  </p>
+</div>
+
+<!-- ============ APLICAÇÃO ============ -->
+<div id="app" class="hidden">
+  <header class="topbar">
+    <div class="topbar-txt">
+      <h1 id="top-title">Hoje</h1>
+      <div class="sub" id="top-nome"></div>
+    </div>
+    <div class="topbar-acoes">
+      <span id="top-extra"></span>
+      <button type="button" id="logout">Sair</button>
+    </div>
+  </header>
+
+  <div class="aviso hidden" id="aviso"></div>
+
+  <main class="wrap">
+    <!-- administrador -->
+    <section class="view hidden" id="v-hoje"></section>
+    <section class="view hidden" id="v-alunos"></section>
+    <section class="view hidden" id="v-registos"></section>
+    <section class="view hidden" id="v-materiais"></section>
+    <section class="view hidden" id="v-contas"></section>
+    <!-- encarregado e aluno -->
+    <section class="view" id="v-familia"></section>
+  </main>
+
+  <nav class="tabs hidden" id="tabs"></nav>
+</div>
+
+<!-- Ecrã de formulário, preenchido por JavaScript -->
+<div id="sheet" class="sheet hidden" role="dialog" aria-modal="true"></div>
+
+<script src="config.js"></script>
+<script src="api.js"></script>
+<script src="ui.js"></script>
+<script src="admin.js"></script>
+<script src="familia.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
