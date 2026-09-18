@@ -7,7 +7,7 @@
 # falando com a base de dados diretamente, sem passar pela
 # interface. Não dá para verificar isso a olho.
 #
-#   ./explicandos/testes/correr.sh
+#   ./exp/testes/correr.sh
 #
 # Precisa de um PostgreSQL local (16 ou mais recente). Não toca
 # no Supabase: cria uma base de dados descartável e reproduz o
@@ -17,7 +17,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 PORT="${PGPORT:-5433}"
-DB="explicandos_teste"
+DB="explicacoes_teste"
 PSQL=(psql -h /tmp -p "$PORT" -d "$DB" -q)
 
 dropdb -h /tmp -p "$PORT" --if-exists "$DB"

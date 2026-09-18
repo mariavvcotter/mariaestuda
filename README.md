@@ -16,7 +16,7 @@ tools/cv-pt.html      versão curta do CV, em português, feita para imprimir
 tools/cv-en.html      a mesma, em inglês
 tools/cv-print.css    folha de estilo partilhada pelas duas
 tools/build-cv-pdf.mjs  gera os PDF a partir delas
-explicandos/          gestão das explicações (alunos, conta corrente, materiais)
+exp/                  gestão das explicações (alunos, conta corrente, materiais)
 ```
 
 As restantes pastas (`ci/`, `explicacoes/`, `lpuplayback/`, `portugues/`, ...)

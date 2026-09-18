@@ -92,11 +92,11 @@ dadas) e assinala-o quando se afasta do preço de tabela.
 
 ```sh
 # permissões, contra um PostgreSQL local — 47 verificações
-./explicandos/testes/correr.sh
+./exp/testes/correr.sh
 
 # interface, num navegador sem rede — 46 verificações
 python3 -m http.server 8765 &
-node explicandos/testes/navegador.mjs
+node exp/testes/navegador.mjs
 ```
 
 O primeiro é o que interessa: aplica o `schema.sql` a uma base de dados a
@@ -113,8 +113,8 @@ arquivar.
 - Não está ligada a partir de lado nenhum do site e leva `noindex, nofollow`.
 - **O nome da pasta não está preso em lado nenhum.** Os ficheiros são todos
   irmãos do `index.html` e as ligações entre eles são relativas, por isso a
-  pasta serve em `/explicandos/`, em `/exp/` ou onde a puseres. Os testes de
-  navegador aceitam `APP=/exp/` para confirmar isso.
+  pasta serve em `/exp/`, onde vive hoje, ou onde a puseres a seguir. Os
+  testes de navegador aceitam `APP=` para confirmar isso.
 - **O horário semanal é decorativo.** Serve para veres o dia e pré-preencher o
   formulário. Uma explicação só existe depois de a registares, e registar é o
   mesmo que dizer que aconteceu — não há segundo passo.

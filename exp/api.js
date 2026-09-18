@@ -15,7 +15,7 @@ window.API = (function () {
   var AUTH    = CFG.SUPABASE_URL + '/auth/v1/';
   var STORAGE = CFG.SUPABASE_URL + '/storage/v1/';
   var BUCKET  = 'materiais';
-  var CHAVE_SESSAO = 'explicandos.sessao';
+  var CHAVE_SESSAO = 'explicacoes.sessao';
 
   var sessao = null;
 

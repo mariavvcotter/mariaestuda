@@ -3,14 +3,14 @@
    As permissões são testadas contra PostgreSQL em correr.sh —
    aqui prova-se que os ecrãs fazem o que dizem.
 
-     node explicandos/testes/navegador.mjs
+     node exp/testes/navegador.mjs
    ============================================================ */
 import { chromium } from 'playwright';
 import { criaBackend } from './supabase-falso.mjs';
 
 const BASE = process.env.BASE || 'http://127.0.0.1:8765';
 // A pasta pode chamar-se outra coisa: os caminhos da aplicação são relativos.
-const APP = process.env.APP || '/explicandos/';
+const APP = process.env.APP || '/exp/';
 const CHROME = process.env.CHROME || undefined;
 const hoje = new Date().toISOString().slice(0, 10);
 const diasAtras = (k) => {
