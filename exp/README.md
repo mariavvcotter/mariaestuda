@@ -72,21 +72,40 @@ dadas) e assinala-o quando se afasta do preço de tabela.
 
 ## Instalação
 
-1. Painel Supabase → **SQL Editor** → colar o `schema.sql` inteiro e correr.
-   Cria as tabelas, as vistas, as funções, as políticas e o bucket privado
-   `materiais`.
-2. Painel Supabase → **Authentication → Users → Add user** → o teu email e uma
-   palavra-passe longa, com *Auto Confirm User* ligado.
-3. No **SQL Editor**, dar-te a ti mesma os direitos:
+Três passos no painel do Supabase, por esta ordem. O `schema.sql` pode ser
+corrido as vezes que forem precisas: não estraga nada que já lá esteja.
 
-   ```sql
-   update public.perfis set is_admin = true, nome = 'Maria'
-    where id = (select id from auth.users where email = 'o-teu@email');
-   ```
+**1. Fechar as inscrições públicas.**
+Authentication → Providers → Email → desligar **Enable Sign Ups**.
+Por omissão o Supabase deixa qualquer pessoa criar conta. Uma conta assim não
+veria dado nenhum — nasce sem permissões — mas o caderno diz que não há
+auto-inscrição, e é melhor que isso seja verdade também na porta de entrada.
 
-4. Abrir a aplicação no browser e entrar.
-5. Opcional, mas recomendado: publicar a função `admin-contas` (ver
-   `edge/README.md`) para poderes criar contas sem sair da aplicação.
+**2. Criar a tua conta.**
+Authentication → Users → **Add user** → o teu email e uma palavra-passe longa,
+com *Auto Confirm User* ligado.
+
+**3. Correr o `schema.sql`.**
+SQL Editor → colar o ficheiro inteiro → Run.
+
+Cria as tabelas, as vistas das famílias, as funções, as políticas de RLS e o
+bucket privado `materiais`. E, se encontrar exatamente uma conta e nenhuma
+administradora — que é o caso, depois do passo 2 —, promove-te a ti. O painel
+diz-te quem ficou administradora, na consola de notícias do SQL Editor:
+
+```
+NOTICE:  Administradora: o-teu@email
+```
+
+Se correres o ficheiro antes de criares a conta, ele diz-to e não faz mal
+nenhum; cria a conta e corre outra vez.
+
+Feito isto, abrir a aplicação e entrar.
+
+Opcional, mas recomendado: publicar a função `admin-contas` (ver
+`edge/README.md`) para poderes criar as contas das famílias sem sair da
+aplicação. Sem ela, criam-se no painel do Supabase e dão-se-lhes permissões
+no separador **Contas**.
 
 ## Testar
 

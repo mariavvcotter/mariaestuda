@@ -506,10 +506,33 @@ create policy "aluno lê o que lhe foi atribuído" on storage.objects
   );
 
 -- ============================================================
--- 16. O primeiro administrador
--- Depois de criares a tua conta em Authentication → Users,
--- corre isto UMA vez com o teu email:
+-- 16. A primeira administradora
+-- Se este ficheiro correr quando existe exatamente UMA conta e
+-- nenhuma administradora, essa conta passa a ser a administradora.
+-- É o caso da instalação: criaste a tua conta no painel e correste
+-- isto a seguir, e assim não há um segundo SQL para acertar à mão.
 --
---   update public.perfis set is_admin = true, nome = 'Maria'
---    where id = (select id from auth.users where email = 'o-teu@email');
+-- Não promove ninguém se já houver mais do que uma conta, para uma
+-- reinstalação não dar direitos a quem calhar estar lá.
 -- ============================================================
+do $$
+declare v_id uuid; v_email text; v_quantas integer;
+begin
+  select count(*) into v_quantas from public.perfis;
+
+  if v_quantas = 0 then
+    raise notice 'Ainda não há contas. Cria a tua em Authentication → Users e corre este ficheiro outra vez.';
+  elsif exists (select 1 from public.perfis where is_admin) then
+    raise notice 'Já há administradora. Nada a fazer.';
+  elsif v_quantas = 1 then
+    select p.id, u.email into v_id, v_email
+      from public.perfis p join auth.users u on u.id = p.id;
+    update public.perfis
+       set is_admin = true, ve_conta_corrente = true, ve_materiais = true
+     where id = v_id;
+    raise notice 'Administradora: %', v_email;
+  else
+    raise notice 'Há % contas e nenhuma é administradora. Promove a tua à mão:', v_quantas;
+    raise notice '  update public.perfis set is_admin = true where id = (select id from auth.users where email = ''o-teu@email'');';
+  end if;
+end $$;
