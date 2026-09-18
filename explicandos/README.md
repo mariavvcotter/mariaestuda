@@ -1,80 +1,126 @@
-# Explicandos
+# Explicações
 
-Aplicação privada para gerir os alunos das explicações: quem são, que aulas
-tiveram, o que pagaram e — o que interessa mesmo — **quantas horas ainda têm
-no pack** e **quanto está por cobrar**.
+Aplicação de gestão das explicações, segundo o caderno de encargos v1.0
+(18 de setembro de 2026). Substitui o Google Classroom e as folhas de Excel:
+conta corrente por aluno, materiais com ritmo controlado, TPCs e as notas de
+preparação para a explicação seguinte.
 
-Estática, sem passo de compilação, como o resto do site. Fala diretamente com
-o Supabase por HTTP: GoTrue para o login, PostgREST para os dados.
+Estática, sem passo de compilação, publicada pelo GitHub Pages como o resto do
+site. Fala com o Supabase por HTTP: GoTrue para as sessões, PostgREST para os
+dados, Storage para os ficheiros.
 
 ```
-index.html   estrutura (login, painel, alunos, aulas, dinheiro)
-style.css    desenho, com os tokens do resto do site; feito para telemóvel
-app.js       tudo o resto: sessão, pedidos, contas e formulários
-config.js    URL do projeto Supabase e chave anon
-schema.sql   as três tabelas e as regras de acesso — correr uma vez
+index.html    entrada e estrutura dos ecrãs
+style.css     desenho, com os tokens do resto do site
+config.js     endereço do projeto Supabase e chave anon
+api.js        sessão, pedidos, ficheiros e a função de contas
+ui.js         peças de interface partilhadas (datas, dinheiro, formulários)
+app.js        arranque: entra, lê o perfil e escolhe o painel
+admin.js      painel da explicadora
+familia.js    painel do encarregado e do aluno
+schema.sql    tabelas, vistas, funções e regras de acesso — correr uma vez
+edge/         função de servidor para criar contas e redefinir palavras-passe
+testes/       testes de permissões (SQL) e de interface (navegador)
 ```
 
-## A ideia: o saldo mede-se em horas
+## Segurança: o schema, não a interface
 
-Um pack de 10h e uma aula avulsa paga na hora são a mesma coisa vista de
-ângulos diferentes, por isso não há dois mecanismos:
+O §36 do caderno assume que basta a interface não expor os materiais de outros
+alunos. **Isso não chega, e a aplicação não foi construída assim.**
 
-- um **pagamento** acrescenta as horas que comprou (`horas_credito`) e regista
-  o dinheiro que entrou (`valor_eur`), que são números independentes — é aí
-  que vive o desconto do pack;
-- uma **aula** gasta as horas que durou.
+A razão é simples: a chave anon está no JavaScript, tem de estar. Um aluno com
+conta, a consola do browser e essa chave fala com o PostgREST diretamente —
+sem passar por ecrã nenhum. Se a proteção vivesse na interface, bastava isso
+para ler a conta corrente de todas as famílias.
 
-Saldo = horas compradas − horas gastas. Positivo é o que falta dar do pack;
-negativo são aulas já dadas e ainda não pagas, e a app converte-as em euros
-pelo preço/hora do aluno.
+O que existe em vez disso:
 
-Uma aula desmarcada a tempo não desconta; uma falta sem aviso desconta. A
-caixa `Desconta horas do saldo` acompanha o estado escolhido, mas pode ser
-mudada à mão — as exceções decidem-se caso a caso, não por regra.
+- **RLS em todas as tabelas.** As tabelas em bruto são da administradora e de
+  mais ninguém. Uma família que tente lê-las recebe zero linhas.
+- **As famílias leem vistas** (`v_conta_corrente`, `v_sumarios`, `v_materiais`,
+  `v_tpcs`, `v_nota_proxima`), que filtram por `auth.uid()` e mostram só as
+  colunas a que aquela conta tem direito. É isto que deixa o aluno ver o
+  sumário de uma explicação sem ver o valor dela.
+- **Uma só escrita aberta às famílias**: marcar um TPC como feito, por uma
+  função que verifica de quem é o TPC e recusa mexer num já confirmado.
+- **Bucket privado e URLs assinados de poucos minutos.** O Supabase só assina
+  o que as políticas deixam aquela conta ler. Um link copiado para outro sítio
+  deixa de funcionar sozinho.
 
-## Segurança: ao contrário do resto do site
+A segunda metade do §36 fica verdadeira: inspecionar o código não dá nada, e
+não vale a pena ofuscar seja o que for.
 
-As outras secções (`smoothies`, `usage_events`, contas com Nome + PIN) usam a
-chave anon com políticas abertas e dizem-no na cara: não é segurança real.
-Para comentários de smoothies tanto faz.
+**O que isto não faz:** quem tiver o email e a palavra-passe entra. Não há
+segundo fator. A palavra-passe é toda a segurança de uma conta — por isso o
+painel gera uma em vez de deixar escolher à mão.
 
-Aqui há nomes de crianças, contactos dos encarregados e registos de
-pagamentos, por isso **nada disto é acessível com a chave anon**. As tabelas
-`exp_*` têm RLS que só deixa passar um utilizador autenticado, e o `anon`
-está explicitamente revogado. A chave que está em `config.js` serve só de
-`apikey` no pedido; sozinha não abre nenhuma tabela.
+## Conta corrente
 
-O que isto **não** faz: qualquer pessoa com o email e a palavra-passe entra.
-Não há segundo fator. Vale o que valer a palavra-passe escolhida.
+Em euros, por aluno, como manda o §6. Cada explicação é um débito; cada
+pagamento é um crédito; o saldo é a diferença. Os pagamentos não se ligam a
+explicações nenhumas: quem paga à sessão fica sempre a zero, quem paga ao fim
+de umas semanas acumula saldo negativo até pagar.
 
-A sessão fica em `localStorage` (token de acesso e de renovação), para não
-haver login a cada aula registada no telemóvel. `Sair` apaga-a.
+O valor de cada explicação é **por aluno** — numa explicação de grupo com dois
+alunos a 8 €/h, cada um gera 8 € de débito — e fica **congelado no registo**.
+Mudar o preço-hora de um aluno não mexe no passado.
+
+Não há modelo de packs: o desconto escreve-se à mão no valor de cada
+explicação. Para um engano não passar despercebido, a ficha de cada aluno
+mostra o **preço efetivo até hoje** (o que foi cobrado a dividir pelas horas
+dadas) e assinala-o quando se afasta do preço de tabela.
 
 ## Instalação
 
 1. Painel Supabase → **SQL Editor** → colar o `schema.sql` inteiro e correr.
-2. Painel Supabase → **Authentication → Users → Add user** → email e uma
-   palavra-passe longa. É a única conta que entra.
-3. Abrir `/explicandos/` e entrar.
+   Cria as tabelas, as vistas, as funções, as políticas e o bucket privado
+   `materiais`.
+2. Painel Supabase → **Authentication → Users → Add user** → o teu email e uma
+   palavra-passe longa, com *Auto Confirm User* ligado.
+3. No **SQL Editor**, dar-te a ti mesma os direitos:
 
-Se o projeto Supabase mudar, é o `config.js` que se atualiza.
+   ```sql
+   update public.perfis set is_admin = true, nome = 'Maria'
+    where id = (select id from auth.users where email = 'o-teu@email');
+   ```
 
-## Testar localmente
+4. Abrir `/explicandos/` e entrar.
+5. Opcional, mas recomendado: publicar a função `admin-contas` (ver
+   `edge/README.md`) para poderes criar contas sem sair da aplicação.
 
-A partir da raiz do repositório, porque os caminhos são absolutos:
+## Testar
 
 ```sh
-python3 -m http.server 8000
+# permissões, contra um PostgreSQL local — 47 verificações
+./explicandos/testes/correr.sh
+
+# interface, num navegador sem rede — 46 verificações
+python3 -m http.server 8765 &
+node explicandos/testes/navegador.mjs
 ```
 
-Depois `http://localhost:8000/explicandos/`.
+O primeiro é o que interessa: aplica o `schema.sql` a uma base de dados a
+sério, cria uma explicadora, duas famílias e um aluno, e verifica linha a
+linha que ninguém alcança o que não é seu. Não dá para verificar isso a olho.
+
+O segundo usa um Supabase falso em memória e prova que os ecrãs fazem o que
+dizem — incluindo o valor congelado, o débito por aluno em explicações de
+grupo, a data de publicação dos materiais e a lista de ficheiros antes de
+arquivar.
 
 ## Notas
 
 - Não está ligada a partir de lado nenhum do site e leva `noindex, nofollow`.
-  Chega-se lá pelo endereço.
-- Apagar um aluno apaga as aulas e os pagamentos dele (cascata). Para deixar
-  de o ver sem perder o histórico, usar **Arquivar**.
-- As listas de aulas e pagamentos mostram os 60 movimentos mais recentes; a
-  ficha de cada aluno mostra os 40 dele.
+- **O horário semanal é decorativo.** Serve para veres o dia e pré-preencher o
+  formulário. Uma explicação só existe depois de a registares, e registar é o
+  mesmo que dizer que aconteceu — não há segundo passo.
+- **Arquivar não apaga o aluno.** Corta o acesso, guarda o saldo final e
+  mantém o histórico. Apaga só os materiais atribuídos exclusivamente a ele,
+  com a lista e o total à frente antes de confirmar.
+- A conta do encarregado só é desativada se não lhe restar outro educando.
+- Uma conta nova não vê nada até lhe dares permissões e a ligares a um aluno.
+- **Um encarregado por educando**, como no caderno. O caso do avô que paga e
+  da irmã que acompanha não está coberto; resolve-se com o perfil misto, ou
+  passando `alunos.encarregado_id` para uma tabela de ligação.
+- Sem recuperação de palavra-passe por email. O Supabase guarda-as cifradas:
+  nem tu as lês, só as substituis, pelo botão na ficha da conta.
