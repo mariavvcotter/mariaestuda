@@ -169,13 +169,15 @@ passo "6/9 · fechar as portas ao mundo"
 python3 "$BASE/app/exp/vps/fechar-portas.py" "$SUPA/docker-compose.yml"
 
 if command -v ufw >/dev/null; then
-  ufw --force reset >/dev/null 2>&1 || true
+  # Acrescentar, não repor. Um `ufw --force reset` apagaria regras que já
+  # lá estivessem — e a primeira coisa que se abre numa máquina é o SSH.
+  ufw allow OpenSSH >/dev/null 2>&1 || ufw allow 22/tcp >/dev/null
+  ufw allow 80/tcp  >/dev/null
+  ufw allow 443/tcp >/dev/null
   ufw default deny incoming >/dev/null
   ufw default allow outgoing >/dev/null
-  ufw allow OpenSSH >/dev/null
-  ufw allow 80/tcp >/dev/null
-  ufw allow 443/tcp >/dev/null
   ufw --force enable >/dev/null
+  echo "   firewall: 22, 80 e 443 abertas; o resto fechado"
 fi
 
 passo "7/9 · publicar a app"
