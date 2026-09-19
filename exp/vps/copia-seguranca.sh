@@ -17,7 +17,7 @@
 # ============================================================
 set -euo pipefail
 
-DIR=/opt/supabase/docker
+DIR=/opt/explicacoes/supabase/docker
 DESTINO=/var/backups/explicacoes
 DIAS=30
 # Ex.: DESTINO_REMOTO="gdrive:copias-explicacoes" (rclone), ou

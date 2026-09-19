@@ -1,48 +1,56 @@
 #!/usr/bin/env bash
 # ============================================================
-# mariaestuda — Supabase self-hosted numa VPS
+# mariaestuda — as explicações inteiras numa VPS
 # ------------------------------------------------------------
-# Corre isto UMA vez, como root, numa VPS Ubuntu 22.04 ou 24.04
+# O site E a base de dados na mesma máquina, no mesmo domínio.
+# Por estarem na mesma origem, não há CORS nenhum para
+# configurar — e é uma classe inteira de problemas que deixa
+# de existir.
+#
+# Corre UMA vez, como root, numa VPS Ubuntu 22.04 ou 24.04
 # acabada de criar:
 #
 #   curl -fsSL https://mariaestuda.eu/exp/vps/instalar.sh -o instalar.sh
-#   bash instalar.sh api.maisinfo.site
+#   bash instalar.sh maisinfo.site o-teu@email
 #
-# Antes de correr, o subdomínio tem de já apontar para o IP
-# desta máquina — o certificado é emitido pelo Let's Encrypt,
-# que verifica o DNS. Se ainda não propagou, o script pára e
-# diz-to em vez de deixar o Caddy a falhar em silêncio.
+# No fim está tudo a funcionar: tabelas criadas, a tua conta
+# feita, a app a servir. O script escreve-te a palavra-passe.
+#
+# Antes de correr, os dois registos A têm de já apontar para cá:
+#   maisinfo.site          A   <IP desta máquina>
+#   studio.maisinfo.site   A   <IP desta máquina>
 # ============================================================
 set -euo pipefail
 
-DOMINIO="${1:-api.maisinfo.site}"
-DIR=/opt/supabase
-EMAIL_TLS="${EMAIL_TLS:-maria.leonor.cotter@gmail.com}"
+DOMINIO="${1:-maisinfo.site}"
+EMAIL_ADMIN="${2:-maria.leonor.cotter@gmail.com}"
+NOME_ADMIN="${NOME_ADMIN:-Maria}"
+REPO="${REPO:-https://github.com/mariavvcotter/mariaestuda}"
 
-erro() { echo "ERRO: $*" >&2; exit 1; }
+BASE=/opt/explicacoes
+SUPA="$BASE/supabase/docker"
+SITE="$BASE/site"
+
+erro() { echo; echo "ERRO: $*" >&2; exit 1; }
 passo() { echo; echo "── $* ──"; }
 
-[ "$(id -u)" = 0 ] || erro "corre isto como root (sudo bash instalar.sh ...)"
-# Onde a aplicação é servida. Se um dia a mudares para o maisinfo.site,
-# é esta variável que muda — o GoTrue recusa redirecionar para origens
-# que não estejam aqui.
-URL_APP="${URL_APP:-https://mariaestuda.eu/exp/}"
-[ -n "$DOMINIO" ] || erro "falta o domínio: bash instalar.sh api.maisinfo.site"
+[ "$(id -u)" = 0 ] || erro "corre isto como root"
 
-passo "1/7 · confirmar que o DNS já aponta para cá"
+passo "1/9 · confirmar o DNS"
 IP_MAQUINA=$(curl -fsS --max-time 10 https://api.ipify.org || echo "")
-IP_DNS=$(getent hosts "$DOMINIO" | awk '{print $1}' | head -1 || echo "")
-if [ -z "$IP_DNS" ]; then
-  erro "$DOMINIO não resolve. Cria o registo A no DNS do maisinfo.site a apontar para $IP_MAQUINA e espera uns minutos."
-elif [ -n "$IP_MAQUINA" ] && [ "$IP_DNS" != "$IP_MAQUINA" ]; then
-  erro "$DOMINIO aponta para $IP_DNS, mas esta máquina é $IP_MAQUINA. Corrige o registo A."
-fi
-echo "   $DOMINIO → $IP_DNS ✓"
+for h in "$DOMINIO" "studio.$DOMINIO"; do
+  ip=$(getent hosts "$h" | awk '{print $1}' | head -1 || echo "")
+  [ -n "$ip" ] || erro "$h não resolve. Cria o registo A a apontar para ${IP_MAQUINA:-o IP desta máquina} e espera uns minutos."
+  if [ -n "$IP_MAQUINA" ] && [ "$ip" != "$IP_MAQUINA" ]; then
+    erro "$h aponta para $ip, mas esta máquina é $IP_MAQUINA."
+  fi
+  echo "   $h → $ip ✓"
+done
 
-passo "2/7 · Docker"
+passo "2/9 · Docker"
 if ! command -v docker >/dev/null; then
   apt-get update -qq
-  apt-get install -y -qq ca-certificates curl git
+  apt-get install -y -qq ca-certificates curl git jq
   install -m 0755 -d /etc/apt/keyrings
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
   chmod a+r /etc/apt/keyrings/docker.asc
@@ -52,62 +60,67 @@ https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_C
   apt-get update -qq
   apt-get install -y -qq docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 fi
+for f in jq git; do command -v $f >/dev/null || apt-get install -y -qq $f; done
 docker --version
 
-passo "3/7 · trazer o Supabase"
-# A stack oficial, não uma minha: é a que é mantida e corrigida.
-if [ ! -d "$DIR/docker" ]; then
-  mkdir -p "$DIR"
-  git clone --depth 1 --filter=blob:none --sparse https://github.com/supabase/supabase "$DIR/repo"
-  git -C "$DIR/repo" sparse-checkout set docker
-  cp -r "$DIR/repo/docker" "$DIR/docker"
-  cp "$DIR/docker/.env.example" "$DIR/docker/.env"
+passo "3/9 · trazer o código"
+mkdir -p "$BASE"
+if [ ! -d "$BASE/app/.git" ]; then
+  git clone --depth 1 "$REPO" "$BASE/app"
+else
+  git -C "$BASE/app" pull --ff-only
+fi
+# A stack oficial do Supabase, não uma minha: é a que é mantida.
+if [ ! -d "$SUPA" ]; then
+  git clone --depth 1 --filter=blob:none --sparse https://github.com/supabase/supabase "$BASE/supabase-repo"
+  git -C "$BASE/supabase-repo" sparse-checkout set docker
+  mkdir -p "$BASE/supabase"
+  cp -r "$BASE/supabase-repo/docker" "$SUPA"
+  cp "$SUPA/.env.example" "$SUPA/.env"
 fi
 
-passo "4/7 · segredos"
-if ! grep -q "^JWT_SECRET=.\{32,\}" "$DIR/docker/.env" 2>/dev/null || [ ! -f "$DIR/chaves.env" ]; then
-  curl -fsSL "https://mariaestuda.eu/exp/vps/gerar-chaves.sh" -o "$DIR/gerar-chaves.sh" 2>/dev/null \
-    || cp "$(dirname "$0")/gerar-chaves.sh" "$DIR/gerar-chaves.sh"
-  bash "$DIR/gerar-chaves.sh" > "$DIR/chaves.env"
-  chmod 600 "$DIR/chaves.env"
+passo "4/9 · segredos"
+if [ ! -f "$BASE/chaves.env" ]; then
+  bash "$BASE/app/exp/vps/gerar-chaves.sh" > "$BASE/chaves.env"
+  chmod 600 "$BASE/chaves.env"
 fi
+# shellcheck disable=SC1090
+set -a; . "$BASE/chaves.env"; set +a
 
-# Escreve cada chave por cima da linha correspondente do .env.
 poe() {
-  local chave="$1" valor="$2" f="$DIR/docker/.env"
-  if grep -q "^${chave}=" "$f"; then
-    # O valor pode ter barras e &; o sed tem de as engolir.
-    python3 - "$f" "$chave" "$valor" <<'PY'
+  python3 - "$SUPA/.env" "$1" "$2" <<'PY'
 import sys, pathlib
-f, chave, valor = sys.argv[1], sys.argv[2], sys.argv[3]
+f, chave, valor = sys.argv[1:4]
 p = pathlib.Path(f)
-linhas = [f'{chave}={valor}' if l.startswith(chave + '=') else l.rstrip('\n')
-          for l in p.read_text().splitlines()]
+linhas, visto = [], False
+for l in p.read_text().splitlines():
+    if l.startswith(chave + '='):
+        linhas.append(f'{chave}={valor}'); visto = True
+    else:
+        linhas.append(l)
+if not visto:
+    linhas.append(f'{chave}={valor}')
 p.write_text('\n'.join(linhas) + '\n')
 PY
-  else
-    echo "${chave}=${valor}" >> "$f"
-  fi
 }
-
-while IFS='=' read -r k v; do [ -n "$k" ] && poe "$k" "$v"; done < "$DIR/chaves.env"
+while IFS='=' read -r k v; do [ -n "$k" ] && poe "$k" "$v"; done < "$BASE/chaves.env"
 
 poe API_EXTERNAL_URL    "https://$DOMINIO"
 poe SUPABASE_PUBLIC_URL "https://$DOMINIO"
-poe SITE_URL            "$URL_APP"
-poe ADDITIONAL_REDIRECT_URLS "$URL_APP"
-# §59 do caderno: não há auto-inscrição. Aqui é configuração, não um botão
-# que alguém se possa esquecer de desligar.
-poe DISABLE_SIGNUP      "true"
-poe ENABLE_EMAIL_SIGNUP "false"
+poe SITE_URL            "https://$DOMINIO"
+poe ADDITIONAL_REDIRECT_URLS "https://$DOMINIO"
+# §59: não há auto-inscrição. Aqui é configuração, não um botão que
+# alguém se possa esquecer de desligar.
+poe DISABLE_SIGNUP         "true"
+poe ENABLE_EMAIL_SIGNUP    "false"
 poe ENABLE_ANONYMOUS_USERS "false"
 poe ENABLE_EMAIL_AUTOCONFIRM "true"
 poe STUDIO_DEFAULT_PROJECT "explicacoes"
 
-passo "5/7 · HTTPS com o Caddy"
-cat > "$DIR/docker/docker-compose.override.yml" <<FIM
-# O Caddy trata dos certificados sozinho, renovação incluída. Sem isto, a
-# app deixava de falar com a base de dados ao fim de 90 dias, sem aviso.
+passo "5/9 · Caddy: o site e a API na mesma origem"
+cat > "$SUPA/docker-compose.override.yml" <<FIM
+# O Caddy serve os ficheiros da app e encaminha os caminhos da API para o
+# Kong. Mesma origem, logo sem CORS. Os certificados renovam-se sozinhos.
 services:
   caddy:
     image: caddy:2-alpine
@@ -115,6 +128,7 @@ services:
     ports: ["80:80", "443:443"]
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - $SITE:/srv:ro
       - caddy_data:/data
       - caddy_config:/config
     depends_on: [kong]
@@ -124,22 +138,42 @@ volumes:
   caddy_config:
 FIM
 
-cat > "$DIR/docker/Caddyfile" <<FIM
+cat > "$SUPA/Caddyfile" <<FIM
 $DOMINIO {
+	encode gzip
+
+	# Tudo o que é API vai para o Kong; o resto são ficheiros da app.
+	@api path /rest/* /auth/* /storage/* /realtime/* /functions/*
+	reverse_proxy @api kong:8000
+
+	root * /srv
+	file_server
+
+	header {
+		Referrer-Policy strict-origin-when-cross-origin
+		X-Content-Type-Options nosniff
+		-Server
+	}
+	# Dados de menores não têm nada que aparecer em motores de busca.
+	header /* X-Robots-Tag "noindex, nofollow"
+}
+
+studio.$DOMINIO {
 	encode gzip
 	reverse_proxy kong:8000
 }
 FIM
 
-passo "6/7 · fechar a porta do PostgreSQL ao mundo"
-# A stack oficial expõe o 5432. Numa VPS pública isso é uma porta de
-# entrada para ataques de dicionário à base de dados inteira.
-python3 - "$DIR/docker/docker-compose.yml" <<'PY'
+passo "6/9 · fechar a porta do PostgreSQL ao mundo"
+# A stack oficial expõe a 5432. Numa VPS pública isso é uma porta aberta
+# para ataques de dicionário à base de dados inteira.
+python3 - "$SUPA/docker-compose.yml" <<'PY'
 import re, sys, pathlib
 p = pathlib.Path(sys.argv[1])
 s = p.read_text()
-s = re.sub(r'(\n\s*- )\$\{POSTGRES_PORT\}:\$\{POSTGRES_PORT\}',
-           r'\g<1>127.0.0.1:${POSTGRES_PORT}:${POSTGRES_PORT}', s)
+s = re.sub(r'(\n\s*- )(\$\{POSTGRES_PORT\}:\$\{POSTGRES_PORT\})', r'\g<1>127.0.0.1:\2', s)
+s = re.sub(r'(\n\s*- )(\$\{KONG_HTTP_PORT\}:8000)', r'\g<1>127.0.0.1:\2', s)
+s = re.sub(r'\n\s*- \$\{KONG_HTTPS_PORT\}:8443\n', '\n', s)
 p.write_text(s)
 PY
 if command -v ufw >/dev/null; then
@@ -152,28 +186,77 @@ if command -v ufw >/dev/null; then
   ufw --force enable >/dev/null
 fi
 
-passo "7/7 · arrancar"
-cd "$DIR/docker"
+passo "7/9 · publicar a app"
+bash "$BASE/app/exp/vps/publicar.sh" "$DOMINIO"
+
+passo "8/9 · arrancar"
+cd "$SUPA"
 docker compose pull -q
 docker compose up -d
-sleep 20
-docker compose ps
+
+echo -n "   à espera da base de dados"
+for i in $(seq 1 60); do
+  if docker compose exec -T db pg_isready -U postgres >/dev/null 2>&1; then echo " ✓"; break; fi
+  echo -n "."; sleep 2
+  [ "$i" = 60 ] && erro "a base de dados não arrancou. Vê: docker compose logs db"
+done
+
+echo -n "   à espera da API"
+for i in $(seq 1 60); do
+  if curl -fsS --max-time 5 "http://127.0.0.1:8000/auth/v1/health" >/dev/null 2>&1; then echo " ✓"; break; fi
+  echo -n "."; sleep 2
+  [ "$i" = 60 ] && erro "a API não respondeu. Vê: docker compose logs kong auth"
+done
+
+passo "9/9 · criar as tabelas e a tua conta"
+docker compose exec -T db psql -U postgres -d postgres -q < "$BASE/app/exp/schema.sql" 2>&1 \
+  | grep -iE "^(ERROR|NOTICE:  (Administradora|Ainda|Já|Há))" || true
+
+# A conta cria-se pela API de administração, com a service_role — a mesma
+# coisa que o botão "Add user" faz no painel.
+SENHA="$(openssl rand -base64 18 | tr -d '/+=' | cut -c1-16)"
+RESPOSTA=$(curl -fsS -X POST "http://127.0.0.1:8000/auth/v1/admin/users" \
+  -H "apikey: $SERVICE_ROLE_KEY" -H "Authorization: Bearer $SERVICE_ROLE_KEY" \
+  -H "Content-Type: application/json" \
+  -d "{\"email\":\"$EMAIL_ADMIN\",\"password\":\"$SENHA\",\"email_confirm\":true,\"user_metadata\":{\"nome\":\"$NOME_ADMIN\"}}" \
+  2>/dev/null || echo '{}')
+ID_ADMIN=$(echo "$RESPOSTA" | jq -r '.id // empty')
+
+if [ -n "$ID_ADMIN" ]; then
+  docker compose exec -T db psql -U postgres -d postgres -q -c \
+    "insert into public.perfis (id, nome) values ('$ID_ADMIN', '$NOME_ADMIN') on conflict (id) do nothing;
+     update public.perfis set is_admin = true, ve_conta_corrente = true, ve_materiais = true
+      where id = '$ID_ADMIN';"
+  CRIADA="sim"
+else
+  # Já existia, ou a API recusou. Promove quem lá estiver, se for uma só.
+  docker compose exec -T db psql -U postgres -d postgres -q -c \
+    "update public.perfis set is_admin = true, ve_conta_corrente = true, ve_materiais = true
+      where id = (select id from public.perfis) and (select count(*) from public.perfis) = 1;" || true
+  CRIADA="não"
+fi
 
 echo
 echo "════════════════════════════════════════════════════════"
-echo " Pronto. A API responde em https://$DOMINIO"
+echo "  https://$DOMINIO"
 echo
-echo " A chave para o config.js da app (ANON_KEY):"
-grep '^ANON_KEY=' "$DIR/chaves.env" | cut -d= -f2-
+if [ "$CRIADA" = "sim" ]; then
+  echo "  email:          $EMAIL_ADMIN"
+  echo "  palavra-passe:  $SENHA"
+  echo
+  echo "  APONTA ISTO AGORA. Fica cifrada e não volta a aparecer."
+  echo "  Muda-a assim que entrares, no separador Contas."
+else
+  echo "  A conta $EMAIL_ADMIN já existia — a palavra-passe é a de antes."
+  echo "  Se a perdeste: docker compose exec db psql -U postgres -c \\"
+  echo "    \"select id, email from auth.users;\"  e define outra pelo Studio."
+fi
 echo
-echo " O painel (Studio) está em https://$DOMINIO"
-echo " utilizador e palavra-passe em $DIR/chaves.env"
+echo "  Painel (SQL, tabelas):  https://studio.$DOMINIO"
+echo "  utilizador/senha em     $BASE/chaves.env"
 echo
-echo " GUARDA $DIR/chaves.env NUM SÍTIO SEGURO."
-echo " Sem o JWT_SECRET, as contas existentes deixam de entrar."
+echo "  GUARDA $BASE/chaves.env FORA DESTA MÁQUINA."
+echo "  Sem o JWT_SECRET, nenhuma conta volta a entrar."
 echo
-echo " Falta ainda:"
-echo "   1. correr o schema.sql (Studio → SQL Editor)"
-echo "   2. instalar as cópias de segurança: bash copia-seguranca.sh --instalar"
-echo "   3. apontar o config.js da app para https://$DOMINIO"
+echo "  Falta só: bash $BASE/app/exp/vps/copia-seguranca.sh --instalar"
 echo "════════════════════════════════════════════════════════"

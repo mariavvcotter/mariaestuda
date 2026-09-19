@@ -6,7 +6,7 @@
 # instalação de raiz, salta isto e corre só o schema.sql.
 #
 # Corre na TUA máquina, não na VPS:
-#   bash migrar.sh "postgresql://...supabase.co:5432/postgres" api.maisinfo.site
+#   bash migrar.sh "postgresql://...supabase.co:5432/postgres" maisinfo.site
 #
 # A cadeia de ligação está no painel do Supabase alojado, em
 # Project Settings → Database → Connection string → URI.
@@ -20,7 +20,7 @@
 set -euo pipefail
 
 ORIGEM="${1:?falta a cadeia de ligação de origem}"
-DOMINIO="${2:?falta o domínio da VPS, ex.: api.maisinfo.site}"
+DOMINIO="${2:?falta o domínio da VPS, ex.: maisinfo.site}"
 FICHEIRO="explicacoes-$(date +%Y-%m-%d).sql"
 
 command -v pg_dump >/dev/null || { echo "instala o postgresql-client" >&2; exit 1; }
@@ -47,7 +47,7 @@ A seguir, na VPS:
 
   3. Carrega os dados:
        scp $FICHEIRO root@$DOMINIO:/tmp/
-       ssh root@$DOMINIO 'docker compose -f /opt/supabase/docker/docker-compose.yml \\
+       ssh root@$DOMINIO 'docker compose -f /opt/explicacoes/supabase/docker/docker-compose.yml \\
          exec -T db psql -U postgres -d postgres < /tmp/$FICHEIRO'
 
   4. Liga as contas novas aos alunos, na ficha de cada um.

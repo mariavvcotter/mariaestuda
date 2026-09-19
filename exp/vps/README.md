@@ -1,113 +1,133 @@
-# Supabase self-hosted numa VPS
+# As explicações numa VPS
 
-Alternativa ao Supabase alojado. A aplicação continua a ser servida pelo
-GitHub Pages em `mariaestuda.eu/exp` — o que muda de casa é só a base de
-dados, que passa a viver em `api.maisinfo.site`.
-
-**O `schema.sql` corre aqui sem mudar uma vírgula.** Fora do `public`, ele
-só depende de `auth.uid()`, `auth.users`, `storage.buckets` e
-`storage.objects`, que existem com os mesmos nomes no Supabase self-hosted.
-Na aplicação mudam duas linhas do `config.js`.
+Tudo numa máquina só: o site e a base de dados, no mesmo domínio.
 
 ```
-gerar-chaves.sh      gera JWT_SECRET, ANON_KEY e SERVICE_ROLE_KEY
-instalar.sh          instala tudo numa VPS Ubuntu limpa
+https://maisinfo.site          a aplicação
+https://maisinfo.site/rest/v1  a API (mesmo domínio, logo sem CORS)
+https://studio.maisinfo.site   o painel do Supabase (SQL, tabelas)
+```
+
+O `mariaestuda.eu` fica onde está, no GitHub Pages, com o CV. Separação
+limpa: `maisinfo.site` é o negócio das explicações.
+
+**Estarem na mesma origem não é um detalhe.** É o que faz desaparecer a
+configuração de CORS, que é onde estas montagens costumam ficar presas com
+um "não funciona" que não diz porquê.
+
+```
+gerar-chaves.sh      JWT_SECRET, ANON_KEY, SERVICE_ROLE_KEY
+instalar.sh          VPS Ubuntu limpa → tudo a funcionar, num comando
+publicar.sh          põe a versão mais recente do repositório a servir
 copia-seguranca.sh   pg_dump diário, com rotação e envio para fora
-migrar.sh            traz os dados do Supabase alojado, se já os tiveres
+migrar.sh            trazer os dados do Supabase alojado, se os tiveres
 ```
 
-## Aviso honesto sobre o estado disto
+## O que foi testado e o que não foi
 
-O resto do projeto tem 93 verificações automáticas: 47 de permissões contra
-um PostgreSQL a sério e 46 de interface num navegador. **Estes ficheiros têm
-uma.** Só consegui testar a geração das chaves — que os JWT são válidos, que
-a assinatura verifica contra o segredo e que os papéis estão certos. O resto
-não corre sem um Docker a funcionar, que o ambiente onde isto foi escrito não
-tem.
+| | |
+|---|---|
+| Geração das chaves | ✅ assinatura verificada, papéis certos, validade correta |
+| A app servida na raiz | ✅ 46 verificações de interface, com os ficheiros que o `publicar.sh` copia |
+| O `schema.sql` | ✅ 47 verificações de permissões contra PostgreSQL |
+| **O instalador, o Caddy, o Docker** | ❌ **nenhuma** |
 
-Não é código verificado como o outro. Conta com ter de corrigir coisas à
-primeira tentativa.
+O ambiente onde isto foi escrito não tem um daemon Docker. O instalador nunca
+correu do princípio ao fim. Conta com corrigir coisas à primeira tentativa.
 
 ## Antes de começar
 
-1. Uma VPS Ubuntu 22.04 ou 24.04, com pelo menos **2 GB de RAM** — a stack
-   do Supabase são uns dez contentores e com 1 GB o PostgreSQL é morto pelo
-   sistema a meio de uma consulta.
-2. No DNS do `maisinfo.site`, um registo A:
-   ```
-   api.maisinfo.site   A   <IP da VPS>
-   ```
-   Não mudes os nameservers do domínio para o fornecedor de alojamento: isso
-   apaga todos os registos que já tens e tens de os recriar à mão.
+**VPS:** Ubuntu 22.04 ou 24.04, **mínimo 2 GB de RAM**. A stack do Supabase
+são uns dez contentores; com 1 GB o PostgreSQL é morto pelo sistema a meio de
+uma consulta.
+
+**DNS do maisinfo.site**, dois registos A para o IP da VPS:
+```
+maisinfo.site          A   <IP>
+studio.maisinfo.site   A   <IP>
+```
+
+Não mudes os nameservers do domínio para o fornecedor de alojamento: isso
+apaga os registos que já lá estiverem.
 
 ## Instalar
 
 ```sh
 ssh root@<IP da VPS>
 curl -fsSL https://mariaestuda.eu/exp/vps/instalar.sh -o instalar.sh
-bash instalar.sh api.maisinfo.site
+bash instalar.sh maisinfo.site o-teu@email
 ```
 
-O script confirma primeiro que o DNS já aponta para a máquina, e pára com
-uma mensagem clara se ainda não propagou — em vez de deixar o Caddy a falhar
-a emitir o certificado sem dizer porquê.
+Um comando, e no fim está tudo feito: Docker instalado, stack oficial do
+Supabase a correr, HTTPS emitido, firewall ligada, **tabelas criadas, a tua
+conta feita e promovida a administradora**, e a app a servir. O script
+escreve-te a palavra-passe no fim.
 
-Depois instala o Docker, traz a stack oficial do Supabase, gera os segredos,
-põe o Caddy à frente para o HTTPS, fecha a porta do PostgreSQL ao exterior
-(a stack oficial expõe a 5432, o que numa VPS pública é uma porta aberta
-para ataques de dicionário), liga a firewall e arranca tudo.
+Pelo caminho confirma o DNS antes de tentar o certificado, e fecha ao
+exterior as portas 5432 e 8000 que a stack oficial expõe — numa VPS pública
+são portas abertas para ataques de dicionário.
 
-No fim escreve a `ANON_KEY` que precisas para o `config.js`.
+## Publicar código novo
 
-## A seguir
-
-**1. Guardar `/opt/supabase/chaves.env` em sítio seguro.**
-Sem o `JWT_SECRET`, as contas que criares deixam de conseguir entrar e não há
-como recuperar.
-
-**2. Correr o schema.** Studio em `https://api.maisinfo.site` → SQL Editor →
-colar o `exp/schema.sql` → Run.
-
-**3. Instalar as cópias de segurança.**
 ```sh
-bash copia-seguranca.sh --instalar
+bash /opt/explicacoes/app/exp/vps/publicar.sh maisinfo.site
+```
+
+Traz o `main`, copia para a pasta servida e reescreve o `config.js` com o
+domínio e a chave certos. A troca é um `mv`, não uma cópia ficheiro a
+ficheiro: ninguém apanha o site a meio de uma publicação.
+
+Só é copiado o que o browser precisa. O `schema.sql`, os testes, a Edge
+Function e estes scripts ficam de fora — não são segredo, o repositório é
+público, mas um ficheiro que não é servido não pode ser servido por engano.
+
+## Logo a seguir
+
+**1. Guardar `/opt/explicacoes/chaves.env` fora da máquina.** Sem o
+`JWT_SECRET`, nenhuma conta volta a entrar e não há recuperação.
+
+**2. Cópias de segurança.**
+```sh
+bash /opt/explicacoes/app/exp/vps/copia-seguranca.sh --instalar
 ```
 Diário às 4h, guarda 30 dias. **Por omissão ficam só nesta máquina, o que não
-é uma cópia de segurança** — define `DESTINO_REMOTO` no topo do ficheiro para
-as mandar para fora. Um disco que falhe leva o histórico de pagamentos de
-todas as famílias.
+é uma cópia de segurança** — define `DESTINO_REMOTO` no topo do ficheiro. Um
+disco que falhe leva o histórico de pagamentos de todas as famílias.
 
-**4. Apontar a app para cá.** Em `exp/config.js`:
-```js
-SUPABASE_URL: 'https://api.maisinfo.site',
-SUPABASE_ANON_KEY: '<a ANON_KEY que o instalador escreveu>',
-```
+**3. Mudar a palavra-passe** que o instalador gerou, no separador Contas.
 
 ## Se já tiveres dados no Supabase alojado
 
 ```sh
-bash migrar.sh "postgresql://...supabase.co:5432/postgres" api.maisinfo.site
+bash migrar.sh "postgresql://...supabase.co:5432/postgres" maisinfo.site
 ```
 
 Passa alunos, explicações, pagamentos, materiais e TPCs. **As contas não
 passam** — as palavras-passe estão cifradas com o segredo do projeto antigo.
-Cria-as de novo e comunica as novas.
+
+## Motores de busca
+
+O site leva `noindex, nofollow`, no HTML e num cabeçalho HTTP. Escrever
+`maisinfo.site` no browser funciona; procurar no Google não devolve nada.
+
+Foi decisão minha: guarda nomes de crianças e contactos de encarregados. Se
+querias mesmo aparecer nas pesquisas — por exemplo se `maisinfo.site` vier a
+ter também uma página pública de divulgação — diz, e separo as duas coisas.
 
 ## O que passa a ser teu
 
-O Supabase alojado fazia isto sozinho. Agora não faz ninguém:
+O Supabase alojado e o GitHub Pages faziam isto sozinhos:
 
-- **Cópias de segurança.** O `copia-seguranca.sh` trata delas, se o
-  instalares e se lhe deres um destino fora da máquina.
-- **Atualizações de segurança do Ubuntu.** `unattended-upgrades` resolve a
-  maior parte, mas os contentores atualizam-se à mão:
-  `cd /opt/supabase/docker && docker compose pull && docker compose up -d`.
-- **A máquina estar de pé.** Quando um encarregado abre a conta corrente ao
-  domingo à noite, ou está de pé, ou não está.
-- **Os certificados.** O Caddy renova sozinho, mas só enquanto o contentor
-  correr e a porta 443 estiver aberta.
+- **Cópias de segurança** — o script trata, se o instalares e lhe deres um
+  destino fora da máquina.
+- **Atualizações.** `unattended-upgrades` para o Ubuntu; os contentores à mão:
+  `cd /opt/explicacoes/supabase/docker && docker compose pull && docker compose up -d`
+- **A máquina estar de pé.** Agora o site também depende dela, não só a base
+  de dados. Se a VPS cair, cai tudo.
+- **Os certificados.** O Caddy renova sozinho enquanto correr e a 443 estiver
+  aberta.
 
 ## Voltar atrás
 
-A migração é simétrica. `pg_dump` da VPS, importar no projeto alojado,
-trocar as duas linhas do `config.js`. Nada nesta escolha te prende.
+`pg_dump` da VPS, importar no Supabase alojado, trocar as duas linhas do
+`config.js`, repor o site no GitHub Pages. Nada nesta escolha te prende.
