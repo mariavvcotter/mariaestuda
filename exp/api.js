@@ -105,6 +105,10 @@ window.API = (function () {
     try { j = corpo ? JSON.parse(corpo) : null; } catch (e) {}
     if (r.status === 401) return 'A sessão expirou. Entra outra vez.';
     if (r.status === 403) return 'Sem permissão para isto.';
+    // Instalação a meio: as contas já existem mas as tabelas ainda não.
+    // Sem isto a pessoa via "Could not find the table in the schema cache".
+    if (r.status === 404 && /schema cache|does not exist/i.test(corpo || ''))
+      return 'A base de dados ainda não foi criada. Falta correr o schema.sql no painel do Supabase.';
     if (j && j.code === '23505') return 'Já existe um registo igual.';
     return (j && (j.message || j.hint)) || ('Erro ' + r.status);
   }

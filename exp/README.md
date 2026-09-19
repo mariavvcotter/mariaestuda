@@ -97,8 +97,9 @@ diz-te quem ficou administradora, na consola de notícias do SQL Editor:
 NOTICE:  Administradora: o-teu@email
 ```
 
-Se correres o ficheiro antes de criares a conta, ele diz-to e não faz mal
-nenhum; cria a conta e corre outra vez.
+A ordem entre os passos 2 e 3 é indiferente: o ficheiro dá ficha de perfil a
+qualquer conta que já exista e ainda não tenha, e diz-te se ainda não houver
+conta nenhuma. Corre-o as vezes que quiseres.
 
 Feito isto, abrir a aplicação e entrar.
 

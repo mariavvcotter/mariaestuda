@@ -515,6 +515,15 @@ create policy "aluno lê o que lhe foi atribuído" on storage.objects
 -- Não promove ninguém se já houver mais do que uma conta, para uma
 -- reinstalação não dar direitos a quem calhar estar lá.
 -- ============================================================
+-- Contas criadas ANTES deste ficheiro correr não passaram pelo trigger da
+-- secção 1 — ele ainda não existia. Sem isto, quem seguisse a ordem natural
+-- (criar a conta no painel, correr o schema a seguir) ficava sem ficha de
+-- perfil, e sem ficha não há promoção nem entrada na aplicação.
+insert into public.perfis (id, nome)
+select u.id, coalesce(u.raw_user_meta_data->>'nome', split_part(u.email, '@', 1))
+  from auth.users u
+ where not exists (select 1 from public.perfis p where p.id = u.id);
+
 do $$
 declare v_id uuid; v_email text; v_quantas integer;
 begin
