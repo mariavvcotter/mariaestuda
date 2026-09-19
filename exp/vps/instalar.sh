@@ -16,9 +16,12 @@
 # No fim está tudo a funcionar: tabelas criadas, a tua conta
 # feita, a app a servir. O script escreve-te a palavra-passe.
 #
-# Antes de correr, os dois registos A têm de já apontar para cá:
-#   maisinfo.site          A   <IP desta máquina>
-#   studio.maisinfo.site   A   <IP desta máquina>
+# Antes de correr, o registo A tem de já apontar para cá:
+#   maisinfo.site   A   <IP desta máquina>
+#
+# O painel de administração (Studio) NÃO fica exposto. Chega-se lá por
+# um túnel SSH, quando for preciso:
+#   ssh -L 8000:localhost:8000 root@<IP>   e abrir http://localhost:8000
 # ============================================================
 set -euo pipefail
 
@@ -38,7 +41,7 @@ passo() { echo; echo "── $* ──"; }
 
 passo "1/9 · confirmar o DNS"
 IP_MAQUINA=$(curl -fsS --max-time 10 https://api.ipify.org || echo "")
-for h in "$DOMINIO" "studio.$DOMINIO"; do
+for h in "$DOMINIO"; do
   ip=$(getent hosts "$h" | awk '{print $1}' | head -1 || echo "")
   [ -n "$ip" ] || erro "$h não resolve. Cria o registo A a apontar para ${IP_MAQUINA:-o IP desta máquina} e espera uns minutos."
   if [ -n "$IP_MAQUINA" ] && [ "$ip" != "$IP_MAQUINA" ]; then
@@ -131,7 +134,7 @@ services:
       - $SITE:/srv:ro
       - caddy_data:/data
       - caddy_config:/config
-    depends_on: [kong]
+    depends_on: [api-gw]
 
 volumes:
   caddy_data:
@@ -144,7 +147,7 @@ $DOMINIO {
 
 	# Tudo o que é API vai para o Kong; o resto são ficheiros da app.
 	@api path /rest/* /auth/* /storage/* /realtime/* /functions/*
-	reverse_proxy @api kong:8000
+	reverse_proxy @api api-gw:8000
 
 	root * /srv
 	file_server
@@ -157,25 +160,14 @@ $DOMINIO {
 	# Dados de menores não têm nada que aparecer em motores de busca.
 	header /* X-Robots-Tag "noindex, nofollow"
 }
-
-studio.$DOMINIO {
-	encode gzip
-	reverse_proxy kong:8000
-}
 FIM
 
-passo "6/9 · fechar a porta do PostgreSQL ao mundo"
-# A stack oficial expõe a 5432. Numa VPS pública isso é uma porta aberta
-# para ataques de dicionário à base de dados inteira.
-python3 - "$SUPA/docker-compose.yml" <<'PY'
-import re, sys, pathlib
-p = pathlib.Path(sys.argv[1])
-s = p.read_text()
-s = re.sub(r'(\n\s*- )(\$\{POSTGRES_PORT\}:\$\{POSTGRES_PORT\})', r'\g<1>127.0.0.1:\2', s)
-s = re.sub(r'(\n\s*- )(\$\{KONG_HTTP_PORT\}:8000)', r'\g<1>127.0.0.1:\2', s)
-s = re.sub(r'\n\s*- \$\{KONG_HTTPS_PORT\}:8443\n', '\n', s)
-p.write_text(s)
-PY
+passo "6/9 · fechar as portas ao mundo"
+# A stack oficial publica o PostgreSQL, o pooler e o gateway da API. Numa
+# VPS pública isso são portas abertas para quem lá bater. Ficam presas ao
+# localhost: continuam acessíveis por túnel SSH, mas não da internet.
+python3 "$BASE/app/exp/vps/fechar-portas.py" "$SUPA/docker-compose.yml"
+
 if command -v ufw >/dev/null; then
   ufw --force reset >/dev/null 2>&1 || true
   ufw default deny incoming >/dev/null
@@ -189,7 +181,11 @@ fi
 passo "7/9 · publicar a app"
 bash "$BASE/app/exp/vps/publicar.sh" "$DOMINIO"
 
-passo "8/9 · arrancar"
+passo "8/9 · instalar a função das contas e arrancar"
+# É ela que deixa criar contas e definir palavras-passe de dentro da app.
+mkdir -p "$SUPA/volumes/functions/admin-contas"
+cp "$BASE/app/exp/edge/admin-contas/index.ts" "$SUPA/volumes/functions/admin-contas/index.ts"
+
 cd "$SUPA"
 docker compose pull -q
 docker compose up -d
@@ -205,7 +201,7 @@ echo -n "   à espera da API"
 for i in $(seq 1 60); do
   if curl -fsS --max-time 5 "http://127.0.0.1:8000/auth/v1/health" >/dev/null 2>&1; then echo " ✓"; break; fi
   echo -n "."; sleep 2
-  [ "$i" = 60 ] && erro "a API não respondeu. Vê: docker compose logs kong auth"
+  [ "$i" = 60 ] && erro "a API não respondeu. Vê: docker compose logs api-gw auth"
 done
 
 passo "9/9 · criar as tabelas e a tua conta"
@@ -252,8 +248,10 @@ else
   echo "    \"select id, email from auth.users;\"  e define outra pelo Studio."
 fi
 echo
-echo "  Painel (SQL, tabelas):  https://studio.$DOMINIO"
-echo "  utilizador/senha em     $BASE/chaves.env"
+echo "  Painel de administração: não está exposto, de propósito."
+echo "  Quando precisares dele:"
+echo "    ssh -L 8000:localhost:8000 root@$IP_MAQUINA"
+echo "    e abres http://localhost:8000 no teu browser"
 echo
 echo "  GUARDA $BASE/chaves.env FORA DESTA MÁQUINA."
 echo "  Sem o JWT_SECRET, nenhuma conta volta a entrar."
