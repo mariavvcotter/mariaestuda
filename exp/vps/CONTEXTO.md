@@ -123,6 +123,63 @@ exp/vps/           os scripts que vais executar e corrigir
 exp/edge/          a função que cria contas (precisa da service_role)
 ```
 
+## Decisões já tomadas (não as reabras sem falar com a Maria)
+
+Estas foram discutidas e escolhidas por ela. Algumas contra a minha
+recomendação — estão aqui com a razão de cada uma, para não serem
+revisitadas por engano.
+
+1. **Conta corrente em euros, não em horas.** O valor de cada explicação
+   fica congelado no registo; mudar o preço-hora de um aluno não recalcula o
+   passado. Numa explicação de grupo, o débito é por aluno.
+
+2. **Sem modelo de packs.** Os packs de 10h com desconto aplicam-se
+   escrevendo o valor à mão em cada explicação. Eu recomendei um preço-hora
+   efetivo; ela preferiu assim. Mitigação: a ficha do aluno mostra o preço
+   efetivo até hoje e assinala-o quando se afasta do de tabela.
+
+3. **Um encarregado por educando.** O §12.3 do caderno deixava em aberto o
+   caso de dois adultos (avô que paga, irmã que acompanha). Eu recomendei uma
+   tabela de ligação; ela preferiu como está no caderno. A chave está em
+   `alunos.encarregado_id`, que migra barato para N:N se o caso aparecer.
+
+4. **O Studio não é exposto.** Decisão dela depois de eu explicar que quem lá
+   entra passa por cima de todo o RLS.
+
+5. **A app fica na raiz de `maisinfo.store`,** não em `/exp`. Mesma origem
+   que a API, logo sem CORS.
+
+6. **O `mariaestuda.eu` fica no GitHub Pages** com o CV dela. Não lhe toques.
+
+7. **`noindex`.** Decisão minha, por haver dados de menores. Se ela vier a
+   querer uma página pública de divulgação no mesmo domínio, isso tem de ser
+   separado do resto — não basta tirar o cabeçalho.
+
+8. **Arquivar apaga os materiais exclusivos do aluno** (§189). Eu objetei;
+   ela manteve o caderno. A salvaguarda do §191 — mostrar a lista e o total
+   antes de confirmar — está implementada.
+
+## O que ficou por resolver
+
+- **O projeto Supabase alojado** (`dfflzfytizugstxjvemk`) ainda existe e tem
+  a chave anon no `exp/config.js` do repositório. Depois de a VPS estar a
+  funcionar, o `config.js` passa a ser escrito pelo `publicar.sh` e aquele
+  projeto deixa de ser usado. Vale a pena a Maria apagá-lo, para não ficar
+  um segundo sítio a dizer que guarda dados destes.
+
+- **O caderno não diz nada sobre RGPD.** Guarda nomes de crianças, contactos
+  de encarregados e avaliações. Falta um parágrafo sobre quanto tempo se
+  guarda o arquivo de um aluno que saiu e o que se faz se um encarregado
+  pedir os dados ou o apagamento. Não é um projeto, é um parágrafo — e é
+  melhor escrevê-lo antes de as famílias entrarem.
+
+- **A Edge Function `admin-contas`** nunca foi publicada em lado nenhum. Na
+  VPS, o instalador copia-a para `volumes/functions/`. Nunca correu; se o
+  botão "Nova conta" falhar, é aí que se procura.
+
+- **`exp/edge/README.md`** ainda descreve a publicação no Supabase alojado.
+  Desatualizado para a VPS.
+
 ## Como trabalhar
 
 Ramo: `claude/modest-planck-8wkvb9`. Faz commit das correções aí, com
