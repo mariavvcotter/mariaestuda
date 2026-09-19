@@ -11,13 +11,13 @@
 # acabada de criar:
 #
 #   curl -fsSL https://mariaestuda.eu/exp/vps/instalar.sh -o instalar.sh
-#   bash instalar.sh maisinfo.site o-teu@email
+#   bash instalar.sh maisinfo.store o-teu@email
 #
 # No fim está tudo a funcionar: tabelas criadas, a tua conta
 # feita, a app a servir. O script escreve-te a palavra-passe.
 #
 # Antes de correr, o registo A tem de já apontar para cá:
-#   maisinfo.site   A   <IP desta máquina>
+#   maisinfo.store   A   <IP desta máquina>
 #
 # O painel de administração (Studio) NÃO fica exposto. Chega-se lá por
 # um túnel SSH, quando for preciso:
@@ -25,7 +25,7 @@
 # ============================================================
 set -euo pipefail
 
-DOMINIO="${1:-maisinfo.site}"
+DOMINIO="${1:-maisinfo.store}"
 EMAIL_ADMIN="${2:-maria.leonor.cotter@gmail.com}"
 NOME_ADMIN="${NOME_ADMIN:-Maria}"
 REPO="${REPO:-https://github.com/mariavvcotter/mariaestuda}"

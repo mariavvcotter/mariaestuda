@@ -3,13 +3,13 @@
 Tudo numa máquina só: o site e a base de dados, no mesmo domínio.
 
 ```
-https://maisinfo.site          a aplicação
-https://maisinfo.site/rest/v1  a API (mesmo domínio, logo sem CORS)
-https://studio.maisinfo.site   o painel do Supabase (SQL, tabelas)
+https://maisinfo.store          a aplicação
+https://maisinfo.store/rest/v1  a API (mesmo domínio, logo sem CORS)
+(o painel do Supabase não fica exposto — chega-se lá por túnel SSH)
 ```
 
 O `mariaestuda.eu` fica onde está, no GitHub Pages, com o CV. Separação
-limpa: `maisinfo.site` é o negócio das explicações.
+limpa: `maisinfo.store` é o negócio das explicações.
 
 **Estarem na mesma origem não é um detalhe.** É o que faz desaparecer a
 configuração de CORS, que é onde estas montagens costumam ficar presas com
@@ -41,10 +41,9 @@ correu do princípio ao fim. Conta com corrigir coisas à primeira tentativa.
 são uns dez contentores; com 1 GB o PostgreSQL é morto pelo sistema a meio de
 uma consulta.
 
-**DNS do maisinfo.site**, dois registos A para o IP da VPS:
+**DNS do maisinfo.store**, um registo A para o IP da VPS:
 ```
-maisinfo.site          A   <IP>
-studio.maisinfo.site   A   <IP>
+maisinfo.store   A   <IP>
 ```
 
 Não mudes os nameservers do domínio para o fornecedor de alojamento: isso
@@ -55,7 +54,7 @@ apaga os registos que já lá estiverem.
 ```sh
 ssh root@<IP da VPS>
 curl -fsSL https://mariaestuda.eu/exp/vps/instalar.sh -o instalar.sh
-bash instalar.sh maisinfo.site o-teu@email
+bash instalar.sh maisinfo.store o-teu@email
 ```
 
 Um comando, e no fim está tudo feito: Docker instalado, stack oficial do
@@ -70,7 +69,7 @@ são portas abertas para ataques de dicionário.
 ## Publicar código novo
 
 ```sh
-bash /opt/explicacoes/app/exp/vps/publicar.sh maisinfo.site
+bash /opt/explicacoes/app/exp/vps/publicar.sh maisinfo.store
 ```
 
 Traz o `main`, copia para a pasta servida e reescreve o `config.js` com o
@@ -99,7 +98,7 @@ disco que falhe leva o histórico de pagamentos de todas as famílias.
 ## Se já tiveres dados no Supabase alojado
 
 ```sh
-bash migrar.sh "postgresql://...supabase.co:5432/postgres" maisinfo.site
+bash migrar.sh "postgresql://...supabase.co:5432/postgres" maisinfo.store
 ```
 
 Passa alunos, explicações, pagamentos, materiais e TPCs. **As contas não
@@ -108,10 +107,10 @@ passam** — as palavras-passe estão cifradas com o segredo do projeto antigo.
 ## Motores de busca
 
 O site leva `noindex, nofollow`, no HTML e num cabeçalho HTTP. Escrever
-`maisinfo.site` no browser funciona; procurar no Google não devolve nada.
+`maisinfo.store` no browser funciona; procurar no Google não devolve nada.
 
 Foi decisão minha: guarda nomes de crianças e contactos de encarregados. Se
-querias mesmo aparecer nas pesquisas — por exemplo se `maisinfo.site` vier a
+querias mesmo aparecer nas pesquisas — por exemplo se `maisinfo.store` vier a
 ter também uma página pública de divulgação — diz, e separo as duas coisas.
 
 ## O que passa a ser teu

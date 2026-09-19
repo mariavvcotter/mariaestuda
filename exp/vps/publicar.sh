@@ -5,7 +5,7 @@
 # Traz a versão mais recente do repositório e põe-na a servir.
 # Corre isto sempre que houver código novo:
 #
-#   bash /opt/explicacoes/app/exp/vps/publicar.sh maisinfo.site
+#   bash /opt/explicacoes/app/exp/vps/publicar.sh maisinfo.store
 #
 # Copia só o que o browser precisa. O schema, os testes, a Edge
 # Function e estes próprios scripts ficam de fora: não são
@@ -15,7 +15,7 @@
 # ============================================================
 set -euo pipefail
 
-DOMINIO="${1:-maisinfo.site}"
+DOMINIO="${1:-maisinfo.store}"
 BASE=/opt/explicacoes
 APP="$BASE/app"
 SITE="$BASE/site"
