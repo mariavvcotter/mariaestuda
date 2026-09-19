@@ -54,16 +54,35 @@ passo "2/9 · Docker"
 if ! command -v docker >/dev/null; then
   apt-get update -qq
   apt-get install -y -qq ca-certificates curl git jq
-  install -m 0755 -d /etc/apt/keyrings
-  curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-  chmod a+r /etc/apt/keyrings/docker.asc
-  echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] \
-https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable" \
-    > /etc/apt/sources.list.d/docker.list
-  apt-get update -qq
-  apt-get install -y -qq docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+  # O repositório oficial da Docker só tem as versões do Ubuntu que já
+  # suporta. Numa versão acabada de sair, o ficheiro de pacotes ainda não
+  # existe e o `apt update` estoira. Confirma-se antes de o acrescentar.
+  CODINOME=$(. /etc/os-release && echo "$VERSION_CODENAME")
+  ARQ=$(dpkg --print-architecture)
+  if curl -fsI --max-time 15 \
+      "https://download.docker.com/linux/ubuntu/dists/$CODINOME/Release" >/dev/null 2>&1; then
+    echo "   repositório oficial da Docker para $CODINOME"
+    install -m 0755 -d /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+    chmod a+r /etc/apt/keyrings/docker.asc
+    echo "deb [arch=$ARQ signed-by=/etc/apt/keyrings/docker.asc] \
+https://download.docker.com/linux/ubuntu $CODINOME stable" > /etc/apt/sources.list.d/docker.list
+    apt-get update -qq
+    apt-get install -y -qq docker-ce docker-ce-cli containerd.io \
+      docker-buildx-plugin docker-compose-plugin
+  else
+    # O Ubuntu traz os seus próprios pacotes. São mais antigos, mas fazem
+    # o mesmo, e é melhor do que não haver Docker nenhum.
+    echo "   a Docker ainda não publicou para $CODINOME; a usar os pacotes do Ubuntu"
+    rm -f /etc/apt/sources.list.d/docker.list
+    apt-get install -y -qq docker.io docker-compose-v2 || \
+      apt-get install -y -qq docker.io docker-compose
+  fi
 fi
-for f in jq git; do command -v $f >/dev/null || apt-get install -y -qq $f; done
+
+docker compose version >/dev/null 2>&1 || erro \
+  "o docker compose não ficou instalado. Vê: apt-cache policy docker-compose-v2"
 docker --version
 
 passo "3/9 · trazer o código"
