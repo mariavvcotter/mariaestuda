@@ -49,6 +49,7 @@ function backendFalso() {
   await ctx.route('https://fonts.googleapis.com/**', (r) => r.abort());
   const page = await ctx.newPage();
   page.on('pageerror', (e) => erros.push(e.message));
+  page.on('dialog', (d) => d.accept().catch(() => {}));   // «Terminar agora?» e «Sair?»
   page.on('console', (m) => { if (m.type() === 'error' && !/Failed to load resource/.test(m.text())) erros.push(m.text()); });
 
   await page.goto(BASE + '/eco/');
@@ -121,7 +122,6 @@ function backendFalso() {
     await page.click('#comecar');
     await page.waitForSelector('.q-enunciado');
     diferente = (await page.textContent('.q-enunciado')) !== primeira;
-    page.once('dialog', (d) => d.accept());
     await page.click('#sair');
   }
   ok('as perguntas aparecem por ordem aleatória', diferente);
@@ -146,6 +146,31 @@ function backendFalso() {
   await page.waitForSelector('.uni');
   ok('ao voltar a entrar, o progresso regressa', (await page.textContent('.uni >> nth=0 >> .uni-info')).startsWith('10/'),
     await page.textContent('.uni >> nth=0 >> .uni-info'));
+
+  // perguntas de exame: documento de apoio e origem
+  await page.goto(BASE + '/eco/#treino');
+  await page.waitForSelector('#comecar');
+  await page.click('#sel-nada');
+  await page.check('.escolha-uni input[value=u9]');
+  await page.check('#so-exames');
+  await page.click('[data-n="0"]');
+  await page.click('#comecar');
+  await page.waitForSelector('.q-enunciado');
+  const total = +(await page.textContent('.contador')).split('/')[1];
+  ok('«só exames» da U9 traz as 119 perguntas de exame', total === 119, total);
+  let comDoc = false, fonteSempre = true;
+  for (let i = 0; i < 25 && !comDoc; i++) {
+    if (!(await page.$('.q-fonte'))) fonteSempre = false;
+    if (await page.$('.q-doc img')) {
+      comDoc = await page.$eval('.q-doc img', (im) => new Promise((r) => (im.complete ? r(im.naturalWidth > 0) : (im.onload = () => r(true), im.onerror = () => r(false)))));
+      break;
+    }
+    await page.click('.opcao >> nth=0'); await page.waitForSelector('#seguinte'); await page.click('#seguinte');
+  }
+  ok('as perguntas de exame mostram o exame de origem', fonteSempre);
+  ok('o documento (tabela/gráfico) aparece e carrega', comDoc);
+  await page.click('#sair');
+  await page.waitForSelector('.resultado, #comecar');
 
   // notícias
   await page.click('#nav a[data-sec=noticias]');
@@ -175,6 +200,7 @@ function backendFalso() {
   await ctxPc.route('**/rest/v1/**', (r) => r.abort());
   const pc = await ctxPc.newPage();
   pc.on('pageerror', (e) => erros.push(e.message));
+  pc.on('dialog', (d) => d.accept().catch(() => {}));
   await pc.goto(BASE + '/eco/#inicio');
   await pc.waitForSelector('.ano');
   const colunas = await pc.$$eval('.ano', (els) => els.map((e) => Math.round(e.getBoundingClientRect().top)));
@@ -195,7 +221,6 @@ function backendFalso() {
   await pc.keyboard.press('ArrowRight');
   await pc.waitForFunction(() => document.querySelector('.contador').textContent.trim().startsWith('3 '));
   ok('também responde com números e avança com a seta', true);
-  pc.once('dialog', (d) => d.accept());
   await pc.keyboard.press('Escape');
   await pc.waitForSelector('.resultado');
   ok('Esc termina o quiz e mostra o resultado', (await pc.textContent('.nota')).trim().endsWith('/ 2'));
