@@ -248,16 +248,15 @@ label.rotulo { display: block; font-weight: 600; margin: 0 0 6px; }
 .revisao p { font-size: 14.5px; margin: 8px 0 0; }
 
 /* ---------- notícias ---------- */
-.filtro { overflow-x: auto; display: flex; gap: 8px; padding-bottom: 6px; margin: 0 -16px 10px; padding-left: 16px; padding-right: 16px; scrollbar-width: none; }
-.filtro::-webkit-scrollbar { display: none; }
-.filtro .chip { flex: none; }
+.filtro { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; }
+.filtro .chip { min-height: 38px; padding: 0 11px; font-size: 14px; }
 .noticias { display: grid; gap: 14px; }
 .noticia { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; box-shadow: var(--sombra); }
 .noticia-img { aspect-ratio: 16 / 9; background: var(--c); position: relative; display: grid; place-items: center; overflow: hidden; }
 .noticia-img img { width: 100%; height: 100%; object-fit: cover; }
 .noticia-img .ilustra { font-size: 64px; filter: drop-shadow(0 4px 10px rgba(0,0,0,.25)); }
 .noticia-img .ilustra-fundo { position: absolute; inset: 0; background: radial-gradient(circle at 20% 20%, rgba(255,255,255,.25), transparent 50%), repeating-linear-gradient(135deg, rgba(255,255,255,.07) 0 12px, transparent 12px 24px); }
-.noticia-fonte { position: absolute; left: 10px; top: 10px; background: rgba(0,0,0,.65); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 9px; border-radius: 6px; }
+.noticia-fonte { position: absolute; z-index: 2; left: 10px; top: 10px; background: rgba(0,0,0,.65); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 9px; border-radius: 6px; }
 .noticia-corpo { padding: 14px 16px 16px; }
 .noticia-meta { font-size: 12.5px; color: var(--ink-soft); display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .noticia h3 { font-size: 17.5px; line-height: 1.35; margin: 6px 0 8px; }

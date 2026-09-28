@@ -1,0 +1,41 @@
+# Vai buscar as fotografias das notícias do /eco ao Público e ao Observador
+# e grava os endereços em eco/dados/noticias*.js. Corre quando as notícias
+# mudam no main, ou à mão em Actions → "Imagens das notícias (eco)".
+name: Imagens das notícias (eco)
+
+on:
+  push:
+    branches: [main]
+    paths: ['eco/dados/noticias*.js', 'eco/ferramentas/imagens.mjs']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: eco-imagens
+  cancel-in-progress: false
+
+jobs:
+  imagens:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Procurar as imagens
+        run: node eco/ferramentas/imagens.mjs
+      - name: Gravar
+        run: |
+          if git diff --quiet; then echo "Nada a gravar."; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898279+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Imagens das notícias do eco"
+          git push
+          # Um push feito por esta ação não volta a publicar o site sozinho:
+          # pede-se ao GitHub Pages uma nova publicação.
+          gh api -X POST "repos/${{ github.repository }}/pages/builds" || true
+        env:
+          GH_TOKEN: ${{ github.token }}
