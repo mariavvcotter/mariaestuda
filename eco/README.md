@@ -18,7 +18,10 @@ style.css           desenho; claro e escuro, segue o telemóvel
 app.js              ecrãs, treino, níveis
 dados/unidades.js   as 12 unidades (título, ano, cor, ícone)
 dados/resumos-*.js  os resumos (a: U1–U4, b: U5–U7, c: U9–U12, d: U8)
-dados/perguntas-*.js  as perguntas de escolha múltipla, com explicação
+dados/perguntas-*.js  perguntas de escolha múltipla escritas para a plataforma
+dados/exames/uN.js  perguntas de exames nacionais (14 Dias · IAVE), com explicação
+img/perguntas/      tabelas e gráficos recortados dos PDF, um por pergunta que precisa
+ferramentas/        extrator dos PDF 14 Dias, recortes e imagens das notícias
 dados/noticias.js   notícias do Público e do Observador, com análise
 testes/             navegador.cjs (Playwright)
 ```
@@ -42,7 +45,7 @@ errou e depois aprendeu subir de nível.
 | 🔴 Mal | menos de 50% certas |
 | 🟠 Mais ou menos | 50% a 69% |
 | 🟢 Bem | 70% ou mais |
-| 🌟 Fantástico | 90% ou mais **e** já respondeu a 80% das perguntas da unidade |
+| 🌟 Fantástico | 90% ou mais **e** já respondeu a 40 perguntas da unidade (ou 80%, se tiver menos) |
 
 O painel geral diz em quantas das 12 unidades o aluno está em Bem ou
 Fantástico. No treino, as perguntas que o aluno nunca viu têm prioridade, e a
@@ -54,6 +57,30 @@ A conta é a do resto do site, tal como está: a tabela `edc_users` está aberta
 chave pública. Quem souber usar a consola do navegador lê os nomes, os PIN e o
 progresso de todas as contas, e pode alterá-los. Vale para o `/edc` e para o
 `/eco` por igual. Não guardar ali nada sensível.
+
+## Perguntas de exame (14 Dias)
+
+As perguntas de exame vêm dos PDF «14 Dias – Itens de Seleção» de cada unidade,
+com a resposta certa tirada do PDF dos critérios de correção correspondente.
+Para refazer ou acrescentar unidades:
+
+```sh
+pip install pypdf pymupdf
+# 1. texto de cada PDF (perguntas e critérios) para uma pasta
+# 2. perguntas + respostas → JSON por unidade
+python3 eco/ferramentas/extrair_14dias.py PASTA_TXT PASTA_JSON
+# 3. recortar tabelas e gráficos para eco/img/perguntas/ (acrescenta "img" ao JSON)
+python3 eco/ferramentas/recortes_14dias.py PASTA_PDF PASTA_JSON eco/img/perguntas
+```
+
+O extrator confirma, unidade a unidade, que há tantas perguntas completas
+quanto respostas nos critérios. Ficam de fora os itens de «completar o texto»
+(1/2/3), que não são de escolha A–D. As explicações e a limpeza do texto foram
+escritas depois, pergunta a pergunta, mantendo sempre a letra oficial; quando a
+resposta oficial parecia discutível ficou marcada com `duvida`.
+
+No treino, o interruptor «Só perguntas de exames nacionais» deixa de fora as
+perguntas escritas para a plataforma.
 
 ## Acrescentar conteúdo
 

@@ -12,7 +12,8 @@
 
   var UNIDADES = window.ECO_UNIDADES || [];
   var RESUMOS = window.ECO_RESUMOS || {};
-  var PERGUNTAS = window.ECO_PERGUNTAS || [];
+  // As de exame que dependem de um gráfico sem imagem não se conseguem responder: ficam de fora.
+  var PERGUNTAS = (window.ECO_PERGUNTAS || []).filter(function (q) { return !q.semDados; });
   var NOTICIAS = window.ECO_NOTICIAS || [];
 
   var UNI = {};
@@ -26,7 +27,7 @@
   var S = {
     prog: { r: {} },       // progresso do aluno
     quiz: null,
-    treino: { unidades: [], n: 10, soErradas: false },
+    treino: { unidades: [], n: 10, soErradas: false, soExames: false },
     filtroNoticias: 'todas',
   };
 
@@ -69,14 +70,16 @@
   }
   /* A nota de uma unidade olha para a ÚLTIMA resposta a cada pergunta, para
      quem erra e depois aprende subir de nível. «Fantástico» exige também ter
-     passado pela maior parte das perguntas: acertar 5 em 5 não é dominar. */
+     passado por uma boa parte das perguntas (80%, até ao máximo de 40):
+     acertar 5 em 5 não é dominar, mas também não se exige fazer as 100
+     perguntas de exame de uma unidade. */
   function nivel(st) {
     var minimo = Math.min(5, st.total || 5);
     if (!st.total || st.resp < minimo) return { k: 'zero', t: 'Por avaliar', e: '⚪', ord: 0 };
     var acc = st.certas / st.resp, cob = st.resp / st.total;
     if (acc < 0.5) return { k: 'mal', t: 'Mal', e: '🔴', ord: 1, acc: acc, cob: cob };
     if (acc < 0.7) return { k: 'meh', t: 'Mais ou menos', e: '🟠', ord: 2, acc: acc, cob: cob };
-    if (acc < 0.9 || cob < 0.8) return { k: 'bem', t: 'Bem', e: '🟢', ord: 3, acc: acc, cob: cob };
+    if (acc < 0.9 || st.resp < Math.min(0.8 * st.total, 40)) return { k: 'bem', t: 'Bem', e: '🟢', ord: 3, acc: acc, cob: cob };
     return { k: 'top', t: 'Fantástico', e: '🌟', ord: 4, acc: acc, cob: cob };
   }
   function nivelHTML(n) { return '<span class="nivel ' + n.k + '">' + n.t + '</span>'; }
@@ -161,7 +164,7 @@
     });
     h += '</div>';
     h += '<p class="sub" style="margin-top:18px;font-size:13.5px">Como se calcula: conta a tua última resposta a cada pergunta. ' +
-      '<b>Mal</b>: menos de 50% certas · <b>Mais ou menos</b>: 50–69% · <b>Bem</b>: 70% ou mais · <b>Fantástico</b>: 90% ou mais e já passaste por pelo menos 80% das perguntas da unidade. ' +
+      '<b>Mal</b>: menos de 50% certas · <b>Mais ou menos</b>: 50–69% · <b>Bem</b>: 70% ou mais · <b>Fantástico</b>: 90% ou mais e já respondeste a pelo menos 40 perguntas da unidade (ou 80%, se tiver menos). ' +
       'Precisas de responder a 5 perguntas de uma unidade para ela ser avaliada.</p>';
     app.innerHTML = h;
     var ec = document.getElementById('entrar-conta');
@@ -227,7 +230,8 @@
     [10, 20, 40, 0].forEach(function (n) {
       h += '<button class="chip" data-n="' + n + '" aria-pressed="' + (T.n === n) + '">' + (n || 'Todas') + '</button>';
     });
-    h += '</div><label class="interruptor"><input type="checkbox" id="so-erradas"' + (T.soErradas ? ' checked' : '') + '> Só as que errei da última vez</label>' +
+    h += '</div><label class="interruptor"><input type="checkbox" id="so-exames"' + (T.soExames ? ' checked' : '') + '> Só perguntas de exames nacionais</label>' +
+      '<label class="interruptor"><input type="checkbox" id="so-erradas"' + (T.soErradas ? ' checked' : '') + '> Só as que errei da última vez</label>' +
       '<div class="fixo-baixo"><button class="btn largo" id="comecar">Começar</button></div><p class="erro" id="err"></p>';
     app.innerHTML = h;
 
@@ -252,8 +256,9 @@
       };
     });
     document.getElementById('so-erradas').onchange = function () { T.soErradas = this.checked; };
+    document.getElementById('so-exames').onchange = function () { T.soExames = this.checked; };
     document.getElementById('comecar').onclick = function () {
-      if (!comecarQuiz(T.unidades, T.n, T.soErradas))
+      if (!comecarQuiz(T.unidades, T.n, T.soErradas, T.soExames))
         document.getElementById('err').textContent = T.soErradas
           ? 'Não há perguntas erradas nestas unidades. Desliga «Só as que errei» ou escolhe outras.'
           : 'Ainda não há perguntas para estas unidades.';
@@ -262,9 +267,10 @@
   }
 
   /* ---------- quiz ---------- */
-  function comecarQuiz(unidades, n, soErradas) {
+  function comecarQuiz(unidades, n, soErradas, soExames) {
     var pool = PERGUNTAS.filter(function (q) {
       if (unidades.indexOf(q.u) < 0) return false;
+      if (soExames && !q.fonte) return false;
       if (soErradas) { var x = S.prog.r[q.id]; return x && !x[0]; }
       return true;
     });
@@ -293,6 +299,11 @@
       '<span class="barra"><i style="width:' + Math.round(100 * Q.i / Q.itens.length) + '%"></i></span>' +
       '<span class="contador">' + (Q.i + 1) + ' / ' + Q.itens.length + '</span></div>' +
       '<div class="cartao"><div class="q-uni" style="--c:' + u.cor + '">' + u.icone + ' Unidade ' + u.num + ' · ' + esc(u.titulo) + '</div>' +
+      (q.fonte ? '<div class="q-fonte">' + esc(q.fonte) + '</div>' : '') +
+      (q.img ? '<div class="q-doc">' + q.img.map(function (src) {
+        return '<a href="' + esc(src) + '" target="_blank" rel="noopener" aria-label="Abrir o documento em tamanho grande">' +
+          '<img src="' + esc(src) + '" alt="Documento de apoio à pergunta" loading="lazy"></a>';
+      }).join('') + '<small>Toca na imagem para a ver em tamanho grande.</small></div>' : '') +
       '<p class="q-enunciado">' + esc(q.p) + '</p><div class="opcoes">';
     it.ordem.forEach(function (orig, pos) {
       var cls = '';
