@@ -19,7 +19,7 @@
   { u: 'u8', fonte: 'Público',
     titulo: 'Depósitos das famílias superam 200 mil milhões, novo recorde',
     url: 'https://www.publico.pt/2026/01/29/economia/noticia/depositos-familias-superam-200-mil-milhoes-novo-maximo-historico-2162908',
-    data: '2026-01-29', imagem: null,
+    data: '2026-01-29', imagem: "https://imagens.publico.pt/imagens.aspx/2062781?tp=UH&db=IMAGENS&type=JPG&share=1&o=BarraFacebook_Publico.png",
     resumo: 'Os depósitos das famílias portuguesas nos bancos ultrapassaram os 200 mil milhões de euros, atingindo um novo máximo histórico. Os depósitos são a principal forma de aplicação da poupança das famílias em Portugal.',
     analise: 'A notícia mostra a ligação entre dois setores institucionais: as famílias, que poupam parte do rendimento disponível, e as sociedades financeiras, que recebem essa poupança sob a forma de depósitos. Fazer um depósito é uma operação financeira, e os juros que o banco paga são uma operação de repartição. No circuito económico, esta poupança é uma fuga que só regressa ao circuito quando os bancos a emprestam, por exemplo às empresas, para financiar investimento. Um volume elevado de depósitos é sinal de que as famílias têm capacidade de financiamento. Pergunta para pensar: o que acontece ao circuito económico se os bancos não conseguirem emprestar essa poupança a quem quer investir?',
     conceitos: ['poupança', 'sociedades financeiras', 'capacidade de financiamento', 'operações financeiras'] },
