@@ -11,10 +11,11 @@
 <link rel="icon" href="icone.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icone.svg">
 <link rel="stylesheet" href="/assets/css/fonts.css">
+<link rel="stylesheet" href="/account/account.css">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="topo" id="topo" hidden>
+<header class="topo" id="topo">
   <a class="marca" href="#inicio"><span class="marca-sinal">€</span><span>Economia&nbsp;A</span></a>
   <nav class="nav" id="nav" aria-label="Secções">
     <a href="#inicio" data-sec="inicio"><span aria-hidden="true">🏠</span><b>Início</b></a>
@@ -23,7 +24,7 @@
     <a href="#noticias" data-sec="noticias"><span aria-hidden="true">📰</span><b>Notícias</b></a>
     <a href="#admin" data-sec="admin" id="nav-admin" hidden><span aria-hidden="true">⚙️</span><b>Gestão</b></a>
   </nav>
-  <button class="quem" id="quem" type="button" title="Sair"></button>
+  <span class="conta" id="user-slot"></span>
 </header>
 
 <main id="app" class="app" tabindex="-1">
@@ -32,7 +33,6 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="config.js"></script>
 <script src="dados/unidades.js"></script>
 <script src="dados/resumos-a.js"></script>
 <script src="dados/resumos-b.js"></script>
@@ -41,6 +41,9 @@
 <script src="dados/perguntas-b.js"></script>
 <script src="dados/perguntas-c.js"></script>
 <script src="dados/noticias.js"></script>
+<script src="/account/config.js"></script>
+<script src="/account/account.js"></script>
+<script src="config.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

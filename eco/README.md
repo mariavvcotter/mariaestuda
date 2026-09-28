@@ -5,14 +5,19 @@ exercícios de escolha múltipla com explicação, painel de progresso e notíci
 comentadas. Estática, sem compilação, publicada pelo GitHub Pages como o resto
 do site. Pensada primeiro para o telemóvel.
 
+**O login é o do resto do site** (`/account/`), igual ao do `/edc` e ao da
+versão Benfica: opcional, Nome + PIN, a mesma conta em todas as secções. Sem
+conta, o aluno estuda como convidado e o progresso fica no aparelho. Com conta,
+o progresso da Economia vai para a fatia `"eco"` da tabela `edc_users`.
+
 A versão anterior (EconoSL, com o tema do Benfica) ficou em `/eco/benfica/`.
 
 ```
 index.html          estrutura (o conteúdo é desenhado pelo app.js)
 style.css           desenho; claro e escuro, segue o telemóvel
 app.js              ecrãs, treino, níveis, gestão
-config.js           endereço e chave pública do Supabase
-schema.sql          tabelas e funções — correr uma vez no Supabase
+config.js           resumos abertos quando não há base de dados
+schema.sql          resumos abertos e gestão — correr uma vez no Supabase
 dados/unidades.js   as 11 unidades (título, ano, cor, ícone)
 dados/resumos-*.js  os resumos (a: U1–U4, b: U5–U7, c: U8–U11)
 dados/perguntas-*.js  as perguntas de escolha múltipla, com explicação
@@ -22,28 +27,25 @@ testes/             schema.sh (PostgreSQL) e navegador.cjs (Playwright)
 
 ## Pôr a funcionar (uma vez)
 
-Sem este passo a plataforma funciona, mas em **modo local**: cada aluno guarda
-o progresso só no seu telemóvel, a gestão não abre, e os resumos abertos são
-os de `desbloqueadasSemBD` em `config.js`.
+O login já funciona: é o mesmo projeto Supabase de `/account/config.js`. O
+`schema.sql` só é preciso para a parte da professora. Sem ele, os resumos
+abertos são os de `desbloqueadasSemBD` em `config.js` e a gestão não abre.
 
 1. Painel do Supabase → **SQL Editor** → colar e correr o `schema.sql` todo.
 2. No mesmo sítio, definir a palavra-passe da gestão (10 caracteres ou mais):
    ```sql
    select eco_definir_senha('uma frase comprida que só tu sabes');
    ```
-3. Abrir `mariaestuda.eu/eco`, carregar em **Sou a professora**, entrar.
-
-O `config.js` aponta para o mesmo projeto Supabase que o `/edc` usa. Se
-mudares de projeto (por exemplo para a VPS), é só trocar `url` e `chave`.
+3. Em `mariaestuda.eu/eco`, no fundo do Início, **Área da professora**.
 
 ## O dia a dia
 
-- **Criar alunos:** Gestão → Novo aluno. O nome de utilizador é sugerido a
-  partir do nome (`joana.m42`). O botão **Copiar nome** prepara a mensagem
-  para enviar ao aluno.
+- **Alunos:** criam conta sozinhos no botão **Entrar** (Nome + PIN), como no
+  `/edc`. Quem já tem conta no `/edc` entra com a mesma.
 - **Abrir resumos:** Gestão → marcar as unidades → Guardar. Os alunos veem-nas
   logo. Os exercícios de todas as unidades estão sempre abertos.
-- **Acompanhar:** a lista de alunos mostra o nível de cada um em cada unidade.
+- **Acompanhar:** a Gestão mostra o nível de cada aluno em cada unidade (só de
+  quem estudou com conta iniciada).
 
 ## Como se calcula o nível
 
@@ -64,13 +66,13 @@ ordem das perguntas e das opções é sempre baralhada.
 
 ## Segurança: o que protege e o que não protege
 
-- **Protegido:** a gestão (criar/apagar alunos, abrir resumos, ver o progresso
-  de todos) exige a palavra-passe, verificada dentro da base de dados. As
-  tabelas não são acessíveis com a chave pública; os alunos não conseguem
-  listar outros alunos. Testado em `testes/schema.sh`.
-- **Não protegido, por escolha:** quem souber o nome de utilizador de um aluno
-  entra no perfil dele. É o preço de entrar só com o nome. Por isso a sugestão
-  junta uma inicial e um número.
+- **Protegido:** abrir e fechar resumos exige a palavra-passe da gestão,
+  verificada dentro da base de dados. A lista de progresso da Gestão nunca
+  devolve PINs. Testado em `testes/schema.sh`.
+- **Não protegido (é o sistema de conta do site, tal como está):** a tabela
+  `edc_users` está aberta à chave pública. Quem souber usar a consola do
+  navegador lê os nomes, os PIN e o progresso de todas as contas, e pode
+  alterá-los. Isto vale para o `/edc` e para o `/eco` por igual.
 - **Os resumos "fechados" não são segredo.** Estão nos ficheiros `dados/` que
   qualquer pessoa pode abrir. Fechar uma unidade serve para dar ritmo, não
   para esconder.
@@ -97,7 +99,7 @@ unidade), `resumo`, `analise`, `conceitos`.
 # permissões, contra um PostgreSQL local na porta 5433
 PGUSER=postgres ./eco/testes/schema.sh
 
-# interface, com o Supabase imitado
+# interface, com o Supabase (conta partilhada e funções) imitado
 python3 -m http.server 8766 &
 NODE_PATH=$(npm root -g) node eco/testes/navegador.cjs
 ```

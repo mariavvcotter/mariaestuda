@@ -70,11 +70,9 @@ button { cursor: pointer; }
 @media (prefers-color-scheme: dark) { .topo { background: #0F3A43; } }
 .marca { display: flex; align-items: center; gap: 8px; color: #fff; text-decoration: none; font-weight: 700; font-size: 17px; }
 .marca-sinal { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: var(--gold); color: #14505C; font-weight: 800; }
-.quem {
-  margin-left: auto; border: 1px solid rgba(255,255,255,.35); background: transparent; color: #fff;
-  border-radius: 999px; padding: 6px 12px; font-size: 14px; max-width: 45vw;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
+.conta { margin-left: auto; color: #fff; min-width: 0; }
+.conta .acc-user { max-width: 38vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.link-inline { background: none; border: 0; padding: 0; color: var(--accent); font-weight: 700; text-decoration: underline; }
 .nav {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
   display: flex; background: var(--surface); border-top: 1px solid var(--line);
@@ -131,15 +129,10 @@ input:focus { border-color: var(--accent); outline: none; }
 label.rotulo { display: block; font-weight: 600; margin: 0 0 6px; }
 .erro { color: var(--errado); font-size: 14.5px; min-height: 1.2em; margin: 8px 0 0; }
 
-/* ---------- entrada ---------- */
-.entrada { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; }
-body.sem-topo { padding-bottom: 0; }
+/* ---------- entrada da professora ---------- */
 .entrada-caixa { width: 100%; max-width: 400px; }
 .entrada-logo { width: 64px; height: 64px; margin: 0 auto 14px; }
-.entrada h1 { text-align: center; font-size: 28px; }
-.entrada .sub { text-align: center; }
-.entrada form { margin-top: 18px; }
-.entrada .btn { margin-top: 14px; }
+.entrada-caixa .btn { margin-top: 14px; }
 .link-discreto { display: block; margin: 22px auto 0; background: none; border: 0; color: var(--ink-soft); text-decoration: underline; font-size: 14.5px; }
 
 /* ---------- níveis ---------- */

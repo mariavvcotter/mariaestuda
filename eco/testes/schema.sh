@@ -13,6 +13,10 @@ dropdb -h /tmp -p "$PORT" --if-exists "$DB"; createdb -h /tmp -p "$PORT" "$DB"
   do \$\$ begin create role anon nologin; exception when duplicate_object then null; end \$\$;
   do \$\$ begin create role authenticated nologin; exception when duplicate_object then null; end \$\$;
   grant usage on schema public, extensions to anon, authenticated;"
+"${P[@]}" -c "create table edc_users (username_key text primary key, name text not null,
+  pin text not null, progress jsonb not null default '{}', updated_at timestamptz not null default now());
+  insert into edc_users values ('joana','Joana','1234','{\"eco\":{\"eco_prog\":\"{}\"}}'),
+                               ('rui','Rui','1234','{\"edc\":{}}');"
 "${P[@]}" -f ../schema.sql >/dev/null
 "${P[@]}" -f ../schema.sql >/dev/null      # corre duas vezes sem estragar
 "${P[@]}" -c "select eco_definir_senha('senha-de-teste-123')" >/dev/null
@@ -23,28 +27,18 @@ check() { # descrição, esperado, sql (corrido como anon)
   if [[ "$got" == *"$2"* ]]; then ok=$((ok+1)); echo "OK    $1"; else falha=$((falha+1)); echo "FALHA $1 — esperava «$2», veio «$got»"; fi
 }
 S="'senha-de-teste-123'"
-check "anon não lê a tabela de alunos"        "permission denied" "select * from eco_alunos"
 check "anon não lê a configuração (hash)"     "permission denied" "select senha_hash from eco_config"
 check "anon não escreve na configuração"      "permission denied" "update eco_config set desbloqueadas='{u1}'"
 check "anon não define a palavra-passe"       "permission denied" "select eco_definir_senha('outra-senha-qualquer')"
 check "anon não chama a verificação direta"   "permission denied" "select eco_admin_ok($S)"
 check "senha errada é recusada"               "Palavra-passe errada" "select eco_admin('errada','listar')"
 check "senha certa verifica"                  '{"ok" : true}' "select eco_admin($S,'verificar')"
-check "cria aluno"                            '"username" : "joana.m7"' "select eco_admin($S,'criar','{\"username\":\" Joana.M7 \",\"nome\":\"Joana\"}')"
-check "recusa aluno repetido"                 "Já existe" "select eco_admin($S,'criar','{\"username\":\"joana.m7\"}')"
-check "recusa nome inválido"                  "inválido" "select eco_admin($S,'criar','{\"username\":\"joão\"}')"
-check "aluno entra só com o nome (maiúsculas)" '"nome" : "Joana"' "select eco_entrar('JOANA.M7')"
-check "nome inexistente devolve vazio"        "VAZIO" "select coalesce(eco_entrar('ninguem')::text,'VAZIO')"
-check "aluno guarda progresso"                "t" "select eco_guardar('joana.m7','{\"r\":{\"u1-01\":[1,1,1,0]}}')"
-check "progresso guardado volta"              "u1-01" "select eco_entrar('joana.m7')->>'progresso'"
-check "não guarda progresso que não é objeto" "f" "select eco_guardar('joana.m7','[1,2]')"
-check "não guarda para quem não existe"       "f" "select eco_guardar('ninguem','{}')"
 check "desbloquear precisa de senha"          "Palavra-passe errada" "select eco_admin('x','desbloquear','{\"unidades\":[\"u1\"]}')"
 check "desbloqueia com senha"                 '{"ok" : true}' "select eco_admin($S,'desbloquear','{\"unidades\":[\"u1\",\"u2\"]}')"
 check "todos veem as desbloqueadas"           "{u1,u2}" "select eco_desbloqueadas()"
-check "listar devolve os alunos"              "joana.m7" "select eco_admin($S,'listar')"
-check "repor apaga o progresso"               "{}" "select eco_admin($S,'repor','{\"username\":\"joana.m7\"}'); select eco_entrar('joana.m7')->>'progresso'"
-check "apagar remove o aluno"                 "VAZIO" "select eco_admin($S,'apagar','{\"username\":\"joana.m7\"}'); select coalesce(eco_entrar('joana.m7')::text,'VAZIO')"
+check "listar mostra quem estudou Economia"   "Joana" "select eco_admin($S,'listar')"
+check "listar não mostra quem só usou o edc"  "VAZIO" "select case when eco_admin($S,'listar')::text like '%Rui%' then 'ESTA' else 'VAZIO' end"
+check "listar nunca devolve o PIN"            "VAZIO" "select case when eco_admin($S,'listar')::text like '%1234%' then 'ESTA' else 'VAZIO' end"
 
 dropdb -h /tmp -p "$PORT" --if-exists "$DB"
 echo; echo "$ok passam · $falha falham"; [ "$falha" -eq 0 ]

@@ -3,13 +3,18 @@
    ------------------------------------------------------------
    Sem dependências nem compilação. Rotas pelo #:
      #inicio  #resumos  #resumo/u3  #treino  #quiz  #noticias  #admin
-   Fala com o Supabase só por funções (ver schema.sql). Se não
-   houver base de dados, corre em modo local.
+   A conta é a partilhada do site (/account/, Nome + PIN, opcional):
+   o progresso vive em localStorage['eco_prog'] e o account.js
+   sincroniza-o. O Supabase só é chamado aqui para os resumos abertos
+   e para a Gestão (ver schema.sql).
    ============================================================ */
 (function () {
   'use strict';
 
   var CFG = window.ECO_CONFIG || {};
+  var CONTA = window.MARIAESTUDA_CONFIG || {};
+  CFG.url = CFG.url || CONTA.SUPABASE_URL;
+  CFG.chave = CFG.chave || CONTA.SUPABASE_ANON_KEY;
   var UNIDADES = window.ECO_UNIDADES || [];
   var RESUMOS = window.ECO_RESUMOS || {};
   var PERGUNTAS = window.ECO_PERGUNTAS || [];
@@ -25,11 +30,9 @@
   /* ---------- estado ---------- */
   var S = {
     remoto: true,          // a base de dados responde?
-    user: null,            // { username, nome }
     admin: null,           // palavra-passe da administradora (só em memória/sessão)
     prog: { r: {} },       // progresso do aluno
     abertas: [],           // unidades com resumo aberto
-    alunos: null,          // lista (gestão)
     quiz: null,
     treino: { unidades: [], n: 10, soErradas: false },
     filtroNoticias: 'todas',
@@ -115,25 +118,18 @@
   }
   function nivelHTML(n) { return '<span class="nivel ' + n.k + '">' + n.e + ' ' + n.t + '</span>'; }
 
-  function chaveLocal() { return 'eco_prog_' + (S.user ? S.user.username : '_'); }
-  function juntar(a, b) { // fica com a resposta mais recente de cada pergunta
-    var r = {}, ra = (a && a.r) || {}, rb = (b && b.r) || {};
-    Object.keys(ra).forEach(function (k) { r[k] = ra[k]; });
-    Object.keys(rb).forEach(function (k) { if (!r[k] || (rb[k][3] || 0) > (r[k][3] || 0)) r[k] = rb[k]; });
-    return { r: r };
+  var CHAVE_PROG = 'eco_prog';   // a chave que o account.js sincroniza
+  function lerProgresso() {
+    var p = ls(CHAVE_PROG);
+    return p && typeof p === 'object' && p.r ? p : { r: {} };
   }
-  var gravarTimer = null;
   function gravar() {
-    ls(chaveLocal(), S.prog);
-    if (!S.remoto || !S.user || S.user.local) return;
-    clearTimeout(gravarTimer);
-    gravarTimer = setTimeout(function () {
-      rpc('eco_guardar', { p_username: S.user.username, p_progresso: S.prog })
-        .catch(function () { toast('Sem ligação: o progresso ficou guardado neste aparelho.'); });
-    }, 800);
+    // setItem direto: o account.js interceta-o e envia para a conta
+    try { localStorage.setItem(CHAVE_PROG, JSON.stringify(S.prog)); } catch (e) {}
   }
+  function nomeConta() { return window.Account && Account.user ? Account.user() : null; }
 
-  /* ---------- sessão ---------- */
+  /* ---------- resumos abertos ---------- */
   function carregarAbertas() {
     return rpc('eco_desbloqueadas').then(function (a) {
       S.remoto = true; S.abertas = a || [];
@@ -141,82 +137,38 @@
       S.remoto = false; S.abertas = CFG.desbloqueadasSemBD || [];
     });
   }
-  function entrarAluno(nome) {
-    var u = nome.trim().toLowerCase();
-    if (!S.remoto) {
-      S.user = { username: u, nome: nome.trim(), local: true };
-      S.prog = ls(chaveLocal()) || { r: {} };
-      ls('eco_sessao', S.user);
-      return Promise.resolve(true);
-    }
-    return rpc('eco_entrar', { p_username: u }).then(function (row) {
-      if (!row) return false;
-      S.user = { username: row.username, nome: row.nome };
-      S.prog = juntar(row.progresso, ls(chaveLocal()));
-      ls('eco_sessao', S.user);
-      gravar();
-      return true;
-    });
-  }
-  function sair() {
-    S.user = null; S.admin = null; S.prog = { r: {} }; S.alunos = null; S.quiz = null;
-    ls('eco_sessao', null); ss('eco_admin', null);
-    ir('entrar');
-  }
 
   /* ============================================================
      ECRÃS
      ============================================================ */
-  function mostrarTopo(sim) {
-    document.getElementById('topo').hidden = !sim;
-    document.body.classList.toggle('sem-topo', !sim);
-  }
   function marcarNav(sec) {
     [].forEach.call(document.querySelectorAll('#nav a'), function (a) {
       a.classList.toggle('ativo', a.getAttribute('data-sec') === sec);
       if (a.getAttribute('data-sec') === sec) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
     });
     document.getElementById('nav-admin').hidden = !S.admin;
-    var q = document.getElementById('quem');
-    q.textContent = S.admin ? 'Professora · sair' : (S.user ? S.user.nome + ' · sair' : '');
   }
 
-  /* ---------- entrada ---------- */
-  function vEntrar(modoAdmin) {
-    mostrarTopo(false);
+  /* ---------- entrada da professora ---------- */
+  function vEntrarAdmin() {
     app.innerHTML =
-      '<div class="entrada"><div class="entrada-caixa">' +
+      '<div class="entrada-caixa" style="margin:24px auto">' +
       '<img class="entrada-logo" src="icone.svg" alt="">' +
-      '<h1>Economia A</h1>' +
-      '<p class="sub">Resumos, exercícios e notícias para estudar ao teu ritmo.</p>' +
-      (S.remoto ? '' : '<p class="aviso">Sem ligação à base de dados: o progresso fica guardado só neste aparelho.</p>') +
-      (modoAdmin
-        ? '<form id="f"><label class="rotulo" for="c">Palavra-passe da professora</label>' +
-          '<input id="c" type="password" autocomplete="current-password" required>' +
-          '<p class="erro" id="err"></p><button class="btn largo" type="submit">Entrar na gestão</button></form>' +
-          '<button class="link-discreto" id="troca" type="button">Sou aluno</button>'
-        : '<form id="f"><label class="rotulo" for="c">O teu nome de utilizador</label>' +
-          '<input id="c" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="ex.: joana.m7" required>' +
-          '<p class="erro" id="err"></p><button class="btn largo" type="submit">Entrar</button></form>' +
-          '<button class="link-discreto" id="troca" type="button">Sou a professora</button>') +
-      '</div></div>';
+      '<h1 style="text-align:center">Área da professora</h1>' +
+      '<p class="sub" style="text-align:center">Abrir resumos e acompanhar o progresso dos alunos.</p>' +
+      (S.remoto ? '' : '<p class="aviso">Sem ligação à base de dados. Vê o eco/README.md.</p>') +
+      '<form id="f"><label class="rotulo" for="c">Palavra-passe</label>' +
+      '<input id="c" type="password" autocomplete="current-password" required>' +
+      '<p class="erro" id="err"></p><button class="btn largo" type="submit">Entrar na gestão</button></form></div>';
     var f = document.getElementById('f'), c = document.getElementById('c'), err = document.getElementById('err');
     c.focus();
-    document.getElementById('troca').onclick = function () { vEntrar(!modoAdmin); };
     f.onsubmit = function (ev) {
       ev.preventDefault();
       var btn = f.querySelector('button'); btn.disabled = true; err.textContent = '';
       var v = c.value;
-      var p = modoAdmin
-        ? (S.remoto
-            ? rpc('eco_admin', { p_senha: v, p_acao: 'verificar' }).then(function () {
-                S.admin = v; ss('eco_admin', v); S.user = null; ir('admin'); })
-            : Promise.reject({ msg: 'A gestão precisa da base de dados. Vê o eco/README.md.' }))
-        : entrarAluno(v).then(function (ok) {
-            if (ok) ir('inicio');
-            else err.textContent = 'Não encontrei esse nome. Confirma com a professora como foi escrito.';
-          });
-      p.catch(function (e) {
+      rpc('eco_admin', { p_senha: v, p_acao: 'verificar' }).then(function () {
+        S.admin = v; ss('eco_admin', v); render();
+      }, function (e) {
         err.textContent = e && e.rede ? 'Sem ligação. Tenta outra vez daqui a pouco.' : (e && e.msg) || 'Não foi possível entrar.';
       }).then(function () { btn.disabled = false; });
     };
@@ -235,9 +187,11 @@
       : 'Estás Bem ou Fantástico em ' + bons + ' de ' + UNIDADES.length + ' unidades.';
     var fracas = UNIDADES.filter(function (u, i) { return niveis[i].ord === 1 || niveis[i].ord === 2; }).map(function (u) { return u.id; });
 
-    var h = '<h1>Olá, ' + esc(S.user.nome.split(' ')[0]) + ' 👋</h1>' +
+    var nome = nomeConta();
+    var h = '<h1>Olá' + (nome ? ', ' + esc(nome.split(' ')[0]) : '') + ' 👋</h1>' +
       '<p class="sub">O teu progresso em Economia A.</p>' +
-      (S.user.local ? '<p class="aviso">Modo local: este progresso está só neste aparelho.</p>' : '') +
+      (nome ? '' : '<p class="aviso">Estás como convidado: o progresso fica só neste aparelho. ' +
+        '<button class="link-inline" id="entrar-conta">Entra ou cria conta</button> para o guardares em qualquer lado.</p>') +
       '<div class="cartao resumo-geral">' +
       '<div class="anel" style="--p:' + pct + '"><div><div><strong>' + bons + '/' + UNIDADES.length + '</strong><small>unidades</small></div></div></div>' +
       '<div><p class="frase-geral">' + frase + '</p><div class="contagem">' +
@@ -270,7 +224,10 @@
     h += '<p class="sub" style="margin-top:18px;font-size:13.5px">Como se calcula: conta a tua última resposta a cada pergunta. ' +
       '🔴 Mal: menos de 50% certas · 🟠 Mais ou menos: 50–69% · 🟢 Bem: 70% ou mais · 🌟 Fantástico: 90% ou mais e já passaste por pelo menos 80% das perguntas da unidade. ' +
       'Precisas de responder a 5 perguntas de uma unidade para ela ser avaliada.</p>';
+    h += '<p style="text-align:center;margin-top:28px"><a class="link-discreto" href="#admin">Área da professora</a></p>';
     app.innerHTML = h;
+    var ec = document.getElementById('entrar-conta');
+    if (ec) ec.onclick = function () { if (window.Account) Account.open(); };
     var tf = document.getElementById('treinar-fracas');
     if (tf) tf.onclick = function () { comecarQuiz(fracas, 10, false); };
     [].forEach.call(app.querySelectorAll('[data-treinar]'), function (b) {
@@ -538,7 +495,7 @@
   /* ---------- gestão (administradora) ---------- */
   function admin(acao, dados) { return rpc('eco_admin', { p_senha: S.admin, p_acao: acao, p_dados: dados || {} }); }
   function vAdmin() {
-    if (!S.admin) return ir('entrar');
+    if (!S.admin) return vEntrarAdmin();
     var h = '<h1>Gestão</h1><p class="sub">Abre os resumos, cria os perfis e acompanha o progresso de cada aluno.</p>' +
       '<h2>Resumos abertos aos alunos</h2><div class="escolha-uni" id="abertas">';
     UNIDADES.forEach(function (u) {
@@ -546,26 +503,13 @@
         '<span class="t">' + u.icone + ' ' + esc(u.titulo) + '<small>Unidade ' + u.num + ' · ' + u.ano + '.º ano</small></span><span></span></label>';
     });
     h += '</div><button class="btn largo" id="guardar-abertas" style="margin-top:12px">Guardar</button>' +
-      '<h2>Novo aluno</h2><form class="cartao form-linha" id="novo">' +
-      '<div><label class="rotulo" for="n-nome">Nome</label><input type="text" id="n-nome" placeholder="Joana Martins" required></div>' +
-      '<div><label class="rotulo" for="n-user">Nome de utilizador</label><input type="text" id="n-user" placeholder="joana.m7" autocapitalize="none" spellcheck="false" required pattern="[A-Za-z0-9._\\-]{2,30}"></div>' +
-      '<button class="btn" type="submit">Criar</button></form>' +
-      '<p class="sub" style="font-size:13.5px;margin-top:8px">Os alunos entram só com o nome de utilizador. Quem o souber entra no perfil, por isso evita nomes óbvios: junta uma inicial e um número.</p>' +
-      '<h2>Alunos</h2><div id="alunos"><p class="vazio">A carregar…</p></div>';
+      '<h2>Alunos</h2><p class="sub" style="font-size:13.5px">Aparece quem já estudou Economia com conta iniciada (a conta do site, Nome + PIN).</p>' +
+      '<div id="alunos"><p class="vazio">A carregar…</p></div>' +
+      '<button class="btn fraco largo" id="sair-admin" style="margin-top:22px">Sair da área da professora</button>';
     app.innerHTML = h;
 
-    var nome = document.getElementById('n-nome'), user = document.getElementById('n-user');
-    nome.oninput = function () {
-      if (user.dataset.mexido) return;
-      var p = nome.value.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim().split(/\s+/);
-      user.value = p[0] ? p[0] + (p.length > 1 ? '.' + p[p.length - 1][0] : '') + Math.floor(10 + Math.random() * 90) : '';
-    };
-    user.oninput = function () { user.dataset.mexido = '1'; };
-    document.getElementById('novo').onsubmit = function (ev) {
-      ev.preventDefault();
-      admin('criar', { nome: nome.value, username: user.value }).then(function (r) {
-        toast('Criado: ' + r.username); nome.value = ''; user.value = ''; delete user.dataset.mexido; carregarAlunos();
-      }, function (e) { toast(e.msg || 'Não foi possível criar.'); });
+    document.getElementById('sair-admin').onclick = function () {
+      S.admin = null; ss('eco_admin', null); ir('inicio');
     };
     document.getElementById('guardar-abertas').onclick = function () {
       var sel = [].map.call(app.querySelectorAll('#abertas input:checked'), function (i) { return i.value; });
@@ -576,47 +520,25 @@
   }
   function carregarAlunos() {
     admin('listar').then(function (lista) {
-      S.alunos = lista || [];
+      lista = lista || [];
       var el = document.getElementById('alunos');
       if (!el) return;
-      if (!S.alunos.length) { el.innerHTML = '<p class="vazio">Ainda não há alunos. Cria o primeiro acima.</p>'; return; }
+      if (!lista.length) { el.innerHTML = '<p class="vazio">Ainda nenhum aluno estudou Economia com conta iniciada.</p>'; return; }
       var h = '';
-      S.alunos.forEach(function (a) {
-        var ns = UNIDADES.map(function (u) { return { u: u, n: nivel(statsUnidade(u.id, a.progresso)) }; });
+      lista.forEach(function (a) {
+        var prog = { r: {} };
+        try { var raw = a.eco && a.eco[CHAVE_PROG]; var p = typeof raw === 'string' ? JSON.parse(raw) : raw; if (p && p.r) prog = p; } catch (e) {}
+        var ns = UNIDADES.map(function (u) { return { u: u, n: nivel(statsUnidade(u.id, prog)) }; });
         var bons = ns.filter(function (x) { return x.n.ord >= 3; }).length;
-        var resp = Object.keys((a.progresso && a.progresso.r) || {}).length;
-        h += '<div class="aluno"><div class="aluno-cabeca"><strong>' + esc(a.nome) + '</strong><small>' + esc(a.username) + '</small></div>' +
-          '<div class="uni-info">' + bons + '/' + UNIDADES.length + ' unidades em Bem ou Fantástico · ' + resp + ' perguntas feitas' +
-          (resp ? ' · última atividade ' + new Date(a.atualizado_em).toLocaleDateString('pt-PT') : '') + '</div>' +
+        var resp = Object.keys(prog.r).length;
+        h += '<div class="aluno"><div class="aluno-cabeca"><strong>' + esc(a.nome) + '</strong>' +
+          (a.atualizado_em ? '<small>última atividade ' + new Date(a.atualizado_em).toLocaleDateString('pt-PT') + '</small>' : '') + '</div>' +
+          '<div class="uni-info">' + bons + '/' + UNIDADES.length + ' unidades em Bem ou Fantástico · ' + resp + ' perguntas feitas</div>' +
           '<div class="aluno-niveis">' + ns.map(function (x) {
             return '<span class="nivel ' + x.n.k + '" title="' + esc(x.u.titulo) + ': ' + x.n.t + '">U' + x.u.num + ' ' + x.n.e + '</span>';
-          }).join('') + '</div>' +
-          '<div class="aluno-acoes"><button class="btn fraco" data-copiar="' + esc(a.username) + '">Copiar nome</button>' +
-          '<button class="btn fraco" data-repor="' + esc(a.username) + '">Apagar progresso</button>' +
-          '<button class="btn perigo" data-apagar="' + esc(a.username) + '">Apagar aluno</button></div></div>';
+          }).join('') + '</div></div>';
       });
       el.innerHTML = h;
-      [].forEach.call(el.querySelectorAll('[data-copiar]'), function (b) {
-        b.onclick = function () {
-          var t = 'Entra em mariaestuda.eu/eco com o nome de utilizador: ' + b.getAttribute('data-copiar');
-          (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(
-            function () { toast('Copiado: pronto a enviar ao aluno.'); }, function () { prompt('Copia isto:', t); });
-        };
-      });
-      [].forEach.call(el.querySelectorAll('[data-repor]'), function (b) {
-        b.onclick = function () {
-          var u = b.getAttribute('data-repor');
-          if (confirm('Apagar todo o progresso de ' + u + '? Não dá para desfazer.'))
-            admin('repor', { username: u }).then(function () { toast('Progresso apagado.'); carregarAlunos(); });
-        };
-      });
-      [].forEach.call(el.querySelectorAll('[data-apagar]'), function (b) {
-        b.onclick = function () {
-          var u = b.getAttribute('data-apagar');
-          if (confirm('Apagar o aluno ' + u + ' e todo o progresso dele? Não dá para desfazer.'))
-            admin('apagar', { username: u }).then(function () { toast('Aluno apagado.'); carregarAlunos(); });
-        };
-      });
     }, function (e) {
       var el = document.getElementById('alunos');
       if (el) el.innerHTML = '<p class="aviso">' + esc(e.rede ? 'Sem ligação à base de dados.' : e.msg) + '</p>';
@@ -629,13 +551,8 @@
   function render() {
     var h = (location.hash || '').replace(/^#/, '');
     var partes = h.split('/'), sec = partes[0] || 'inicio';
-    if (!S.user && !S.admin) { if (sec !== 'entrar') { history.replaceState(null, '', '#entrar'); } return vEntrar(false); }
-    if (sec === 'entrar') sec = S.admin ? 'admin' : 'inicio';
-    if (S.admin && sec === 'inicio') sec = 'admin';
     if (sec !== 'quiz' && S.quiz && S.quiz.i >= S.quiz.itens.length) S.quiz = null;
-    mostrarTopo(true);
     marcarNav(sec === 'resumo' ? 'resumos' : sec === 'quiz' ? 'treino' : sec);
-    if (S.admin && (sec === 'treino' || sec === 'quiz')) { app.innerHTML = '<h1>Treinar</h1><p class="sub">O treino é para os alunos: entra com um nome de utilizador de teste para experimentar.</p>'; return; }
     switch (sec) {
       case 'inicio': vInicio(); break;
       case 'resumos': vResumos(); break;
@@ -643,32 +560,25 @@
       case 'treino': vTreino(); break;
       case 'quiz': vQuiz(); break;
       case 'noticias': vNoticias(partes[1] || 'todas'); break;
-      case 'admin': vAdmin(); break;
+      case 'admin': if (S.admin) vAdmin(); else vEntrarAdmin(); break;
       default: return ir('inicio');
     }
     if (sec !== 'quiz') window.scrollTo(0, 0);
   }
 
-  document.getElementById('quem').onclick = function () { if (confirm('Sair?')) sair(); };
   window.addEventListener('hashchange', render);
 
-  // arranque: descobrir se há base de dados, repor a sessão
+  // arranque: a conta partilhada, os resumos abertos, a sessão da professora
+  S.prog = lerProgresso();
+  if (window.Account) {
+    Account.init({ section: 'eco', keys: [CHAVE_PROG], mount: '#user-slot', label: 'Economia A', accent: '#F2B544', accentInk: '#14505C' });
+  }
   app.innerHTML = '<p class="vazio">A carregar…</p>';
   carregarAbertas().then(function () {
     var senha = ss('eco_admin');
-    var sess = ls('eco_sessao');
     if (senha && S.remoto) {
       return rpc('eco_admin', { p_senha: senha, p_acao: 'verificar' })
         .then(function () { S.admin = senha; }, function () { ss('eco_admin', null); });
-    }
-    if (sess && sess.username) {
-      if (sess.local || !S.remoto) {
-        S.user = sess; S.prog = ls(chaveLocal()) || { r: {} };
-        if (!S.remoto && !sess.local) S.user.local = true; // sem rede: continua, grava cá
-        return;
-      }
-      return entrarAluno(sess.username).then(function (ok) { if (!ok) ls('eco_sessao', null); },
-        function () { S.user = sess; S.prog = ls(chaveLocal()) || { r: {} }; });
     }
   }).then(render);
 })();
