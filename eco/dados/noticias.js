@@ -248,7 +248,7 @@ window.ECO_NOTICIAS = [
 
   /* ---------- u8 — A contabilidade nacional ---------- */
   {
-    u: 'u8',
+    u: 'u9',
     fonte: 'Observador',
     titulo: 'Economia portuguesa cresceu 0,8% no segundo trimestre em cima de subida de 0,1% no primeiro. Crescimento homólogo foi de 2,5%',
     url: 'https://observador.pt/2026/07/30/economia-portuguesa-cresceu-08-no-segundo-trimestre-em-cima-de-subida-de-01-no-primeiro-crescimento-homologo-foi-de-25/',
@@ -259,7 +259,7 @@ window.ECO_NOTICIAS = [
     conceitos: ['PIB', 'variação em cadeia', 'variação homóloga', 'ótica da despesa'],
   },
   {
-    u: 'u8',
+    u: 'u9',
     fonte: 'Observador',
     titulo: 'Só se "muita coisa correr mal" Portugal cresce menos de 2% em 2026, diz Fórum para a Competitividade',
     url: 'https://observador.pt/2026/09/04/so-se-muita-coisa-correr-mal-portugal-cresce-menos-de-2-em-2026-diz-forum-para-a-competitividade/',
@@ -270,7 +270,7 @@ window.ECO_NOTICIAS = [
     conceitos: ['crescimento económico', 'PIB real', 'PIB per capita', 'previsões económicas'],
   },
   {
-    u: 'u8',
+    u: 'u9',
     fonte: 'Público',
     titulo: 'Banco de Portugal prevê crescimento abaixo de 2% e regresso a défice este ano',
     url: 'https://www.publico.pt/2026/06/15/economia/noticia/banco-portugal-preve-crescimento-abaixo-2-regresso-defice-ano-2178220',
@@ -283,7 +283,7 @@ window.ECO_NOTICIAS = [
 
   /* ---------- u9 — As relações económicas com o resto do mundo ---------- */
   {
-    u: 'u9',
+    u: 'u10',
     fonte: 'Observador',
     titulo: 'Exportações sobem 2,5% e importações 5,5% até julho',
     url: 'https://observador.pt/2026/09/09/exportacoes-sobem-25-e-importacoes-55-ate-julho/',
@@ -294,7 +294,7 @@ window.ECO_NOTICIAS = [
     conceitos: ['exportações', 'importações', 'saldo da balança de bens', 'taxa de cobertura'],
   },
   {
-    u: 'u9',
+    u: 'u10',
     fonte: 'Observador',
     titulo: 'Economia portuguesa acumula excedente externo de 1.201 milhões até junho, estima Banco de Portugal',
     url: 'https://observador.pt/2026/08/19/economia-portuguesa-acumula-excedente-externo-de-1-201-milhoes-ate-junho-estima-banco-de-portugal/',
@@ -305,7 +305,7 @@ window.ECO_NOTICIAS = [
     conceitos: ['balança corrente', 'balança de capital', 'capacidade de financiamento', 'balança de pagamentos'],
   },
   {
-    u: 'u9',
+    u: 'u10',
     fonte: 'Público',
     titulo: 'Receitas do turismo acentuam abrandamento no semestre',
     url: 'https://publico.pt/2026/08/30/economia/noticia/receitas-turismo-acentuam-abrandamento-semestre-2186474',
@@ -318,7 +318,7 @@ window.ECO_NOTICIAS = [
 
   /* ---------- u10 — A intervenção do Estado na economia ---------- */
   {
-    u: 'u10',
+    u: 'u11',
     fonte: 'Observador',
     titulo: 'Orçamento do Estado para 2027 já tem pressão adicional de 4.783 milhões de euros. IVA e IRS do pacote para a habitação custam 303 milhões',
     url: 'https://observador.pt/2026/09/01/orcamento-do-estado-para-2027-ja-tem-pressao-de-4-783-milhoes-de-euros-iva-e-irs-do-pacote-para-a-habitacao-custam-303-milhoes/',
@@ -329,7 +329,7 @@ window.ECO_NOTICIAS = [
     conceitos: ['Orçamento do Estado', 'receitas e despesas públicas', 'saldo orçamental', 'política orçamental'],
   },
   {
-    u: 'u10',
+    u: 'u11',
     fonte: 'Observador',
     titulo: 'Excedente orçamental fica nos 0,5% no primeiro semestre',
     url: 'https://observador.pt/2026/09/23/excedente-orcamental-fica-nos-05-no-primeiro-semestre-do-ano/',
@@ -340,7 +340,7 @@ window.ECO_NOTICIAS = [
     conceitos: ['saldo orçamental', 'excedente', 'dívida pública', 'política orçamental'],
   },
   {
-    u: 'u10',
+    u: 'u11',
     fonte: 'Público',
     titulo: 'BCE mantém as taxas de juro em 2,25%',
     url: 'https://www.publico.pt/2026/07/23/economia/noticia/bce-mantem-taxas-juro-225-2182777',
@@ -353,7 +353,7 @@ window.ECO_NOTICIAS = [
 
   /* ---------- u11 — A economia portuguesa no contexto da União Europeia ---------- */
   {
-    u: 'u11',
+    u: 'u12',
     fonte: 'Observador',
     titulo: '"O PRR está totalmente concluído" com contratualização acima de 100%. Só em setembro se saberá quanto terá de ir para Orçamento',
     url: 'https://observador.pt/2026/08/28/o-prr-esta-totalmente-concluido-garante-castro-almeida/',
@@ -364,7 +364,7 @@ window.ECO_NOTICIAS = [
     conceitos: ['PRR', 'fundos europeus', 'investimento público', 'NextGenerationEU'],
   },
   {
-    u: 'u11',
+    u: 'u12',
     fonte: 'Observador',
     titulo: 'Portugal e 15 países da UE exigem que novo orçamento plurianual não corte na coesão nem na agricultura',
     url: 'https://observador.pt/2026/06/18/portugal-e-15-paises-da-ue-exigem-que-novo-orcamento-plurianual-nao-corte-na-coesao-nem-na-agricultura/',
@@ -375,7 +375,7 @@ window.ECO_NOTICIAS = [
     conceitos: ['política de coesão', 'PAC', 'orçamento da UE', 'contribuinte líquido'],
   },
   {
-    u: 'u11',
+    u: 'u12',
     fonte: 'Público',
     titulo: 'Fundos estruturais: Portugal reafectou 2,5 mil milhões de euros para as novas prioridades da UE',
     url: 'https://www.publico.pt/2026/03/25/economia/noticia/fundos-estruturais-portugal-reafectou-25-mil-milhoes-euros-novas-prioridades-ue-2169098',

@@ -18,8 +18,8 @@ style.css           desenho; claro e escuro, segue o telemóvel
 app.js              ecrãs, treino, níveis, gestão
 config.js           resumos abertos quando não há base de dados
 schema.sql          resumos abertos e gestão — correr uma vez no Supabase
-dados/unidades.js   as 11 unidades (título, ano, cor, ícone)
-dados/resumos-*.js  os resumos (a: U1–U4, b: U5–U7, c: U8–U11)
+dados/unidades.js   as 12 unidades (título, ano, cor, ícone)
+dados/resumos-*.js  os resumos (a: U1–U4, b: U5–U7, c: U9–U12, d: U8)
 dados/perguntas-*.js  as perguntas de escolha múltipla, com explicação
 dados/noticias.js   notícias do Público e do Observador, com análise
 testes/             schema.sh (PostgreSQL) e navegador.cjs (Playwright)
@@ -60,7 +60,7 @@ errou e depois aprendeu subir de nível.
 | 🟢 Bem | 70% ou mais |
 | 🌟 Fantástico | 90% ou mais **e** já respondeu a 80% das perguntas da unidade |
 
-O painel geral diz em quantas das 11 unidades o aluno está em Bem ou
+O painel geral diz em quantas das 12 unidades o aluno está em Bem ou
 Fantástico. No treino, as perguntas que o aluno nunca viu têm prioridade, e a
 ordem das perguntas e das opções é sempre baralhada.
 

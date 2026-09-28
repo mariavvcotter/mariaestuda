@@ -1,6 +1,6 @@
-/* Resumos — Economia A, unidades 8 a 11 */
+/* Resumos — Economia A, unidades 9 a 12 */
 Object.assign(window.ECO_RESUMOS = window.ECO_RESUMOS || {}, {
-  u8: `
+  u9: `
 <h3>1. Noção e objetivos da contabilidade nacional</h3>
 <div class="caixa"><strong>Conceito-chave:</strong> a <strong>contabilidade nacional</strong> é o sistema de contas que regista e quantifica, de forma organizada e segundo regras comuns, a atividade económica de um país num dado período (normalmente um ano ou um trimestre). Em Portugal é elaborada pelo <strong>INE</strong>, segundo o Sistema Europeu de Contas (SEC 2010).</div>
 <p>Objetivos principais:</p>
@@ -94,7 +94,7 @@ Object.assign(window.ECO_RESUMOS = window.ECO_RESUMOS || {}, {
 <p>Portugal integra o grupo de países de desenvolvimento humano <strong>muito elevado</strong> (IDH igual ou superior a 0,800). O IDH é mais abrangente do que o PIB per capita, mas também tem limites: não considera, por exemplo, a desigualdade ou o ambiente (existem índices ajustados para isso).</p>
 `,
 
-  u9: `
+  u10: `
 <h3>1. O comércio internacional: razões e vantagens</h3>
 <p>Os países trocam bens e serviços porque dispõem de recursos naturais, clima, capital, tecnologia e mão de obra diferentes, e porque a especialização permite produzir mais com os mesmos recursos.</p>
 <div class="caixa"><strong>Conceito-chave:</strong> <strong>vantagem absoluta</strong> (Adam Smith) — um país produz um bem com menos recursos do que outro. <strong>Vantagem comparativa</strong> (David Ricardo) — um país produz um bem com um <strong>custo relativo (de oportunidade) mais baixo</strong>. Mesmo sem vantagem absoluta em nada, um país ganha em especializar-se onde tem vantagem comparativa.</div>
@@ -162,7 +162,7 @@ Object.assign(window.ECO_RESUMOS = window.ECO_RESUMOS || {}, {
 <p>Efeitos positivos: maior crescimento e acesso a mercados, difusão de conhecimento, preços mais baixos. Efeitos negativos: deslocalização de empresas, aumento de desigualdades, contágio de crises (ex.: crise financeira de 2008), dependência de cadeias de abastecimento longas (evidente na pandemia de 2020).</p>
 `,
 
-  u10: `
+  u11: `
 <h3>1. Funções económicas do Estado</h3>
 <p>Nas economias mistas, o Estado intervém para corrigir falhas do mercado e prosseguir objetivos sociais. Segundo R. Musgrave, tem três funções:</p>
 <table>
@@ -239,7 +239,7 @@ Object.assign(window.ECO_RESUMOS = window.ECO_RESUMOS || {}, {
 <p>Estes objetivos podem entrar em <strong>conflito</strong>: uma política expansionista reduz o desemprego, mas pode aumentar a inflação e as importações, agravando o saldo externo.</p>
 `,
 
-  u11: `
+  u12: `
 <h3>1. Formas de integração económica</h3>
 <p>A integração económica é o processo de eliminação progressiva de barreiras entre economias. Da forma menos para a mais profunda (classificação de B. Balassa):</p>
 <table>

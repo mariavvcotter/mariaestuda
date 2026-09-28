@@ -77,7 +77,7 @@ function backendFalso() {
   // resumos como convidado
   await page.click('#nav a[data-sec=resumos]');
   await page.waitForSelector('h1:has-text("Resumos")');
-  ok('só a unidade aberta pela professora está disponível (10 fechadas)', (await page.$$('.uni.fechada')).length === 10);
+  ok('só a unidade aberta pela professora está disponível (11 fechadas)', (await page.$$('.uni.fechada')).length === 11);
 
   // criar conta com Nome + PIN (a mesma do /edc)
   await page.click('#user-slot .acc-login');
@@ -91,7 +91,7 @@ function backendFalso() {
   await page.goto(BASE + '/eco/#inicio');
   await page.waitForSelector('h1:has-text("Olá, Joana")');
   ok('o painel cumprimenta pelo nome da conta', true);
-  ok('painel mostra as 11 unidades', (await page.$$('.uni')).length === 11);
+  ok('painel mostra as 12 unidades', (await page.$$('.uni')).length === 12);
 
   // treino
   await page.click('#nav a[data-sec=treino]');
@@ -140,7 +140,7 @@ function backendFalso() {
   await page.goto(BASE + '/eco/#inicio');
   await page.waitForSelector('.uni');
   ok('a unidade 1 passa a ter nível', !/Por avaliar/.test(await page.textContent('.uni >> nth=0 >> .nivel')));
-  ok('o painel diz em quantas unidades está bem', /\d+\/11/.test(await page.textContent('.anel')));
+  ok('o painel diz em quantas unidades está bem', /\d+\/12/.test(await page.textContent('.anel')));
 
   // sair e voltar a entrar noutro "aparelho": o progresso volta
   await Promise.all([page.waitForNavigation(), page.click('#user-slot .acc-logout')]);
@@ -182,7 +182,7 @@ function backendFalso() {
   await page.click('#sair-admin');
   await page.goto(BASE + '/eco/#resumos');
   await page.waitForSelector('.uni');
-  ok('depois de sair da gestão, o aluno vê as unidades 1 e 3 abertas', (await page.$$('.uni.fechada')).length === 9);
+  ok('depois de sair da gestão, o aluno vê as unidades 1 e 3 abertas', (await page.$$('.uni.fechada')).length === 10);
   await page.goto(BASE + '/eco/#resumo/u3');
   await page.waitForSelector('article.texto');
   ok('resumo aberto tem conteúdo', (await page.textContent('article.texto')).length > 500);
@@ -193,7 +193,7 @@ function backendFalso() {
   // notícias
   await page.click('#nav a[data-sec=noticias]');
   await page.waitForSelector('h1:has-text("Notícias")');
-  ok('há notícias', (await page.$$('.noticia')).length >= 22);
+  ok('há notícias', (await page.$$('.noticia')).length >= 24);
   await page.click('.filtro [data-f=u5]');
   await page.waitForSelector('text=Unidade 5 · Preços');
   ok('o filtro por unidade funciona', await page.$$eval('.noticia .noticia-meta', (e) => e.every((x) => x.textContent.includes('Unidade 5'))));
@@ -223,7 +223,7 @@ function backendFalso() {
   ok('sem base de dados a plataforma abre na mesma', true);
   await p2.goto(BASE + '/eco/#resumos');
   await p2.waitForSelector('.uni');
-  ok('sem base de dados abre os resumos do config.js', (await p2.$$('.uni.fechada')).length === 10);
+  ok('sem base de dados abre os resumos do config.js', (await p2.$$('.uni.fechada')).length === 11);
   await ctx2.close();
 
   await browser.close();
