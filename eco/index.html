@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#14505C">
+<meta name="theme-color" content="#F2F2F7">
+<meta name="color-scheme" content="light">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Economia A · Maria Estuda</title>
 <meta name="description" content="Resumos, exercícios de escolha múltipla e notícias comentadas para Economia A.">
 <link rel="manifest" href="manifest.webmanifest">
@@ -16,15 +19,16 @@
 </head>
 <body>
 <header class="topo" id="topo">
-  <a class="marca" href="#inicio"><span class="marca-sinal">€</span><span>Economia&nbsp;A</span></a>
-  <nav class="nav" id="nav" aria-label="Secções">
-    <a href="#inicio" data-sec="inicio"><span aria-hidden="true">🏠</span><b>Início</b></a>
-    <a href="#resumos" data-sec="resumos"><span aria-hidden="true">📚</span><b>Resumos</b></a>
-    <a href="#treino" data-sec="treino"><span aria-hidden="true">✍️</span><b>Treinar</b></a>
-    <a href="#noticias" data-sec="noticias"><span aria-hidden="true">📰</span><b>Notícias</b></a>
-  </nav>
+  <a class="marca" href="#inicio"><img class="marca-icone" src="icone.svg" alt=""><span>Economia&nbsp;A</span></a>
   <span class="conta" id="user-slot"></span>
 </header>
+
+<nav class="nav" id="nav" aria-label="Secções">
+  <a href="#inicio" data-sec="inicio"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1h-5v-6h-5v6h-5a1 1 0 0 1-1-1z"/></svg></span><b>Início</b></a>
+  <a href="#resumos" data-sec="resumos"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 6.5C10.2 5 7.6 4.3 4 4.5v14c3.6-.2 6.2.5 8 2 1.8-1.5 4.4-2.2 8-2v-14c-3.6-.2-6.2.5-8 2zM12 6.5v14"/></svg></span><b>Resumos</b></a>
+  <a href="#treino" data-sec="treino"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20h4L19.3 8.7a2.1 2.1 0 0 0-3-3L5 17z"/><path d="M14.5 7.5l3 3"/></svg></span><b>Treinar</b></a>
+  <a href="#noticias" data-sec="noticias"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4.5h11.5v14a2 2 0 0 0 2 2H6.5A1.5 1.5 0 0 1 5 19z"/><path d="M16.5 9h2.5v9.5a2 2 0 0 1-2 2M8 8.5h5.5M8 12h5.5M8 15.5h3.5"/></svg></span><b>Notícias</b></a>
+  </nav>
 
 <main id="app" class="app" tabindex="-1">
   <noscript><p class="aviso">Esta plataforma precisa de JavaScript ligado.</p></noscript>

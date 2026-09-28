@@ -79,7 +79,16 @@
     if (acc < 0.9 || cob < 0.8) return { k: 'bem', t: 'Bem', e: '🟢', ord: 3, acc: acc, cob: cob };
     return { k: 'top', t: 'Fantástico', e: '🌟', ord: 4, acc: acc, cob: cob };
   }
-  function nivelHTML(n) { return '<span class="nivel ' + n.k + '">' + n.e + ' ' + n.t + '</span>'; }
+  function nivelHTML(n) { return '<span class="nivel ' + n.k + '">' + n.t + '</span>'; }
+  // Anel de progresso ao estilo do Atividade do iOS.
+  function anelHTML(pct, grande, pequeno) {
+    var r = 44, c = 2 * Math.PI * r;
+    return '<div class="anel"><svg viewBox="0 0 100 100" aria-hidden="true">' +
+      '<circle class="anel-fundo" cx="50" cy="50" r="' + r + '"/>' +
+      '<circle class="anel-valor" cx="50" cy="50" r="' + r + '" stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + (c * (1 - pct / 100)).toFixed(1) + '"/>' +
+      '</svg><div class="anel-texto"><strong>' + grande + '</strong><small>' + pequeno + '</small></div></div>';
+  }
+  var CHEVRON = '<span class="chev" aria-hidden="true"></span>';
 
   var CHAVE_PROG = 'eco_prog';   // a chave que o account.js sincroniza
   function lerProgresso() {
@@ -121,7 +130,7 @@
       (nome ? '' : '<p class="aviso">Estás como convidado: o progresso fica só neste aparelho. ' +
         '<button class="link-inline" id="entrar-conta">Entra ou cria conta</button> para o guardares em qualquer lado.</p>') +
       '<div class="cartao resumo-geral">' +
-      '<div class="anel" style="--p:' + pct + '"><div><div><strong>' + bons + '/' + UNIDADES.length + '</strong><small>unidades</small></div></div></div>' +
+      anelHTML(pct, bons + '/' + UNIDADES.length, 'unidades') +
       '<div><p class="frase-geral">' + frase + '</p><div class="contagem">' +
       (cont.top ? nivelHTML({ k: 'top', e: '🌟', t: cont.top + ' Fantástico' }) : '') +
       (cont.bem ? nivelHTML({ k: 'bem', e: '🟢', t: cont.bem + ' Bem' }) : '') +
@@ -145,12 +154,12 @@
           '<span class="uni-meta">' + nivelHTML(n) +
           '<span class="barra" title="Perguntas feitas"><i style="width:' + pc + '%"></i></span>' +
           '<span class="uni-info">' + st.resp + '/' + st.total + (st.resp ? ' · ' + Math.round(100 * st.certas / st.resp) + '% certas' : '') + '</span>' +
-          '</span></span></button>';
+          '</span></span>' + CHEVRON + '</button>';
       });
       h += '</div>';
     });
     h += '<p class="sub" style="margin-top:18px;font-size:13.5px">Como se calcula: conta a tua última resposta a cada pergunta. ' +
-      '🔴 Mal: menos de 50% certas · 🟠 Mais ou menos: 50–69% · 🟢 Bem: 70% ou mais · 🌟 Fantástico: 90% ou mais e já passaste por pelo menos 80% das perguntas da unidade. ' +
+      '<b>Mal</b>: menos de 50% certas · <b>Mais ou menos</b>: 50–69% · <b>Bem</b>: 70% ou mais · <b>Fantástico</b>: 90% ou mais e já passaste por pelo menos 80% das perguntas da unidade. ' +
       'Precisas de responder a 5 perguntas de uma unidade para ela ser avaliada.</p>';
     app.innerHTML = h;
     var ec = document.getElementById('entrar-conta');
@@ -173,7 +182,7 @@
           '<span class="uni-icone">' + u.icone + '</span><span>' +
           '<span class="uni-num">Unidade ' + u.num + '</span>' +
           '<span class="uni-titulo" style="display:block">' + esc(u.titulo) + '</span>' +
-          '</span></a>';
+          '</span>' + CHEVRON + '</a>';
       });
       h += '</div>';
     });
