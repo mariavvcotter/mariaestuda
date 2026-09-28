@@ -1,0 +1,10 @@
+{
+  "name": "Economia A · Maria Estuda",
+  "short_name": "Economia A",
+  "start_url": "/eco/",
+  "scope": "/eco/",
+  "display": "standalone",
+  "background_color": "#F7F5F0",
+  "theme_color": "#14505C",
+  "icons": [{ "src": "icone.svg", "sizes": "any", "type": "image/svg+xml" }]
+}
