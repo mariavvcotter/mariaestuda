@@ -12,8 +12,9 @@
 
   var UNIDADES = window.ECO_UNIDADES || [];
   var RESUMOS = window.ECO_RESUMOS || {};
-  // As de exame que dependem de um gráfico sem imagem não se conseguem responder: ficam de fora.
-  var PERGUNTAS = (window.ECO_PERGUNTAS || []).filter(function (q) { return !q.semDados; });
+  // Ficam de fora as que não se conseguem responder bem: dependem de um gráfico
+  // sem imagem (semDados) ou têm mais do que uma opção defensável (ambigua).
+  var PERGUNTAS = (window.ECO_PERGUNTAS || []).filter(function (q) { return !q.semDados && !q.ambigua; });
   var NOTICIAS = window.ECO_NOTICIAS || [];
 
   var UNI = {};
