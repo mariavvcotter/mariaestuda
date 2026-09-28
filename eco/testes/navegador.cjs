@@ -170,7 +170,38 @@ function backendFalso() {
   }
   await ctx.close();
 
-  /* ---------- sem base de dados (modo local) ---------- */
+  /* ---------- computador: teclado e largura ---------- */
+  const ctxPc = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  await ctxPc.route('**/rest/v1/**', (r) => r.abort());
+  const pc = await ctxPc.newPage();
+  pc.on('pageerror', (e) => erros.push(e.message));
+  await pc.goto(BASE + '/eco/#inicio');
+  await pc.waitForSelector('.ano');
+  const colunas = await pc.$$eval('.ano', (els) => els.map((e) => Math.round(e.getBoundingClientRect().top)));
+  ok('no computador, 10.º e 11.º ano lado a lado', colunas.length === 2 && colunas[0] === colunas[1], colunas);
+  await pc.goto(BASE + '/eco/#treino');
+  await pc.waitForSelector('#comecar');
+  await pc.click('#comecar');
+  await pc.waitForSelector('.opcao');
+  ok('o quiz mostra os atalhos de teclado', await pc.isVisible('.atalhos'));
+  await pc.keyboard.press('b');
+  await pc.waitForSelector('.feedback');
+  ok('responde com a tecla B', (await pc.$$('.opcao.certa, .opcao.errada')).length >= 1);
+  await pc.keyboard.press('Enter');
+  await pc.waitForFunction(() => document.querySelector('.contador').textContent.trim().startsWith('2 '));
+  ok('Enter passa à pergunta seguinte', true);
+  await pc.keyboard.press('3');
+  await pc.waitForSelector('.feedback');
+  await pc.keyboard.press('ArrowRight');
+  await pc.waitForFunction(() => document.querySelector('.contador').textContent.trim().startsWith('3 '));
+  ok('também responde com números e avança com a seta', true);
+  pc.once('dialog', (d) => d.accept());
+  await pc.keyboard.press('Escape');
+  await pc.waitForSelector('.resultado');
+  ok('Esc termina o quiz e mostra o resultado', (await pc.textContent('.nota')).trim().endsWith('/ 2'));
+  await ctxPc.close();
+
+
   const ctx2 = await browser.newContext({ viewport: { width: 390, height: 844 } });
   await ctx2.route('**/rest/v1/**', (r) => r.abort());
   const p2 = await ctx2.newPage();

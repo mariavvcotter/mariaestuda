@@ -147,6 +147,19 @@ h2 { font-size: 22px; line-height: 1.25; font-weight: 700; letter-spacing: .01em
 .vazio { color: var(--ink-soft); text-align: center; padding: 34px 10px; }
 .link-inline { background: none; border: 0; padding: 0; color: var(--azul); font-weight: 500; }
 
+/* ---------- computador ----------
+   Os ecrãs de lista usam a largura toda; os de leitura e de resposta
+   ficam numa coluna confortável para ler. */
+@media (min-width: 1000px) {
+  .app[data-sec="inicio"], .app[data-sec="resumos"], .app[data-sec="noticias"] { max-width: 1120px; padding-left: 32px; padding-right: 32px; }
+  .anos { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+  .app[data-sec="inicio"] .resumo-geral { grid-template-columns: 120px 1fr; }
+  h1 { margin-top: 22px; }
+}
+.atalhos { display: none; text-align: center; color: var(--ink-soft); font-size: 13px; margin: 14px 0 0; }
+.atalhos kbd { font: inherit; font-size: 12px; font-weight: 600; background: var(--surface); border-radius: 5px; padding: 1px 6px; box-shadow: 0 1px 0 rgba(0,0,0,.12), 0 0 0 .5px rgba(0,0,0,.08); }
+@media (hover: hover) and (pointer: fine) { .atalhos { display: block; } }
+
 /* ---------- botões ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
@@ -335,6 +348,7 @@ h2 { font-size: 22px; line-height: 1.25; font-weight: 700; letter-spacing: .01em
 .filtro .chip { min-height: 32px; padding: 0 12px; font-size: 14px; }
 .noticias { display: grid; gap: 18px; }
 @media (min-width: 700px) { .noticias { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1000px) { .noticias { grid-template-columns: repeat(3, 1fr); gap: 22px; } }
 .noticia { background: var(--surface); border-radius: var(--r-grande); overflow: hidden; box-shadow: var(--sombra); }
 .noticia-img { aspect-ratio: 16 / 9; background: linear-gradient(160deg, color-mix(in srgb, var(--c) 75%, #fff), var(--c)); position: relative; display: grid; place-items: center; overflow: hidden; }
 .noticia-img img { width: 100%; height: 100%; object-fit: cover; }

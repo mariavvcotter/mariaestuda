@@ -141,8 +141,9 @@
       (fracas.length ? '<button class="btn" id="treinar-fracas">Treinar as mais fracas</button>' : '') +
       '<a class="btn ' + (fracas.length ? 'sec' : '') + '" href="#treino">Escolher o que treinar</a></div>';
 
+    h += '<div class="anos">';
     [10, 11].forEach(function (ano) {
-      h += '<p class="ano-titulo">' + ano + '.º ano</p><div class="unidades">';
+      h += '<section class="ano"><p class="ano-titulo">' + ano + '.º ano</p><div class="unidades">';
       UNIDADES.forEach(function (u, i) {
         if (u.ano !== ano) return;
         var st = statsUnidade(u.id, S.prog), n = niveis[i];
@@ -156,8 +157,9 @@
           '<span class="uni-info">' + st.resp + '/' + st.total + (st.resp ? ' · ' + Math.round(100 * st.certas / st.resp) + '% certas' : '') + '</span>' +
           '</span></span>' + CHEVRON + '</button>';
       });
-      h += '</div>';
+      h += '</div></section>';
     });
+    h += '</div>';
     h += '<p class="sub" style="margin-top:18px;font-size:13.5px">Como se calcula: conta a tua última resposta a cada pergunta. ' +
       '<b>Mal</b>: menos de 50% certas · <b>Mais ou menos</b>: 50–69% · <b>Bem</b>: 70% ou mais · <b>Fantástico</b>: 90% ou mais e já passaste por pelo menos 80% das perguntas da unidade. ' +
       'Precisas de responder a 5 perguntas de uma unidade para ela ser avaliada.</p>';
@@ -174,8 +176,9 @@
   /* ---------- resumos ---------- */
   function vResumos() {
     var h = '<h1>Resumos</h1><p class="sub">A matéria de cada unidade, organizada para estudar e rever antes dos testes.</p>';
+    h += '<div class="anos">';
     [10, 11].forEach(function (ano) {
-      h += '<p class="ano-titulo">' + ano + '.º ano</p><div class="unidades">';
+      h += '<section class="ano"><p class="ano-titulo">' + ano + '.º ano</p><div class="unidades">';
       UNIDADES.forEach(function (u) {
         if (u.ano !== ano) return;
         h += '<a class="uni" style="--c:' + u.cor + '" href="#resumo/' + u.id + '">' +
@@ -184,8 +187,9 @@
           '<span class="uni-titulo" style="display:block">' + esc(u.titulo) + '</span>' +
           '</span>' + CHEVRON + '</a>';
       });
-      h += '</div>';
+      h += '</div></section>';
     });
+    h += '</div>';
     app.innerHTML = h;
   }
   function vResumo(uid) {
@@ -307,7 +311,7 @@
         '<p>' + esc(q.e) + '</p></div>' +
         '<button class="btn largo" id="seguinte" style="margin-top:14px">' + (Q.i + 1 < Q.itens.length ? 'Seguinte →' : 'Ver resultado') + '</button>';
     }
-    h += '</div>';
+    h += '</div><p class="atalhos"><kbd>A</kbd>–<kbd>D</kbd> ou <kbd>1</kbd>–<kbd>4</kbd> para responder · <kbd>Enter</kbd> para seguir · <kbd>Esc</kbd> para terminar</p>';
     app.innerHTML = h;
     document.getElementById('sair').onclick = function () {
       var feitas = Q.itens.filter(function (x) { return x.escolha !== null; }).length;
@@ -425,6 +429,7 @@
     var partes = h.split('/'), sec = partes[0] || 'inicio';
     if (sec !== 'quiz' && S.quiz && S.quiz.i >= S.quiz.itens.length) S.quiz = null;
     marcarNav(sec === 'resumo' ? 'resumos' : sec === 'quiz' ? 'treino' : sec);
+    app.setAttribute('data-sec', sec);
     switch (sec) {
       case 'inicio': vInicio(); break;
       case 'resumos': vResumos(); break;
@@ -438,6 +443,23 @@
   }
 
   window.addEventListener('hashchange', render);
+
+  // Teclado no quiz, para quem estuda no computador.
+  document.addEventListener('keydown', function (e) {
+    if (e.ctrlKey || e.metaKey || e.altKey || !S.quiz || (location.hash || '') !== '#quiz') return;
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test((e.target && e.target.tagName) || '')) return;
+    if (document.querySelector('.acc-overlay.open')) return;
+    var k = e.key.toLowerCase(), pos = 'abcd'.indexOf(k);
+    if (pos < 0 && /^[1-4]$/.test(k)) pos = +k - 1;
+    var ops = app.querySelectorAll('.opcao:not([disabled])');
+    if (pos >= 0 && ops[pos]) { e.preventDefault(); ops[pos].click(); return; }
+    var seg = document.getElementById('seguinte');
+    if (seg && (k === 'enter' || k === 'arrowright' || k === ' ')) {
+      if (document.activeElement === seg && k !== 'arrowright') return;   // o botão já trata
+      e.preventDefault(); seg.click(); return;
+    }
+    if (k === 'escape') { var s2 = document.getElementById('sair'); if (s2) s2.click(); }
+  });
 
   // arranque: o progresso deste aparelho e a conta partilhada
   S.prog = lerProgresso();
