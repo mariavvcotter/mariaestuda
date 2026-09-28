@@ -15,37 +15,21 @@ A versão anterior (EconoSL, com o tema do Benfica) ficou em `/eco/benfica/`.
 ```
 index.html          estrutura (o conteúdo é desenhado pelo app.js)
 style.css           desenho; claro e escuro, segue o telemóvel
-app.js              ecrãs, treino, níveis, gestão
-config.js           resumos abertos quando não há base de dados
-schema.sql          resumos abertos e gestão — correr uma vez no Supabase
+app.js              ecrãs, treino, níveis
 dados/unidades.js   as 12 unidades (título, ano, cor, ícone)
 dados/resumos-*.js  os resumos (a: U1–U4, b: U5–U7, c: U9–U12, d: U8)
 dados/perguntas-*.js  as perguntas de escolha múltipla, com explicação
 dados/noticias.js   notícias do Público e do Observador, com análise
-testes/             schema.sh (PostgreSQL) e navegador.cjs (Playwright)
+testes/             navegador.cjs (Playwright)
 ```
 
-## Pôr a funcionar (uma vez)
+## Como funciona
 
-O login já funciona: é o mesmo projeto Supabase de `/account/config.js`. O
-`schema.sql` só é preciso para a parte da professora. Sem ele, os resumos
-abertos são os de `desbloqueadasSemBD` em `config.js` e a gestão não abre.
-
-1. Painel do Supabase → **SQL Editor** → colar e correr o `schema.sql` todo.
-2. No mesmo sítio, definir a palavra-passe da gestão (10 caracteres ou mais):
-   ```sql
-   select eco_definir_senha('uma frase comprida que só tu sabes');
-   ```
-3. Em `mariaestuda.eu/eco`, no fundo do Início, **Área da professora**.
-
-## O dia a dia
-
-- **Alunos:** criam conta sozinhos no botão **Entrar** (Nome + PIN), como no
+- **Tudo aberto:** os 12 resumos, as perguntas de todas as unidades e as
+  notícias estão disponíveis para todos. Não há área da professora nem
+  nada para configurar no Supabase além da conta que já existe.
+- **Conta:** o aluno cria-a sozinho no botão **Entrar** (Nome + PIN), como no
   `/edc`. Quem já tem conta no `/edc` entra com a mesma.
-- **Abrir resumos:** Gestão → marcar as unidades → Guardar. Os alunos veem-nas
-  logo. Os exercícios de todas as unidades estão sempre abertos.
-- **Acompanhar:** a Gestão mostra o nível de cada aluno em cada unidade (só de
-  quem estudou com conta iniciada).
 
 ## Como se calcula o nível
 
@@ -64,18 +48,12 @@ O painel geral diz em quantas das 12 unidades o aluno está em Bem ou
 Fantástico. No treino, as perguntas que o aluno nunca viu têm prioridade, e a
 ordem das perguntas e das opções é sempre baralhada.
 
-## Segurança: o que protege e o que não protege
+## Segurança
 
-- **Protegido:** abrir e fechar resumos exige a palavra-passe da gestão,
-  verificada dentro da base de dados. A lista de progresso da Gestão nunca
-  devolve PINs. Testado em `testes/schema.sh`.
-- **Não protegido (é o sistema de conta do site, tal como está):** a tabela
-  `edc_users` está aberta à chave pública. Quem souber usar a consola do
-  navegador lê os nomes, os PIN e o progresso de todas as contas, e pode
-  alterá-los. Isto vale para o `/edc` e para o `/eco` por igual.
-- **Os resumos "fechados" não são segredo.** Estão nos ficheiros `dados/` que
-  qualquer pessoa pode abrir. Fechar uma unidade serve para dar ritmo, não
-  para esconder.
+A conta é a do resto do site, tal como está: a tabela `edc_users` está aberta à
+chave pública. Quem souber usar a consola do navegador lê os nomes, os PIN e o
+progresso de todas as contas, e pode alterá-los. Vale para o `/edc` e para o
+`/eco` por igual. Não guardar ali nada sensível.
 
 ## Acrescentar conteúdo
 
@@ -96,10 +74,6 @@ unidade), `resumo`, `analise`, `conceitos`.
 ## Testes
 
 ```sh
-# permissões, contra um PostgreSQL local na porta 5433
-PGUSER=postgres ./eco/testes/schema.sh
-
-# interface, com o Supabase (conta partilhada e funções) imitado
-python3 -m http.server 8766 &
+python3 -m http.server 8766 &      # na raiz do repositório
 NODE_PATH=$(npm root -g) node eco/testes/navegador.cjs
 ```

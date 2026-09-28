@@ -1,8 +1,7 @@
 /* ============================================================
    Testes de navegador da plataforma de Economia (eco/).
-   O Supabase é imitado aqui dentro (page.route), com as mesmas
-   regras do schema.sql; as permissões a sério testam-se em
-   schema.sh contra PostgreSQL.
+   O Supabase da conta partilhada (edc_users) é imitado aqui
+   dentro, com page.route.
 
      python3 -m http.server 8766 &      (na raiz do repositório)
      NODE_PATH=$(npm root -g) node eco/testes/navegador.cjs
@@ -10,7 +9,6 @@
 const { chromium } = require('playwright');
 
 const BASE = process.env.BASE || 'http://127.0.0.1:8766';
-const SENHA = 'senha-de-teste-123';
 let passam = 0, falham = 0;
 function ok(rotulo, cond, extra) {
   if (cond) { passam++; console.log('  OK   ' + rotulo); }
@@ -19,7 +17,7 @@ function ok(rotulo, cond, extra) {
 
 function backendFalso() {
   // edc_users: a tabela da conta partilhada (/account/), aberta à chave anon como no Supabase real
-  const db = { users: {}, abertas: ['u1'] };
+  const db = { users: {} };
   const res = (route, status, body) => route.fulfill({ status, contentType: 'application/json', body: body === undefined ? '' : JSON.stringify(body) });
   return {
     db,
@@ -36,21 +34,6 @@ function backendFalso() {
       if (req.method() === 'PATCH') { const b = req.postDataJSON(); if (db.users[k]) Object.assign(db.users[k], b); return res(route, 204); }
       return res(route, 405);
     },
-    async rpc(route) {
-      const req = route.request();
-      const fn = req.url().split('/rpc/')[1];
-      const a = req.postDataJSON() || {};
-      if (fn === 'eco_desbloqueadas') return res(route, 200, db.abertas);
-      if (fn === 'eco_admin') {
-        if (a.p_senha !== SENHA) return res(route, 400, { message: 'Palavra-passe errada.' });
-        const d = a.p_dados || {};
-        if (a.p_acao === 'verificar') return res(route, 200, { ok: true });
-        if (a.p_acao === 'listar') return res(route, 200, Object.values(db.users).filter((u) => u.progress && u.progress.eco)
-          .map((u) => ({ nome: u.name, eco: u.progress.eco, atualizado_em: u.updated_at })));
-        if (a.p_acao === 'desbloquear') { db.abertas = d.unidades; return res(route, 200, { ok: true }); }
-      }
-      return res(route, 404, { message: 'função desconhecida' });
-    },
   };
 }
 
@@ -61,7 +44,6 @@ function backendFalso() {
   /* ---------- com base de dados ---------- */
   const be = backendFalso();
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
-  await ctx.route('**/rest/v1/rpc/**', (r) => be.rpc(r));
   await ctx.route('**/rest/v1/edc_users**', (r) => be.tabela(r));
   await ctx.route('**/rest/v1/usage_events**', (r) => r.fulfill({ status: 201, body: '' }));
   await ctx.route('https://fonts.googleapis.com/**', (r) => r.abort());
@@ -77,7 +59,14 @@ function backendFalso() {
   // resumos como convidado
   await page.click('#nav a[data-sec=resumos]');
   await page.waitForSelector('h1:has-text("Resumos")');
-  ok('só a unidade aberta pela professora está disponível (11 fechadas)', (await page.$$('.uni.fechada')).length === 11);
+  ok('todas as 12 unidades têm resumo aberto', (await page.$$('.uni')).length === 12);
+  let todosComTexto = true;
+  for (const u of ['u1','u2','u3','u4','u5','u6','u7','u8','u9','u10','u11','u12']) {
+    await page.goto(BASE + '/eco/#resumo/' + u);
+    await page.waitForSelector('article.texto');
+    if ((await page.textContent('article.texto')).length < 500) { todosComTexto = false; ok('resumo ' + u + ' tem texto', false); }
+  }
+  ok('os 12 resumos abrem e têm conteúdo', todosComTexto);
 
   // criar conta com Nome + PIN (a mesma do /edc)
   await page.click('#user-slot .acc-login');
@@ -158,38 +147,6 @@ function backendFalso() {
   ok('ao voltar a entrar, o progresso regressa', (await page.textContent('.uni >> nth=0 >> .uni-info')).startsWith('10/'),
     await page.textContent('.uni >> nth=0 >> .uni-info'));
 
-  // professora
-  await page.goto(BASE + '/eco/#admin');
-  await page.waitForSelector('text=Área da professora');
-  await page.fill('#c', 'errada');
-  await page.click('#f button[type=submit]');
-  await page.waitForSelector('#err:has-text("Palavra-passe errada")');
-  ok('a gestão recusa a senha errada', true);
-  await page.fill('#c', SENHA);
-  await page.click('#f button[type=submit]');
-  await page.waitForSelector('h1:has-text("Gestão")');
-  ok('a gestão abre com a senha certa', true);
-  await page.waitForSelector('.aluno:has-text("Joana")');
-  ok('a gestão mostra o progresso da Joana', (await page.textContent('.aluno')).includes('10 perguntas feitas'));
-  await page.check('#abertas input[value=u3]');
-  await page.click('#guardar-abertas');
-  await page.waitForFunction(() => document.getElementById('toast').textContent.includes('Guardado'));
-  ok('abre a unidade 3 aos alunos', be.db.abertas.includes('u3') && be.db.abertas.includes('u1'), be.db.abertas);
-  await page.click('#nav a[data-sec=resumos]');
-  await page.waitForSelector('h1:has-text("Resumos")');
-  ok('a professora vê todas as unidades', (await page.$$('.uni.fechada')).length === 0);
-  await page.goto(BASE + '/eco/#admin');
-  await page.click('#sair-admin');
-  await page.goto(BASE + '/eco/#resumos');
-  await page.waitForSelector('.uni');
-  ok('depois de sair da gestão, o aluno vê as unidades 1 e 3 abertas', (await page.$$('.uni.fechada')).length === 10);
-  await page.goto(BASE + '/eco/#resumo/u3');
-  await page.waitForSelector('article.texto');
-  ok('resumo aberto tem conteúdo', (await page.textContent('article.texto')).length > 500);
-  await page.goto(BASE + '/eco/#resumo/u2');
-  await page.waitForSelector('text=ainda não está disponível');
-  ok('resumo fechado mostra o cadeado', true);
-
   // notícias
   await page.click('#nav a[data-sec=noticias]');
   await page.waitForSelector('h1:has-text("Notícias")');
@@ -200,7 +157,7 @@ function backendFalso() {
   const links = await page.$$eval('.noticia a.ler', (e) => e.map((a) => a.href));
   ok('cada notícia tem link para o Público ou o Observador', links.length && links.every((h) => /^https:\/\/(www\.)?(publico|observador)\.pt\//.test(h)), links[0]);
 
-  for (const h of ['#inicio', '#resumos', '#resumo/u1', '#treino', '#noticias', '#admin']) {
+  for (const h of ['#inicio', '#resumos', '#resumo/u1', '#treino', '#noticias']) {
     await page.goto(BASE + '/eco/' + h);
     await page.waitForTimeout(250);
     const larg = await page.evaluate(() => document.documentElement.scrollWidth);
@@ -221,9 +178,9 @@ function backendFalso() {
   await p2.goto(BASE + '/eco/');
   await p2.waitForSelector('h1:has-text("Olá")');
   ok('sem base de dados a plataforma abre na mesma', true);
-  await p2.goto(BASE + '/eco/#resumos');
-  await p2.waitForSelector('.uni');
-  ok('sem base de dados abre os resumos do config.js', (await p2.$$('.uni.fechada')).length === 11);
+  await p2.goto(BASE + '/eco/#resumo/u12');
+  await p2.waitForSelector('article.texto');
+  ok('sem base de dados os resumos abrem na mesma', true);
   await ctx2.close();
 
   await browser.close();

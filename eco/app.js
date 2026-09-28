@@ -2,19 +2,14 @@
    mariaestuda.eu/eco — aplicação
    ------------------------------------------------------------
    Sem dependências nem compilação. Rotas pelo #:
-     #inicio  #resumos  #resumo/u3  #treino  #quiz  #noticias  #admin
+     #inicio  #resumos  #resumo/u3  #treino  #quiz  #noticias
    A conta é a partilhada do site (/account/, Nome + PIN, opcional):
    o progresso vive em localStorage['eco_prog'] e o account.js
-   sincroniza-o. O Supabase só é chamado aqui para os resumos abertos
-   e para a Gestão (ver schema.sql).
+   sincroniza-o.
    ============================================================ */
 (function () {
   'use strict';
 
-  var CFG = window.ECO_CONFIG || {};
-  var CONTA = window.MARIAESTUDA_CONFIG || {};
-  CFG.url = CFG.url || CONTA.SUPABASE_URL;
-  CFG.chave = CFG.chave || CONTA.SUPABASE_ANON_KEY;
   var UNIDADES = window.ECO_UNIDADES || [];
   var RESUMOS = window.ECO_RESUMOS || {};
   var PERGUNTAS = window.ECO_PERGUNTAS || [];
@@ -29,10 +24,7 @@
 
   /* ---------- estado ---------- */
   var S = {
-    remoto: true,          // a base de dados responde?
-    admin: null,           // palavra-passe da administradora (só em memória/sessão)
     prog: { r: {} },       // progresso do aluno
-    abertas: [],           // unidades com resumo aberto
     quiz: null,
     treino: { unidades: [], n: 10, soErradas: false },
     filtroNoticias: 'todas',
@@ -58,18 +50,6 @@
       if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, JSON.stringify(v));
     } catch (e) { return null; }
   }
-  function ss(k, v) {
-    try {
-      if (arguments.length === 1) return sessionStorage.getItem(k);
-      if (v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v);
-    } catch (e) { return null; }
-  }
-  var toastTimer;
-  function toast(msg) {
-    var t = document.getElementById('toast');
-    t.textContent = msg; t.classList.add('mostra');
-    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.classList.remove('mostra'); }, 2600);
-  }
   function dataPT(iso) {
     if (!iso) return '';
     var d = new Date(iso + (iso.length === 10 ? 'T12:00:00' : ''));
@@ -77,23 +57,6 @@
     return d.toLocaleDateString('pt-PT', { day: 'numeric', month: 'long', year: 'numeric' });
   }
   function ir(h) { if (location.hash === '#' + h) render(); else location.hash = h; }
-
-  /* ---------- base de dados (RPC) ---------- */
-  function rpc(fn, args) {
-    if (!CFG.url || !CFG.chave) return Promise.reject({ rede: true });
-    return fetch(CFG.url.replace(/\/+$/, '') + '/rest/v1/rpc/' + fn, {
-      method: 'POST',
-      headers: { apikey: CFG.chave, Authorization: 'Bearer ' + CFG.chave, 'Content-Type': 'application/json' },
-      body: JSON.stringify(args || {}),
-    }).then(function (r) {
-      return r.text().then(function (txt) {
-        var body = null;
-        try { body = txt ? JSON.parse(txt) : null; } catch (e) { body = txt; }
-        if (!r.ok) throw { status: r.status, msg: (body && body.message) || 'Erro ' + r.status };
-        return body;
-      });
-    }, function () { throw { rede: true }; });
-  }
 
   /* ---------- progresso e níveis ----------
      prog.r[idPergunta] = [últimaCerta (0/1), tentativas, certas, timestamp] */
@@ -129,15 +92,6 @@
   }
   function nomeConta() { return window.Account && Account.user ? Account.user() : null; }
 
-  /* ---------- resumos abertos ---------- */
-  function carregarAbertas() {
-    return rpc('eco_desbloqueadas').then(function (a) {
-      S.remoto = true; S.abertas = a || [];
-    }, function () {
-      S.remoto = false; S.abertas = CFG.desbloqueadasSemBD || [];
-    });
-  }
-
   /* ============================================================
      ECRÃS
      ============================================================ */
@@ -146,32 +100,6 @@
       a.classList.toggle('ativo', a.getAttribute('data-sec') === sec);
       if (a.getAttribute('data-sec') === sec) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
     });
-    document.getElementById('nav-admin').hidden = !S.admin;
-  }
-
-  /* ---------- entrada da professora ---------- */
-  function vEntrarAdmin() {
-    app.innerHTML =
-      '<div class="entrada-caixa" style="margin:24px auto">' +
-      '<img class="entrada-logo" src="icone.svg" alt="">' +
-      '<h1 style="text-align:center">Área da professora</h1>' +
-      '<p class="sub" style="text-align:center">Abrir resumos e acompanhar o progresso dos alunos.</p>' +
-      (S.remoto ? '' : '<p class="aviso">Sem ligação à base de dados. Vê o eco/README.md.</p>') +
-      '<form id="f"><label class="rotulo" for="c">Palavra-passe</label>' +
-      '<input id="c" type="password" autocomplete="current-password" required>' +
-      '<p class="erro" id="err"></p><button class="btn largo" type="submit">Entrar na gestão</button></form></div>';
-    var f = document.getElementById('f'), c = document.getElementById('c'), err = document.getElementById('err');
-    c.focus();
-    f.onsubmit = function (ev) {
-      ev.preventDefault();
-      var btn = f.querySelector('button'); btn.disabled = true; err.textContent = '';
-      var v = c.value;
-      rpc('eco_admin', { p_senha: v, p_acao: 'verificar' }).then(function () {
-        S.admin = v; ss('eco_admin', v); render();
-      }, function (e) {
-        err.textContent = e && e.rede ? 'Sem ligação. Tenta outra vez daqui a pouco.' : (e && e.msg) || 'Não foi possível entrar.';
-      }).then(function () { btn.disabled = false; });
-    };
   }
 
   /* ---------- início (painel de progresso) ---------- */
@@ -224,7 +152,6 @@
     h += '<p class="sub" style="margin-top:18px;font-size:13.5px">Como se calcula: conta a tua última resposta a cada pergunta. ' +
       '🔴 Mal: menos de 50% certas · 🟠 Mais ou menos: 50–69% · 🟢 Bem: 70% ou mais · 🌟 Fantástico: 90% ou mais e já passaste por pelo menos 80% das perguntas da unidade. ' +
       'Precisas de responder a 5 perguntas de uma unidade para ela ser avaliada.</p>';
-    h += '<p style="text-align:center;margin-top:28px"><a class="link-discreto" href="#admin">Área da professora</a></p>';
     app.innerHTML = h;
     var ec = document.getElementById('entrar-conta');
     if (ec) ec.onclick = function () { if (window.Account) Account.open(); };
@@ -236,21 +163,16 @@
   }
 
   /* ---------- resumos ---------- */
-  function aberta(uid) { return !!S.admin || S.abertas.indexOf(uid) >= 0; }
   function vResumos() {
-    var h = '<h1>Resumos</h1><p class="sub">' + (S.admin
-      ? 'Vês todas as unidades. Os alunos só veem as que abriste na Gestão.'
-      : 'A professora vai abrindo as unidades à medida que forem dadas nas aulas.') + '</p>';
+    var h = '<h1>Resumos</h1><p class="sub">A matéria de cada unidade, organizada para estudar e rever antes dos testes.</p>';
     [10, 11].forEach(function (ano) {
       h += '<p class="ano-titulo">' + ano + '.º ano</p><div class="unidades">';
       UNIDADES.forEach(function (u) {
         if (u.ano !== ano) return;
-        var ok = aberta(u.id);
-        h += '<a class="uni' + (ok ? '' : ' fechada') + '" style="--c:' + u.cor + '" href="#resumo/' + u.id + '">' +
-          '<span class="uni-icone">' + (ok ? u.icone : '🔒') + '</span><span>' +
-          '<span class="uni-num">Unidade ' + u.num + (S.admin && S.abertas.indexOf(u.id) < 0 ? ' · fechada aos alunos' : '') + '</span>' +
+        h += '<a class="uni" style="--c:' + u.cor + '" href="#resumo/' + u.id + '">' +
+          '<span class="uni-icone">' + u.icone + '</span><span>' +
+          '<span class="uni-num">Unidade ' + u.num + '</span>' +
           '<span class="uni-titulo" style="display:block">' + esc(u.titulo) + '</span>' +
-          (ok ? '' : '<span class="uni-info">Ainda não disponível</span>') +
           '</span></a>';
       });
       h += '</div>';
@@ -262,16 +184,10 @@
     if (!u) return ir('resumos');
     var h = '<a class="voltar" href="#resumos">← Resumos</a>' +
       '<div class="cabeca-uni" style="--c:' + u.cor + '"><span class="uni-num">' + u.icone + ' Unidade ' + u.num + ' · ' + u.ano + '.º ano</span>' +
-      '<h1>' + esc(u.titulo) + (S.admin && S.abertas.indexOf(uid) < 0 ? '<span class="tag-admin">Fechada aos alunos</span>' : '') + '</h1></div>';
-    if (!aberta(uid)) {
-      h += '<div class="cartao fechado-msg"><div class="grande">🔒</div><p><strong>Este resumo ainda não está disponível.</strong></p>' +
-        '<p class="sub">Entretanto, podes treinar os exercícios desta unidade.</p>' +
-        '<button class="btn" id="treinar-uni">Treinar a unidade ' + u.num + '</button></div>';
-    } else {
-      h += '<article class="cartao texto">' + (RESUMOS[uid] || '<p class="vazio">Resumo em preparação.</p>') + '</article>' +
+      '<h1>' + esc(u.titulo) + '</h1></div>';
+    h += '<article class="cartao texto">' + (RESUMOS[uid] || '<p class="vazio">Resumo em preparação.</p>') + '</article>' +
         '<div class="linha-btns" style="margin-top:16px"><button class="btn" id="treinar-uni">Treinar esta unidade</button>' +
         '<a class="btn sec" href="#noticias/' + uid + '">Notícias desta unidade</a></div>';
-    }
     app.innerHTML = h;
     document.getElementById('treinar-uni').onclick = function () { comecarQuiz([uid], 10, false); };
     window.scrollTo(0, 0);
@@ -492,59 +408,6 @@
     });
   }
 
-  /* ---------- gestão (administradora) ---------- */
-  function admin(acao, dados) { return rpc('eco_admin', { p_senha: S.admin, p_acao: acao, p_dados: dados || {} }); }
-  function vAdmin() {
-    if (!S.admin) return vEntrarAdmin();
-    var h = '<h1>Gestão</h1><p class="sub">Abre os resumos, cria os perfis e acompanha o progresso de cada aluno.</p>' +
-      '<h2>Resumos abertos aos alunos</h2><div class="escolha-uni" id="abertas">';
-    UNIDADES.forEach(function (u) {
-      h += '<label><input type="checkbox" value="' + u.id + '"' + (S.abertas.indexOf(u.id) >= 0 ? ' checked' : '') + '>' +
-        '<span class="t">' + u.icone + ' ' + esc(u.titulo) + '<small>Unidade ' + u.num + ' · ' + u.ano + '.º ano</small></span><span></span></label>';
-    });
-    h += '</div><button class="btn largo" id="guardar-abertas" style="margin-top:12px">Guardar</button>' +
-      '<h2>Alunos</h2><p class="sub" style="font-size:13.5px">Aparece quem já estudou Economia com conta iniciada (a conta do site, Nome + PIN).</p>' +
-      '<div id="alunos"><p class="vazio">A carregar…</p></div>' +
-      '<button class="btn fraco largo" id="sair-admin" style="margin-top:22px">Sair da área da professora</button>';
-    app.innerHTML = h;
-
-    document.getElementById('sair-admin').onclick = function () {
-      S.admin = null; ss('eco_admin', null); ir('inicio');
-    };
-    document.getElementById('guardar-abertas').onclick = function () {
-      var sel = [].map.call(app.querySelectorAll('#abertas input:checked'), function (i) { return i.value; });
-      admin('desbloquear', { unidades: sel }).then(function () { S.abertas = sel; toast('Guardado. Os alunos já veem estes resumos.'); },
-        function (e) { toast(e.msg || 'Não foi possível guardar.'); });
-    };
-    carregarAlunos();
-  }
-  function carregarAlunos() {
-    admin('listar').then(function (lista) {
-      lista = lista || [];
-      var el = document.getElementById('alunos');
-      if (!el) return;
-      if (!lista.length) { el.innerHTML = '<p class="vazio">Ainda nenhum aluno estudou Economia com conta iniciada.</p>'; return; }
-      var h = '';
-      lista.forEach(function (a) {
-        var prog = { r: {} };
-        try { var raw = a.eco && a.eco[CHAVE_PROG]; var p = typeof raw === 'string' ? JSON.parse(raw) : raw; if (p && p.r) prog = p; } catch (e) {}
-        var ns = UNIDADES.map(function (u) { return { u: u, n: nivel(statsUnidade(u.id, prog)) }; });
-        var bons = ns.filter(function (x) { return x.n.ord >= 3; }).length;
-        var resp = Object.keys(prog.r).length;
-        h += '<div class="aluno"><div class="aluno-cabeca"><strong>' + esc(a.nome) + '</strong>' +
-          (a.atualizado_em ? '<small>última atividade ' + new Date(a.atualizado_em).toLocaleDateString('pt-PT') + '</small>' : '') + '</div>' +
-          '<div class="uni-info">' + bons + '/' + UNIDADES.length + ' unidades em Bem ou Fantástico · ' + resp + ' perguntas feitas</div>' +
-          '<div class="aluno-niveis">' + ns.map(function (x) {
-            return '<span class="nivel ' + x.n.k + '" title="' + esc(x.u.titulo) + ': ' + x.n.t + '">U' + x.u.num + ' ' + x.n.e + '</span>';
-          }).join('') + '</div></div>';
-      });
-      el.innerHTML = h;
-    }, function (e) {
-      var el = document.getElementById('alunos');
-      if (el) el.innerHTML = '<p class="aviso">' + esc(e.rede ? 'Sem ligação à base de dados.' : e.msg) + '</p>';
-    });
-  }
-
   /* ============================================================
      ROTAS
      ============================================================ */
@@ -560,7 +423,6 @@
       case 'treino': vTreino(); break;
       case 'quiz': vQuiz(); break;
       case 'noticias': vNoticias(partes[1] || 'todas'); break;
-      case 'admin': if (S.admin) vAdmin(); else vEntrarAdmin(); break;
       default: return ir('inicio');
     }
     if (sec !== 'quiz') window.scrollTo(0, 0);
@@ -568,17 +430,10 @@
 
   window.addEventListener('hashchange', render);
 
-  // arranque: a conta partilhada, os resumos abertos, a sessão da professora
+  // arranque: o progresso deste aparelho e a conta partilhada
   S.prog = lerProgresso();
   if (window.Account) {
     Account.init({ section: 'eco', keys: [CHAVE_PROG], mount: '#user-slot', label: 'Economia A', accent: '#F2B544', accentInk: '#14505C' });
   }
-  app.innerHTML = '<p class="vazio">A carregar…</p>';
-  carregarAbertas().then(function () {
-    var senha = ss('eco_admin');
-    if (senha && S.remoto) {
-      return rpc('eco_admin', { p_senha: senha, p_acao: 'verificar' })
-        .then(function () { S.admin = senha; }, function () { ss('eco_admin', null); });
-    }
-  }).then(render);
+  render();
 })();
