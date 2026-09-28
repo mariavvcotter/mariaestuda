@@ -676,7 +676,7 @@
     o: ['podem ser trocadas por ouro no Banco Central Europeu.',
         'o papel de que são feitas tem um valor elevado.',
         'o seu valor corresponde ao das reservas de prata do Banco de Portugal.',
-        'existe confiança na sua aceitação e têm curso legal imposto por lei.'],
+        'existe confiança na sua aceitação e têm curso legal.'],
     c: 3,
     e: 'O papel-moeda atual é inconvertível (moeda fiduciária): vale pela confiança dos agentes e porque a lei obriga à sua aceitação. A convertibilidade em ouro existiu no passado, mas foi abandonada, pelo que já não explica a aceitação das notas.' },
 
