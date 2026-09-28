@@ -24,16 +24,28 @@ function lerNoticias(texto) {
   return ctx.window.ECO_NOTICIAS || [];
 }
 
+// Valor de um atributo, com ou sem aspas.
+function attr(tag, nome) {
+  const m = tag.match(new RegExp('\\b' + nome + '\\s*=\\s*(?:"([^"]*)"|\'([^\']*)\'|([^\\s>]+))', 'i'));
+  return m ? (m[1] ?? m[2] ?? m[3]) : null;
+}
+
 function ogImage(html, base) {
+  const limpa = (v) => new URL(v.replace(/&amp;/g, '&').replace(/\\\//g, '/'), base).href;
   const metas = html.match(/<meta\b[^>]*>/gi) || [];
-  for (const nome of ['og:image:secure_url', 'og:image', 'twitter:image']) {
+  for (const nome of ['og:image:secure_url', 'og:image', 'og:image:url', 'twitter:image', 'twitter:image:src']) {
     for (const m of metas) {
-      const chave = (m.match(/\b(?:property|name)\s*=\s*["']([^"']+)["']/i) || [])[1];
+      const chave = attr(m, 'property') || attr(m, 'name') || attr(m, 'itemprop');
       if (!chave || chave.toLowerCase() !== nome) continue;
-      const valor = (m.match(/\bcontent\s*=\s*["']([^"']+)["']/i) || [])[1];
-      if (valor) return new URL(valor.replace(/&amp;/g, '&'), base).href;
+      const valor = attr(m, 'content');
+      if (valor) return limpa(valor);
     }
   }
+  const link = (html.match(/<link\b[^>]*rel\s*=\s*["']?image_src[^>]*>/i) || [])[0];
+  if (link && attr(link, 'href')) return limpa(attr(link, 'href'));
+  // JSON-LD e dados embebidos: "image":"…", "image":{"url":"…"}, "image":["…"], "thumbnailUrl":"…"
+  const j = html.match(/"(?:image|thumbnailUrl)"\s*:\s*(?:\{[^{}]*?"url"\s*:\s*|\[\s*)?"(https?:[^"]+?\.(?:jpe?g|png|webp)[^"]*)"/i);
+  if (j) return limpa(j[1]);
   return null;
 }
 
@@ -50,18 +62,26 @@ for (const f of ficheiros) {
         redirect: 'follow',
         signal: AbortSignal.timeout(20000),
       });
-      if (r.ok) img = ogImage(await r.text(), r.url);
-      else console.log(`  ${r.status}  ${n.url}`);
+      if (r.ok) {
+        const html = await r.text();
+        img = ogImage(html, r.url);
+        if (!img) {
+          const titulo = (html.match(/<title[^>]*>([^<]*)/i) || [])[1] || '';
+          console.log(`  sem imagem na página (${html.length} bytes, título «${titulo.trim().slice(0, 60)}», ${r.url})`);
+          console.log('    ' + (html.match(/<meta\b[^>]*>/gi) || []).slice(0, 12).join(' ').slice(0, 900));
+        }
+      } else console.log(`  ${r.status}  ${n.url}`);
     } catch (e) {
       console.log(`  erro  ${n.url}  (${e.message})`);
     }
-    if (!img || !/^https:\/\//.test(img)) { falhou++; continue; }
+    if (img && img.startsWith('http://')) img = 'https://' + img.slice(7);   // o site é https
+    if (!img || !/^https:\/\//.test(img)) { if (img) console.log(`  imagem recusada ${img}`); falhou++; continue; }
 
     // Escreve só dentro do objeto desta notícia: do seu url até ao url seguinte.
     const i = texto.indexOf(n.url);
     const fim = texto.indexOf('url:', i + n.url.length);
     const j = texto.indexOf('imagem: null', i);
-    if (i < 0 || j < 0 || (fim >= 0 && j > fim)) { falhou++; continue; }
+    if (i < 0 || j < 0 || (fim >= 0 && j > fim)) { console.log(`  não achei onde escrever ${n.url}`); falhou++; continue; }
     texto = texto.slice(0, j) + 'imagem: ' + JSON.stringify(img).replace(/'/g, "\\'") + texto.slice(j + 'imagem: null'.length);
     mudou++;
     console.log(`  ok    ${n.url}`);
