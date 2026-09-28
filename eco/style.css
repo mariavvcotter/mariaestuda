@@ -48,7 +48,7 @@
   --r-grande: 22px;
   --sombra: 0 1px 1px rgba(0,0,0,.02), 0 6px 18px -8px rgba(0,0,0,.10);
   --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", "Segoe UI", Roboto, system-ui, sans-serif;
-  --barra: 56px;
+  --barra: 60px;   /* espaço reservado em baixo para a cápsula */
   --ease: cubic-bezier(.25, .1, .25, 1);
 }
 
@@ -100,40 +100,40 @@ button { cursor: pointer; }
 .acc-overlay .acc-submit { background: var(--azul) !important; color: #fff !important; border-radius: 12px !important; font-weight: 600 !important; }
 .acc-overlay .acc-switch-btn { color: var(--azul) !important; }
 
-/* ---------- barra de separadores (em baixo, translúcida) ----------
+/* ---------- separadores: cápsula segmentada ----------
+   No telemóvel flutua em baixo, ao alcance do polegar, com material
+   translúcido; no computador fica no topo, ao centro (iPadOS 18).
    Fica fora do <header>: o backdrop-filter do topo faria dela um
    elemento fixo em relação ao cabeçalho e não ao ecrã. */
 .nav {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
-  display: flex; padding-bottom: env(safe-area-inset-bottom);
-  background: var(--material);
+  position: fixed; z-index: 30; left: 50%; transform: translateX(-50%);
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  display: flex; gap: 2px; padding: 4px; border-radius: 999px;
+  background: rgba(242, 242, 247, .82);
   -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
-  border-top: .5px solid var(--separador);
+  box-shadow: 0 8px 30px -8px rgba(0,0,0,.25), 0 0 0 .5px rgba(0,0,0,.08);
+  max-width: calc(100vw - 24px);
 }
 .nav a {
-  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-  height: var(--barra); color: var(--cinza); font-size: 10.5px; font-weight: 500; letter-spacing: .01em;
+  display: flex; align-items: center; justify-content: center;
+  height: 36px; padding: 0 15px; border-radius: 999px;
+  color: var(--ink); font-size: 14.5px; font-weight: 500; white-space: nowrap;
+  transition: background .2s var(--ease), box-shadow .2s var(--ease);
 }
-.nav .ic { width: 27px; height: 27px; display: block; }
-.nav .ic svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .nav b { font-weight: 500; }
-.nav a.ativo { color: var(--azul); }
-.nav a.ativo .ic svg path:first-child { fill: currentColor; fill-opacity: .16; }
+.nav a.ativo { background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,.12), 0 0 0 .5px rgba(0,0,0,.04); }
+.nav a.ativo b { font-weight: 600; }
+@media (max-width: 360px) { .nav a { padding: 0 10px; font-size: 13.5px; } }
 
 @media (min-width: 800px) {
   body { padding-bottom: 24px; }
   .topo { justify-content: space-between; }
-  /* iPadOS 18: separadores numa cápsula flutuante ao centro */
   .nav {
-    position: fixed; left: 50%; top: calc(10px + env(safe-area-inset-top)); bottom: auto; right: auto;
-    transform: translateX(-50%); padding: 3px; gap: 2px; border: 0; border-radius: 999px;
-    background: var(--fill);
+    top: calc(10px + env(safe-area-inset-top)); bottom: auto; padding: 3px;
+    background: var(--fill); box-shadow: none;
     -webkit-backdrop-filter: none; backdrop-filter: none;
   }
-  .nav a { flex: none; flex-direction: row; height: 32px; padding: 0 16px; border-radius: 999px; font-size: 14px; gap: 6px; color: var(--ink); }
-  .nav .ic { display: none; }
-  .nav a.ativo { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.12), 0 0 0 .5px rgba(0,0,0,.04); }
-  .nav a.ativo b { font-weight: 600; }
+  .nav a { height: 32px; padding: 0 16px; font-size: 14px; }
 }
 
 /* ---------- estrutura e tipografia ---------- */
