@@ -49,6 +49,39 @@ function ogImage(html, base) {
   return null;
 }
 
+const CABECALHOS = {
+  // Com um identificador de robô o Público responde com a página vazia.
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36',
+  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  'Accept-Language': 'pt-PT,pt;q=0.9',
+};
+
+async function imagemDaPagina(url) {
+  const r = await fetch(url, { headers: CABECALHOS, redirect: 'follow', signal: AbortSignal.timeout(20000) });
+  if (!r.ok) { console.log(`  ${r.status}  ${url}`); return null; }
+  const html = await r.text();
+  const img = ogImage(html, r.url);
+  if (!img) {
+    const titulo = (html.match(/<title[^>]*>([^<]*)/i) || [])[1] || '';
+    console.log(`  sem imagem na página (${html.length} bytes, título «${titulo.trim().slice(0, 60)}», ${r.url})`);
+  }
+  return img;
+}
+
+// Plano B para o Público: a API que o próprio site usa, pelo número no fim do endereço.
+async function imagemDaApiPublico(id) {
+  for (const url of [`https://www.publico.pt/api/content/news/${id}`, `https://www.publico.pt/api/content/${id}`]) {
+    try {
+      const r = await fetch(url, { headers: { ...CABECALHOS, Accept: 'application/json' }, signal: AbortSignal.timeout(20000) });
+      const t = await r.text();
+      const m = t.match(/https?:\\?\/\\?\/[^"\s]+?\.(?:jpe?g|png|webp)[^"\s]*/i);
+      console.log(`  api ${r.status} ${t.length} bytes ${m ? 'com imagem' : 'sem imagem'}  ${url}`);
+      if (m) return m[0].replace(/\\\//g, '/');
+    } catch (e) { console.log(`  api erro ${url} (${e.message})`); }
+  }
+  return null;
+}
+
 let mudou = 0, falhou = 0;
 for (const f of ficheiros) {
   const caminho = path.join(DIR, f);
@@ -57,20 +90,9 @@ for (const f of ficheiros) {
     if (n.imagem) continue;
     let img = null;
     try {
-      const r = await fetch(n.url, {
-        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; mariaestuda-eco/1.0)', 'Accept-Language': 'pt-PT' },
-        redirect: 'follow',
-        signal: AbortSignal.timeout(20000),
-      });
-      if (r.ok) {
-        const html = await r.text();
-        img = ogImage(html, r.url);
-        if (!img) {
-          const titulo = (html.match(/<title[^>]*>([^<]*)/i) || [])[1] || '';
-          console.log(`  sem imagem na página (${html.length} bytes, título «${titulo.trim().slice(0, 60)}», ${r.url})`);
-          console.log('    ' + (html.match(/<meta\b[^>]*>/gi) || []).slice(0, 12).join(' ').slice(0, 900));
-        }
-      } else console.log(`  ${r.status}  ${n.url}`);
+      img = await imagemDaPagina(n.url);
+      const id = (n.url.match(/publico\.pt\/.*-(\d{6,})\/?$/) || [])[1];
+      if (!img && id) img = await imagemDaApiPublico(id);
     } catch (e) {
       console.log(`  erro  ${n.url}  (${e.message})`);
     }
