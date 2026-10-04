@@ -32,6 +32,7 @@ select
   id,
   created_at,
   respostas->>'consentimento'         as consentimento,
+  respostas->>'idioma'                as idioma,
   respostas->>'idade'                 as idade,
   respostas->>'escolaridade'          as escolaridade,
   respostas->>'residencia'            as residencia,

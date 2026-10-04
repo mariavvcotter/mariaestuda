@@ -35,6 +35,14 @@ img{max-width:100%;display:block}
 .hero p{margin:0;color:#d9d2c8;max-width:52ch}
 .hero .gold{height:3px;background:linear-gradient(90deg,var(--gold-bright),var(--ruffle));}
 
+/* idioma */
+.lang{display:flex;gap:.4rem;margin:0 0 1rem}
+.lang button{font:500 .88rem var(--sans);min-height:36px;padding:.3rem .85rem;border-radius:999px;border:1.5px solid #6b5a4c;background:transparent;color:#d9d2c8;cursor:pointer}
+.lang button[aria-pressed=true]{background:var(--paper);border-color:var(--paper);color:var(--ink)}
+.lang button:focus-visible{outline:3px solid var(--gold-bright);outline-offset:2px}
+body.started .hero .txt{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.6rem}
+body.started .lang{margin:0;order:2}
+
 /* depois do consentimento o topo encolhe */
 body.started .hero figure,body.started .hero .txt p{display:none}
 body.started .hero .txt{padding:1.1rem 1.25rem 1.2rem}
@@ -152,6 +160,10 @@ form.off{display:none}
   </figure>
   <div class="gold"></div>
   <div class="txt">
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button type="button" data-lang="pt" lang="pt">Português</button>
+      <button type="button" data-lang="en" lang="en">English</button>
+    </div>
     <h1>Como foi a sua visita?</h1>
     <p>Um questionário para um trabalho de aula sobre a exposição de Joana Vasconcelos: como a conheceu e como foi a visita. São 15 perguntas em 5 partes, cerca de 5 minutos.</p>
   </div>
@@ -172,7 +184,7 @@ form.off{display:none}
   <ul>
     <li><b>É anónimo</b><span>Não pedimos o seu nome, email nem qualquer contacto. A página não usa cookies e não guarda o seu endereço de internet junto das respostas.</span></li>
     <li><b>Só para uso em aula</b><span>As respostas servem apenas para um trabalho de aula e não serão usadas para mais nada.</span></li>
-    <li><b>É voluntário</b><span>Responde só se quiser. As duas perguntas de resposta livre podem ficar em branco.</span></li>
+    <li><b>É voluntário</b><span>Responda só se quiser. As duas perguntas de resposta livre podem ficar em branco.</span></li>
     <li><b>Pode parar quando quiser</b><span>Nada é enviado até carregar em “Enviar”, no fim. Se fechar a página antes, nenhuma resposta fica guardada.</span></li>
   </ul>
   <div class="nav"><button class="send" type="button" id="start">Concordo e quero participar</button></div>
@@ -194,14 +206,14 @@ form.off{display:none}
           <label for="idade">Idade</label>
           <select id="idade" name="idade">
             <option value="">Escolher</option>
-            <option>Menos de 18</option><option>18–24</option><option>25–34</option><option>35–44</option><option>45–54</option><option>55–64</option><option>65 ou mais</option>
+            <option value="Menos de 18">Menos de 18</option><option value="18–24">18–24</option><option value="25–34">25–34</option><option value="35–44">35–44</option><option value="45–54">45–54</option><option value="55–64">55–64</option><option value="65 ou mais">65 ou mais</option>
           </select>
         </div>
         <div>
           <label for="escol">Escolaridade</label>
           <select id="escol" name="escolaridade">
             <option value="">Escolher</option>
-            <option>Até ao 9.º ano</option><option>Ensino secundário</option><option>Licenciatura</option><option>Mestrado ou doutoramento</option>
+            <option value="Até ao 9.º ano">Até ao 9.º ano</option><option value="Ensino secundário">Ensino secundário</option><option value="Licenciatura">Licenciatura</option><option value="Mestrado ou doutoramento">Mestrado ou doutoramento</option>
           </select>
         </div>
       </div>
@@ -485,6 +497,172 @@ const ATIVO = false;
 const CFG = window.MARIAESTUDA_CONFIG || {};
 const ENDPOINT = ATIVO && CFG.SUPABASE_URL ? CFG.SUPABASE_URL + "/rest/v1/inquerito_respostas" : "";
 
+/* ──────────────────────────────────────────────
+   INGLÊS
+   O português está escrito no HTML; aqui só vive o
+   inglês, indexado pelo texto português. Os valores
+   guardados (value dos campos) ficam sempre em
+   português, para as respostas não se misturarem.
+   ────────────────────────────────────────────── */
+const EN = {
+  "Questionário aos visitantes · Exposição Joana Vasconcelos": "Visitor survey · Joana Vasconcelos exhibition",
+  "Sala da exposição com três manequins vestidos de dourado e castanho sob uma grande peça suspensa coberta de luzes, com folhos vermelhos ao fundo.": "Exhibition room with three mannequins dressed in gold and brown beneath a large hanging piece covered in lights, with red ruffles in the background.",
+  "Como foi a sua visita?": "How was your visit?",
+  "Um questionário para um trabalho de aula sobre a exposição de Joana Vasconcelos: como a conheceu e como foi a visita. São 15 perguntas em 5 partes, cerca de 5 minutos.": "A survey for a class project about the Joana Vasconcelos exhibition: how you heard about it and how your visit went. 15 questions in 5 parts, about 5 minutes.",
+  "Modo de teste: as respostas ainda não estão a ser guardadas.": "Test mode: answers are not being saved yet.",
+  "Antes de começar": "Before you start",
+  "É anónimo": "It is anonymous",
+  "Não pedimos o seu nome, email nem qualquer contacto. A página não usa cookies e não guarda o seu endereço de internet junto das respostas.": "We do not ask for your name, email or any contact details. This page uses no cookies and does not store your internet address with your answers.",
+  "Só para uso em aula": "For class use only",
+  "As respostas servem apenas para um trabalho de aula e não serão usadas para mais nada.": "Your answers are only for a class project and will not be used for anything else.",
+  "É voluntário": "It is voluntary",
+  "Responda só se quiser. As duas perguntas de resposta livre podem ficar em branco.": "Only answer if you want to. The two open questions can be left blank.",
+  "Pode parar quando quiser": "You can stop at any time",
+  "Nada é enviado até carregar em “Enviar”, no fim. Se fechar a página antes, nenhuma resposta fica guardada.": "Nothing is sent until you press “Submit” at the end. If you close the page before that, none of your answers are kept.",
+  "Concordo e quero participar": "I agree and want to take part",
+  "Não preencher": "Leave blank",
+  "Sobre si": "About you",
+  "Cinco perguntas rápidas para percebermos quem nos visita.": "Five quick questions so we know who visits.",
+  "Qual é a sua idade e escolaridade?": "What is your age and level of education?",
+  "Escolha uma opção em cada campo.": "Choose one option in each field.",
+  "Idade": "Age",
+  "Escolher": "Choose",
+  "Menos de 18": "Under 18",
+  "65 ou mais": "65 or over",
+  "Escolaridade": "Education",
+  "Até ao 9.º ano": "Up to 9th grade",
+  "Ensino secundário": "Secondary school",
+  "Licenciatura": "Bachelor’s degree",
+  "Mestrado ou doutoramento": "Master’s or PhD",
+  "Escolha a idade e a escolaridade.": "Choose your age and education.",
+  "Reside em Portugal ou é turista?": "Do you live in Portugal or are you a tourist?",
+  "Resido em Portugal": "I live in Portugal",
+  "Sou turista": "I am a tourist",
+  "Escolha uma opção.": "Choose an option.",
+  "Com quem visitou a exposição?": "Who did you visit the exhibition with?",
+  "Sozinho/a": "On my own",
+  "Família": "Family",
+  "Amigos": "Friends",
+  "Grupo organizado": "Organised group",
+  "Quantas vezes visita museus por ano?": "How many times a year do you visit museums?",
+  "Menos de 1": "Less than once",
+  "1 a 2": "1 to 2",
+  "3 a 5": "3 to 5",
+  "6 ou mais": "6 or more",
+  "Já tinha visitado este museu antes?": "Had you visited this museum before?",
+  "Sim": "Yes",
+  "Não, é a primeira vez": "No, this is my first time",
+  "Como soube da exposição": "How you heard about it",
+  "Primeira parte feita. Agora, que meios de divulgação chegaram até si.": "First part done. Now, which kinds of promotion reached you.",
+  "Como soube da exposição?": "How did you hear about the exhibition?",
+  "Pode escolher mais do que uma.": "You can choose more than one.",
+  "Website do museu": "Museum website",
+  "Redes sociais": "Social media",
+  "Cartaz, mupi ou banner": "Poster, billboard or banner",
+  "Publicidade no metro ou nos transportes": "Ads on the metro or public transport",
+  "Imprensa, rádio ou televisão": "Press, radio or TV",
+  "Boca a boca": "Word of mouth",
+  "Outro": "Other",
+  "Escolha pelo menos uma opção.": "Choose at least one option.",
+  "O que mais motivou a sua visita?": "What was the main reason for your visit?",
+  "Escolha a principal.": "Choose the main one.",
+  "A artista, Joana Vasconcelos": "The artist, Joana Vasconcelos",
+  "O tema ou as obras da exposição": "The theme or the works in the exhibition",
+  "O espaço do museu": "The museum building",
+  "Uma recomendação": "A recommendation",
+  "Outro motivo": "Another reason",
+  "Que canais do museu utilizou?": "Which of the museum’s channels did you use?",
+  "Website": "Website",
+  "App": "App",
+  "Nenhum": "None",
+  "Durante a visita": "During your visit",
+  "Já vai a meio. Avalie cada ponto de 1 (muito mau) a 5 (muito bom). Se não usou, escolha “Não usei”.": "You are halfway there. Rate each item from 1 (very poor) to 5 (very good). If you did not use it, choose “Didn’t use”.",
+  "Como avalia cada um destes pontos?": "How would you rate each of these?",
+  "1 = muito mau · 5 = muito bom": "1 = very poor · 5 = very good",
+  "Textos": "Texts",
+  "Legendas das obras e painéis nas salas": "Labels for the works and wall panels",
+  "Não usei": "Didn’t use",
+  "Orientação": "Wayfinding",
+  "Sinalética, mapa e percurso da exposição": "Signs, map and route through the exhibition",
+  "Audioguia ou app": "Audio guide or app",
+  "Visita guiada ou serviço educativo": "Guided tour or education programme",
+  "Pessoal": "Staff",
+  "Receção, bilheteira e vigilantes de sala": "Reception, ticket desk and gallery attendants",
+  "Loja": "Shop",
+  "Falta avaliar algum dos pontos.": "Some items still need a rating.",
+  "A exposição": "The exhibition",
+  "Falta pouco. Fale-nos do que viu.": "Almost done. Tell us about what you saw.",
+  "O que mais gostou na exposição?": "What did you like most about the exhibition?",
+  "Resposta curta. Pode deixar em branco.": "Short answer. You can leave it blank.",
+  "Aprendeu algo novo com esta visita?": "Did you learn something new on this visit?",
+  "Nada": "Nothing",
+  "Muito": "A lot",
+  "Escolha um valor.": "Choose a value.",
+  "A exposição mudou a sua perceção da artista?": "Did the exhibition change how you see the artist?",
+  "Depois da visita": "After your visit",
+  "Última parte: são só três perguntas.": "Last part: just three questions.",
+  "Qual é a probabilidade de recomendar esta exposição a um amigo?": "How likely are you to recommend this exhibition to a friend?",
+  "Nada provável": "Not at all likely",
+  "Muito provável": "Very likely",
+  "Considera-se público ou utilizador do museu?": "Do you see yourself as a visitor or a regular user of the museum?",
+  "Público:": "Visitor:",
+  "visita o museu de vez em quando, sobretudo para ver exposições.": "comes to the museum now and then, mainly to see exhibitions.",
+  "Utilizador:": "Regular user:",
+  "recorre ao museu com regularidade, por exemplo para atividades, eventos, biblioteca ou cafetaria.": "uses the museum regularly, for example for activities, events, the library or the café.",
+  "Público": "Visitor",
+  "Utilizador": "Regular user",
+  "Não sei": "Not sure",
+  "O que mudaria nesta visita?": "What would you change about this visit?",
+  "Pode ser algo de que não gostou ou que faltou. Pode deixar em branco.": "Something you did not like or that was missing. You can leave it blank.",
+  "Voltar": "Back",
+  "Continuar": "Continue",
+  "Enviar respostas": "Submit",
+  "A enviar…": "Sending…",
+  "As respostas são anónimas e usadas apenas num trabalho de aula. Pode parar a qualquer momento: nada é enviado antes do fim.": "Answers are anonymous and used only for a class project. You can stop at any time: nothing is sent before the end.",
+  "Obrigado pela sua participação": "Thank you for taking part",
+  "As suas respostas foram enviadas e serão usadas apenas no trabalho de aula. Já pode fechar esta página.": "Your answers have been sent and will be used only for the class project. You can close this page now.",
+  "Não foi possível enviar. Verifique a ligação e tente outra vez.": "Could not send. Check your connection and try again."
+};
+let lang = "pt";
+const t = s => lang === "en" && EN[s] ? EN[s] : s;
+const msg = {
+  part: (n, title) => lang === "en" ? "Part " + n + " of 5 · " + t(title) : "Parte " + n + " de 5 · " + title,
+  missing: n => lang === "en"
+    ? (n === 1 ? "1 question in this part still needs an answer." : n + " questions in this part still need an answer.")
+    : (n === 1 ? "Falta responder a 1 pergunta desta parte." : "Faltam " + n + " perguntas desta parte.")
+};
+
+// textos fixos: guardar o português de cada nó uma vez, trocar quando o idioma muda
+const textNodes = [];
+(function collect(){
+  const skip = "script,style,#stepLabel,#send,#formErr";
+  const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT,
+    {acceptNode: n => n.parentNode.closest(skip) ? 2 : 1});
+  let n;
+  while ((n = w.nextNode())) {
+    const pt = n.nodeValue.trim();
+    if (pt && EN[pt]) textNodes.push({n, raw: n.nodeValue, pt});
+  }
+})();
+const PT_TITLE = document.title;
+const heroImg = document.querySelector(".hero img");
+const PT_ALT = heroImg ? heroImg.alt : "";
+
+function setLang(l, write){
+  lang = l === "en" ? "en" : "pt";
+  document.documentElement.lang = lang === "en" ? "en" : "pt-PT";
+  textNodes.forEach(o => { o.n.nodeValue = lang === "en" ? o.raw.replace(o.pt, EN[o.pt]) : o.raw; });
+  document.title = t(PT_TITLE);
+  if (heroImg && heroImg.isConnected) heroImg.alt = t(PT_ALT);
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === lang));
+  if (write) {
+    // o idioma vive no endereço, como no resto do site: sem cookies nem localStorage
+    const u = new URL(location.href);
+    u.searchParams.set("lang", lang);
+    history.replaceState(history.state, "", u);
+  }
+}
+
 const form = document.getElementById("f");
 const consent = document.getElementById("consent");
 const steps = [...form.querySelectorAll(".step")];
@@ -530,9 +708,9 @@ function show(n, push){
   steps.forEach((st, i) => st.classList.toggle("on", i + 1 === n));
   if (n > 0) {
     const st = steps[n - 1];
-    document.getElementById("stepLabel").textContent = "Parte " + n + " de 5 · " + st.dataset.title;
+    document.getElementById("stepLabel").textContent = msg.part(n, st.dataset.title);
     btnBack.hidden = n === 1;
-    btnSend.textContent = n === steps.length ? "Enviar respostas" : "Continuar";
+    btnSend.textContent = t(n === steps.length ? "Enviar respostas" : "Continuar");
     window.scrollTo({top: 0, behavior: "auto"});
     st.querySelector("h2").focus({preventScroll: true});
   }
@@ -588,7 +766,7 @@ form.addEventListener("submit", async e => {
   required(step).forEach(q => q.classList.toggle("err", missing.includes(q)));
   if (missing.length) {
     missing[0].scrollIntoView({behavior: reduced ? "auto" : "smooth", block: "center"});
-    formErr.textContent = missing.length === 1 ? "Falta responder a 1 pergunta desta parte." : "Faltam " + missing.length + " perguntas desta parte.";
+    formErr.textContent = msg.missing(missing.length);
     formErr.style.display = "block";
     return;
   }
@@ -599,6 +777,7 @@ form.addEventListener("submit", async e => {
   // recolher respostas (a hora fica registada pelo servidor, em created_at)
   const data = {
     consentimento: true,
+    idioma: lang,
     idade: form.idade.value,
     escolaridade: form.escolaridade.value,
     residencia: form.residencia.value,
@@ -622,7 +801,7 @@ form.addEventListener("submit", async e => {
     o_que_mudaria: form.o_que_mudaria.value.trim()
   };
 
-  btnSend.disabled = true; btnSend.textContent = "A enviar…";
+  btnSend.disabled = true; btnSend.textContent = t("A enviar…");
   btnBack.disabled = true;
 
   try {
@@ -643,12 +822,20 @@ form.addEventListener("submit", async e => {
     }
     showThanks();
   } catch (err) {
-    btnSend.disabled = false; btnSend.textContent = "Enviar respostas";
+    btnSend.disabled = false; btnSend.textContent = t("Enviar respostas");
     btnBack.disabled = false;
-    formErr.textContent = "Não foi possível enviar. Verifique a ligação e tente outra vez.";
+    formErr.textContent = t("Não foi possível enviar. Verifique a ligação e tente outra vez.");
     formErr.style.display = "block";
   }
 });
+// idioma inicial: o do endereço; sem ele, o do navegador (português só para quem o tem)
+const asked = new URLSearchParams(location.search).get("lang");
+const prefer = (navigator.languages || [navigator.language || ""]).some(l => /^pt\b/i.test(l)) ? "pt" : "en";
+setLang(asked === "en" || asked === "pt" ? asked : prefer, false);
+document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => {
+  setLang(b.dataset.lang, true);
+  if (current > 0 && !sent) show(current, false);   // refaz o rótulo da parte e o botão
+}));
 show(0, false);
 </script>
 </body>
