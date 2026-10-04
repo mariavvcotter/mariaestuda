@@ -1,14 +1,17 @@
 /* ============================================================
    mariaestuda — recetor das respostas do inquérito (/inquerito)
 
-   Vive dentro da Google Sheet "Inquérito Joana Vasconcelos ·
-   respostas" (Extensões → Apps Script) e está publicado como
-   aplicação web: executar como "Eu", acesso "Qualquer pessoa".
+   Projeto Apps Script na pasta FCH - UCP do Drive, ligado à
+   Google Sheet "Inquérito Joana Vasconcelos · respostas" pelo ID
+   em FOLHA, e publicado como aplicação web: executar como "Eu",
+   acesso "Qualquer pessoa".
    Esta cópia no repositório é só para referência.
 
    Cada envio acrescenta uma linha à primeira folha. A ordem das
    colunas é a de CAMPOS e tem de bater com o cabeçalho da linha 1.
    ============================================================ */
+
+const FOLHA = '1DGzmx4M_MdWZvOnAWtuv3qZ7vevda35nKhdFOPsYEmA';
 
 const CAMPOS = [
   'idioma', 'idade', 'escolaridade', 'residencia', 'companhia',
@@ -31,7 +34,7 @@ function doPost(e) {
     const lock = LockService.getScriptLock();
     lock.waitLock(10000);
     try {
-      SpreadsheetApp.getActiveSpreadsheet().getSheets()[0].appendRow(linha);
+      SpreadsheetApp.openById(FOLHA).getSheets()[0].appendRow(linha);
     } finally {
       lock.releaseLock();
     }
