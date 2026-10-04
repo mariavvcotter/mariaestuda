@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Questionário aos visitantes · Exposição Joana Vasconcelos</title>
+<meta name="description" content="Questionário de 5 minutos para quem visitou a exposição de Joana Vasconcelos.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --floor:#e6e2dc;
+  --paper:#f3f0eb;
+  --ink:#241912;
+  --gold:#7a5410;
+  --gold-bright:#c9962e;
+  --ruffle:#c43a22;
+  --line:#c9c3ba;
+  --serif:"Young Serif",Georgia,"Times New Roman",serif;
+  --sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--floor);color:var(--ink);font:400 1.0625rem/1.55 var(--sans)}
+img{max-width:100%;display:block}
+
+/* topo */
+.hero{background:var(--ink);color:var(--paper)}
+.hero figure{margin:0;max-width:940px;margin-inline:auto}
+.hero img{width:100%;height:auto;aspect-ratio:754/424;object-fit:cover}
+.hero .txt{max-width:640px;margin:0 auto;padding:2rem 1.25rem 2.5rem}
+.hero h1{font:400 clamp(2rem,7vw,3.25rem)/1.05 var(--serif);margin:0 0 .75rem;letter-spacing:-.01em}
+.hero p{margin:0;color:#d9d2c8;max-width:52ch}
+.hero .gold{height:3px;background:linear-gradient(90deg,var(--gold-bright),var(--ruffle));}
+
+/* progresso */
+.progress{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
+.progress-in{max-width:640px;margin:0 auto;padding:.55rem 1.25rem;display:flex;align-items:center;gap:.9rem;font-size:.9rem}
+.bar{flex:1;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--gold-bright);transition:width .25s}
+#count{font-variant-numeric:tabular-nums;min-width:5.2em;text-align:right}
+
+/* aviso modo teste */
+.test{display:none;background:var(--ruffle);color:#fff;text-align:center;padding:.6rem 1rem;font-size:.95rem}
+.test.on{display:block}
+
+/* formulário */
+main{max-width:640px;margin:0 auto;padding:1.5rem 1.25rem 4rem}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+.block{margin:2.5rem 0 0}
+.block>h2{font:400 1.5rem/1.2 var(--serif);margin:0 0 .25rem}
+.block>p.lead{margin:0 0 1.25rem;color:#4b3f35;font-size:.98rem}
+.q{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.15rem 1.2rem;margin:0 0 .9rem}
+.q legend,.q .lab{font-weight:600;padding:0;margin:0 0 .15rem;display:block;float:left;width:100%}
+.q legend+*,.q .lab+*{clear:both}
+.q .n{color:var(--gold);font-variant-numeric:tabular-nums;margin-right:.35em}
+.hint{display:block;clear:both;font-size:.9rem;color:#5a4d42;margin:.1rem 0 .75rem}
+.q.err{border-color:var(--ruffle);box-shadow:0 0 0 1px var(--ruffle)}
+.errmsg{display:none;color:var(--ruffle);font-size:.9rem;margin-top:.6rem;font-weight:500}
+.q.err .errmsg{display:block}
+
+/* opções */
+.opts{display:flex;flex-wrap:wrap;gap:.5rem}
+.opts.col{flex-direction:column}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.opt span{display:flex;align-items:center;min-height:44px;padding:.5rem .95rem;border:1.5px solid var(--line);border-radius:999px;background:#fff;transition:background .12s,border-color .12s,color .12s}
+.opts.col .opt span{border-radius:10px}
+.opt:hover span{border-color:var(--gold-bright)}
+.opt input:checked+span{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.opt input:focus-visible+span{outline:3px solid var(--gold-bright);outline-offset:2px}
+.opt input[type=checkbox]+span::before{content:"";width:1.05em;height:1.05em;border:1.5px solid currentColor;border-radius:4px;margin-right:.6rem;flex:none;opacity:.7}
+.opt input[type=checkbox]:checked+span::before{background:var(--gold-bright);border-color:var(--gold-bright);opacity:1}
+
+select,textarea,input[type=text]{width:100%;font:inherit;color:inherit;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:.65rem .8rem;min-height:44px}
+select:focus-visible,textarea:focus-visible,input[type=text]:focus-visible{outline:3px solid var(--gold-bright);outline-offset:1px;border-color:var(--ink)}
+textarea{min-height:6.5rem;resize:vertical}
+.two{display:grid;gap:.75rem;grid-template-columns:1fr 1fr}
+.two label{display:block;font-size:.9rem;color:#4b3f35;margin-bottom:.25rem}
+@media(max-width:480px){.two{grid-template-columns:1fr}}
+
+/* escalas 0–10 e 1–5 */
+.scale{display:grid;gap:.4rem;grid-template-columns:repeat(11,1fr)}
+.scale.s5{grid-template-columns:repeat(5,1fr)}
+.scale .opt span{justify-content:center;padding:.5rem 0;border-radius:8px;font-variant-numeric:tabular-nums}
+.ends{display:flex;justify-content:space-between;font-size:.85rem;color:#5a4d42;margin-top:.4rem}
+@media(max-width:480px){.scale{grid-template-columns:repeat(6,1fr)}}
+
+/* grelha da pergunta 9 */
+.grid-row{padding:.85rem 0;border-top:1px solid var(--line)}
+.grid-row:first-of-type{border-top:0;padding-top:.25rem}
+.grid-row .lab{float:none;width:auto;font-weight:500;margin-bottom:.45rem}
+.grid-row .lab small{display:block;font-weight:400;color:#5a4d42;font-size:.88rem}
+.rate{display:flex;flex-wrap:wrap;gap:.4rem}
+.rate .opt span{min-width:44px;justify-content:center;padding:.5rem .7rem;border-radius:8px}
+.rate .opt.na span{border-style:dashed;font-size:.92rem}
+.key{font-size:.9rem;color:#5a4d42;margin:.25rem 0 .6rem}
+
+.def{background:#fff;border-left:4px solid var(--gold-bright);padding:.7rem .9rem;border-radius:0 8px 8px 0;font-size:.95rem;margin:.2rem 0 .9rem}
+.def b{font-weight:600}
+
+button.send{margin-top:1.5rem;width:100%;min-height:52px;font:600 1.05rem var(--sans);background:var(--ink);color:var(--paper);border:0;border-radius:10px;cursor:pointer}
+button.send:hover{background:#3a281c}
+button.send:focus-visible{outline:3px solid var(--gold-bright);outline-offset:3px}
+button.send[disabled]{opacity:.6;cursor:wait}
+.hp{position:absolute;left:-9999px;height:0;overflow:hidden}
+.small{font-size:.88rem;color:#5a4d42;margin-top:.9rem}
+
+/* agradecimento */
+#thanks{display:none;text-align:left;padding:3rem 0}
+#thanks h2{font:400 2rem/1.1 var(--serif);margin:0 0 .75rem}
+#thanks.on{display:block}
+form.off{display:none}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <figure>
+    <img src="hero.jpg" width="754" height="424" onerror="this.parentNode.remove()" alt="Sala da exposição com três manequins vestidos de dourado e castanho sob uma grande peça suspensa coberta de luzes, com folhos vermelhos ao fundo.">
+  </figure>
+  <div class="gold"></div>
+  <div class="txt">
+    <h1>Como foi a sua visita?</h1>
+    <p>Conte-nos como conheceu a exposição de Joana Vasconcelos e como foi a experiência. São 15 perguntas e demora cerca de 5 minutos. As respostas são anónimas.</p>
+  </div>
+</header>
+
+<div class="test" id="testBanner" role="status">Modo de teste: as respostas ainda não estão a ser guardadas.</div>
+
+<div class="progress" aria-hidden="true">
+  <div class="progress-in">
+    <div class="bar"><i id="barFill"></i></div>
+    <span id="count">0 de 15</span>
+  </div>
+</div>
+
+<main>
+<form id="f" novalidate>
+  <div class="hp" aria-hidden="true"><label>Não preencher <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+
+  <!-- PERFIL -->
+  <section class="block" style="margin-top:0">
+    <h2>Sobre si</h2>
+    <p class="lead">Para percebermos quem nos visita.</p>
+
+    <fieldset class="q" data-q="1" data-kind="selects">
+      <legend><span class="n">1</span>Qual é a sua idade e escolaridade?</legend>
+      <span class="hint">Escolha uma opção em cada campo.</span>
+      <div class="two">
+        <div>
+          <label for="idade">Idade</label>
+          <select id="idade" name="idade">
+            <option value="">Escolher</option>
+            <option>Menos de 18</option><option>18–24</option><option>25–34</option><option>35–44</option><option>45–54</option><option>55–64</option><option>65 ou mais</option>
+          </select>
+        </div>
+        <div>
+          <label for="escol">Escolaridade</label>
+          <select id="escol" name="escolaridade">
+            <option value="">Escolher</option>
+            <option>Até ao 9.º ano</option><option>Ensino secundário</option><option>Licenciatura</option><option>Mestrado ou doutoramento</option>
+          </select>
+        </div>
+      </div>
+      <div class="errmsg">Escolha a idade e a escolaridade.</div>
+    </fieldset>
+
+    <fieldset class="q" data-q="2" data-kind="radio">
+      <legend><span class="n">2</span>Reside em Portugal ou é turista?</legend>
+      <div class="opts" style="margin-top:.6rem">
+        <label class="opt"><input type="radio" name="residencia" value="Reside em Portugal"><span>Resido em Portugal</span></label>
+        <label class="opt"><input type="radio" name="residencia" value="Turista"><span>Sou turista</span></label>
+      </div>
+      <div class="errmsg">Escolha uma opção.</div>
+    </fieldset>
+
+    <fieldset class="q" data-q="3" data-kind="radio">
+      <legend><span class="n">3</span>Com quem visitou a exposição?</legend>
+      <div class="opts" style="margin-top:.6rem">
+        <label class="opt"><input type="radio" name="companhia" value="Sozinho/a"><span>Sozinho/a</span></label>
+        <label class="opt"><input type="radio" name="companhia" value="Família"><span>Família</span></label>
+        <label class="opt"><input type="radio" name="companhia" value="Amigos"><span>Amigos</span></label>
+        <label class="opt"><input type="radio" name="companhia" value="Grupo organizado"><span>Grupo organizado</span></label>
+      </div>
+      <div class="errmsg">Escolha uma opção.</div>
+    </fieldset>
+
+    <fieldset class="q" data-q="4" data-kind="radio">
+      <legend><span class="n">4</span>Quantas vezes visita museus por ano?</legend>
+      <div class="opts" style="margin-top:.6rem">
+        <label class="opt"><input type="radio" name="frequencia" value="Menos de 1"><span>Menos de 1</span></label>
+        <label class="opt"><input type="radio" name="frequencia" value="1 a 2"><span>1 a 2</span></label>
+        <label class="opt"><input type="radio" name="frequencia" value="3 a 5"><span>3 a 5</span></label>
+        <label class="opt"><input type="radio" name="frequencia" value="6 ou mais"><span>6 ou mais</span></label>
+      </div>
+      <div class="errmsg">Escolha uma opção.</div>
+    </fieldset>
+
+    <fieldset class="q" data-q="5" data-kind="radio">
+      <legend><span class="n">5</span>Já tinha visitado este museu antes?</legend>
+      <div class="opts" style="margin-top:.6rem">
+        <label class="opt"><input type="radio" name="repetente" value="Sim"><span>Sim</span></label>
+        <label class="opt"><input type="radio" name="repetente" value="Não"><span>Não, é a primeira vez</span></label>
+      </div>
+      <div class="errmsg">Escolha uma opção.</div>
+    </fieldset>
+  </section>
+
+  <!-- COMUNICAÇÃO DO MUSEU -->
+  <section class="block">
+    <h2>Como soube da exposição</h2>
+    <p class="lead">Queremos saber que meios de divulgação chegaram até si.</p>
+
+    <fieldset class="q" data-q="6" data-kind="check">
+      <legend><span class="n">6</span>Como soube da exposição?</legend>
+      <span class="hint">Pode escolher mais do que uma.</span>
+      <div class="opts col">
+        <label class="opt"><input type="checkbox" name="soube" value="Website do museu"><span>Website do museu</span></label>
+        <label class="opt"><input type="checkbox" name="soube" value="Redes sociais"><span>Redes sociais</span></label>
+        <label class="opt"><input type="checkbox" name="soube" value="Cartaz, mupi ou banner"><span>Cartaz, mupi ou banner</span></label>
+        <label class="opt"><input type="checkbox" name="soube" value="Metro ou transportes"><span>Publicidade no metro ou nos transportes</span></label>
+        <label class="opt"><input type="checkbox" name="soube" value="Imprensa"><span>Imprensa, rádio ou televisão</span></label>
+        <label class="opt"><input type="checkbox" name="soube" value="Boca a boca"><span>Boca a boca</span></label>
+        <label class="opt"><input type="checkbox" name="soube" value="Outro"><span>Outro</span></label>
+      </div>
+      <div class="errmsg">Escolha pelo menos uma opção.</div>
+    </fieldset>
+
+    <fieldset class="q" data-q="7" data-kind="radio">
+      <legend><span class="n">7</span>O que mais motivou a sua visita?</legend>
+      <span class="hint">Escolha a principal.</span>
+      <div class="opts col">
+        <label class="opt"><input type="radio" name="motivo" value="A artista"><span>A artista, Joana Vasconcelos</span></label>
+        <label class="opt"><input type="radio" name="motivo" value="A exposição"><span>O tema ou as obras da exposição</span></label>
+        <label class="opt"><input type="radio" name="motivo" value="O espaço"><span>O espaço do museu</span></label>
+        <label class="opt"><input type="radio" name="motivo" value="Recomendação"><span>Uma recomendação</span></label>
+        <label class="opt"><input type="radio" name="motivo" value="Outro"><span>Outro motivo</span></label>
+      </div>
+      <div class="errmsg">Escolha uma opção.</div>
+    </fieldset>
+
+    <fieldset class="q" data-q="8" data-kind="check">
+      <legend><span class="n">8</span>Que canais do museu utilizou?</legend>
+      <span class="hint">Pode escolher mais do que uma.</span>
+      <div class="opts col">
+        <label class="opt"><input type="checkbox" name="canais" value="Website"><span>Website</span></label>
+        <label class="opt"><input type="checkbox" name="canais" value="App"><span>App</span></label>
+        <label class="opt"><input type="checkbox" name="canais" value="Redes sociais"><span>Redes sociais</span></label>
+        <label class="opt"><input type="checkbox" name="canais" value="Nenhum" data-exclusive><span>Nenhum</span></label>
+      </div>
+      <div class="errmsg">Escolha pelo menos uma opção.</div>
+    </fieldset>
+  </section>
+
+  <!-- COMUNICAÇÃO NO MUSEU -->
+  <section class="block">
+    <h2>Durante a visita</h2>
+    <p class="lead">Avalie cada ponto de 1 (muito mau) a 5 (muito bom). Se não usou, escolha “Não usei”.</p>
+
+    <fieldset class="q" data-q="9" data-kind="grid">
+      <legend><span class="n">9</span>Como avalia cada um destes pontos?</legend>
+      <span class="hint">1 = muito mau · 5 = muito bom</span>
+
+      <div class="grid-row" data-row="textos">
+        <span class="lab">Textos<small>Legendas das obras e painéis nas salas</small></span>
+        <div class="rate">
+          <label class="opt"><input type="radio" name="g_textos" value="1"><span>1</span></label>
+          <label class="opt"><input type="radio" name="g_textos" value="2"><span>2</span></label>
+          <label class="opt"><input type="radio" name="g_textos" value="3"><span>3</span></label>
+          <label class="opt"><input type="radio" name="g_textos" value="4"><span>4</span></label>
+          <label class="opt"><input type="radio" name="g_textos" value="5"><span>5</span></label>
+          <label class="opt na"><input type="radio" name="g_textos" value="Não usei"><span>Não usei</span></label>
+        </div>
+      </div>
+      <div class="grid-row" data-row="orientacao">
+        <span class="lab">Orientação<small>Sinalética, mapa e percurso da exposição</small></span>
+        <div class="rate">
+          <label class="opt"><input type="radio" name="g_orientacao" value="1"><span>1</span></label>
+          <label class="opt"><input type="radio" name="g_orientacao" value="2"><span>2</span></label>
+          <label class="opt"><input type="radio" name="g_orientacao" value="3"><span>3</span></label>
+          <label class="opt"><input type="radio" name="g_orientacao" value="4"><span>4</span></label>
+          <label class="opt"><input type="radio" name="g_orientacao" value="5"><span>5</span></label>
+          <label class="opt na"><input type="radio" name="g_orientacao" value="Não usei"><span>Não usei</span></label>
+        </div>
+      </div>
+      <div class="grid-row" data-row="audioguia">
+        <span class="lab">Audioguia ou app</span>
+        <div class="rate">
+          <label class="opt"><input type="radio" name="g_audioguia" value="1"><span>1</span></label>
+          <label class="opt"><input type="radio" name="g_audioguia" value="2"><span>2</span></label>
+          <label class="opt"><input type="radio" name="g_audioguia" value="3"><span>3</span></label>
+          <label class="opt"><input type="radio" name="g_audioguia" value="4"><span>4</span></label>
+          <label class="opt"><input type="radio" name="g_audioguia" value="5"><span>5</span></label>
+          <label class="opt na"><input type="radio" name="g_audioguia" value="Não usei"><span>Não usei</span></label>
+        </div>
+      </div>
+      <div class="grid-row" data-row="visita_guiada">
+        <span class="lab">Visita guiada ou serviço educativo</span>
+        <div class="rate">
+          <label class="opt"><input type="radio" name="g_visita_guiada" value="1"><span>1</span></label>
+          <label class="opt"><input type="radio" name="g_visita_guiada" value="2"><span>2</span></label>
+          <label class="opt"><input type="radio" name="g_visita_guiada" value="3"><span>3</span></label>
+          <label class="opt"><input type="radio" name="g_visita_guiada" value="4"><span>4</span></label>
+          <label class="opt"><input type="radio" name="g_visita_guiada" value="5"><span>5</span></label>
+          <label class="opt na"><input type="radio" name="g_visita_guiada" value="Não usei"><span>Não usei</span></label>
+        </div>
+      </div>
+      <div class="grid-row" data-row="pessoal">
+        <span class="lab">Pessoal<small>Receção, bilheteira e vigilantes de sala</small></span>
+        <div class="rate">
+          <label class="opt"><input type="radio" name="g_pessoal" value="1"><span>1</span></label>
+          <label class="opt"><input type="radio" name="g_pessoal" value="2"><span>2</span></label>
+          <label class="opt"><input type="radio" name="g_pessoal" value="3"><span>3</span></label>
+          <label class="opt"><input type="radio" name="g_pessoal" value="4"><span>4</span></label>
+          <label class="opt"><input type="radio" name="g_pessoal" value="5"><span>5</span></label>
+          <label class="opt na"><input type="radio" name="g_pessoal" value="Não usei"><span>Não usei</span></label>
+        </div>
+      </div>
+      <div class="grid-row" data-row="loja">
+        <span class="lab">Loja</span>
+        <div class="rate">
+          <label class="opt"><input type="radio" name="g_loja" value="1"><span>1</span></label>
+          <label class="opt"><input type="radio" name="g_loja" value="2"><span>2</span></label>
+          <label class="opt"><input type="radio" name="g_loja" value="3"><span>3</span></label>
+          <label class="opt"><input type="radio" name="g_loja" value="4"><span>4</span></label>
+          <label class="opt"><input type="radio" name="g_loja" value="5"><span>5</span></label>
+          <label class="opt na"><input type="radio" name="g_loja" value="Não usei"><span>Não usei</span></label>
+        </div>
+      </div>
+      <div class="errmsg">Falta avaliar algum dos pontos.</div>
+    </fieldset>
+  </section>
+
+  <!-- EXPERIÊNCIA -->
+  <section class="block">
+    <h2>A exposição</h2>
+    <p class="lead">Fale-nos do que viu.</p>
+
+    <div class="q" data-q="10" data-kind="text">
+      <label class="lab" for="gostou"><span class="n">10</span>O que mais gostou na exposição?</label>
+      <span class="hint">Resposta curta. Pode deixar em branco.</span>
+      <textarea id="gostou" name="mais_gostou" maxlength="600"></textarea>
+    </div>
+
+    <fieldset class="q" data-q="11" data-kind="radio">
+      <legend><span class="n">11</span>Aprendeu algo novo com esta visita?</legend>
+      <div class="scale s5" style="margin-top:.7rem">
+        <label class="opt"><input type="radio" name="aprendeu" value="1"><span>1</span></label>
+        <label class="opt"><input type="radio" name="aprendeu" value="2"><span>2</span></label>
+        <label class="opt"><input type="radio" name="aprendeu" value="3"><span>3</span></label>
+        <label class="opt"><input type="radio" name="aprendeu" value="4"><span>4</span></label>
+        <label class="opt"><input type="radio" name="aprendeu" value="5"><span>5</span></label>
+      </div>
+      <div class="ends"><span>Nada</span><span>Muito</span></div>
+      <div class="errmsg">Escolha um valor.</div>
+    </fieldset>
+
+    <fieldset class="q" data-q="12" data-kind="radio">
+      <legend><span class="n">12</span>A exposição mudou a sua perceção da artista?</legend>
+      <div class="scale s5" style="margin-top:.7rem">
+        <label class="opt"><input type="radio" name="percecao" value="1"><span>1</span></label>
+        <label class="opt"><input type="radio" name="percecao" value="2"><span>2</span></label>
+        <label class="opt"><input type="radio" name="percecao" value="3"><span>3</span></label>
+        <label class="opt"><input type="radio" name="percecao" value="4"><span>4</span></label>
+        <label class="opt"><input type="radio" name="percecao" value="5"><span>5</span></label>
+      </div>
+      <div class="ends"><span>Nada</span><span>Muito</span></div>
+      <div class="errmsg">Escolha um valor.</div>
+    </fieldset>
+  </section>
+
+  <!-- FIDELIZAÇÃO -->
+  <section class="block">
+    <h2>Depois da visita</h2>
+    <p class="lead">Para terminar.</p>
+
+    <fieldset class="q" data-q="13" data-kind="radio">
+      <legend><span class="n">13</span>Qual é a probabilidade de recomendar esta exposição a um amigo?</legend>
+      <div class="scale" style="margin-top:.7rem">
+        <label class="opt"><input type="radio" name="recomenda" value="0"><span>0</span></label>
+        <label class="opt"><input type="radio" name="recomenda" value="1"><span>1</span></label>
+        <label class="opt"><input type="radio" name="recomenda" value="2"><span>2</span></label>
+        <label class="opt"><input type="radio" name="recomenda" value="3"><span>3</span></label>
+        <label class="opt"><input type="radio" name="recomenda" value="4"><span>4</span></label>
+        <label class="opt"><input type="radio" name="recomenda" value="5"><span>5</span></label>
+        <label class="opt"><input type="radio" name="recomenda" value="6"><span>6</span></label>
+        <label class="opt"><input type="radio" name="recomenda" value="7"><span>7</span></label>
+        <label class="opt"><input type="radio" name="recomenda" value="8"><span>8</span></label>
+        <label class="opt"><input type="radio" name="recomenda" value="9"><span>9</span></label>
+        <label class="opt"><input type="radio" name="recomenda" value="10"><span>10</span></label>
+      </div>
+      <div class="ends"><span>Nada provável</span><span>Muito provável</span></div>
+      <div class="errmsg">Escolha um valor.</div>
+    </fieldset>
+
+    <fieldset class="q" data-q="14" data-kind="radio">
+      <legend><span class="n">14</span>Considera-se público ou utilizador do museu?</legend>
+      <div class="def">
+        <b>Público:</b> visita o museu de vez em quando, sobretudo para ver exposições.<br>
+        <b>Utilizador:</b> recorre ao museu com regularidade, por exemplo para atividades, eventos, biblioteca ou cafetaria.
+      </div>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="publico_utilizador" value="Público"><span>Público</span></label>
+        <label class="opt"><input type="radio" name="publico_utilizador" value="Utilizador"><span>Utilizador</span></label>
+        <label class="opt"><input type="radio" name="publico_utilizador" value="Não sei"><span>Não sei</span></label>
+      </div>
+      <div class="errmsg">Escolha uma opção.</div>
+    </fieldset>
+
+    <div class="q" data-q="15" data-kind="text">
+      <label class="lab" for="mudaria"><span class="n">15</span>O que mudaria nesta visita?</label>
+      <span class="hint">Pode ser algo de que não gostou ou que faltou. Pode deixar em branco.</span>
+      <textarea id="mudaria" name="o_que_mudaria" maxlength="600"></textarea>
+    </div>
+  </section>
+
+  <button class="send" type="submit" id="send">Enviar respostas</button>
+  <p class="small" id="formErr" role="alert" style="color:var(--ruffle);display:none"></p>
+  <p class="small">As respostas são anónimas e usadas apenas para melhorar a experiência dos visitantes.</p>
+</form>
+
+<section id="thanks" role="status" tabindex="-1">
+  <h2>Obrigado pela sua visita</h2>
+  <p>As suas respostas foram enviadas. Ajudam o museu a melhorar a forma como comunica e recebe os visitantes.</p>
+</section>
+</main>
+
+<script src="/account/config.js"></script>
+<script>
+/* ──────────────────────────────────────────────
+   CONFIGURAÇÃO
+   As respostas vão para a tabela inquerito_respostas
+   do Supabase (ver respostas.sql nesta pasta).
+   Deixar ATIVO = false até o SQL ter sido corrido:
+   enquanto estiver false, a página mostra o aviso
+   "Modo de teste" e não envia nada.
+   ────────────────────────────────────────────── */
+const ATIVO = false;
+const CFG = window.MARIAESTUDA_CONFIG || {};
+const ENDPOINT = ATIVO && CFG.SUPABASE_URL ? CFG.SUPABASE_URL + "/rest/v1/inquerito_respostas" : "";
+
+const form = document.getElementById("f");
+const qs = [...form.querySelectorAll(".q")];
+const total = qs.length; // 15
+const testBanner = document.getElementById("testBanner");
+if (!ENDPOINT) testBanner.classList.add("on");
+
+function answered(q){
+  const kind = q.dataset.kind;
+  if (kind === "text") return q.querySelector("textarea").value.trim().length > 0;
+  if (kind === "radio") return !!q.querySelector("input:checked");
+  if (kind === "check") return !!q.querySelector("input:checked");
+  if (kind === "selects") return [...q.querySelectorAll("select")].every(s => s.value);
+  if (kind === "grid") return [...q.querySelectorAll(".grid-row")].every(r => r.querySelector("input:checked"));
+  return false;
+}
+function updateProgress(){
+  const done = qs.filter(answered).length;
+  document.getElementById("barFill").style.width = (done / total * 100) + "%";
+  document.getElementById("count").textContent = done + " de " + total;
+}
+form.addEventListener("input", e => {
+  const q = e.target.closest(".q");
+  if (q && answered(q)) q.classList.remove("err");
+  updateProgress();
+});
+form.addEventListener("change", e => {
+  const t = e.target;
+  if (t.type === "checkbox" && t.closest(".q")) {
+    const boxes = [...t.closest(".q").querySelectorAll("input[type=checkbox]")];
+    if (t.hasAttribute("data-exclusive") && t.checked) boxes.forEach(b => { if (b !== t) b.checked = false; });
+    else if (t.checked) boxes.forEach(b => { if (b.hasAttribute("data-exclusive")) b.checked = false; });
+  }
+  const q = t.closest(".q");
+  if (q && answered(q)) q.classList.remove("err");
+  updateProgress();
+});
+
+function showThanks(){
+  form.classList.add("off");
+  testBanner.classList.remove("on");
+  const th = document.getElementById("thanks");
+  th.classList.add("on"); th.focus();
+  window.scrollTo({top: document.querySelector("main").offsetTop - 60});
+}
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const formErr = document.getElementById("formErr");
+  formErr.style.display = "none";
+
+  // perguntas obrigatórias: todas menos 10 e 15
+  const missing = qs.filter(q => q.dataset.kind !== "text" && !answered(q));
+  qs.forEach(q => q.classList.toggle("err", missing.includes(q)));
+  if (missing.length) {
+    missing[0].scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "center"});
+    formErr.textContent = missing.length === 1 ? "Falta responder a 1 pergunta." : "Faltam " + missing.length + " perguntas por responder.";
+    formErr.style.display = "block";
+    return;
+  }
+  if (form.website.value) { showThanks(); return; } // honeypot: o robô julga que enviou
+
+  // recolher respostas (a hora fica registada pelo servidor, em created_at)
+  const data = {
+    idade: form.idade.value,
+    escolaridade: form.escolaridade.value,
+    residencia: form.residencia.value,
+    companhia: form.companhia.value,
+    frequencia_anual: form.frequencia.value,
+    ja_visitou: form.repetente.value,
+    como_soube: [...form.querySelectorAll("[name=soube]:checked")].map(i => i.value),
+    motivo: form.motivo.value,
+    canais_usados: [...form.querySelectorAll("[name=canais]:checked")].map(i => i.value),
+    aval_textos: form.g_textos.value,
+    aval_orientacao: form.g_orientacao.value,
+    aval_audioguia: form.g_audioguia.value,
+    aval_visita_guiada: form.g_visita_guiada.value,
+    aval_pessoal: form.g_pessoal.value,
+    aval_loja: form.g_loja.value,
+    mais_gostou: form.mais_gostou.value.trim(),
+    aprendeu_1a5: form.aprendeu.value,
+    percecao_artista_1a5: form.percecao.value,
+    recomenda_0a10: form.recomenda.value,
+    publico_ou_utilizador: form.publico_utilizador.value,
+    o_que_mudaria: form.o_que_mudaria.value.trim()
+  };
+
+  const btn = document.getElementById("send");
+  btn.disabled = true; btn.textContent = "A enviar…";
+
+  try {
+    if (ENDPOINT) {
+      const r = await fetch(ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": CFG.SUPABASE_ANON_KEY,
+          "Authorization": "Bearer " + CFG.SUPABASE_ANON_KEY,
+          "Prefer": "return=minimal"
+        },
+        body: JSON.stringify({respostas: data})
+      });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+    } else {
+      console.log("Modo de teste. Respostas (não guardadas):", data);
+    }
+    showThanks();
+  } catch (err) {
+    btn.disabled = false; btn.textContent = "Enviar respostas";
+    formErr.textContent = "Não foi possível enviar. Verifique a ligação e tente outra vez.";
+    formErr.style.display = "block";
+  }
+});
+updateProgress();
+</script>
+</body>
+</html>
