@@ -6,10 +6,10 @@
 <title>Questionário aos visitantes · Exposição Joana Vasconcelos</title>
 <meta name="description" content="Questionário de 5 minutos para quem visitou a exposição de Joana Vasconcelos.">
 <meta name="robots" content="noindex">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+/* fontes alojadas aqui, para nenhum pedido sair para o Google (SIL OFL 1.1) */
+@font-face{font-family:"Young Serif";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/young-serif-latin.woff2) format("woff2")}
+@font-face{font-family:"Instrument Sans";font-style:normal;font-weight:400 600;font-display:swap;src:url(fonts/instrument-sans-latin.woff2) format("woff2")}
 :root{
   --floor:#e6e2dc;
   --paper:#f3f0eb;
@@ -35,12 +35,39 @@ img{max-width:100%;display:block}
 .hero p{margin:0;color:#d9d2c8;max-width:52ch}
 .hero .gold{height:3px;background:linear-gradient(90deg,var(--gold-bright),var(--ruffle));}
 
-/* progresso */
-.progress{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
-.progress-in{max-width:640px;margin:0 auto;padding:.55rem 1.25rem;display:flex;align-items:center;gap:.9rem;font-size:.9rem}
-.bar{flex:1;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
-.bar i{display:block;height:100%;width:0;background:var(--gold-bright);transition:width .25s}
-#count{font-variant-numeric:tabular-nums;min-width:5.2em;text-align:right}
+/* depois do consentimento o topo encolhe */
+body.started .hero figure,body.started .hero .txt p{display:none}
+body.started .hero .txt{padding:1.1rem 1.25rem 1.2rem}
+body.started .hero h1{font-size:1.6rem;margin:0}
+
+/* progresso: um segmento por parte */
+.progress{display:none;position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
+body.started .progress{display:block}
+body.done .progress{display:none}
+.progress-in{max-width:640px;margin:0 auto;padding:.6rem 1.25rem;font-size:.9rem}
+#stepLabel{display:block;margin-bottom:.4rem;font-weight:500}
+.segs{display:grid;grid-template-columns:repeat(5,1fr);gap:.35rem}
+.segs i{display:block;height:6px;background:var(--line);border-radius:3px;overflow:hidden;position:relative}
+.segs i b{position:absolute;inset:0 auto 0 0;width:0;background:var(--gold-bright);transition:width .25s}
+.segs i.ok b{background:var(--gold)}
+
+/* consentimento */
+.consent h2{font:400 1.75rem/1.15 var(--serif);margin:0 0 1rem}
+.consent ul{list-style:none;margin:0;padding:0;display:grid;gap:.7rem}
+.consent li{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:.9rem 1rem}
+.consent li b{display:block;font-weight:600;margin-bottom:.15rem}
+.consent li span{color:#4b3f35;font-size:.98rem}
+
+/* um passo de cada vez */
+.step{display:none}
+.step.on{display:block}
+.step h2:focus{outline:none}
+.nav{display:flex;gap:.75rem;margin-top:1.5rem}
+.nav button{min-height:52px;font:600 1.05rem var(--sans);border-radius:10px;cursor:pointer}
+.nav .back{flex:0 0 auto;padding:0 1.2rem;background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.nav .back:hover{background:var(--paper)}
+.nav .back:focus-visible{outline:3px solid var(--gold-bright);outline-offset:3px}
+.nav .back[hidden]{display:none}
 
 /* aviso modo teste */
 .test{display:none;background:var(--ruffle);color:#fff;text-align:center;padding:.6rem 1rem;font-size:.95rem}
@@ -49,7 +76,7 @@ img{max-width:100%;display:block}
 /* formulário */
 main{max-width:640px;margin:0 auto;padding:1.5rem 1.25rem 4rem}
 fieldset{border:0;margin:0;padding:0;min-width:0}
-.block{margin:2.5rem 0 0}
+.block{margin:0}
 .block>h2{font:400 1.5rem/1.2 var(--serif);margin:0 0 .25rem}
 .block>p.lead{margin:0 0 1.25rem;color:#4b3f35;font-size:.98rem}
 .q{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:1.1rem 1.15rem 1.2rem;margin:0 0 .9rem}
@@ -101,7 +128,7 @@ textarea{min-height:6.5rem;resize:vertical}
 .def{background:#fff;border-left:4px solid var(--gold-bright);padding:.7rem .9rem;border-radius:0 8px 8px 0;font-size:.95rem;margin:.2rem 0 .9rem}
 .def b{font-weight:600}
 
-button.send{margin-top:1.5rem;width:100%;min-height:52px;font:600 1.05rem var(--sans);background:var(--ink);color:var(--paper);border:0;border-radius:10px;cursor:pointer}
+button.send{flex:1;min-height:52px;font:600 1.05rem var(--sans);background:var(--ink);color:var(--paper);border:0;border-radius:10px;cursor:pointer}
 button.send:hover{background:#3a281c}
 button.send:focus-visible{outline:3px solid var(--gold-bright);outline-offset:3px}
 button.send[disabled]{opacity:.6;cursor:wait}
@@ -126,27 +153,38 @@ form.off{display:none}
   <div class="gold"></div>
   <div class="txt">
     <h1>Como foi a sua visita?</h1>
-    <p>Conte-nos como conheceu a exposição de Joana Vasconcelos e como foi a experiência. São 15 perguntas e demora cerca de 5 minutos. As respostas são anónimas.</p>
+    <p>Um questionário para um trabalho de aula sobre a exposição de Joana Vasconcelos: como a conheceu e como foi a visita. São 15 perguntas em 5 partes, cerca de 5 minutos.</p>
   </div>
 </header>
 
 <div class="test" id="testBanner" role="status">Modo de teste: as respostas ainda não estão a ser guardadas.</div>
 
-<div class="progress" aria-hidden="true">
+<div class="progress">
   <div class="progress-in">
-    <div class="bar"><i id="barFill"></i></div>
-    <span id="count">0 de 15</span>
+    <span id="stepLabel" aria-live="polite">Parte 1 de 5</span>
+    <div class="segs" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
   </div>
 </div>
 
 <main>
-<form id="f" novalidate>
+<section class="consent" id="consent" aria-labelledby="consentTitle">
+  <h2 id="consentTitle">Antes de começar</h2>
+  <ul>
+    <li><b>É anónimo</b><span>Não pedimos o seu nome, email nem qualquer contacto. A página não usa cookies e não guarda o seu endereço de internet junto das respostas.</span></li>
+    <li><b>Só para uso em aula</b><span>As respostas servem apenas para um trabalho de aula e não serão usadas para mais nada.</span></li>
+    <li><b>É voluntário</b><span>Responde só se quiser. As duas perguntas de resposta livre podem ficar em branco.</span></li>
+    <li><b>Pode parar quando quiser</b><span>Nada é enviado até carregar em “Enviar”, no fim. Se fechar a página antes, nenhuma resposta fica guardada.</span></li>
+  </ul>
+  <div class="nav"><button class="send" type="button" id="start">Concordo e quero participar</button></div>
+</section>
+
+<form id="f" novalidate hidden>
   <div class="hp" aria-hidden="true"><label>Não preencher <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
 
   <!-- PERFIL -->
-  <section class="block" style="margin-top:0">
-    <h2>Sobre si</h2>
-    <p class="lead">Para percebermos quem nos visita.</p>
+  <section class="block step" data-step="1" data-title="Sobre si">
+    <h2 tabindex="-1">Sobre si</h2>
+    <p class="lead">Cinco perguntas rápidas para percebermos quem nos visita.</p>
 
     <fieldset class="q" data-q="1" data-kind="selects">
       <legend><span class="n">1</span>Qual é a sua idade e escolaridade?</legend>
@@ -212,9 +250,9 @@ form.off{display:none}
   </section>
 
   <!-- COMUNICAÇÃO DO MUSEU -->
-  <section class="block">
-    <h2>Como soube da exposição</h2>
-    <p class="lead">Queremos saber que meios de divulgação chegaram até si.</p>
+  <section class="block step" data-step="2" data-title="Como soube da exposição">
+    <h2 tabindex="-1">Como soube da exposição</h2>
+    <p class="lead">Primeira parte feita. Agora, que meios de divulgação chegaram até si.</p>
 
     <fieldset class="q" data-q="6" data-kind="check">
       <legend><span class="n">6</span>Como soube da exposição?</legend>
@@ -258,9 +296,9 @@ form.off{display:none}
   </section>
 
   <!-- COMUNICAÇÃO NO MUSEU -->
-  <section class="block">
-    <h2>Durante a visita</h2>
-    <p class="lead">Avalie cada ponto de 1 (muito mau) a 5 (muito bom). Se não usou, escolha “Não usei”.</p>
+  <section class="block step" data-step="3" data-title="Durante a visita">
+    <h2 tabindex="-1">Durante a visita</h2>
+    <p class="lead">Já vai a meio. Avalie cada ponto de 1 (muito mau) a 5 (muito bom). Se não usou, escolha “Não usei”.</p>
 
     <fieldset class="q" data-q="9" data-kind="grid">
       <legend><span class="n">9</span>Como avalia cada um destes pontos?</legend>
@@ -337,9 +375,9 @@ form.off{display:none}
   </section>
 
   <!-- EXPERIÊNCIA -->
-  <section class="block">
-    <h2>A exposição</h2>
-    <p class="lead">Fale-nos do que viu.</p>
+  <section class="block step" data-step="4" data-title="A exposição">
+    <h2 tabindex="-1">A exposição</h2>
+    <p class="lead">Falta pouco. Fale-nos do que viu.</p>
 
     <div class="q" data-q="10" data-kind="text">
       <label class="lab" for="gostou"><span class="n">10</span>O que mais gostou na exposição?</label>
@@ -375,9 +413,9 @@ form.off{display:none}
   </section>
 
   <!-- FIDELIZAÇÃO -->
-  <section class="block">
-    <h2>Depois da visita</h2>
-    <p class="lead">Para terminar.</p>
+  <section class="block step" data-step="5" data-title="Depois da visita">
+    <h2 tabindex="-1">Depois da visita</h2>
+    <p class="lead">Última parte: são só três perguntas.</p>
 
     <fieldset class="q" data-q="13" data-kind="radio">
       <legend><span class="n">13</span>Qual é a probabilidade de recomendar esta exposição a um amigo?</legend>
@@ -419,14 +457,17 @@ form.off{display:none}
     </div>
   </section>
 
-  <button class="send" type="submit" id="send">Enviar respostas</button>
   <p class="small" id="formErr" role="alert" style="color:var(--ruffle);display:none"></p>
-  <p class="small">As respostas são anónimas e usadas apenas para melhorar a experiência dos visitantes.</p>
+  <div class="nav">
+    <button class="back" type="button" id="back">Voltar</button>
+    <button class="send" type="submit" id="send">Continuar</button>
+  </div>
+  <p class="small">As respostas são anónimas e usadas apenas num trabalho de aula. Pode parar a qualquer momento: nada é enviado antes do fim.</p>
 </form>
 
 <section id="thanks" role="status" tabindex="-1">
-  <h2>Obrigado pela sua visita</h2>
-  <p>As suas respostas foram enviadas. Ajudam o museu a melhorar a forma como comunica e recebe os visitantes.</p>
+  <h2>Obrigado pela sua participação</h2>
+  <p>As suas respostas foram enviadas e serão usadas apenas no trabalho de aula. Já pode fechar esta página.</p>
 </section>
 </main>
 
@@ -445,10 +486,18 @@ const CFG = window.MARIAESTUDA_CONFIG || {};
 const ENDPOINT = ATIVO && CFG.SUPABASE_URL ? CFG.SUPABASE_URL + "/rest/v1/inquerito_respostas" : "";
 
 const form = document.getElementById("f");
-const qs = [...form.querySelectorAll(".q")];
-const total = qs.length; // 15
+const consent = document.getElementById("consent");
+const steps = [...form.querySelectorAll(".step")];
+const segs = [...document.querySelectorAll(".segs i")];
 const testBanner = document.getElementById("testBanner");
+const formErr = document.getElementById("formErr");
+const btnSend = document.getElementById("send");
+const btnBack = document.getElementById("back");
+const reduced = matchMedia("(prefers-reduced-motion:reduce)").matches;
 if (!ENDPOINT) testBanner.classList.add("on");
+
+let current = 0;   // 0 = consentimento, 1 a 5 = partes
+let sent = false;
 
 function answered(q){
   const kind = q.dataset.kind;
@@ -459,14 +508,51 @@ function answered(q){
   if (kind === "grid") return [...q.querySelectorAll(".grid-row")].every(r => r.querySelector("input:checked"));
   return false;
 }
+const required = step => [...step.querySelectorAll(".q")].filter(q => q.dataset.kind !== "text");
+const missingIn = step => required(step).filter(q => !answered(q));
+
 function updateProgress(){
-  const done = qs.filter(answered).length;
-  document.getElementById("barFill").style.width = (done / total * 100) + "%";
-  document.getElementById("count").textContent = done + " de " + total;
+  steps.forEach((st, i) => {
+    const req = required(st);
+    const frac = (req.length - missingIn(st).length) / req.length;
+    const passed = i + 1 < current;
+    segs[i].firstChild.style.width = (passed ? 100 : frac * 100) + "%";
+    segs[i].classList.toggle("ok", passed);
+  });
 }
+
+function show(n, push){
+  current = n;
+  formErr.style.display = "none";
+  document.body.classList.toggle("started", n > 0);
+  consent.hidden = n > 0;
+  form.hidden = n === 0;
+  steps.forEach((st, i) => st.classList.toggle("on", i + 1 === n));
+  if (n > 0) {
+    const st = steps[n - 1];
+    document.getElementById("stepLabel").textContent = "Parte " + n + " de 5 · " + st.dataset.title;
+    btnBack.hidden = n === 1;
+    btnSend.textContent = n === steps.length ? "Enviar respostas" : "Continuar";
+    window.scrollTo({top: 0, behavior: "auto"});
+    st.querySelector("h2").focus({preventScroll: true});
+  }
+  updateProgress();
+  if (push) history.pushState({step: n}, "");
+}
+
+// o botão "voltar" do navegador recua uma parte em vez de sair da página
+history.replaceState({step: 0}, "");
+window.addEventListener("popstate", e => {
+  if (sent) return;
+  show(e.state && typeof e.state.step === "number" ? e.state.step : 0, false);
+});
+document.getElementById("start").addEventListener("click", () => show(1, true));
+btnBack.addEventListener("click", () => history.back());
+
 form.addEventListener("input", e => {
   const q = e.target.closest(".q");
   if (q && answered(q)) q.classList.remove("err");
+  if (current && !missingIn(steps[current - 1]).length) formErr.style.display = "none";
   updateProgress();
 });
 form.addEventListener("change", e => {
@@ -478,35 +564,41 @@ form.addEventListener("change", e => {
   }
   const q = t.closest(".q");
   if (q && answered(q)) q.classList.remove("err");
+  if (current && !missingIn(steps[current - 1]).length) formErr.style.display = "none";
   updateProgress();
 });
 
 function showThanks(){
+  sent = true;
   form.classList.add("off");
   testBanner.classList.remove("on");
+  document.body.classList.add("done");
   const th = document.getElementById("thanks");
   th.classList.add("on"); th.focus();
-  window.scrollTo({top: document.querySelector("main").offsetTop - 60});
+  window.scrollTo({top: 0});
 }
 
 form.addEventListener("submit", async e => {
   e.preventDefault();
-  const formErr = document.getElementById("formErr");
   formErr.style.display = "none";
 
-  // perguntas obrigatórias: todas menos 10 e 15
-  const missing = qs.filter(q => q.dataset.kind !== "text" && !answered(q));
-  qs.forEach(q => q.classList.toggle("err", missing.includes(q)));
+  // só se validam as perguntas da parte visível (10 e 15 são opcionais)
+  const step = steps[current - 1];
+  const missing = missingIn(step);
+  required(step).forEach(q => q.classList.toggle("err", missing.includes(q)));
   if (missing.length) {
-    missing[0].scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "center"});
-    formErr.textContent = missing.length === 1 ? "Falta responder a 1 pergunta." : "Faltam " + missing.length + " perguntas por responder.";
+    missing[0].scrollIntoView({behavior: reduced ? "auto" : "smooth", block: "center"});
+    formErr.textContent = missing.length === 1 ? "Falta responder a 1 pergunta desta parte." : "Faltam " + missing.length + " perguntas desta parte.";
     formErr.style.display = "block";
     return;
   }
+  if (current < steps.length) { show(current + 1, true); return; }
+
   if (form.website.value) { showThanks(); return; } // honeypot: o robô julga que enviou
 
   // recolher respostas (a hora fica registada pelo servidor, em created_at)
   const data = {
+    consentimento: true,
     idade: form.idade.value,
     escolaridade: form.escolaridade.value,
     residencia: form.residencia.value,
@@ -530,8 +622,8 @@ form.addEventListener("submit", async e => {
     o_que_mudaria: form.o_que_mudaria.value.trim()
   };
 
-  const btn = document.getElementById("send");
-  btn.disabled = true; btn.textContent = "A enviar…";
+  btnSend.disabled = true; btnSend.textContent = "A enviar…";
+  btnBack.disabled = true;
 
   try {
     if (ENDPOINT) {
@@ -551,12 +643,13 @@ form.addEventListener("submit", async e => {
     }
     showThanks();
   } catch (err) {
-    btn.disabled = false; btn.textContent = "Enviar respostas";
+    btnSend.disabled = false; btnSend.textContent = "Enviar respostas";
+    btnBack.disabled = false;
     formErr.textContent = "Não foi possível enviar. Verifique a ligação e tente outra vez.";
     formErr.style.display = "block";
   }
 });
-updateProgress();
+show(0, false);
 </script>
 </body>
 </html>
