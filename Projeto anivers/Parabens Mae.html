@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parabéns, Mãe</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fbf5ee; --bg2:#f3e6da; --ink:#3a2b25; --muted:#8a6f63;
+    --accent:#c6703f; --accent2:#e2a97e; --card:#ffffff; --gold:#b98a3c;
+    --shadow:0 20px 50px rgba(80,40,20,.18);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    font-family:'Nunito',system-ui,sans-serif; color:var(--ink);
+    background:radial-gradient(1200px 800px at 20% 10%,#fff4e8 0%,var(--bg) 40%,var(--bg2) 100%);
+    min-height:100dvh; overflow-x:hidden; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,.serif{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;letter-spacing:.01em}
+  .screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px 16px;
+    opacity:0;pointer-events:none;transition:opacity .6s ease;overflow:auto}
+  .screen.active{opacity:1;pointer-events:auto}
+
+  /* ---------- hearts background ---------- */
+  .hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+  .hearts span{position:absolute;bottom:-40px;font-size:18px;opacity:0;animation:rise linear infinite;color:var(--accent2)}
+  @keyframes rise{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.55}100%{transform:translateY(-110vh) rotate(40deg);opacity:0}}
+
+  /* ---------- cover ---------- */
+  .cover{text-align:center;z-index:1}
+  .cover > div{max-width:560px}
+  .cover .eyebrow{text-transform:uppercase;letter-spacing:.35em;font-size:12px;color:var(--muted);margin-bottom:18px}
+  .cover h1{font-size:clamp(44px,10vw,84px);line-height:1;margin:0 0 10px;color:var(--ink)}
+  .cover h1 em{font-style:italic;color:var(--accent)}
+  .cover p{font-size:18px;line-height:1.6;color:var(--muted);margin:18px auto 34px;max-width:420px}
+  .btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:700;font-size:17px;letter-spacing:.02em;
+    padding:16px 34px;border-radius:999px;color:#fff;background:linear-gradient(135deg,var(--accent),#a85a2e);
+    box-shadow:0 12px 30px rgba(198,112,63,.35);transition:transform .15s,box-shadow .15s}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(198,112,63,.45)}
+  .btn:active{transform:translateY(0)}
+  .btn.ghost{background:transparent;color:var(--accent);box-shadow:none;border:2px solid var(--accent2)}
+  .pulse{animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 12px 30px rgba(198,112,63,.35)}50%{box-shadow:0 12px 40px rgba(198,112,63,.6)}}
+
+  /* ---------- gallery ---------- */
+  .gallery{flex-direction:column;z-index:1;gap:14px}
+  .progress{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:520px}
+  .progress i{width:7px;height:7px;border-radius:50%;background:#e4cdbb;transition:all .3s}
+  .progress i.done{background:var(--accent2)}
+  .progress i.now{background:var(--accent);transform:scale(1.5)}
+  .stage{position:relative;width:min(92vw,620px);perspective:1400px}
+  .card{
+    background:var(--card);border-radius:22px;padding:14px 14px 22px;box-shadow:var(--shadow);
+    transform-origin:center;animation:cardIn .7s cubic-bezier(.2,.8,.2,1) both;
+  }
+  .card.out{animation:cardOut .45s ease-in both}
+  @keyframes cardIn{from{opacity:0;transform:translateY(40px) rotateX(10deg) scale(.96)}to{opacity:1;transform:none}}
+  @keyframes cardOut{to{opacity:0;transform:translateX(-60px) rotate(-4deg) scale(.95)}}
+  .photo{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:14px;display:block;background:#eee}
+  .photo.wide{aspect-ratio:16/9}
+  .meta{padding:16px 6px 0;text-align:center}
+  .year{display:inline-block;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px}
+  .caption{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,3.2vw,26px);line-height:1.35;margin:0;color:var(--ink)}
+  .nav{display:flex;gap:12px;align-items:center;justify-content:center;width:min(92vw,620px)}
+  .nav .btn{padding:13px 26px;font-size:15px}
+  .nav .count{color:var(--muted);font-size:14px;min-width:60px;text-align:center}
+  .hint{font-size:13px;color:var(--muted);opacity:.8;text-align:center}
+
+  /* ---------- interlude ---------- */
+  .interlude{text-align:center;z-index:1}
+  .interlude > div{max-width:520px}
+  .interlude h2{font-size:clamp(34px,7vw,56px);margin:0 0 14px;line-height:1.1}
+  .interlude p{font-size:18px;line-height:1.7;color:var(--muted);margin:0 0 30px}
+
+  /* ---------- voucher ---------- */
+  .final{flex-direction:column;z-index:1;gap:22px;text-align:center}
+  .final h2{font-size:clamp(30px,6vw,50px);margin:0;line-height:1.1}
+  .final .sub{color:var(--muted);font-size:17px;margin:0;max-width:440px}
+  .envelope{position:relative;width:min(88vw,460px);aspect-ratio:1.5;cursor:pointer;margin:10px 0}
+  .env-back,.env-front,.env-flap{position:absolute;inset:0;border-radius:14px}
+  .env-back{background:#e8c7ad}
+  .env-front{background:linear-gradient(180deg,#f1d6bf,#e4bd9c);clip-path:polygon(0 0,50% 55%,100% 0,100% 100%,0 100%);z-index:3}
+  .env-flap{background:linear-gradient(180deg,#d9ab86,#cf9a70);clip-path:polygon(0 0,100% 0,50% 58%);transform-origin:top;z-index:4;transition:transform .7s cubic-bezier(.4,0,.2,1)}
+  .seal{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#e07a5f,#a83b2a);z-index:5;box-shadow:0 6px 16px rgba(120,40,20,.4);display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;transition:opacity .4s}
+  .env-label{position:absolute;bottom:14px;width:100%;text-align:center;z-index:6;color:#7a4a2a;font-weight:700;letter-spacing:.15em;text-transform:uppercase;font-size:12px;transition:opacity .3s}
+  .envelope.open .env-flap{transform:rotateX(180deg);z-index:1}
+  .envelope.open .seal{opacity:0}
+  .envelope.open .env-label{opacity:0}
+  .letter{position:absolute;left:5%;right:5%;top:8%;height:80%;z-index:2;background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(80,40,20,.25);
+    transform:translateY(20%);opacity:0;transition:transform .8s .35s cubic-bezier(.2,.8,.2,1),opacity .6s .35s}
+  .envelope.open .letter{transform:translateY(-62%);opacity:1;z-index:7}
+
+  .voucher{display:none;width:min(92vw,520px);background:#fff;border-radius:22px;box-shadow:var(--shadow);overflow:hidden;text-align:left;animation:cardIn .8s both}
+  .voucher.show{display:block}
+  .v-head{background:linear-gradient(135deg,#2f3e3a,#4a5f58);color:#f6efe6;padding:26px 28px}
+  .v-head .tag{font-size:11px;letter-spacing:.35em;text-transform:uppercase;opacity:.8}
+  .v-head h3{font-family:'Cormorant Garamond',serif;font-size:34px;margin:8px 0 2px;font-weight:600;line-height:1.1}
+  .v-head .where{font-size:15px;opacity:.9}
+  .v-body{padding:24px 28px;border-top:2px dashed #e7d6c6}
+  .v-body dl{display:grid;grid-template-columns:auto 1fr;gap:10px 18px;margin:0 0 18px;font-size:15px}
+  .v-body dt{color:var(--muted);font-weight:600}
+  .v-body dd{margin:0;font-weight:700}
+  .v-body p{margin:0;font-size:15px;line-height:1.6;color:var(--muted)}
+  .v-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 28px;background:#fbf5ee;font-size:13px;color:var(--muted)}
+  .stamp{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:22px;color:var(--accent);white-space:nowrap}
+
+  canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+
+  @media (max-width:480px){
+    .card{padding:10px 10px 18px}
+    .nav .btn{padding:12px 20px}
+  }
+</style>
+</head>
+<body>
+<div class="hearts" id="hearts"></div>
+<canvas id="confetti"></canvas>
+
+<!-- CAPA -->
+<section class="screen active cover" id="s-cover">
+  <div>
+    <div class="eyebrow">Feliz aniversário</div>
+    <h1>Parabéns,<br><em>Mãe</em></h1>
+    <p>Preparei uma pequena viagem no tempo. São algumas das nossas fotos ao longo dos anos. No fim há uma surpresa à tua espera.</p>
+    <button class="btn pulse" onclick="start()">Começar a viagem ✨</button>
+  </div>
+</section>
+
+<!-- GALERIA -->
+<section class="screen gallery" id="s-gallery">
+  <div class="progress" id="progress"></div>
+  <div class="stage" id="stage"></div>
+  <div class="nav">
+    <button class="btn ghost" id="prev" onclick="go(-1)">← Anterior</button>
+    <span class="count" id="count"></span>
+    <button class="btn" id="next" onclick="go(1)">Seguinte →</button>
+  </div>
+  <div class="hint">Também podes deslizar com o dedo ou usar as setas do teclado</div>
+</section>
+
+<!-- INTERLÚDIO -->
+<section class="screen interlude" id="s-inter">
+  <div>
+    <h2 class="serif">Obrigada por tudo, Mãe.</h2>
+    <p>Por cada abraço, cada viagem, cada gargalhada e cada vez que estiveste lá. Depois de tantos anos a cuidares de todos, chegou a tua vez de seres cuidada.</p>
+    <button class="btn pulse" onclick="show('s-final')">Ver a surpresa 🎁</button>
+  </div>
+</section>
+
+<!-- VOUCHER -->
+<section class="screen final" id="s-final">
+  <h2 class="serif" id="final-title">Há uma carta para ti</h2>
+  <p class="sub" id="final-sub">Toca no envelope para abrir.</p>
+
+  <div class="envelope" id="env" onclick="openEnvelope()">
+    <div class="env-back"></div>
+    <div class="letter"></div>
+    <div class="env-front"></div>
+    <div class="env-flap"></div>
+    <div class="seal">♥</div>
+    <div class="env-label">Para a Mãe</div>
+  </div>
+
+  <div class="voucher" id="voucher">
+    <div class="v-head">
+      <div class="tag">Vale presente</div>
+      <h3>Massagem Personalizada</h3>
+      <div class="where">Sayanna Wellness · EPIC SANA Lisboa Hotel</div>
+    </div>
+    <div class="v-body">
+      <dl>
+        <dt>Para</dt><dd>A melhor mãe do mundo</dd>
+        <dt>De</dt><dd>A tua filha e o Romens, com todo o amor</dd>
+        <dt>Inclui</dt><dd>Massagem personalizada ao teu gosto, num dia só teu</dd>
+        <dt>Quando</dt><dd>Quando quiseres. Marcamos juntas.</dd>
+      </dl>
+      <p>Este vale dá direito a uma massagem personalizada no spa do EPIC SANA Lisboa, na Avenida Engenheiro Duarte Pacheco. Desliga o telemóvel, respira fundo e deixa que cuidem de ti. Mereces.</p>
+    </div>
+    <div class="v-foot">
+      <span>Válido para sempre, como o nosso amor por ti</span>
+      <span class="stamp">com amor ♥</span>
+    </div>
+  </div>
+
+  <button class="btn ghost" id="again" style="display:none" onclick="restart()">Ver as fotos outra vez</button>
+</section>
+
+<script>
+/* ===== FOTOS (ordem cronológica) =====
+   Podes editar as legendas e os anos à vontade. */
+const FOTOS = [
+  {src:"fotos/19.jpg", ano:"2009", txt:"Onde tudo começou. Eu ao teu colo, e tu já a mostrares-me o mundo."},
+  {src:"fotos/01.jpg", ano:"2016", txt:"Noites de pijama e abraços. O sítio mais seguro do mundo sempre foi ao teu lado."},
+  {src:"fotos/02.jpg", ano:"2017", txt:"Enroladas na mesma manta, a rir de tudo e de nada."},
+  {src:"fotos/03.jpg", ano:"2017", txt:"As nossas caretas. Ninguém faz como nós."},
+  {src:"fotos/18.jpg", ano:"2018", txt:"Natal, a caminho de algures. Contigo qualquer viagem é boa."},
+  {src:"fotos/06.jpg", ano:"2020", txt:"São Tomé. A viagem da minha vida, e foi contigo."},
+  {src:"fotos/07.jpg", ano:"2020", txt:"Ainda em São Tomé, rodeadas de sorrisos novos. Tu fazes amigos em qualquer canto do mundo."},
+  {src:"fotos/08.jpg", ano:"2020", txt:"Praia, sol e o teu riso, que se ouve de longe."},
+  {src:"fotos/09.jpg", ano:"2020", txt:"Tu à frente, eu atrás a descansar. Combinação perfeita."},
+  {src:"fotos/10.jpg", ano:"2020", txt:"No cimo do mundo, com o vento a desfazer-nos o cabelo."},
+  {src:"fotos/11.jpg", ano:"2020", txt:"Paisagem a perder de vista. E tu sempre a meu lado."},
+  {src:"fotos/12.jpg", ano:"2021", txt:"De barco, sal na pele e o mar inteiro à nossa frente."},
+  {src:"fotos/13.jpg", ano:"2023", txt:"Embrulhadas na toalha, geladas e felizes. Mais um verão nosso."},
+  {src:"fotos/04.jpg", ano:"2024", txt:"Já crescida, mas o teu abraço continua a ser o mesmo."},
+  {src:"fotos/16.jpg", ano:"2025", txt:"\"You are limited edition.\" Nunca houve frase tão certa para ti."},
+  {src:"fotos/14.jpg", ano:"2025", txt:"Um sorriso teu e o dia fica logo melhor."},
+  {src:"fotos/15.jpg", ano:"2025", txt:"O dia em que fomos descobrir as galerias escondidas debaixo de Lisboa. A nossa cidade tem segredos, e nós fomos vê-los em família.", wide:true},
+  {src:"fotos/17.jpg", ano:"2025", txt:"Do outro lado do mundo, e ainda assim em casa, porque estava contigo.", wide:true},
+  {src:"fotos/05.jpg", ano:"Hoje", txt:"E aqui estamos. Mais velhas, mais cúmplices, mais nós. Obrigada por seres a minha mãe."},
+];
+
+let i = 0;
+const stage = document.getElementById('stage');
+const progress = document.getElementById('progress');
+const count = document.getElementById('count');
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function start(){ show('s-gallery'); render(); FOTOS.forEach(f=>{const im=new Image(); im.src=f.src;}); }
+function restart(){ i=0; show('s-gallery'); render(); }
+
+function render(){
+  const f = FOTOS[i];
+  stage.innerHTML = '<div class="card">' +
+      '<img class="photo ' + (f.wide?'wide':'') + '" src="' + f.src + '" alt="">' +
+      '<div class="meta"><span class="year">' + f.ano + '</span><p class="caption">' + f.txt + '</p></div>' +
+    '</div>';
+  progress.innerHTML = FOTOS.map((_,k)=>'<i class="' + (k<i?'done':k===i?'now':'') + '"></i>').join('');
+  count.textContent = (i+1) + ' / ' + FOTOS.length;
+  document.getElementById('prev').style.visibility = i===0?'hidden':'visible';
+  document.getElementById('next').textContent = i===FOTOS.length-1 ? 'Continuar ♥' : 'Seguinte →';
+}
+function go(d){
+  if(d>0 && i===FOTOS.length-1){ show('s-inter'); return; }
+  const n = i+d; if(n<0||n>=FOTOS.length) return;
+  const card = stage.querySelector('.card');
+  if(card){ card.classList.add('out'); setTimeout(()=>{ i=n; render(); },300); } else { i=n; render(); }
+}
+
+/* teclado e swipe */
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('s-gallery').classList.contains('active')) return;
+  if(e.key==='ArrowRight'||e.key===' ') go(1);
+  if(e.key==='ArrowLeft') go(-1);
+});
+let tx=null;
+stage.addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});
+stage.addEventListener('touchend',e=>{
+  if(tx===null) return; const dx=e.changedTouches[0].clientX-tx; tx=null;
+  if(Math.abs(dx)>50) go(dx<0?1:-1);
+});
+
+/* envelope */
+let opened=false;
+function openEnvelope(){
+  if(opened) return; opened=true;
+  const env=document.getElementById('env');
+  env.classList.add('open');
+  setTimeout(()=>{
+    env.style.display='none';
+    document.getElementById('voucher').classList.add('show');
+    document.getElementById('again').style.display='inline-block';
+    document.getElementById('final-title').textContent='Para ti, Mãe';
+    document.getElementById('final-sub').textContent='Um momento só teu. Parabéns!';
+    confetti();
+  },1300);
+}
+
+/* corações a subir */
+(function(){
+  const h=document.getElementById('hearts');
+  for(let k=0;k<18;k++){
+    const s=document.createElement('span'); s.textContent='♥';
+    s.style.left=Math.random()*100+'%';
+    s.style.fontSize=(12+Math.random()*18)+'px';
+    s.style.animationDuration=(9+Math.random()*10)+'s';
+    s.style.animationDelay=(-Math.random()*18)+'s';
+    h.appendChild(s);
+  }
+})();
+
+/* confetti */
+function confetti(){
+  const c=document.getElementById('confetti'), ctx=c.getContext('2d');
+  c.width=innerWidth; c.height=innerHeight;
+  const cols=['#c6703f','#e2a97e','#b98a3c','#e07a5f','#f6d7b0','#4a5f58'];
+  const P=Array.from({length:160},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.5,
+    r:4+Math.random()*6,vx:(Math.random()-.5)*2,vy:2+Math.random()*3,a:Math.random()*6.28,va:(Math.random()-.5)*.2,col:cols[Math.random()*cols.length|0]}));
+  let t=0;
+  (function frame(){
+    ctx.clearRect(0,0,c.width,c.height);
+    P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.a+=p.va;
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.a);ctx.fillStyle=p.col;ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*1.6);ctx.restore();});
+    if(++t<360) requestAnimationFrame(frame); else ctx.clearRect(0,0,c.width,c.height);
+  })();
+}
+</script>
+</body>
+</html>
