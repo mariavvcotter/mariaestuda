@@ -266,6 +266,7 @@ input[type=search]:focus{outline:2px solid var(--accent);border-color:transparen
 }
 @media print{aside,.menu-btn,.tabs{display:none}.app{display:block}}
 
+.qfig{margin:0 0 18px}.qfig .fig{margin:0}.qfig .fig-grid{margin:0}.qfig .qtbl{margin-top:10px}.qfig .qtbl table{margin:0;font-size:12.5px}.qfig .qtbl td,.qfig .qtbl th{padding:4px 9px}.qcap{font-size:13.5px;color:var(--muted);margin:8px 0 0;line-height:1.55}.qfig .legend{margin-top:8px}
 </style>
 </head>
 <body>
@@ -408,6 +409,141 @@ const fig = (svg,cap,extra="") => `<figure class="fig ${extra}">${svg}${cap?`<fi
 const figgrid = (...f) => `<div class="fig-grid">${f.join("")}</div>`;
 const formulas = list => `<div class="formulas">${list.map(f=>`<div class="formula"><div class="fx">${f.fx}</div><div class="fd">${f.fd}</div></div>`).join("")}</div>`;
 const legend = items => `<div class="legend">${items.map(i=>`<span><i style="background:var(--${i[0]})"></i>${i[1]}</span>`).join("")}</div>`;
+// ---------- Figuras das perguntas (quiz) ----------
+const QFIGS = (() => {
+  const fpp=[[0,15],[1,14],[2,12],[3,9],[4,5],[5,0]];
+  const FA=[[0,150],[10,140],[20,120],[30,90],[40,50],[50,0]];
+  const D0=[[15,1],[14,2],[13,3],[12,4],[11,5],[10,6],[9,7],[8,8]], S0=[[1,1],[3,2],[5,3],[7,4],[9,5],[10,6],[11,7],[12,8]];
+  const UM=[[1,17],[2,14],[3,12],[4,10],[5,9],[6,8],[7,7],[8,6]], CM=[[1,6],[2,7],[3,8],[4,10],[5,12],[6,14],[7,17],[8,20]];
+  const OF=[[0,0],[5,30],[10,60],[15,80],[20,90],[25,96],[30,100],[35,90]];
+  const pt = v => String(v).replace(".",",");
+  const tbl=(head,rows)=>`<div class="content qtbl"><table><tr>${head.map(h=>`<th>${h}</th>`).join("")}</tr>${rows.map(r=>`<tr>${r.map((c,i)=>i?`<td>${pt(c)}</td>`:`<td><b>${c}</b></td>`).join("")}</tr>`).join("")}</table></div>`;
+  const one=(svg,cap,t="")=>({svg,tbl:t,cap});
+  const grid=(html,cap)=>({grid:html,cap});
+
+  const fppTanks=(extra=[])=>chart({w:520,h:320,xmax:6,ymax:17,xlab:"Carros de combate (milhares)",ylab:"Trigo (milhões de t)",xticks:[0,1,2,3,4,5],yticks:[0,5,9,12,14,15],
+    curves:[{pts:fpp,cls:"c1",label:"FPP",at:4,lx:12,ly:2}],
+    points:[...fpp.map((p,i)=>({x:p[0],y:p[1],cls:"c1",label:"ABCDEF"[i],dir:"ne"})),...extra]});
+  const fppTbl=tbl(["","A","B","C","D","E","F"],[["Carros (milhares)",0,1,2,3,4,5],["Trigo (milhões t)",15,14,12,9,5,0]]);
+  const oficina=()=>chart({w:480,h:270,xmax:38,ymax:110,xlab:"Mecânicos",ylab:"Reparações",xticks:[5,10,15,20,25,30,35],yticks:[30,60,80,90,100],
+    curves:[{pts:OF,cls:"c1",label:"produção total",at:3,lx:-120,ly:-10}],points:OF.slice(1).map(p=>({x:p[0],y:p[1],cls:"c1",r:3.5}))});
+  const oficinaTbl=tbl(["Mecânicos",5,10,15,20,25,30,35],[["Reparações",30,60,80,90,96,100,90]]);
+  const market=o=>chart(Object.assign({w:520,h:320,xmin:0,xmax:16,ymax:9,xlab:"Q (mil caixas)",ylab:"Preço (€/caixa)",xticks:[2,4,6,8,10,12,14],yticks:[1,2,3,4,5,6,7,8],
+    curves:[{pts:D0,cls:"c1",label:"D",lx:8},{pts:S0,cls:"c2",label:"S",lx:8}]},o));
+  const alfTbl=tbl(["Preço (€/caixa)",...D0.map(p=>p[1])],[["Q procurada (mil caixas)",...D0.map(p=>p[0])],["Q oferecida (mil caixas)",...S0.map(p=>p[0])]]);
+  const circuit=()=>diagram({w:560,h:230,boxes:[
+    {x:20,y:85,w:120,h:60,t:"FAMÍLIAS",cls:"b1"},{x:420,y:85,w:120,h:60,t:"EMPRESAS",cls:"b2"},
+    {x:190,y:12,w:180,h:40,t:"Mercados de bens finais",size:12},{x:190,y:178,w:180,h:40,t:"Mercados de fatores",size:12}],
+    arrows:[{x1:140,y1:95,x2:195,y2:50,cls:"c1",t:"despesa (€)",tx:140,ty:60,size:10.5},{x1:420,y1:95,x2:365,y2:50,cls:"c2",t:"bens",tx:420,ty:60,size:10.5},
+            {x1:140,y1:140,x2:195,y2:182,cls:"c1",t:"fatores",tx:145,ty:175,size:10.5},{x1:420,y1:140,x2:365,y2:182,cls:"c2",t:"rendimento (€)",tx:440,ty:175,size:10.5}]});
+  const circuitFull=()=>diagram({w:620,h:345,boxes:[
+    {x:20,y:150,w:120,h:60,t:"FAMÍLIAS",cls:"b1"},{x:480,y:150,w:120,h:60,t:"EMPRESAS",cls:"b2"},
+    {x:240,y:15,w:140,h:44,t:"Mercado dos bens",size:12},{x:240,y:285,w:140,h:44,t:"Mercado dos fatores",size:12},
+    {x:250,y:110,w:120,h:40,t:"GOVERNO",cls:"b5",size:12},{x:240,y:200,w:140,h:40,t:"Mercados financeiros",cls:"b4",size:11},
+    {x:470,y:15,w:140,h:40,t:"RESTO DO MUNDO",cls:"b6",size:11.5}],
+    arrows:[
+      {x1:90,y1:150,x2:238,y2:42,cls:"c1",t:"C",tx:150,ty:85,size:13},
+      {x1:382,y1:52,x2:535,y2:148,cls:"c2",t:"despesa\nC+I+G+X−M",tx:510,ty:98,size:10.5},
+      {x1:540,y1:210,x2:382,y2:302,cls:"c2",t:"Y",tx:475,ty:262,size:13},
+      {x1:238,y1:302,x2:90,y2:210,cls:"c1",t:"Y = salários, rendas,\njuros, lucros",tx:118,ty:268,size:10.5},
+      {x1:140,y1:165,x2:248,y2:128,cls:"c5",t:"T",tx:190,ty:135,size:13},
+      {x1:140,y1:195,x2:238,y2:218,cls:"c4",t:"S",tx:185,ty:222,size:13},
+      {x1:310,y1:110,x2:310,y2:61,cls:"c5",t:"G",tx:325,ty:90,size:13},
+      {x1:382,y1:222,x2:478,y2:186,cls:"c4",t:"empréstimos → I",tx:432,ty:224,size:10.5},
+      {x1:468,y1:37,x2:382,y2:37,cls:"c6",t:"X − M",tx:425,ty:30,size:12},
+      {x1:310,y1:150,x2:310,y2:198,cls:"cm",both:true}]});
+
+  const Q={};
+  // U1 — FPP e rendimentos marginais
+  Q.q1xrcu9z = one(fppTanks(), "FPP do exemplo dos slides: carros de combate vs. trigo (pontos A a F).", fppTbl);
+  Q.qxbu3cb  = Q.q1xrcu9z;
+  Q.q1xr4d6z = one(fppTanks([{x:2,y:10,cls:"cm",label:"ponto em causa (2; 10)",dir:"e"}]), "A mesma FPP, com a combinação 2 milhares de carros e 10 milhões de t de trigo marcada.", fppTbl);
+  Q.qxkeiss  = one(chart({w:420,h:260,xmax:7,ymax:21,xlab:"bem I",ylab:"bem II",curves:[{pts:fpp,cls:"c1",label:"FPP₀",at:2,lx:-34,ly:-6}]}),
+                   "FPP inicial. Pensa em como se desloca quando a produtividade aumenta apenas no bem I (eixo horizontal).");
+  Q.q5piovg  = one(oficina(), "Produção total da oficina em função do número de mecânicos (exemplo dos slides).", oficinaTbl);
+  Q.q1bdxoml = one(oficina(), "Oficina do Ex. 3.2-2: produção total por escalões de 5 mecânicos. O rendimento marginal por mecânico em cada escalão é ΔReparações / ΔMecânicos.", oficinaTbl);
+  Q.qnx1paw  = one(chart({w:520,h:320,ml:56,xmax:60,ymax:170,xlab:"Alimentos (milhões de kg)",ylab:"Máquinas (milhares)",xticks:[0,10,20,30,40,50],yticks:[0,50,90,120,140,150],
+                   curves:[{pts:FA,cls:"c1",label:"FPP",at:4,lx:12,ly:2}],points:FA.map((p,i)=>({x:p[0],y:p[1],cls:"c1",label:"ABCDEF"[i],dir:"ne"}))}),
+                   "FPP do Ex. 1.4-7 (alimentos vs. máquinas).", tbl(["","A","B","C","D","E","F"],[["Alimentos (milhões kg)",0,10,20,30,40,50],["Máquinas (milhares)",150,140,120,90,50,0]]));
+  // U2/U5 — circuito económico
+  Q.q94evsx = Q.q7a548g = Q.q1chnxsc = one(circuit(), "Circuito económico simplificado: fluxos entre famílias e empresas através dos mercados de bens finais e de fatores.");
+  Q.qtunwhl = one(circuitFull(), "Circuito económico completo, com Governo, mercados financeiros e Resto do Mundo (fluxos monetários).");
+  // U3 — cruz marshalliana
+  Q.q1u0vl89 = one(chart({w:480,h:300,ml:58,xmin:0,xmax:9,ymax:22,xlab:"unidades (milhares)",ylab:"€",xticks:[1,2,3,4,5,6,7,8],yticks:[6,10,17,20],
+    areas:[{pts:[[1,17],[2,14],[3,12],[4,10],[1,10]],cls:"f1",op:.3},{pts:[[1,6],[2,7],[3,8],[4,10],[1,10]],cls:"f2",op:.3},{pts:[[1,0],[1,6],[2,7],[3,8],[4,10],[4,0]],cls:"f4",op:.25}],
+    curves:[{pts:UM,cls:"c1",label:"UMg = D",lx:6},{pts:CM,cls:"c2",label:"CMg = S",lx:6}],
+    hlines:[{y:10,x2:4,cls:"cm"}],guides:[{x:4,y:10,lx:"Q*",ly:"P*"}],points:[{x:4,y:10,cls:"ck"}],
+    texts:[{x:1.9,y:12.3,t:"A",cls:"t1",size:15},{x:1.9,y:8.4,t:"F",cls:"t2",size:15},{x:2.5,y:3.2,t:"G",cls:"t4",size:15}]}),
+    "Gráfico do excedente global: áreas A, F e G até à quantidade de equilíbrio Q*.");
+  Q.qd4kbue = one(market({ml:92,xlab:"Quantidade",ylab:"Preço",xticks:[],yticks:[],hlines:[{y:4,x2:12,cls:"c3",l:"preço imposto"}],guides:[{x:10,y:6,ly:"P*"}],
+    points:[{x:10,y:6,cls:"ck",label:"equilíbrio",dir:"ne"},{x:7,y:4,cls:"c3"},{x:12,y:4,cls:"c3"}]}),
+    "Mercado de eletrodomésticos (esquema): o Governo impõe um «preço justo» abaixo do preço de equilíbrio.");
+  const PD=[[3,8],[5,7],[7,6],[9,5],[11,4]], PS=[[1,2],[4,4],[7,6],[10,8],[11.5,9]];
+  Q.q1gb2vl2 = one(chart({w:520,h:320,xmin:0,xmax:14,ymax:10,xlab:"Q (perus)",ylab:"Preço (€)",xticks:[2,4,6,8,10,12],yticks:[2,4,6,8],
+    curves:[{pts:PD,cls:"c1",label:"D",lx:8},{pts:PS,cls:"c2",label:"S",lx:8}],hlines:[{y:8,x2:12,cls:"c4",l:"P = 8"}],guides:[{x:7,y:6}],
+    points:[{x:7,y:6,cls:"ck",label:"equilíbrio (7; 6)",dir:"se"}]}),
+    "Mercado dos perus (Ex. 3.1-2), traçado a partir dos dados do enunciado. Lê nas curvas as quantidades procurada e oferecida ao preço de 8 €.");
+  Q.qke596 = one(market({}), "Mercado das alfaces (Ex. 3.1-3): tabela de procura e oferta e as curvas correspondentes.", alfTbl);
+  Q.q19rq4n7 = one(chart({w:520,h:320,ml:58,xmin:2,xmax:5,ymin:0,ymax:450,xlab:"Trabalhadores (milhões)",ylab:"Salário (€)",xticks:[{v:3,l:"3"},{v:3.5,l:"3,5"},{v:4,l:"4"}],yticks:[200,300],
+    curves:[{pts:[[2.5,400],[4.5,0]],cls:"c1",label:"D (empresas)",at:"start",lx:10,ly:-6},{pts:[[2.5,0],[4.5,400]],cls:"c2",label:"S (trabalhadores)",anchor:"end",lx:-8,ly:-6}],
+    hlines:[{y:300,x2:4.3,cls:"c4",l:"300"}],vlines:[{x:3,y2:300,cls:"cm"},{x:4,y2:300,cls:"cm"}],guides:[{x:3.5,y:200}],
+    points:[{x:3.5,y:200,cls:"ck"},{x:3,y:300,cls:"c4"},{x:4,y:300,cls:"c4"}],
+    texts:[{x:4.55,y:318,t:"salário mínimo",cls:"t4",size:11},{x:2.62,y:176,t:"equilíbrio livre",anchor:"start",size:11}]}),
+    "Mercado de trabalho do Ex. 3.1-12 (esquema): equilíbrio livre em 200 € e 3,5 milhões; salário mínimo fixado em 300 €.");
+  // U5 — dados macro
+  const YRS=[2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023];
+  const UNEMP=[16.2,13.9,12.4,11.1,8.9,7.0,6.5,6.8,6.6,6.0,6.5];
+  const EMPI=[100,101.6,102.7,104,107.4,109.9,110.9,108.8,109.7,111.8,114];
+  const GDPI=[100,100.8,102.6,104.7,108.3,111.4,114.4,104.9,110.9,118.4,121.2];
+  const ty=[2013,2015,2017,2019,2021,2023];
+  Q.qhl0cvp = grid(figgrid(
+    fig(chart({w:430,h:260,ml:44,xmin:2012.5,xmax:2023.5,ymin:0,ymax:18,xlab:"",ylab:"taxa de desemprego (%)",xticks:ty,yticks:[5,10,15],
+      curves:[{pts:YRS.map((y,i)=>[y,UNEMP[i]]),cls:"c2"}],points:YRS.map((y,i)=>({x:y,y:UNEMP[i],cls:"c2",r:3}))}),"<b>Taxa de desemprego</b>"),
+    fig(chart({w:430,h:260,ml:44,xmin:2012.5,xmax:2023.5,ymin:95,ymax:125,xlab:"",ylab:"índice (2013 = 100)",xticks:ty,yticks:[100,110,120],
+      curves:[{pts:YRS.map((y,i)=>[y,EMPI[i]]),cls:"c1",label:"emprego",lx:-62,ly:18},{pts:YRS.map((y,i)=>[y,GDPI[i]]),cls:"c3",label:"PIB real",lx:-58,ly:-8}]}),"<b>Emprego e PIB real</b>")),
+    "Portugal, 2013–2023 (INE; valores aproximados, apenas para leitura das tendências).");
+  const PC=[[1960,4664],[1965,6100],[1973,9600],[1975,8900],[1980,10400],[1984,10200],[1992,14200],[1993,13900],[2000,17600],[2008,18900],[2009,18200],[2011,18100],[2013,17300],[2019,19700],[2020,18000],[2023,20413]];
+  Q.q950ymb = one(chart({w:560,h:290,ml:62,xmin:1955,xmax:2026,ymin:0,ymax:24000,xlab:"",ylab:"PIB per capita (€, preços constantes)",xticks:[1960,1975,1993,2009,2023],yticks:[{v:4664,l:"4 664"},{v:10000,l:"10 000"},{v:20413,l:"20 413"}],
+    curves:[{pts:PC,cls:"c1"}],points:[{x:1960,y:4664,cls:"c1",label:"1960",dir:"n"},{x:2023,y:20413,cls:"c1",label:"2023",dir:"w"}]}),
+    "PIB per capita português a preços constantes, 1960–2023. Os valores de 1960 e 2023 são os dos slides; o traçado intermédio é ilustrativo (quebras em 1975, 1984, 1993, 2009, 2011-13 e 2020).");
+  Q.qe70nuc = one(bars({w:480,h:260,groups:[[2019,0.3,0.5],[2020,0.0,0.0],[2021,1.3,0.8],[2022,7.8,5.6],[2023,4.3,5.1]].map(([y,a,b])=>({label:String(y),vals:[{v:a,cls:"f1",label:pt(a)},{v:b,cls:"f2",label:pt(b)}]})),ymax:9,yticks:[0,2,4,6,8],ylab:"variação média anual (%)"})
+    + legend([["c1","IPC total"],["c2","inflação subjacente"]]),
+    "Inflação em Portugal medida pelo IPC total e pela inflação subjacente (INE; valores aproximados).");
+  const SMNn=[[1974,17],[1980,45],[1986,112],[1990,175],[1995,259],[2000,318],[2005,375],[2010,475],[2016,530],[2020,635],[2023,760]];
+  const SMNr=[[1974,600],[1980,520],[1986,480],[1990,440],[1995,430],[2000,445],[2005,460],[2010,510],[2016,530],[2020,615],[2023,650]];
+  Q.q4roi22 = one(chart({w:560,h:290,ml:52,xmin:1970,xmax:2026,ymin:0,ymax:850,xlab:"",ylab:"€ / mês",xticks:[1974,1986,2000,2016,2023],yticks:[{v:530,l:"530"},{v:760,l:"760"}],
+    curves:[{pts:SMNn,cls:"c1",label:"nominal",lx:8,ly:-2},{pts:SMNr,cls:"c2",dash:true,label:"real (preços de 2016)",at:"start",lx:8,ly:-10}],
+    vlines:[{x:2016,y2:530,cls:"cm"}],points:[{x:2016,y:530,cls:"ck",label:"2016: 530 €",dir:"se"}]}),
+    "Salário Mínimo Nacional, 1974–2023: série nominal (valores oficiais) e série real a preços de 2016 (traçado indicativo; o único ponto exato da série real é 2016).");
+  // U6 — moeda
+  Q.q1o2to9p = one(chart({w:460,h:290,xmax:10,ymax:11,xlab:"M (quantidade nominal de moeda)",ylab:"P (nível de preços)",
+    curves:[{pts:L(0.5,1,9.5,10),cls:"c1",label:"MD (dados Y, i)",lx:-100,ly:16},{pts:L(5,0,5,10.5),cls:"c2",label:"MS",lx:6,ly:-6}],
+    guides:[{x:5,y:5.5,ly:"P₀"}],points:[{x:5,y:5.5,cls:"ck"}]}),
+    "Mercado monetário com o nível de preços no eixo vertical (Y e i constantes), na situação inicial.");
+  // U8 — orçamento
+  const DEBT=[[1960,15.1],[2007,72],[2013,130],[2016,130],[2019,116.6],[2020,135],[2023,99],[2024,95.1]];
+  Q.q69wwhl = one(chart({w:560,h:280,xmin:1955,xmax:2027,ymax:150,xlab:"",ylab:"dívida pública (% do PIB)",xticks:[1960,2007,2013,2024],yticks:[15,72,99,117,130],
+    curves:[{pts:DEBT,cls:"c2"}],points:DEBT.map(p=>({x:p[0],y:p[1],cls:"c2",r:3.5}))}),
+    "Dívida bruta das Administrações Públicas em % do PIB (pontos citados nos slides; 2024 é previsão).");
+  Q.qh5f9ct = one(chart({w:480,h:300,xmax:10,ymax:4,xlab:"PIB real",ylab:"receita / despesa",
+    curves:[{pts:L(0,0,10,3),cls:"c1",label:"Receita de\nimpostos",lx:-70,ly:-20},{pts:L(0,3,10,1.5),cls:"c2",label:"Despesa\nprimária",lx:-60,ly:14}],
+    vlines:[{x:6.67,l:"Yp",cls:"ck"},{x:4.5,l:"Y verificado",cls:"cm"}],points:[{x:6.67,y:2,cls:"ck"}]}),
+    "Orçamento em equilíbrio estrutural: receita e despesa primária cruzam-se no PIB potencial (Yp). O PIB verificado está à esquerda de Yp.");
+  // U9 — política económica
+  Q.q15wh80n = one(chart({w:560,h:280,xmax:12,ymin:40,ymax:85,xlab:"tempo",ylab:"PIB real",
+    curves:[{pts:F(x=>48+2.4*x,0,12),cls:"cm",dash:true,label:"produto potencial\n(tendência)",lx:-120,ly:14},{pts:F(x=>48+2.4*x+5*Math.sin(x*1.1),0,12,80),cls:"c1",label:"PIB real\nde equilíbrio",lx:-90,ly:-10}]}),
+    "Ciclo económico: PIB real verificado a oscilar em torno do produto potencial.");
+  Q.q1nx7o59 = one(chart({w:520,h:290,xmax:100,ymax:30,xlab:"taxa global de impostos (%)",ylab:"receita fiscal",xticks:[0,25,50,75,100],
+    curves:[{pts:F(t=>t*(100-t)/100,0,100),cls:"c1",label:"Curva de Laffer",at:30,lx:10,ly:-6}],vlines:[{x:50,l:"T*",cls:"ck",y2:25}]}),
+    "Curva de Laffer: receita fiscal em função da taxa global de impostos. T* é a taxa que maximiza a receita.");
+  return Q;
+})();
+function qfigHtml(id){
+  const f = QFIGS[id]; if(!f) return "";
+  if(f.grid) return `<div class="qfig">${f.grid}<p class="qcap">${f.cap}</p></div>`;
+  return `<div class="qfig"><figure class="fig">${f.svg}${f.tbl||""}${f.cap?`<figcaption>${f.cap}</figcaption>`:""}</figure></div>`;
+}
+
 
 // ---------- Navegação ----------
 let route = { v:"home" };
@@ -621,6 +757,7 @@ function viewPlay(el){
     <div class="card">
       <div class="row"><span class="tag unit" style="--uc:${ucolor(q.unit)}">Unidade ${q.unit}</span><span class="tag">${esc(q.sec)} ${esc(q.secTitle)}</span>${S.q[q.id]?(S.q[q.id].last?'<span class="tag ok">acertaste da última vez</span>':'<span class="tag bad">erraste da última vez</span>'):'<span class="tag">nova</span>'}</div>
       <div class="q">${esc(q.q)}</div>
+      ${qfigHtml(q.id)}
       <div class="opts">${it.order.map((oi,k)=>{
         let cls=""; if(done){ if(oi===q.answer) cls="right"; else if(oi===it.pick) cls="wrong"; }
         return `<button class="opt ${cls}" data-o="${oi}" ${done?"disabled":""}><span class="l">${Lt[k]}</span><span>${esc(q.options[oi])}</span></button>`;}).join("")}</div>
