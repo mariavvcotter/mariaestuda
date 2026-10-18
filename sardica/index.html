@@ -6,50 +6,54 @@
 <title>Desde 1945 até ontem à tarde · Plataforma de estudo</title>
 <link rel="stylesheet" href="/account/account.css">
 <style>
-:root{--vinho:#8a1c1c;--creme:#f4efe4;--tinta:#1d1a16;--linha:#d9d2c5;--ok:#2f6b3a;--mau:#a33;--cinza:#6b645a;}
+:root{--vinho:#8a1c1c;--creme:#f4efe4;--tinta:#1d1a16;--linha:#e3dccf;--ok:#2f6b3a;--mau:#a33;--cinza:#6b645a;--papel:#fff;--fundo:#faf7f1;}
 *{box-sizing:border-box}
-body{margin:0;font-family:Georgia,"Palatino Linotype","Book Antiqua",serif;color:var(--tinta);background:#fbf9f4;line-height:1.5}
-header{background:#fff;border-bottom:3px solid var(--vinho);padding:14px 24px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
-header h1{margin:0;font-size:1.25rem;font-style:italic;font-weight:normal}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:Georgia,"Palatino Linotype","Book Antiqua",serif;color:var(--tinta);background:var(--fundo);line-height:1.6;font-size:17px}
+header{background:var(--papel);border-bottom:3px solid var(--vinho);padding:14px 24px;display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between}
+header h1{margin:0;font-size:1.3rem;font-style:italic;font-weight:normal;line-height:1.25}
 header .acc-chip{margin-left:auto}
-header h1 small{display:block;font-style:normal;font-size:.72rem;letter-spacing:.25em;text-transform:uppercase;color:var(--vinho)}
-.countdown{font-size:.85rem;color:var(--cinza);text-align:right}
+header h1 small{display:block;font-style:normal;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--vinho);margin-bottom:3px}
+.countdown{font-size:.85rem;color:var(--cinza);text-align:right;line-height:1.35}
 .countdown b{color:var(--vinho);font-size:1.1rem}
-nav{display:flex;flex-wrap:wrap;gap:4px;padding:8px 24px;background:var(--creme);border-bottom:1px solid var(--linha);position:sticky;top:0;z-index:5}
-nav button{font:inherit;font-size:.9rem;background:none;border:1px solid transparent;padding:6px 12px;cursor:pointer;border-radius:4px;color:var(--tinta)}
-nav button.on{background:#fff;border-color:var(--linha);color:var(--vinho);font-weight:bold}
-nav .scope{margin-left:auto;font-size:.82rem;color:var(--cinza);display:flex;align-items:center;gap:6px}
-main{max-width:1060px;margin:0 auto;padding:20px 24px 60px}
-h2{font-weight:normal;font-size:1.05rem;letter-spacing:.06em;text-transform:uppercase;color:var(--vinho);border-bottom:1px solid var(--linha);padding-bottom:4px;margin:26px 0 12px}
+nav{display:flex;gap:2px;padding:8px 16px;background:var(--creme);border-bottom:1px solid var(--linha);position:sticky;top:0;z-index:5;overflow-x:auto;align-items:center}
+nav button{font:inherit;font-size:.95rem;background:none;border:1px solid transparent;padding:7px 14px;cursor:pointer;border-radius:4px;color:var(--tinta);white-space:nowrap}
+nav button.on{background:var(--papel);border-color:var(--linha);color:var(--vinho);font-weight:bold}
+nav .scope{margin-left:auto;font-size:.82rem;color:var(--cinza);display:flex;align-items:center;gap:6px;white-space:nowrap;padding-left:12px}
+.subnav{display:flex;gap:2px;padding:6px 16px;background:#faf6ec;border-bottom:1px solid var(--linha);overflow-x:auto}
+.subnav button{font:inherit;font-size:.9rem;background:none;border:0;border-bottom:2px solid transparent;padding:5px 10px;cursor:pointer;color:var(--cinza);white-space:nowrap}
+.subnav button.on{color:var(--vinho);border-bottom-color:var(--vinho)}
+main{max-width:960px;margin:0 auto;padding:24px 20px 80px}
+h2{font-weight:normal;font-size:1.02rem;letter-spacing:.06em;text-transform:uppercase;color:var(--vinho);border-bottom:1px solid var(--linha);padding-bottom:5px;margin:26px 0 12px}
 h3{font-weight:normal;font-variant:small-caps;font-size:1.05rem;margin:18px 0 6px}
-.card{background:#fff;border:1px solid var(--linha);border-radius:6px;padding:16px 20px;margin:12px 0}
-.caixa{background:var(--creme);border-radius:4px;padding:10px 14px;margin:10px 0;font-size:.95rem}
+.card{background:var(--papel);border:1px solid var(--linha);border-radius:8px;padding:20px 24px;margin:14px 0}
+.caixa{background:var(--creme);border-radius:6px;padding:10px 14px;margin:10px 0;font-size:.95rem}
 .rotulo{display:block;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--vinho);margin-bottom:4px}
 button.b,select,input[type=text]{font:inherit;font-size:.92rem}
-button.b{background:var(--vinho);color:#fff;border:0;padding:8px 14px;border-radius:4px;cursor:pointer}
-button.b.sec{background:#fff;color:var(--vinho);border:1px solid var(--vinho)}
+button.b{background:var(--vinho);color:#fff;border:0;padding:9px 16px;border-radius:5px;cursor:pointer}
+button.b.sec{background:var(--papel);color:var(--vinho);border:1px solid var(--vinho)}
 button.b.pq{padding:5px 10px;font-size:.85rem}
 button.b:disabled{opacity:.5;cursor:default}
-select,input[type=text]{padding:6px 8px;border:1px solid var(--linha);border-radius:4px;background:#fff}
+select,input[type=text]{padding:6px 8px;border:1px solid var(--linha);border-radius:4px;background:var(--papel)}
 .linha{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
-.muted{color:var(--cinza);font-size:.88rem}
-blockquote{margin:10px 0;padding:8px 14px;border-left:3px solid var(--vinho);background:#faf6ec;font-size:.95rem}
+.muted{color:var(--cinza);font-size:.9rem}
+blockquote{margin:10px 0;padding:8px 14px;border-left:3px solid var(--vinho);background:#faf6ec;font-size:.96rem}
 blockquote.doc{font-family:"Courier New",monospace;font-size:.86rem;border-color:#b08d57}
 blockquote footer{font-size:.8rem;text-align:right;color:var(--cinza);margin-top:4px}
 textarea{width:100%;min-height:420px;font:inherit;font-size:1rem;line-height:1.6;padding:14px;border:1px solid var(--linha);border-radius:6px;resize:vertical;background:#fffdf8}
 .timer{font-size:2rem;font-variant-numeric:tabular-nums;color:var(--vinho)}
 .timer.alerta{color:var(--mau);animation:pisca 1s infinite}
 @keyframes pisca{50%{opacity:.4}}
-.tag{display:inline-block;border:1px solid var(--linha);border-radius:12px;padding:1px 9px;font-size:.8rem;margin:2px;background:#fff}
+.tag{display:inline-block;border:1px solid var(--linha);border-radius:12px;padding:1px 9px;font-size:.8rem;margin:2px;background:var(--papel)}
 .tag.ok{background:#e7f1e8;border-color:#9fc5a6;color:var(--ok)}
 .tag.falta{background:#f8e9e9;border-color:#d9a3a3;color:var(--mau)}
 .barra{height:8px;background:#eee;border-radius:4px;overflow:hidden;margin:4px 0 10px}
 .barra i{display:block;height:100%;background:var(--vinho)}
-.flash{min-height:180px;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:20px;font-size:1.1rem;cursor:pointer}
+.flash{min-height:180px;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:24px;font-size:1.1rem;cursor:pointer}
 .flash .verso{color:var(--vinho);margin-top:12px;font-size:.95rem}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
-table{border-collapse:collapse;width:100%;font-size:.92rem}
-td,th{border-bottom:1px solid var(--linha);padding:6px 8px;vertical-align:top;text-align:left}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+td,th{border-bottom:1px solid var(--linha);padding:7px 8px;vertical-align:top;text-align:left}
 td.k{white-space:nowrap;font-weight:bold;font-size:.85rem;width:9em}
 .elo{position:relative;padding:8px 12px 8px 30px;border-left:2px solid var(--vinho);margin-left:10px}
 .elo::before{content:"";position:absolute;left:-7px;top:14px;width:12px;height:12px;border-radius:50%;background:var(--vinho)}
@@ -57,11 +61,27 @@ td.k{white-space:nowrap;font-weight:bold;font-size:.85rem;width:9em}
 .elo .porque.oculto{filter:blur(5px);cursor:pointer}
 .crit{display:grid;grid-template-columns:1fr auto;gap:6px 14px;align-items:center;font-size:.92rem}
 .crit input[type=range]{width:160px}
-.opt{display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--linha);border-radius:4px;padding:8px 12px;margin:5px 0;cursor:pointer;font:inherit}
+.opt{display:block;width:100%;text-align:left;background:var(--papel);border:1px solid var(--linha);border-radius:6px;padding:10px 14px;margin:6px 0;cursor:pointer;font:inherit;line-height:1.45}
 .opt.ok{background:#e7f1e8;border-color:var(--ok)}
 .opt.mau{background:#f8e9e9;border-color:var(--mau)}
+.opt kbd{display:inline-block;min-width:1.4em;text-align:center;font:inherit;font-size:.78rem;color:var(--cinza);border:1px solid var(--linha);border-radius:3px;padding:0 4px;margin-right:8px;background:#faf6ec}
+.opt.ok kbd{color:var(--ok);border-color:var(--ok)} .opt.mau kbd{color:var(--mau);border-color:var(--mau)}
+.opt:disabled{cursor:default} .opt:not(:disabled):hover{border-color:var(--vinho)}
+.opt blockquote,.pergunta blockquote{margin:8px 0}
+.pergunta{font-size:1.1rem;margin:8px 0 14px;line-height:1.5}
+.qtop{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;font-size:.85rem;color:var(--cinza)}
+.exp{border-left-color:var(--ok)} .exp.mau{border-left-color:var(--mau)}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:10px 0}
+.kpi div{background:var(--creme);border-radius:6px;padding:8px 12px}
+.kpi b{display:block;font-size:1.5rem;color:var(--vinho);font-variant-numeric:tabular-nums}
+.kpi span{font-size:.75rem;color:var(--cinza);letter-spacing:.06em;text-transform:uppercase}
+.plano{background:#fff8e6;border:1px solid #e8d9a8;border-radius:6px;padding:10px 14px;margin:10px 0}
+.tipos label{margin-right:12px;font-size:.9rem;cursor:pointer}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.sel-row{cursor:pointer} tr.sel-row:hover{background:#faf6ec}
+.mini{height:6px;background:#eee;border-radius:3px;overflow:hidden;min-width:80px} .mini i{display:block;height:100%;background:var(--ok)}
 .pontos{display:flex;flex-wrap:wrap;gap:4px}
-.pontos label{font-size:.8rem;border:1px solid var(--linha);border-radius:12px;padding:1px 8px;background:#fff;cursor:pointer}
+.pontos label{font-size:.8rem;border:1px solid var(--linha);border-radius:12px;padding:1px 8px;background:var(--papel);cursor:pointer}
 .pontos input{display:none}
 .pontos label.on{background:var(--vinho);color:#fff;border-color:var(--vinho)}
 .hidden{display:none}
@@ -69,23 +89,44 @@ td.k{white-space:nowrap;font-weight:bold;font-size:.85rem;width:9em}
 details summary{cursor:pointer;color:var(--vinho)}
 .lista li{margin:6px 0}
 .ok-txt{color:var(--ok)} .mau-txt{color:var(--mau)}
-.opt kbd{display:inline-block;min-width:1.4em;text-align:center;font:inherit;font-size:.78rem;color:var(--cinza);border:1px solid var(--linha);border-radius:3px;padding:0 4px;margin-right:8px;background:#faf6ec}
-.opt.ok kbd{color:var(--ok);border-color:var(--ok)} .opt.mau kbd{color:var(--mau);border-color:var(--mau)}
-.opt:disabled{cursor:default} .opt:not(:disabled):hover{border-color:var(--vinho)}
-.opt blockquote,.pergunta blockquote{margin:8px 0}
-.pergunta{font-size:1.08rem;margin:8px 0 12px}
-.qtop{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;font-size:.85rem;color:var(--cinza)}
-.exp{border-left-color:var(--ok)} .exp.mau{border-left-color:var(--mau)}
-.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:10px 0}
-.kpi div{background:var(--creme);border-radius:4px;padding:8px 12px}
-.kpi b{display:block;font-size:1.5rem;color:var(--vinho);font-variant-numeric:tabular-nums}
-.kpi span{font-size:.78rem;color:var(--cinza);letter-spacing:.06em;text-transform:uppercase}
-.plano{background:#fff8e6;border:1px solid #e8d9a8;border-radius:4px;padding:10px 14px;margin:10px 0}
-.tipos label{margin-right:12px;font-size:.9rem;cursor:pointer}
-td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-tr.sel-row{cursor:pointer} tr.sel-row:hover{background:#faf6ec}
-.mini{height:6px;background:#eee;border-radius:3px;overflow:hidden;min-width:80px} .mini i{display:block;height:100%;background:var(--ok)}
-@media print{nav,header .countdown,button{display:none}}
+/* passos do início */
+.passos{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0}
+.passo{background:var(--creme);border-radius:8px;padding:14px 16px}
+.passo b{display:block;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--vinho);margin-bottom:4px}
+.passo p{margin:4px 0 10px;font-size:.95rem}
+/* leitura da matéria */
+.pontos-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px}
+.pontos-lista button{font:inherit;text-align:left;background:var(--papel);border:1px solid var(--linha);border-radius:6px;padding:8px 10px;cursor:pointer;font-size:.9rem;line-height:1.3;color:var(--tinta)}
+.pontos-lista button.on{border-color:var(--vinho);background:#faf6ec}
+.pontos-lista button b{color:var(--vinho);margin-right:6px}
+.pontos-lista button.fora{opacity:.55}
+.leitura{background:var(--papel);border:1px solid var(--linha);border-radius:8px;padding:36px 44px 48px;max-width:780px;margin:14px auto;font-size:1.06rem;line-height:1.7}
+.leitura .eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--vinho);margin:0 0 8px}
+.leitura h1{font-weight:normal;font-size:2rem;line-height:1.15;margin:0 0 8px}
+.leitura .sub{color:var(--cinza);font-size:1rem;margin:0 0 18px;line-height:1.5}
+.leitura h2{font-size:1.3rem;letter-spacing:0;text-transform:none;border:0;border-top:1px solid var(--linha);padding-top:24px;margin:36px 0 10px;color:var(--vinho);font-weight:normal}
+.leitura h3{font-variant:normal;font-size:1.05rem;font-weight:bold;margin:24px 0 6px}
+.leitura h3 small{font-weight:normal;color:var(--cinza);font-size:.82rem;margin-left:6px}
+.leitura p{margin:8px 0}
+.leitura blockquote{margin:12px 0;padding:10px 16px;font-size:1rem;line-height:1.6}
+.leitura blockquote p{margin:4px 0}
+.leitura .aula{background:#fff8e6;border-left:3px solid #d8b35a;padding:8px 14px;margin:12px 0;font-size:.98rem;border-radius:0 6px 6px 0}
+.leitura .aula b{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:#8a6a1c;display:block;margin-bottom:2px}
+.leitura .hoje{background:var(--creme);border-radius:6px;padding:10px 14px;margin:12px 0;font-size:.98rem}
+.leitura .hoje b{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--vinho);display:block;margin-bottom:2px}
+.leitura dl{margin:0} .leitura dt{font-weight:bold;margin-top:14px} .leitura dd{margin:2px 0 0 0}
+.leitura table{font-size:.98rem} .leitura td.k{width:11em;color:var(--vinho);font-weight:normal;font-size:.9rem}
+.leitura ul,.leitura ol{padding-left:22px} .leitura li{margin:6px 0}
+.leitura details{margin:10px 0;padding:8px 12px;background:#faf6ec;border-radius:6px} .leitura summary{font-weight:bold;cursor:pointer;color:var(--tinta)}
+.leitura .epi{font-style:italic;color:#3a352e;border-left-color:#b08d57;background:none;padding-left:14px}
+.indice{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:.88rem;margin:14px 0 0;padding:12px 0 0;border-top:1px solid var(--linha)}
+.indice a{color:var(--vinho);text-decoration:none;border-bottom:1px dotted #c99}
+.pn{display:flex;justify-content:space-between;gap:10px;margin:30px 0 0;padding-top:16px;border-top:1px solid var(--linha)}
+.topo{position:fixed;right:16px;bottom:16px;z-index:4}
+.rolo{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.sel-ponto{display:none;width:100%;font-size:1rem;padding:8px}
+@media(max-width:640px){.pontos-lista{display:none} .sel-ponto{display:block} body{font-size:16px} main{padding:16px 12px 60px} header{padding:12px 16px} .card{padding:16px} .leitura{padding:22px 18px 32px;font-size:1.02rem} .leitura h1{font-size:1.6rem} nav .scope span{display:none}}
+@media print{nav,.subnav,header .countdown,button,.topo{display:none} .leitura{border:0;padding:0;max-width:none}}
 </style>
 </head>
 <body>
@@ -95,16 +136,20 @@ tr.sel-row{cursor:pointer} tr.sel-row:hover{background:#faf6ec}
 </header>
 <nav id="nav">
   <button data-t="inicio" class="on">Início</button>
+  <button data-t="materia">Matéria</button>
   <button data-t="perguntas">Perguntas</button>
+  <button data-t="treino">Treino</button>
   <button data-t="ensaio">Ensaio</button>
+  <button data-t="historico">Histórico</button>
+  <span class="scope"><span>Matéria:</span> <select id="scope"><option value="8">Pontos 1-8 (1.º teste)</option><option value="16">Todos os pontos</option></select></span>
+</nav>
+<div id="subnav" class="subnav hidden">
   <button data-t="citacoes">Citações</button>
   <button data-t="conceitos">Conceitos</button>
   <button data-t="cronologia">Cronologia</button>
   <button data-t="mecanismos">Mecanismos</button>
   <button data-t="professor">Professor</button>
-  <button data-t="historico">Histórico</button>
-  <span class="scope">Matéria: <select id="scope"><option value="8">Pontos 1-8 (1.º teste)</option><option value="16">Todos os pontos</option></select></span>
-</nav>
+</div>
 <main id="main"></main>
 
 <script src="perguntas.js?v=1"></script>
@@ -155,40 +200,108 @@ const allSel = () => new Set(caps().map(c=>c.n));
 
 // ---------- navegação ----------
 let current = "inicio";
-document.querySelectorAll("#nav button").forEach(b => b.onclick = () => { document.querySelectorAll("#nav button").forEach(x=>x.classList.remove("on")); b.classList.add("on"); render(b.dataset.t); });
-function render(t){ current = t; document.onkeydown = null; const m = $("#main"); m.innerHTML=""; window.scrollTo(0,0); ({inicio, perguntas, ensaio, citacoes, conceitos, cronologia, mecanismos, professor, historico})[t](m); }
+const TREINO = ["citacoes","conceitos","cronologia","mecanismos","professor"];
+document.querySelectorAll("#nav button, #subnav button").forEach(b => b.onclick = () => render(b.dataset.t));
+function render(t){
+  if (t === "treino") t = store.get("treino_tab", "mecanismos");
+  current = t; document.onkeydown = null;
+  const prim = TREINO.includes(t) ? "treino" : t;
+  document.querySelectorAll("#nav button").forEach(x => x.classList.toggle("on", x.dataset.t === prim));
+  $("#subnav").classList.toggle("hidden", prim !== "treino");
+  document.querySelectorAll("#subnav button").forEach(x => x.classList.toggle("on", x.dataset.t === t));
+  if (prim === "treino") store.set("treino_tab", t);
+  const m = $("#main"); m.innerHTML=""; window.scrollTo(0,0);
+  ({inicio, materia, perguntas, ensaio, citacoes, conceitos, cronologia, mecanismos, professor, historico})[t](m);
+}
+const go = render;
 
 // ---------- início ----------
 function inicio(m){
   const hist = store.get("ensaios", []);
+  const qp = store.get("quiz", {}), qb = banco().filter(x => x.p <= SCOPE), qf = qb.filter(x => qp[x.id] && qp[x.id].n > 0), qs = qf.filter(x => qp[x.id].last), qe = qf.filter(x => !qp[x.id].last);
+  const pend = qb.length - qf.length + qe.length, dias = diasParaTeste();
+  m.appendChild(el("div",{class:"card"},`
+    <h2 style="margin-top:0">Como estudar aqui</h2>
+    <div class="passos">
+      <div class="passo"><b>1 · Ler</b><p>Cada ponto numa só página, do princípio ao fim: percurso do capítulo, citações no sítio certo, cronologia, conceitos e autores.</p><button class="b" onclick="go('materia')">Abrir a matéria</button></div>
+      <div class="passo"><b>2 · Perguntar</b><p>${qb.length} perguntas de escolha múltipla com correção e explicação. ${dias>0 ? `${dias} dia${dias===1?"":"s"} de estudo até ao teste: ${Math.ceil(pend/dias)} por dia para passar por todas.` : `Ficam ${pend} pendentes.`}</p><button class="b" onclick="go('perguntas')">Fazer perguntas</button></div>
+      <div class="passo"><b>3 · Escrever</b><p>O teste é um ensaio de 1h30. Treine com cronómetro e veja no fim que autores, conceitos e datas usou e quais ficaram de fora.</p><button class="b" onclick="go('ensaio')">Começar um ensaio</button></div>
+    </div>
+    <p class="muted" style="margin-bottom:0">Em <strong>Treino</strong> estão os cartões e exercícios curtos: citações, conceitos, cronologia, mecanismos e frases do professor.</p>`));
   m.appendChild(el("div",{class:"card"},`
     <h2 style="margin-top:0">Como se é avaliado</h2>
     <p>Das três questões do enunciado responde-se a <strong>uma</strong>, em <strong>1h30</strong>, sem consulta. Cada questão é um tema ou um excerto citado para comentar. O professor valoriza, por esta ordem:</p>
     <ol>${DATA.criterios.map(c=>`<li><strong>${c[0]}.</strong> ${c[1]}</li>`).join("")}</ol>
-    <p class="muted">Indicação dada em aula a 6 de outubro: «usar citações das aulas é bastante possível». Daí os módulos Citações e Professor.</p>`));
-  m.appendChild(el("div",{class:"card"},`
-    <h2 style="margin-top:0">O método deste sítio</h2>
-    <p>Um bom ensaio nesta cadeira não é uma lista de factos: é uma <strong>cadeia de mecanismos</strong>. Cada acontecimento tem de aparecer com a sua causa, a sua consequência e um autor que o interprete. O módulo <strong>Mecanismos</strong> treina exatamente isso: ${DATA.mecanismos.length} cadeias causais que atravessam vários pontos do programa. O <strong>Ensaio</strong> simula a prova e, no fim, verifica que autores, conceitos, datas e ligações usou e quais ficaram de fora.</p>
-    <div class="linha"><button class="b" onclick="document.querySelector('[data-t=ensaio]').click()">Começar um ensaio</button><button class="b sec" onclick="document.querySelector('[data-t=mecanismos]').click()">Ver os mecanismos</button></div>`));
-  {
-    const qp = store.get("quiz", {}), qb = banco().filter(x => x.p <= SCOPE), qf = qb.filter(x => qp[x.id] && qp[x.id].n > 0), qs = qf.filter(x => qp[x.id].last), qe = qf.filter(x => !qp[x.id].last);
-    const pend = qb.length - qf.length + qe.length, dias = diasParaTeste();
-    m.appendChild(el("div",{class:"card"},`<h2 style="margin-top:0">Perguntas de escolha múltipla</h2>
-      <p>${qb.length} perguntas sobre a matéria em âmbito: ${qb.filter(x=>x.g==="escrita").length} escritas sobre factos, datas, conceitos, autores e mecanismos, mais ${qb.length - qb.filter(x=>x.g==="escrita").length} geradas da ficha (conceitos, citações e cronologia). Feitas: <strong>${qf.length}</strong> · certas na última vez: <strong>${qs.length}</strong> · erradas: <strong>${qe.length}</strong>.</p>
-      <div class="barra"><i style="width:${qb.length?Math.round(100*qs.length/qb.length):0}%"></i></div>
-      <p class="muted">${dias>0 ? `${dias} dia${dias===1?"":"s"} de estudo até ao teste, contando com hoje: ${Math.ceil(pend/dias)} por dia para passar por todas.` : `Ficam ${pend} pendentes.`}</p>
-      <div class="linha"><button class="b" onclick="document.querySelector('[data-t=perguntas]').click()">Fazer perguntas</button></div>`));
-  }
+    <p class="muted">Indicação dada em aula a 6 de outubro: «usar citações das aulas é bastante possível». Um bom ensaio não é uma lista de factos: é uma <strong>cadeia de mecanismos</strong>, cada acontecimento com a sua causa, a sua consequência e um autor que o interprete.</p>`));
   const prog = el("div",{class:"card"},`<h2 style="margin-top:0">Progresso</h2>`);
   const conhecidas = store.get("cit_ok", {}), conc_ok = store.get("conc_ok", {});
-  const totalCit = caps().reduce((s,c)=>s+c.citacoes.length,0), totalConc = caps().reduce((s,c)=>s+c.conceitos.length,0);
-  const nCit = caps().reduce((s,c)=>s+c.citacoes.filter((x,i)=>conhecidas[c.n+":"+i]).length,0);
-  const nConc = caps().reduce((s,c)=>s+c.conceitos.filter((x,i)=>conc_ok[c.n+":"+i]).length,0);
-  prog.innerHTML += `<p>Ensaios escritos: <strong>${hist.length}</strong> · Citações marcadas como sabidas: <strong>${nCit}/${totalCit}</strong> · Conceitos sabidos: <strong>${nConc}/${totalConc}</strong></p>
-    <div class="barra"><i style="width:${totalCit?Math.round(100*nCit/totalCit):0}%"></i></div>`;
+  prog.innerHTML += `<p>Perguntas feitas: <strong>${qf.length}/${qb.length}</strong> · certas na última vez: <strong class="ok-txt">${qs.length}</strong> · erradas: <strong class="${qe.length?"mau-txt":""}">${qe.length}</strong> · Ensaios escritos: <strong>${hist.length}</strong></p>
+    <div class="barra"><i style="width:${qb.length?Math.round(100*qs.length/qb.length):0}%"></i></div>`;
   const tbl = el("table");
-  tbl.innerHTML = `<tr><th>Ponto</th><th>Capítulo</th><th>Estado</th><th>Citações</th><th>Conceitos</th><th>Ensaios</th></tr>` + caps().map(c=>`<tr><td class="k">${c.n}</td><td>${c.titulo}<br/><span class="muted">${c.subtitulo}</span></td><td class="muted">${c.lecionado||""}</td><td>${c.citacoes.filter((x,i)=>conhecidas[c.n+":"+i]).length}/${c.citacoes.length}</td><td>${c.conceitos.filter((x,i)=>conc_ok[c.n+":"+i]).length}/${c.conceitos.length}</td><td>${hist.filter(h=>h.ponto===c.n).length}</td></tr>`).join("");
-  prog.appendChild(tbl); m.appendChild(prog);
+  tbl.innerHTML = `<tr><th>Ponto</th><th>Capítulo</th><th class="num">Perguntas sabidas</th><th class="num">Citações</th><th class="num">Conceitos</th><th class="num">Ensaios</th></tr>` + caps().map(c=>{ const pc = qb.filter(x=>x.p===c.n), ps = pc.filter(x=>qp[x.id] && qp[x.id].last); return `<tr class="sel-row" data-p="${c.n}"><td class="k">${c.n}</td><td>${c.titulo}<br/><span class="muted">${c.lecionado||""}</span></td><td class="num">${ps.length}/${pc.length}</td><td class="num">${c.citacoes.filter((x,i)=>conhecidas[c.n+":"+i]).length}/${c.citacoes.length}</td><td class="num">${c.conceitos.filter((x,i)=>conc_ok[c.n+":"+i]).length}/${c.conceitos.length}</td><td class="num">${hist.filter(h=>h.ponto===c.n).length}</td></tr>`; }).join("");
+  tbl.querySelectorAll("tr.sel-row").forEach(tr => { tr.title = "Ler este ponto"; tr.onclick = () => { store.set("mat_ponto", +tr.dataset.p); render("materia"); }; });
+  prog.appendChild(el("div",{class:"rolo"})).appendChild(tbl); prog.appendChild(el("p",{class:"muted"},"Clique num ponto para o ler.")); m.appendChild(prog);
+}
+
+// ---------- matéria: uma ficha de leitura por ponto ----------
+const secNome = s => (s||"").replace(/^\d+\.\s*/, "");
+function materia(m){
+  const cs = caps(); let n = store.get("mat_ponto", cs[0].n); if (!cs.some(c => c.n === n)) n = cs[0].n;
+  const c = cap(n); store.set("mat_ponto", n);
+  // lista de pontos
+  const top = el("div", { class: "card" }); top.innerHTML = `<h2 style="margin-top:0">Matéria, ponto a ponto</h2><p class="muted">Cada ponto numa página só, pela ordem do capítulo. As citações aparecem na secção a que pertencem, para se perceber para que servem.</p>`;
+  const lista = el("div", { class: "pontos-lista" });
+  DATA.capitulos.forEach(x => { const b = el("button", { class: (x.n === n ? "on" : "") + (x.n > SCOPE ? " fora" : "") }); b.innerHTML = `<b>${x.n}</b>${x.titulo}`; b.onclick = () => { store.set("mat_ponto", x.n); render("materia"); }; lista.appendChild(b); });
+  top.appendChild(lista);
+  const selP = el("select", { class: "sel-ponto" }); DATA.capitulos.forEach(x => selP.appendChild(el("option", { value: x.n }, `Ponto ${x.n} · ${x.titulo}${x.n > SCOPE ? " (fora do 1.º teste)" : ""}`))); selP.value = n; selP.onchange = () => { store.set("mat_ponto", +selP.value); render("materia"); };
+  top.appendChild(selP); m.appendChild(top);
+  // ficha
+  const a = el("article", { class: "leitura" });
+  const cit = c.citacoes, prof = c.prof || [], hoje = c.hoje || [];
+  const porSec = s => ({ cit: cit.filter(q => q.seccao === s), prof: prof.filter(p => p.seccao === s), hoje: hoje.filter(h => h.seccao === s) });
+  const usadas = new Set();
+  const bq = q => `<blockquote${q.tipo === "documento" ? ' class="doc"' : ''}>${q.paras.map(p => `<p>${p}</p>`).join("")}<footer>${q.fonte}</footer></blockquote>`;
+  const secs = [["percurso", "O percurso do capítulo"], ["cron", "Cronologia"], ["conc", "Conceitos-chave"], ["autores", "Autores e fontes a citar"], ["frases", "Frases a reter"], ["mec", "Mecanismos que passam por aqui"], ["ens", "Perguntas de ensaio possíveis"], ["bib", "Bibliografia"]];
+  let h = `<p class="eyebrow">Ponto ${c.n} · ${c.datas}${c.lecionado ? " · " + c.lecionado.replace(/\.$/, "") : ""}</p><h1>${c.titulo}</h1><p class="sub">${c.subtitulo}</p>`;
+  if (c.epigrafe) h += `<blockquote class="epi">${c.epigrafe.texto}<footer>${c.epigrafe.autor}</footer></blockquote>`;
+  h += `<div class="indice">${secs.map(([id, t]) => `<a href="#${id}" data-id="${id}">${t}</a>`).join("")}</div>`;
+  // percurso
+  h += `<h2 id="percurso">O percurso do capítulo</h2>`;
+  c.seccoes.forEach(s => {
+    const g = porSec(s); h += `<h3>${s}</h3>`;
+    g.prof.forEach(p => { h += `<div class="aula"><b>Em aula</b>${p.texto} <span class="muted">— ${p.quem}</span></div>`; });
+    g.cit.forEach(q => { usadas.add(q); h += bq(q); });
+    g.hoje.forEach(x => { h += `<div class="hoje"><b>${x.rotulo}</b>${x.texto}</div>`; });
+    if (!g.prof.length && !g.cit.length && !g.hoje.length) h += `<p class="muted">Sem excertos registados para esta secção.</p>`;
+  });
+  const resto = cit.filter(q => !usadas.has(q)); if (resto.length) { h += `<h3>Outras citações do ponto</h3>`; resto.forEach(q => { h += bq(q); }); }
+  const profResto = prof.filter(p => !c.seccoes.includes(p.seccao)); profResto.forEach(p => { h += `<div class="aula"><b>Em aula</b>${p.texto} <span class="muted">— ${p.quem}</span></div>`; });
+  const hojeResto = hoje.filter(x => !c.seccoes.includes(x.seccao)); hojeResto.forEach(x => { h += `<div class="hoje"><b>${x.rotulo}</b>${x.texto}</div>`; });
+  // cronologia
+  if (c.cron.length) { h += `<h2 id="cron">Cronologia</h2><table>${c.cron.map(e => `<tr><td class="k">${e.k}</td><td>${e.v}</td></tr>`).join("")}</table>`; }
+  // conceitos
+  if (c.conceitos.length) { h += `<h2 id="conc">Conceitos-chave</h2><dl>${c.conceitos.map(k => `<dt>${k.k}</dt><dd>${k.v}</dd>`).join("")}</dl>`; }
+  // autores
+  if (c.fontes.length) { h += `<h2 id="autores">Autores e fontes a citar</h2><ul>${c.fontes.map(f => `<li>${f}</li>`).join("")}</ul>`; }
+  // frases
+  if (c.frases.length) { h += `<h2 id="frases">Frases a reter</h2><ul>${c.frases.map(f => `<li>${f}</li>`).join("")}</ul>`; }
+  // mecanismos
+  const mecs = DATA.mecanismos.filter(mm => mm.pontos.includes(c.n));
+  if (mecs.length) { h += `<h2 id="mec">Mecanismos que passam por aqui</h2>` + mecs.map(mm => `<details><summary>${mm.titulo} <small class="muted">· Pontos ${mm.pontos.join(", ")}</small></summary><p class="muted"><em>${mm.pergunta}</em></p><ol>${mm.elos.map(e => `<li>${e.ev}<br/><span class="muted"><em>porque:</em> ${e.porque}</span></li>`).join("")}</ol><p><strong>Frase para o ensaio:</strong> ${mm.frase}</p></details>`).join(""); }
+  // perguntas de ensaio
+  if (c.perguntas.length) { h += `<h2 id="ens">Perguntas de ensaio possíveis</h2>` + c.perguntas.map(p => `<details><summary>${p.q}</summary><p>${p.guia}</p></details>`).join(""); }
+  // bibliografia
+  if (c.biblio.length) { h += `<h2 id="bib">Bibliografia</h2><ul>${c.biblio.map(b => `<li>${b}</li>`).join("")}</ul>`; }
+  a.innerHTML = h;
+  a.querySelectorAll(".indice a").forEach(l => l.onclick = ev => { ev.preventDefault(); const t = a.querySelector("#" + l.dataset.id); if (t) t.scrollIntoView({ behavior: "smooth", block: "start" }); });
+  // anterior / seguinte
+  const i = DATA.capitulos.indexOf(c), prev = DATA.capitulos[i - 1], next = DATA.capitulos[i + 1];
+  const pn = el("div", { class: "pn" });
+  const bp = el("button", { class: "b sec" }, prev ? `← Ponto ${prev.n} · ${prev.titulo}` : ""); bp.style.visibility = prev ? "visible" : "hidden"; bp.onclick = () => { store.set("mat_ponto", prev.n); render("materia"); };
+  const bn = el("button", { class: "b" }, next ? `Ponto ${next.n} · ${next.titulo} →` : "Fim do programa"); bn.disabled = !next; bn.onclick = () => { if (next) { store.set("mat_ponto", next.n); render("materia"); } };
+  const bq2 = el("button", { class: "b sec" }, "Perguntas deste ponto"); bq2.onclick = () => { const cfg = quizCfg(); cfg.pontos = [c.n]; cfg.modo = "pendentes"; store.set("quiz_cfg", cfg); render("perguntas"); };
+  pn.append(bp, bq2, bn); a.appendChild(pn);
+  m.appendChild(a);
 }
 
 // ---------- ensaio ----------
@@ -533,7 +646,7 @@ function perguntas(m, ronda){
     tr.onclick = () => iniciar({ ...cfg, pontos: [c.n], modo: "pendentes" });
     t.appendChild(tr);
   });
-  tab.appendChild(t);
+  tab.appendChild(el("div", { class: "rolo" })).appendChild(t);
   const reset = el("button", { class: "b sec pq" }, "Apagar o progresso das perguntas"); reset.onclick = () => { if (confirm("Apagar todo o progresso das perguntas de escolha múltipla?")) { store.set("quiz", {}); render("perguntas"); } };
   tab.appendChild(el("div", { class: "linha" })).appendChild(reset);
   m.appendChild(tab);
@@ -610,7 +723,7 @@ render("inicio");
 // Conta partilhada mariaestuda.eu (login opcional, Nome + PIN). Sincroniza todo o progresso ("hc:*").
 if (window.Account) Account.init({
   section: 'sardica',
-  keys: ['cit_ok','cit_pontos','conc_ok','conc_pontos','cron_pontos','cron_score','ens_atual','ens_dur','ens_pontos','ens_tipo','ensaios','mec_feitos','quiz','quiz_cfg','scope'].map(k => 'hc:' + k),
+  keys: ['cit_ok','cit_pontos','conc_ok','conc_pontos','cron_pontos','cron_score','ens_atual','ens_dur','ens_pontos','ens_tipo','ensaios','mec_feitos','quiz','quiz_cfg','mat_ponto','treino_tab','scope'].map(k => 'hc:' + k),
   isEmpty: slice => !Object.keys(slice).some(k => k !== 'hc:scope'),
   mount: 'header', label: 'Desde 1945 até ontem à tarde', accent: '#8a1c1c',
 });
