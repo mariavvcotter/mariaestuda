@@ -1,0 +1,140 @@
+{
+ "years": [
+  {
+   "year": 5,
+   "level": "A1",
+   "ciclo": "2.º ciclo",
+   "decks": 21,
+   "story": "The Fox and the Sleeping Clock",
+   "chapters": 9,
+   "fichas": 9,
+   "exercises": 134,
+   "vocab": 171,
+   "sebenta": 11,
+   "sections": [
+    "Áreas Temáticas",
+    "Competência Intercultural",
+    "Gramática"
+   ]
+  },
+  {
+   "year": 6,
+   "level": "A1 / A2",
+   "ciclo": "2.º ciclo",
+   "decks": 22,
+   "story": "The Postcard Behind the Wardrobe",
+   "chapters": 9,
+   "fichas": 9,
+   "exercises": 140,
+   "vocab": 154,
+   "sebenta": 15,
+   "sections": [
+    "Áreas Temáticas",
+    "Competência Intercultural",
+    "Gramática"
+   ]
+  },
+  {
+   "year": 7,
+   "level": "A2",
+   "ciclo": "3.º ciclo",
+   "decks": 18,
+   "story": "Under the Swallow",
+   "chapters": 9,
+   "fichas": 9,
+   "exercises": 122,
+   "vocab": 132,
+   "sebenta": 15,
+   "sections": [
+    "Áreas Temáticas",
+    "Competência Intercultural",
+    "Gramática"
+   ]
+  },
+  {
+   "year": 8,
+   "level": "A2 / B1",
+   "ciclo": "3.º ciclo",
+   "decks": 20,
+   "story": "The Gull Who Knew My Name",
+   "chapters": 9,
+   "fichas": 9,
+   "exercises": 142,
+   "vocab": 92,
+   "sebenta": 15,
+   "sections": [
+    "Áreas Temáticas",
+    "Competência Intercultural",
+    "Gramática"
+   ]
+  },
+  {
+   "year": 9,
+   "level": "B1",
+   "ciclo": "3.º ciclo",
+   "decks": 18,
+   "story": "Thursday Nights",
+   "chapters": 9,
+   "fichas": 9,
+   "exercises": 129,
+   "vocab": 84,
+   "sebenta": 15,
+   "sections": [
+    "Áreas Temáticas",
+    "Competência Intercultural",
+    "Gramática"
+   ]
+  },
+  {
+   "year": 10,
+   "level": "B1+",
+   "ciclo": "Secundário",
+   "decks": 16,
+   "story": "Side B",
+   "chapters": 9,
+   "fichas": 9,
+   "exercises": 124,
+   "vocab": 68,
+   "sebenta": 15,
+   "sections": [
+    "Áreas Temáticas",
+    "Competência Intercultural",
+    "Gramática"
+   ]
+  },
+  {
+   "year": 11,
+   "level": "B1+ / B2",
+   "ciclo": "Secundário",
+   "decks": 17,
+   "story": "The Cutting Table",
+   "chapters": 9,
+   "fichas": 9,
+   "exercises": 124,
+   "vocab": 96,
+   "sebenta": 15,
+   "sections": [
+    "Áreas Temáticas",
+    "Competência Intercultural",
+    "Gramática"
+   ]
+  },
+  {
+   "year": 12,
+   "level": "B2",
+   "ciclo": "Secundário",
+   "decks": 19,
+   "story": "Reading Backwards",
+   "chapters": 9,
+   "fichas": 9,
+   "exercises": 128,
+   "vocab": 76,
+   "sebenta": 15,
+   "sections": [
+    "Áreas Temáticas",
+    "Competência Intercultural",
+    "Gramática"
+   ]
+  }
+ ]
+}
