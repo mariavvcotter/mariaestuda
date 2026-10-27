@@ -1,0 +1,875 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comunicação e Liderança · Resumo dos slides 1–39</title>
+<meta name="description" content="Resumo ilustrado de Comunicação e Liderança (UCP, 2026/27): personalidade, inteligência emocional, presença, teorias comportamentais e seguidores.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/assets/css/fonts.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23FCFAF6'/><text x='50' y='72' font-size='62' font-family='Georgia,serif' font-weight='700' text-anchor='middle' fill='%23B0570D'>L</text></svg>">
+<style>
+:root{
+  --paper:#FCFAF6;--paper-2:#F4F0E8;--surface:#FFFFFF;
+  --ink:#1C1916;--ink-soft:#6B6459;--ink-faint:#9A9289;--line:#E7E1D6;--line-soft:#F0EBE2;
+  --accent:#B0570D;--accent-hover:#94480A;--accent-ink:#FFFFFF;--accent-soft:#FBF0E4;
+  --ok:#2F6B3A;--ok-soft:#E9F2EA;--bad:#9E2B25;--bad-soft:#F8E8E6;--blue:#2F5D7C;--blue-soft:#E8F0F5;
+  --shadow:0 1px 2px rgba(28,25,22,.04),0 10px 26px -14px rgba(28,25,22,.16);
+  --display:"Playfair Display",Georgia,"Times New Roman",serif;
+  --body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r-sm:8px;--r-md:14px;--r-lg:20px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1.02rem;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:3px;border-radius:3px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:#fff;padding:.5rem .8rem;border-radius:var(--r-sm);z-index:100}
+.skip:focus{left:8px}
+
+/* barra de progresso + topo */
+.progress{position:fixed;inset:0 0 auto 0;height:3px;background:transparent;z-index:60}
+.progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .08s linear}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(252,250,246,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar .in{max-width:1180px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.mark{font-family:var(--display);font-weight:700;text-decoration:none;font-size:1.15rem;letter-spacing:-.01em}
+.mark span{color:var(--accent)}
+.toplinks{display:flex;gap:16px;align-items:center;font-size:.85rem}
+.toplinks a{color:var(--ink-soft);text-decoration:none}
+.toplinks a:hover{color:var(--accent)}
+.btn{display:inline-flex;align-items:center;gap:.5rem;background:var(--accent);color:var(--accent-ink)!important;text-decoration:none;font-weight:600;font-size:.9rem;padding:.6rem 1.05rem;border-radius:999px;box-shadow:0 8px 18px -10px rgba(176,87,13,.7);transition:background .12s,transform .12s}
+.btn:hover{background:var(--accent-hover);transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--ink)!important;border:1px solid var(--line);box-shadow:none}
+.btn.ghost:hover{border-color:var(--accent);color:var(--accent)!important;background:var(--accent-soft)}
+.toplinks .btn{padding:.45rem .85rem;font-size:.82rem}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line);background:
+  radial-gradient(900px 380px at 85% -10%,var(--accent-soft),transparent 70%),
+  var(--paper)}
+.hero .in{max-width:1180px;margin:0 auto;padding:clamp(2.2rem,7vw,4.5rem) 16px clamp(2rem,5vw,3.2rem)}
+.eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 .6rem}
+h1{font-family:var(--display);font-weight:700;letter-spacing:-.02em;font-size:clamp(2.2rem,6.4vw,4rem);line-height:1.04;margin:0 0 1rem;max-width:16ch}
+h1 em{font-style:italic;color:var(--accent);font-weight:600}
+.lede{color:var(--ink-soft);font-size:1.1rem;max-width:58ch;margin:0 0 1.4rem}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 1.6rem;padding:0;list-style:none}
+.meta li{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.35rem .8rem;font-size:.82rem;color:var(--ink-soft)}
+.cta{display:flex;flex-wrap:wrap;gap:10px}
+
+/* layout */
+.layout{max-width:1180px;margin:0 auto;padding:0 16px;display:grid;grid-template-columns:1fr;gap:0 48px}
+@media(min-width:1000px){.layout{grid-template-columns:210px minmax(0,1fr)}}
+.toc{display:none}
+@media(min-width:1000px){
+  .toc{display:block;position:sticky;top:76px;align-self:start;max-height:calc(100vh - 96px);overflow:auto;padding:2rem 0;font-size:.85rem}
+  .toc p{font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 .6rem}
+  .toc a{display:block;text-decoration:none;color:var(--ink-soft);padding:.32rem 0 .32rem .85rem;border-left:2px solid var(--line);line-height:1.35}
+  .toc a:hover{color:var(--ink)}
+  .toc a.on{color:var(--accent);border-left-color:var(--accent);font-weight:600}
+}
+main{min-width:0;padding-bottom:4rem}
+
+/* índice mobile/hero */
+.index{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin:2rem 0 0;padding:0;list-style:none}
+.index a{display:flex;gap:.7rem;align-items:baseline;text-decoration:none;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:.7rem .9rem;font-size:.92rem;line-height:1.3;transition:border-color .12s,transform .12s}
+.index a:hover{border-color:var(--accent);transform:translateY(-1px)}
+.index b{font-family:var(--display);color:var(--accent);font-size:1.05rem;min-width:1.4rem}
+
+/* secções */
+section{padding:clamp(2.2rem,6vw,3.6rem) 0 .4rem;border-top:1px solid var(--line)}
+section:first-of-type{border-top:0}
+.num{font-family:var(--display);font-style:italic;color:var(--accent);font-size:1rem;margin:0 0 .15rem}
+h2{font-family:var(--display);font-weight:700;letter-spacing:-.015em;font-size:clamp(1.65rem,4vw,2.3rem);line-height:1.12;margin:0 0 .5rem}
+h3{font-family:var(--display);font-weight:700;font-size:1.2rem;letter-spacing:-.005em;margin:2rem 0 .6rem}
+h4{font-size:.74rem;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 .5rem}
+.pages{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 1rem}
+p{margin:0 0 1rem}
+ul{margin:0 0 1rem;padding-left:1.2rem}
+li{margin:.25rem 0}
+li::marker{color:var(--accent)}
+strong{font-weight:600}
+.small{font-size:.88rem;color:var(--ink-soft)}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(1rem,3vw,1.5rem);box-shadow:var(--shadow);margin:0 0 1rem}
+.card > :last-child{margin-bottom:0}
+.card h4{color:var(--accent)}
+.card .t{font-family:var(--display);font-weight:700;font-size:1.12rem;line-height:1.2;margin:0 0 .45rem}
+.grid{display:grid;gap:12px;margin:0 0 1rem}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))}
+.grid .card{margin:0;height:100%}
+
+.callout{border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 var(--r-md) var(--r-md) 0;padding:1rem 1.2rem;margin:0 0 1.2rem}
+.callout > :last-child{margin-bottom:0}
+.callout.blue{border-color:var(--blue);background:var(--blue-soft)}
+.callout b.k{display:block;font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem}
+.callout.blue b.k{color:var(--blue)}
+blockquote{margin:0 0 1rem;padding:0 0 0 1.1rem;border-left:3px solid var(--accent);font-family:var(--display);font-size:1.18rem;line-height:1.4}
+blockquote cite{display:block;font-family:var(--body);font-style:normal;font-size:.82rem;color:var(--ink-soft);margin-top:.4rem}
+
+.tag{display:inline-block;font-size:.72rem;font-weight:600;border-radius:999px;padding:.15rem .6rem;vertical-align:middle;white-space:nowrap}
+.tag.ok{background:var(--ok-soft);color:var(--ok)}
+.tag.bad{background:var(--bad-soft);color:var(--bad)}
+.tag.acc{background:var(--accent-soft);color:var(--accent)}
+.tag.blue{background:var(--blue-soft);color:var(--blue)}
+.tag.gray{background:var(--paper-2);color:var(--ink-soft)}
+
+/* tabelas */
+.tw{overflow-x:auto;margin:0 0 1.2rem;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{text-align:left;padding:.65rem .9rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+th{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);background:var(--paper-2);font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600}
+
+/* matrizes 2x2 */
+.mx{display:grid;grid-template-columns:2rem 1fr;grid-template-rows:1fr auto;gap:8px;margin:0 0 1.4rem;max-width:620px}
+.mx .y{writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+.mx .x{grid-column:2;text-align:center;font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+.mx .cells{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cell{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-md);padding:.9rem 1rem;min-height:116px;font-size:.88rem;line-height:1.45}
+.cell b{display:block;font-family:var(--display);font-size:1.1rem;margin-bottom:.2rem}
+.cell.best{background:var(--accent-soft);border-color:var(--accent)}
+.cell.best b{color:var(--accent)}
+.cell.void{background:transparent;border-style:dashed;color:var(--ink-faint)}
+.cell .ax{display:block;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.35rem}
+.center-chip{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--ink);color:#fff;font-size:.78rem;font-weight:600;padding:.4rem .8rem;border-radius:999px;box-shadow:0 6px 16px -6px rgba(0,0,0,.4);white-space:nowrap}
+
+/* círculo dourado */
+.golden{display:grid;gap:1.4rem;align-items:center;grid-template-columns:1fr}
+@media(min-width:700px){.golden{grid-template-columns:260px 1fr}}
+.golden svg{width:100%;max-width:260px;height:auto;margin:0 auto;display:block}
+
+/* mapa das teorias */
+.theories{list-style:none;margin:0 0 1.2rem;padding:0;display:grid;gap:0;position:relative}
+.theories li{display:grid;grid-template-columns:2.2rem 1fr;gap:0 .8rem;margin:0;padding:.7rem 0;border-bottom:1px solid var(--line-soft)}
+.theories li:last-child{border-bottom:0}
+.theories .n{font-family:var(--display);font-weight:700;color:var(--accent);font-size:1.15rem;line-height:1.3}
+.theories .nm{font-weight:600}
+.theories .kv{color:var(--ink-soft);font-size:.9rem}
+.theories .kv b{color:var(--accent);font-weight:600}
+
+/* seguidores */
+.f-head{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:0 0 .4rem}
+.f-head .t{margin:0}
+.how{margin-top:.8rem;padding-top:.8rem;border-top:1px dashed var(--line)}
+.how h4{color:var(--ok)}
+
+/* testa-te */
+details{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);margin:0 0 8px;overflow:hidden}
+summary{cursor:pointer;list-style:none;padding:.9rem 1.1rem .9rem 2.6rem;position:relative;font-weight:600;line-height:1.4}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";position:absolute;left:1rem;top:.8rem;width:1.3rem;height:1.3rem;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:700;line-height:1}
+details[open] summary::before{content:"–"}
+details[open]{border-color:var(--accent)}
+details .ans{padding:0 1.1rem 1rem 2.6rem;color:var(--ink-soft)}
+details .ans > :last-child{margin-bottom:0}
+
+.steps{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 1rem}
+.steps span{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:.3rem .8rem;font-size:.85rem}
+.steps i{color:var(--ink-faint);font-style:normal}
+.steps span.hi{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+
+.plus li{list-style:none;position:relative;padding-left:1.1rem}
+.plus li::before{content:"+";position:absolute;left:0;color:var(--accent);font-weight:700}
+.plus{padding:0}
+
+footer{border-top:1px solid var(--line);background:var(--paper-2)}
+footer .in{max-width:1180px;margin:0 auto;padding:2rem 16px;display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-between;align-items:center;font-size:.88rem;color:var(--ink-soft)}
+
+@media(max-width:560px){
+  .mx{grid-template-columns:1.6rem 1fr}
+  .cell{padding:.7rem .75rem;min-height:104px;font-size:.82rem}
+  .toplinks .hide-sm{display:none}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+@media print{
+  .topbar,.toc,.progress,.cta,.index{display:none}
+  body{background:#fff}
+  .card,.cell,details{box-shadow:none;break-inside:avoid}
+  details .ans{display:block}
+  section{break-before:auto}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#conteudo">Saltar para o conteúdo</a>
+<div class="progress" aria-hidden="true"><i id="bar"></i></div>
+
+<header class="topbar">
+  <div class="in">
+    <a class="mark" href="/">maria<span>estuda</span>.eu</a>
+    <nav class="toplinks" aria-label="Ligações">
+      <a class="hide-sm" href="#testa">Testa-te</a>
+      <a class="btn" href="/cl/">Fazer o quiz →</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="in">
+    <p class="eyebrow">Universidade Católica · 1.º semestre 2026/27</p>
+    <h1>Comunicação <em>e</em> Liderança</h1>
+    <p class="lede">Resumo explicado dos slides 1 a 39: da personalidade e do stress à inteligência emocional, da presença às teorias comportamentais e aos tipos de seguidores. Feito para estudar para o teste intermédio.</p>
+    <ul class="meta">
+      <li>Prof. Fernando Ilharco</li>
+      <li>Slides 1–39</li>
+      <li>Teste intermédio: 20%</li>
+      <li>Casos: Mário e Consolidated Products</li>
+    </ul>
+    <div class="cta">
+      <a class="btn" href="#pessoa">Começar a estudar</a>
+      <a class="btn ghost" href="/cl/">Quiz de escolha múltipla</a>
+    </div>
+    <ol class="index" aria-label="Índice">
+      <li><a href="#intro"><b>0</b>Enquadramento da cadeira</a></li>
+      <li><a href="#comunicacao"><b>1</b>Liderança como comunicação</a></li>
+      <li><a href="#pessoa"><b>2</b>Personalidade, stress e motivação</a></li>
+      <li><a href="#competencias"><b>3</b>Competências do líder</a></li>
+      <li><a href="#ie"><b>4</b>Inteligência emocional</a></li>
+      <li><a href="#presenca"><b>5</b>Presença: corpo e mente</a></li>
+      <li><a href="#exemplo"><b>6</b>Exemplo e propósito</a></li>
+      <li><a href="#mapa"><b>7</b>Definições e mapa das teorias</a></li>
+      <li><a href="#grande-homem"><b>8</b>Grande Homem e traços</a></li>
+      <li><a href="#comportamentais"><b>9</b>Teorias comportamentais</a></li>
+      <li><a href="#seguidores"><b>10</b>Os seguidores (Kelley)</a></li>
+      <li><a href="#contingenciais"><b>11</b>Teorias contingenciais</a></li>
+      <li><a href="#fio"><b>12</b>Fio condutor</a></li>
+      <li><a href="#testa"><b>13</b>Testa-te</a></li>
+    </ol>
+  </div>
+</div>
+
+<div class="layout">
+<aside class="toc" aria-label="Navegação da página">
+  <p>Nesta página</p>
+  <a href="#intro">0 · Enquadramento</a>
+  <a href="#comunicacao">1 · Liderança é comunicação</a>
+  <a href="#pessoa">2 · Pessoa, stress, motivação</a>
+  <a href="#competencias">3 · Competências</a>
+  <a href="#ie">4 · Inteligência emocional</a>
+  <a href="#presenca">5 · Presença</a>
+  <a href="#exemplo">6 · Exemplo e propósito</a>
+  <a href="#mapa">7 · Mapa das teorias</a>
+  <a href="#grande-homem">8 · Grande Homem e traços</a>
+  <a href="#comportamentais">9 · Comportamentais</a>
+  <a href="#seguidores">10 · Seguidores</a>
+  <a href="#contingenciais">11 · Contingenciais</a>
+  <a href="#fio">12 · Fio condutor</a>
+  <a href="#testa">13 · Testa-te</a>
+</aside>
+
+<main id="conteudo">
+
+<!-- 0 -->
+<section id="intro">
+  <p class="num">0</p>
+  <h2>Enquadramento da cadeira</h2>
+  <p class="pages">Contexto</p>
+  <p>A cadeira trata a liderança <strong>como um fenómeno de comunicação</strong>: relacionamento, presença, linguagem, discurso, dinâmicas de grupo, significado, empatia, exemplo, influência e persuasão.</p>
+
+  <div class="tw"><table>
+    <thead><tr><th>Avaliação</th><th>Peso</th></tr></thead>
+    <tbody>
+      <tr><td>Teste intermédio</td><td>20%</td></tr>
+      <tr><td>Teste final</td><td>35%</td></tr>
+      <tr><td>Trabalho de grupo sobre um filme</td><td>25%</td></tr>
+      <tr><td>Participação</td><td>20%</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout">
+    <b class="k">Os casos de estudo saem nos testes</b>
+    <p><strong>A história de Mário</strong> (capacidades individuais, personalidade, stress, motivação): pelo menos 1 pergunta no teste intermédio.</p>
+    <p><strong>Consolidated Products</strong> (teorias comportamentais: tarefas vs. relacionamento; tipologias de profissionais): 2 ou 3 perguntas no teste intermédio.</p>
+  </div>
+
+  <h3>Ideias que o professor repete</h3>
+  <div class="grid g2">
+    <div class="card"><p class="t">Os líderes são feitos das equipas</p><p class="small">Pensar o contrário é fonte de enviesamentos. Nunca esquecer o resto da equipa (dinâmicas grupais); não focar só o líder.</p></div>
+    <div class="card"><p class="t">Nenhuma teoria está «certa»</p><p class="small">Quando há muitas teorias sobre uma coisa, são métodos de análise, know-how, exemplos de casos de sucesso.</p></div>
+    <div class="card"><p class="t">Depende dos liderados</p><p class="small">O formato da liderança é ditado pelos liderados. A liderança é um processo social: procurar o melhor de cada um em prol do coletivo.</p></div>
+    <div class="card"><p class="t">Grande Homem: desatualizada</p><p class="small">Durante milénios os líderes eram homens porque tinham mais força física (estereótipo).</p></div>
+  </div>
+
+  <h4>Escala de intensidade da influência (discutida em aula)</h4>
+  <div class="steps" aria-label="Escala de influência">
+    <span>Hipnotizador</span><i>›</i><span>Manipulador</span><i>›</i><span>Dissuasor</span><i>›</i><span>Influenciador</span><i>›</i><span>Chefe</span>
+  </div>
+  <p class="small">Pergunta recorrente: a pessoa que estamos a ver é um chefe, um gestor ou um líder?</p>
+</section>
+
+<!-- 1 -->
+<section id="comunicacao">
+  <p class="num">1</p>
+  <h2>Liderança como comunicação</h2>
+  <p class="pages">Págs. 1–5</p>
+
+  <div class="callout">
+    <b class="k">Ponto de partida</b>
+    <p>«Como comunicação, a liderança foca o relacionamento, a presença, a linguagem, o discurso, as dinâmicas de grupo, o significado, a empatia, o exemplo, a influência, a persuasão.»</p>
+  </div>
+
+  <h4>As três perguntas orientadoras da cadeira</h4>
+  <ol>
+    <li><strong>Nasce-se líder ou pode aprender-se a ser líder?</strong> Atravessa toda a evolução das teorias: dos traços («nasce-se») às comportamentais («aprende-se»).</li>
+    <li><strong>O que é um líder? O que faz um líder?</strong></li>
+    <li><strong>O que é a liderança?</strong></li>
+  </ol>
+
+  <h3>Metáforas visuais do líder</h3>
+  <p class="small">As págs. 2–5 são só imagens, usadas para debate em aula. Cada uma é uma faceta ou um estereótipo.</p>
+  <div class="grid g4">
+    <div class="card"><h4>Apontar o caminho</h4><p class="small">Adulto a mostrar o caminho a uma criança: o líder que dá direção e orienta.</p></div>
+    <div class="card"><h4>Bombeiro</h4><p class="small">Apaga fogos: o líder que resolve crises (gestão reativa).</p></div>
+    <div class="card"><h4>Subir a montanha</h4><p class="small">Uma pessoa a puxar as outras: ajuda a equipa a chegar mais longe.</p></div>
+    <div class="card"><h4>Carga às costas</h4><p class="small">Assume o peso e a responsabilidade, ou carrega tudo sozinho.</p></div>
+    <div class="card"><h4>Globo com pessoas</h4><p class="small">Liderança num contexto global e diverso.</p></div>
+    <div class="card"><h4>Tartaruga de pernas para o ar</h4><p class="small">Impotência, estar preso, incapacidade de agir.</p></div>
+    <div class="card"><h4>Saltar o precipício</h4><p class="small">Risco, coragem, decisão.</p></div>
+    <div class="card"><h4>Surfar um carro</h4><p class="small">Controlo precário, equilíbrio em movimento.</p></div>
+  </div>
+  <p><strong>Mensagem:</strong> não há uma única imagem de «líder». A liderança assume muitas formas, e ser mau líder é fácil de muitas maneiras diferentes.</p>
+</section>
+
+<!-- 2 -->
+<section id="pessoa">
+  <p class="num">2</p>
+  <h2>A pessoa: personalidade, stress e motivação</h2>
+  <p class="pages">Págs. 6–12</p>
+  <p>Perguntas de partida: como conhecer uma pessoa, social e profissionalmente? Porque são as pessoas diferentes? Como motivar e envolver os outros? E a nós próprios?</p>
+
+  <h3>Personalidade</h3>
+  <blockquote>O padrão de disposições, de atuação e traços singulares que distinguem um indivíduo de outro e determinam o seu ajustamento ao meio envolvente.</blockquote>
+  <p>Origens e componentes: <strong>base genética</strong> (hereditariedade), <strong>ego e superego</strong> (Freud: o ego media entre impulsos e normas interiorizadas) e <strong>eu e os outros</strong> (a personalidade constrói-se também na relação social).</p>
+
+  <h4>Big Five + 1</h4>
+  <div class="grid g3">
+    <div class="card"><p class="t">1 · Extroversão</p><p class="small">Sociabilidade, energia, assertividade (vs. introversão).</p></div>
+    <div class="card"><p class="t">2 · Neuroticismo</p><p class="small">Instabilidade emocional, ansiedade, emoções negativas (vs. estabilidade emocional).</p></div>
+    <div class="card"><p class="t">3 · Amabilidade</p><p class="small">Cooperação, confiança, simpatia (vs. antagonismo).</p></div>
+    <div class="card"><p class="t">4 · Responsabilidade</p><p class="small">Escrupulosidade: organização, disciplina, orientação para objetivos.</p></div>
+    <div class="card"><p class="t">5 · Abertura</p><p class="small">A novas experiências: curiosidade, imaginação, criatividade.</p></div>
+    <div class="card" style="background:var(--accent-soft);border-color:var(--accent)"><p class="t" style="color:var(--accent)">+1 · Humildade</p><p class="small">Acrescentada em modelos recentes (HEXACO, honestidade-humildade). Liga-se à liderança de nível 5 e à servidora.</p></div>
+  </div>
+
+  <h3>Tipo A e Tipo B</h3>
+  <div class="tw"><table>
+    <thead><tr><th>Tipo A</th><th>Tipo B</th></tr></thead>
+    <tbody>
+      <tr><td>Competitiva</td><td>Sociabilidade</td></tr>
+      <tr><td>Realização</td><td>Relax</td></tr>
+      <tr><td>Urgência</td><td>Envolvimento</td></tr>
+      <tr><td>Agressiva</td><td>Tranquilidade</td></tr>
+      <tr><td>Incansável</td><td>Balanceamento (equilíbrio)</td></tr>
+      <tr><td>Trabalho</td><td>Lazer</td></tr>
+      <tr><td>Objetivos</td><td>Estar</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid g2">
+    <div class="card"><h4>Tipo A</h4><p class="small">Orientado para a realização, impaciente, sente urgência do tempo, competitivo, por vezes hostil. Mais propenso a stress.</p></div>
+    <div class="card"><h4>Tipo B</h4><p class="small">Mais calmo e equilibrado, valoriza o lazer e o «estar», menos pressa, mais sociável.</p></div>
+  </div>
+
+  <p><strong>Para além da personalidade</strong>, o comportamento no trabalho explica-se por:</p>
+  <div class="grid g4">
+    <div class="card"><h4>Valores</h4><p class="small">O que considero importante.</p></div>
+    <div class="card"><h4>Atitudes</h4><p class="small">Predisposições avaliativas face a pessoas e situações.</p></div>
+    <div class="card"><h4>Necessidades</h4><p class="small">O que me falta e procuro satisfazer.</p></div>
+    <div class="card"><h4>Expectativas</h4><p class="small">O que espero que aconteça ou que vá receber.</p></div>
+  </div>
+
+  <h3>Trabalho · Personalidade · Situação → Stress</h3>
+  <div class="callout blue">
+    <b class="k">Triângulo da pág. 9</b>
+    <p>Os três vértices são a <strong>Situação</strong>, o <strong>Trabalho</strong> e a <strong>Personalidade</strong>, dentro da sociedade organizacional, com o <strong>stress</strong> no centro. O stress resulta da <em>interação</em> entre a pessoa, o que faz e o contexto. Não é só «da pessoa» nem só «do trabalho».</p>
+  </div>
+
+  <h3>Stress</h3>
+  <ul class="plus">
+    <li>É uma <strong>situação individual</strong>: cada pessoa sente e lida com ele de forma diferente.</li>
+    <li>É um <strong>sentimento, emoção ou perceção</strong>.</li>
+    <li>Nasce de <strong>excesso, incapacidade ou dúvida</strong> (demasiada carga, sensação de não ser capaz, incerteza).</li>
+    <li>Manifesta-se como <strong>ansiedade, insegurança, confusão, receio, tensão</strong>.</li>
+  </ul>
+  <div class="grid g3">
+    <div class="card"><h4>Fisiológico</h4><p class="small">Tensão arterial, atividade respiratória, músculos tensos, estado geral de cansaço.</p></div>
+    <div class="card"><h4>Psicológico</h4><p class="small">Background (história pessoal), medo e ansiedade, perceção de perigo e ameaças, «futuro sombrio».</p></div>
+    <div class="card"><h4>Comportamental</h4><p class="small">Recolher informação, falar com família e amigos, sair / «beber uns copos», exercício físico.</p></div>
+  </div>
+  <p class="small">O plano comportamental lista formas de <em>lidar</em> com o stress (coping): umas saudáveis (informação, apoio social, exercício), outras de evasão (álcool).</p>
+
+  <h3>Motivação</h3>
+  <div class="grid g2">
+    <div class="card">
+      <h4>Intrínseca</h4>
+      <p class="t">Vem de «o que faço»</p>
+      <p class="small">O conteúdo da própria tarefa. Aumenta com:</p>
+      <ul class="plus small"><li>variedade</li><li>autonomia</li><li>responsabilidade</li><li>resultados (ver o efeito do que se faz)</li></ul>
+    </div>
+    <div class="card">
+      <h4>Extrínseca</h4>
+      <p class="t">Vem do «contexto do que faço»</p>
+      <p class="small">O que rodeia a tarefa. Aumenta com:</p>
+      <ul class="plus small"><li>elogios</li><li>recompensas</li><li>expectativas</li><li>ambiente (clima, relações, condições)</li></ul>
+    </div>
+  </div>
+  <p class="small">Um líder pode motivar enriquecendo o trabalho em si (intrínseca) ou atuando sobre o contexto (extrínseca).</p>
+
+  <div class="callout">
+    <b class="k">Caso: A história de Mário (pág. 12)</b>
+    <p>Serve para aplicar personalidade (Big Five, Tipo A/B), valores, atitudes, necessidades, expectativas, stress e motivação a uma pessoa concreta. O texto do caso está num PDF separado.</p>
+  </div>
+</section>
+
+<!-- 3 -->
+<section id="competencias">
+  <p class="num">3</p>
+  <h2>Competências do líder e do gestor</h2>
+  <p class="pages">Pág. 13 · modelo clássico de Katz</p>
+  <div class="grid g3">
+    <div class="card"><p class="t">Técnicas</p><p class="small"><em>Technical skills.</em> Métodos, processos, equipamento, organizações (regras e estrutura). Saber «como se faz» o trabalho.</p></div>
+    <div class="card"><p class="t">Interpessoais</p><p class="small"><em>Interpersonal skills.</em> Comportamento humano, processos de grupo, sentimentos, atitudes, motivos. Saber lidar com pessoas.</p></div>
+    <div class="card"><p class="t">Conceptuais</p><p class="small"><em>Conceptual skills.</em> Bom julgamento, visão de futuro, intuição, criatividade. Saber pensar o todo e o futuro.</p></div>
+  </div>
+  <div class="callout">
+    <b class="k">Ideia associada</b>
+    <p>À medida que se sobe na hierarquia, pesam menos as competências técnicas e mais as interpessoais e conceptuais.</p>
+  </div>
+</section>
+
+<!-- 4 -->
+<section id="ie">
+  <p class="num">4</p>
+  <h2>Inteligência emocional e liderança emocional</h2>
+  <p class="pages">Págs. 14–21</p>
+
+  <h3>Origens</h3>
+  <p><strong>Daniel Goleman</strong> (inteligência emocional), <strong>António Damásio</strong> (neurobiologia das emoções, <em>O Erro de Descartes</em>), Francisco Varela, Merleau-Ponty e Heidegger (fenomenologia: corpo, ser-no-mundo). Campos: psicologia, teoria organizacional, gestão, neurobiologia, sociologia.</p>
+  <div class="callout">
+    <b class="k">Mudança de paradigma</b>
+    <p style="font-family:var(--display);font-size:1.25rem"><s style="color:var(--ink-faint)">Penso, logo existo</s> → <strong style="color:var(--accent)">Sinto, logo existo.</strong></p>
+    <p class="small">A razão não está separada da emoção; a emoção precede e sustenta o pensamento e a decisão.</p>
+  </div>
+
+  <h3>QI vs. QE</h3>
+  <div class="grid g3">
+    <div class="card" style="text-align:center"><p class="t" style="font-size:2.4rem;color:var(--accent);margin:0">0,25</p><p class="small">É, no máximo, a correlação entre <strong>QI</strong> e êxito profissional. O QI explica uma parte pequena do sucesso.</p></div>
+    <div class="card"><h4>A IE dá</h4><p class="small">Adaptabilidade social e profissional, razoabilidade, maturidade, ponderação, comunicação.</p></div>
+    <div class="card"><h4>Hierarquia</h4><p class="small">As exigências de QE <strong>sobem</strong> à medida que subimos na hierarquia.</p></div>
+  </div>
+  <p>A IE envolve individualidade, emoções, sociabilidade, empatia e presença. Tem origem em <strong>predisposição genética + histórico-contextual + personalidade</strong>, mas é passível de <strong>aprendizagem e mudança</strong> (ao contrário do QI, relativamente estável).</p>
+
+  <h3>Definição (Goleman)</h3>
+  <blockquote>A capacidade de reconhecer os meus sentimentos e emoções e os dos outros, e de me motivar e gerir bem as emoções, em mim e nas relações em que me envolvo.</blockquote>
+
+  <h3>As cinco competências</h3>
+  <div class="grid g3">
+    <div class="card">
+      <span class="tag acc">Individual</span>
+      <p class="t" style="margin-top:.5rem">1 · Autoconsciência</p>
+      <p class="small">Reconhecer as emoções próprias e os seus efeitos; conhecer forças e limites; ter confiança nas nossas capacidades e no nosso valor.</p>
+    </div>
+    <div class="card">
+      <span class="tag acc">Individual</span>
+      <p class="t" style="margin-top:.5rem">2 · Autorregulação</p>
+      <p class="small">Gerir emoções e impulsos negativos; padrões de honestidade; responsabilidade pelo desempenho; flexibilidade e abertura à inovação.</p>
+    </div>
+    <div class="card">
+      <span class="tag acc">Individual</span>
+      <p class="t" style="margin-top:.5rem">3 · Motivação</p>
+      <p class="small">Vontade de triunfar; lutar por se aperfeiçoar e aprender; alinhamento com os objetivos da organização; preparação para as oportunidades; persistência.</p>
+    </div>
+    <div class="card">
+      <span class="tag blue">Social</span>
+      <p class="t" style="margin-top:.5rem">4 · Empatia</p>
+      <p class="small">Perceção das emoções e interesses dos outros e interesse por eles; fortalecer as capacidades e antecipar as necessidades dos outros; entender os equilíbrios de poder no grupo e na organização.</p>
+    </div>
+    <div class="card">
+      <span class="tag blue">Social</span>
+      <p class="t" style="margin-top:.5rem">5 · Aptidão social</p>
+      <p class="small">Influenciar e persuadir; saber ouvir; negociar e resolver desacordos; inspirar e guiar grupos; iniciar e gerir a mudança; trabalhar bem com os outros para objetivos comuns.</p>
+    </div>
+    <div class="card" style="background:var(--paper-2);box-shadow:none">
+      <h4>Nota</h4>
+      <p class="small">A aptidão social é, no fundo, a descrição da <strong>liderança como comunicação</strong>: influência, persuasão, escuta, negociação, inspiração, mudança.</p>
+    </div>
+  </div>
+
+  <h4>As competências emocionais são…</h4>
+  <div class="grid g3">
+    <div class="card"><p class="t">Independentes</p><p class="small">Cada uma contribui de forma própria para o desempenho.</p></div>
+    <div class="card"><p class="t">Interdependentes</p><p class="small">Apoiam-se umas nas outras (sem autoconsciência não há autorregulação; sem empatia não há aptidão social).</p></div>
+    <div class="card"><p class="t">Hierárquicas</p><p class="small">Constroem-se umas sobre as outras: a autoconsciência é a base, a aptidão social é o topo.</p></div>
+    <div class="card"><p class="t">Necessárias, não suficientes</p><p class="small">Ter a competência não garante que se usa; depende do contexto e da vontade.</p></div>
+    <div class="card"><p class="t">Genéricas</p><p class="small">Aplicam-se a todas as funções, embora cada função exija um perfil diferente.</p></div>
+  </div>
+
+  <h3>Os seis estilos de liderança emocional</h3>
+  <p class="small">Goleman, Boyatzis &amp; McKee (2002). Casos de debate com vídeos em aula.</p>
+  <div class="grid g3">
+    <div class="card"><span class="tag ok">Ressonante</span><p class="t" style="margin-top:.5rem">Visionário</p><p class="small">Inspira os seguidores; líder genuíno («o que serve para si serve para os outros»); em sintonia de valores, ideias e fins; traça o caminho e os seguidores acreditam que é possível.</p></div>
+    <div class="card"><span class="tag ok">Ressonante</span><p class="t" style="margin-top:.5rem">Conselheiro</p><p class="small"><em>Coaching.</em> Relação estreita com o grupo; vê o profissional e vê a pessoa; ouve e aconselha.</p></div>
+    <div class="card"><span class="tag ok">Ressonante</span><p class="t" style="margin-top:.5rem">Relacional</p><p class="small"><em>Afiliativo.</em> Partilha de emoções, «celebra e chora»; grandes laços de fidelidade e relacionamento.</p></div>
+    <div class="card"><span class="tag ok">Ressonante</span><p class="t" style="margin-top:.5rem">Democrático</p><p class="small">Constantes reuniões; delega no grupo ou na maioria as decisões; liderança baseada em contactos pessoais; aceita ideias e sugestões.</p></div>
+    <div class="card"><span class="tag bad">Dissonante</span><p class="t" style="margin-top:.5rem">Pressionador</p><p class="small"><em>Pacesetting.</em> Exerce constantemente pressão: exige alto desempenho e dá o exemplo de ritmo.</p></div>
+    <div class="card"><span class="tag bad">Dissonante</span><p class="t" style="margin-top:.5rem">Dirigista</p><p class="small"><em>Coercivo / autoritário.</em> Preconiza a obediência cega: «faz o que eu digo».</p></div>
+  </div>
+  <div class="callout">
+    <b class="k">Como estudar</b>
+    <p>Os quatro primeiros criam <strong>clima positivo</strong> (ressonantes). Os dois últimos só se justificam em situações específicas (crise, prazos críticos, colaboradores problemáticos) e são tóxicos se usados em permanência. Um bom líder emocional <strong>alterna entre estilos</strong> conforme a situação.</p>
+  </div>
+</section>
+
+<!-- 5 -->
+<section id="presenca">
+  <p class="num">5</p>
+  <h2>Presença: corpo e mente</h2>
+  <p class="pages">Págs. 22–27 · Amy Cuddy</p>
+
+  <div class="card" style="text-align:center">
+    <p class="t" style="font-size:1.4rem">Mente <span style="color:var(--accent)">⇄</span> Corpo</p>
+    <p class="small" style="max-width:52ch;margin:0 auto">A relação é bidirecional. A mente molda o corpo (quando me sinto confiante, expando-me), mas <strong>o corpo também molda a mente</strong>: se adotar uma postura expansiva, passo a sentir-me mais confiante.</p>
+  </div>
+
+  <h3>Power poses</h3>
+  <p><strong>Posturas de poder</strong> (braços abertos, mãos na anca, corpo expandido, pés em cima da mesa) vs. <strong>posturas de fechamento</strong> (ombros encolhidos, braços cruzados, corpo pequeno). Vídeo: Amy Cuddy, <em>Presence</em> (TED: «Your body language may shape who you are»). Referência a Nietzsche: <em>«Do you want to win? Walk like a winner»</em>.</p>
+  <div class="grid g2">
+    <div class="card">
+      <span class="tag ok">Após 2 min de postura de poder</span>
+      <ul class="plus" style="margin-top:.7rem"><li><strong>Testosterona sobe</strong> (hormona de dominância e confiança)</li><li><strong>Cortisol desce</strong> (hormona do stress)</li></ul>
+    </div>
+    <div class="card">
+      <span class="tag bad">Após postura de baixo poder</span>
+      <p class="small" style="margin-top:.7rem">Acontece o <strong>inverso</strong>: menos testosterona, mais cortisol.</p>
+    </div>
+  </div>
+
+  <h3>Práticas positivas têm efeitos mensuráveis</h3>
+  <p>Nos gráficos das págs. 25–26, o grupo exposto a práticas positivas, perante um fator de stress, tem menor subida de <strong>cortisol</strong> e de <strong>pressão arterial</strong> e recupera melhor. A <strong>inflamação</strong> diminui e o <strong>DHEA</strong> (hormona «anti-envelhecimento») aumenta com níveis mais altos de exposição. Mensagem: presença, postura e práticas positivas têm efeitos biológicos, não são «só psicologia».</p>
+
+  <h3>Consequências de uma postura positiva</h3>
+  <p class="small">Mais testosterona, dopamina, serotonina, adrenalina e cortisol regulado, e em consequência:</p>
+  <div class="grid g4">
+    <div class="card"><h4>Perception</h4><p class="small">Captamos mais.</p></div>
+    <div class="card"><h4>Cognition</h4><p class="small">Compreendemos melhor.</p></div>
+    <div class="card"><h4>Energy</h4><p class="small">Mais energia, menos stress.</p></div>
+    <div class="card"><h4>Confidence</h4><p class="small">Mais segurança, assumimos mais riscos.</p></div>
+    <div class="card"><h4>Creativity</h4><p class="small">Combinamos melhor as ideias.</p></div>
+  </div>
+  <p class="small">Imagem da criança a olhar para fatos de super-heróis: «vestir» a presença, a postura que precede a identidade («fake it till you become it», frase de Cuddy).</p>
+</section>
+
+<!-- 6 -->
+<section id="exemplo">
+  <p class="num">6</p>
+  <h2>Exemplo, significado e propósito</h2>
+  <p class="pages">Págs. 28–29</p>
+
+  <h3>Gustave Le Bon</h3>
+  <blockquote>É por exemplos e não por argumentos que os grupos são guiados.<cite>Gustave Le Bon (1841–1931), <em>Psicologia das Multidões</em></cite></blockquote>
+  <p>O líder influencia pelo <strong>exemplo</strong> (comportamento visível) mais do que pela argumentação racional. Liga-se à liderança como comunicação e ao poder da emoção sobre a razão nos grupos.</p>
+
+  <h3>Simon Sinek: o Círculo Dourado</h3>
+  <div class="golden">
+    <svg viewBox="0 0 260 260" role="img" aria-label="Círculos concêntricos: Why no centro, How no meio, What por fora">
+      <circle cx="130" cy="130" r="124" fill="#F4F0E8" stroke="#E7E1D6"/>
+      <circle cx="130" cy="150" r="88" fill="#FBF0E4" stroke="#E7C9A8"/>
+      <circle cx="130" cy="168" r="48" fill="#B0570D"/>
+      <text x="130" y="38" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-weight="700" font-size="20" fill="#1C1916">What?</text>
+      <text x="130" y="86" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-weight="700" font-size="18" fill="#94480A">How?</text>
+      <text x="130" y="174" text-anchor="middle" font-family="Playfair Display,Georgia,serif" font-weight="700" font-size="22" fill="#fff">Why?</text>
+    </svg>
+    <div>
+      <p><strong>Quem somos? O que fazemos? Porque o fazemos?</strong></p>
+      <p>A maioria das pessoas e organizações comunica de fora para dentro: o que fazem, como, e só depois porquê. Os líderes inspiradores comunicam <strong>de dentro para fora</strong>: começam pelo <strong>porquê</strong> (propósito, crença, causa).</p>
+      <p class="small">«As pessoas não compram o que fazes, compram o porquê de o fazeres.» Liga-se ao estilo visionário de Goleman e à liderança como construção de significado.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section id="mapa">
+  <p class="num">7</p>
+  <h2>Definições de liderança e mapa das teorias</h2>
+  <p class="pages">Págs. 30–32</p>
+
+  <h3>O mapa: a variável-chave de cada teoria</h3>
+  <ol class="theories">
+    <li><span class="n">1</span><div><span class="nm">Big Man</span> <span class="kv">· <b>Força</b>. Liderança pela força física, pré-histórica.</span></div></li>
+    <li><span class="n">2</span><div><span class="nm">Great Man (Grande Homem)</span> <span class="kv">· <b>Excecionalidade</b>. Os líderes nascem excecionais.</span></div></li>
+    <li><span class="n">3</span><div><span class="nm">Traços de personalidade</span> <span class="kv">· <b>Personalidade</b>.</span></div></li>
+    <li><span class="n">4</span><div><span class="nm">Teorias comportamentais</span> <span class="kv">· <b>Comportamento</b>.</span></div></li>
+    <li><span class="n">5</span><div><span class="nm">Teorias contingenciais</span> <span class="kv">· <b>Situação</b>.</span></div></li>
+    <li><span class="n">6</span><div><span class="nm">Teorias neocarismáticas</span> <span class="kv">· <b>Carisma</b>.</span></div></li>
+    <li><span class="n">7</span><div><span class="nm">Liderança nível 5</span> <span class="kv">· <b>Equipa</b>. Humildade + vontade profissional; o líder põe a equipa à frente de si.</span></div></li>
+    <li><span class="n">8</span><div><span class="nm">Liderança autêntica</span> <span class="kv">· <b>O próprio</b>. Ser fiel a si mesmo, autoconhecimento.</span></div></li>
+  </ol>
+  <div class="callout">
+    <b class="k">Chave de leitura</b>
+    <p>Do <strong>inato</strong> (força, excecionalidade, traços) → para o <strong>aprendido</strong> (comportamento) → para o <strong>contextual</strong> (situação) → para o <strong>relacional e emocional</strong> (carisma, equipa, autenticidade). A sequência do curso acaba ainda em outras teorias (servidora, emocional).</p>
+  </div>
+
+  <h3>Três definições</h3>
+  <div class="card"><p style="margin:0">«Definimos liderança como a capacidade de <strong>influenciar</strong> um grupo em direção ao alcance de objetivos.»</p><p class="small" style="margin:.4rem 0 0">Robbins (2002:304)</p></div>
+  <div class="card"><p style="margin:0">«Os líderes precisam de ter a habilidade de <strong>influenciar</strong> o comportamento de outras pessoas.»</p><p class="small" style="margin:.4rem 0 0">Cohen e Fink (2004:252)</p></div>
+  <div class="card"><p style="margin:0">«[A liderança é] um <strong>processo de influência social</strong> em que o líder busca a <strong>participação voluntária</strong> dos membros da equipa num esforço de atingir os objetivos organizacionais.»</p><p class="small" style="margin:.4rem 0 0">Schriesheim et al. (1978), in Kinicki e Kreitner (2006:347)</p></div>
+
+  <h4>As três palavras-chave comuns</h4>
+  <div class="grid g3">
+    <div class="card"><p class="t">Influência</p><p class="small">Não é autoridade formal, não é coerção.</p></div>
+    <div class="card"><p class="t">Confiança</p><p class="small">A influência só funciona se confiarem no líder: «participação voluntária».</p></div>
+    <div class="card"><p class="t">Membros do grupo</p><p class="small">Não há líder sem seguidores. A liderança é relação.</p></div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section id="grande-homem">
+  <p class="num">8</p>
+  <h2>Grande Homem e teoria dos traços</h2>
+  <p class="pages">Pág. 33 · <span class="tag gray">desatualizadas</span></p>
+
+  <h4>Características comuns</h4>
+  <ul class="plus">
+    <li>São as <strong>primeiras teorias</strong> da liderança.</li>
+    <li>Assentam no carisma e nos traços de personalidade, em capacidades especiais e em <strong>características inatas</strong> (nasce-se líder).</li>
+    <li>Pressupõem um <strong>líder eficaz em qualquer situação</strong>. É isto que as teorias contingenciais vão negar.</li>
+    <li>Têm uma visão romântica do herói, do salvador, do fascínio.</li>
+    <li>Estão desatualizadas: a investigação não encontrou um conjunto estável de traços que distinga sempre líderes de não-líderes, e ignoram seguidores e situação.</li>
+  </ul>
+
+  <h3>Traços segundo Kirkpatrick e Locke</h3>
+  <div class="grid g3">
+    <div class="card"><p class="t">Ambição e energia</p></div>
+    <div class="card"><p class="t">Desejo de liderar</p></div>
+    <div class="card"><p class="t">Honestidade e integridade</p><p class="small">Julgada sobretudo pelo próprio grupo que se lidera.</p></div>
+    <div class="card"><p class="t">Autoconfiança</p></div>
+    <div class="card"><p class="t">Inteligência</p></div>
+    <div class="card"><p class="t">Conhecimentos relevantes para o trabalho</p></div>
+  </div>
+  <p class="small">Estes traços são <strong>facilitadores</strong>, não garantias: aumentam a probabilidade de emergir como líder, mas não garantem eficácia (ligação ao 0,25 do QI).</p>
+</section>
+
+<!-- 9 -->
+<section id="comportamentais">
+  <p class="num">9</p>
+  <h2>Teorias comportamentais</h2>
+  <p class="pages">Págs. 34–35</p>
+
+  <div class="callout">
+    <b class="k">Ideia central</b>
+    <p>Estudo do comportamento do líder (a partir dos anos 1950). <strong>«Os atos fazem os líderes»</strong>, não os traços inatos. Consequência: <strong>a liderança é passível de ser aprendida</strong>, a resposta à pergunta «nasce-se ou aprende-se?».</p>
+  </div>
+  <p>Origem: investigações das Universidades de <strong>Ohio State</strong> e <strong>Michigan</strong>. Os comportamentos organizam-se em duas dimensões, <strong>tarefas</strong> e/ou <strong>relacionamento</strong>.</p>
+  <div class="tw"><table>
+    <thead><tr><th>Universidade</th><th>Tarefas</th><th>Relacionamento</th></tr></thead>
+    <tbody>
+      <tr><td>Ohio State</td><td>Estrutura de iniciação</td><td>Consideração</td></tr>
+      <tr><td>Michigan</td><td>Orientado para a produção</td><td>Orientado para os empregados</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Matriz Tarefas × Relacionamento</h3>
+  <div class="mx">
+    <div class="y">Tarefas − → +</div>
+    <div class="cells">
+      <div class="cell"><span class="ax">Tarefas + · Relação −</span><b>Tarefas</b>Objetivos, deadlines. Focado em resultados e prazos, pouco nas pessoas.</div>
+      <div class="cell best"><span class="ax">Tarefas + · Relação +</span><b>Integral</b>Líder completo, alto em ambas. O ideal.</div>
+      <div class="cell void"><span class="ax">Tarefas − · Relação −</span><b>Ausente</b>Liderança fraca (baixo em ambas).</div>
+      <div class="cell"><span class="ax">Tarefas − · Relação +</span><b>Relacionamento</b>Empatia, motivação. Focado nas pessoas, pouco nos resultados.</div>
+    </div>
+    <div class="x">Relacionamento − → +</div>
+  </div>
+  <p class="small">O <strong>Integral</strong> equivale ao «9,9» da grelha de Blake e Mouton. As duas dimensões <strong>não são opostas</strong>: podem ser ambas altas.</p>
+
+  <h3>Matriz Futuro × Presente</h3>
+  <div class="mx">
+    <div class="y">Futuro − → +</div>
+    <div class="cells">
+      <div class="cell"><span class="ax">Futuro + · Presente −</span><b>Visionário</b>Pensa o futuro, mas desligado do presente.</div>
+      <div class="cell best"><span class="ax">Futuro + · Presente +</span><b>Estratégico</b>Liga a visão de futuro à execução presente. O ideal.</div>
+      <div class="cell void"><span class="ax">Futuro − · Presente −</span><b>Vazio</b></div>
+      <div class="cell"><span class="ax">Futuro − · Presente +</span><b>Operacional</b>Só gere o dia a dia, sem visão.</div>
+    </div>
+    <div class="x">Presente − → +</div>
+  </div>
+  <p class="small">Tarefas ≈ presente e operacional; relacionamento e visão ≈ futuro. O líder integral e estratégico combina os dois horizontes temporais.</p>
+</section>
+
+<!-- 10 -->
+<section id="seguidores">
+  <p class="num">10</p>
+  <h2>Os seguidores: tipologia de Kelley</h2>
+  <p class="pages">Págs. 36–38</p>
+
+  <h3>As duas tarefas constantes do líder</h3>
+  <div class="grid g2">
+    <div class="card"><span class="tag acc">Hoje</span><p class="t" style="margin-top:.5rem">Conseguir o melhor de cada um</p><p class="small">Desempenho presente.</p></div>
+    <div class="card"><span class="tag blue">Amanhã</span><p class="t" style="margin-top:.5rem">Apoiar cada um a ser melhor no futuro</p><p class="small">Desenvolvimento.</p></div>
+  </div>
+  <p class="small">Espelha as matrizes: gerir resultados agora (tarefas, presente) e desenvolver pessoas para depois (relacionamento, futuro).</p>
+
+  <h3>A matriz de Robert Kelley</h3>
+  <p class="small">Eixo vertical: tipo de pensamento (independente e crítico vs. acrítico e dependente). Eixo horizontal: envolvimento (passivo vs. ativo).</p>
+  <div class="mx">
+    <div class="y">Pensamento acrítico ← → independente</div>
+    <div class="cells">
+      <div class="cell"><span class="ax">Independente · Passivo</span><b>Afastados</b>Alheados</div>
+      <div class="cell best"><span class="ax">Independente · Ativo</span><b>Eficazes</b></div>
+      <div class="cell"><span class="ax">Acrítico · Passivo</span><b>Ovelhas</b></div>
+      <div class="cell"><span class="ax">Acrítico · Ativo</span><b>Yes-men</b>Yes people</div>
+      <span class="center-chip">Sobreviventes</span>
+    </div>
+    <div class="x">Envolvimento passivo → ativo</div>
+  </div>
+
+  <h3>Cada tipo e como liderá-lo</h3>
+  <div class="grid g2">
+    <div class="card">
+      <div class="f-head"><p class="t">Eficazes</p><span class="tag ok">pensa por si · ativo</span></div>
+      <p class="small">Francos, motivados, corajosos. Trabalham bem em equipa, tomam iniciativa e gerem-se a si próprios. <strong>Não precisam de liderança forte</strong> para serem bem-sucedidos.</p>
+      <div class="how"><h4>Como liderar</h4><p class="small" style="margin:0">Dar <strong>autonomia</strong>, <strong>reconhecimento</strong>, receber e dar <strong>feedback</strong>. Não os sufocar; tratá-los como parceiros.</p></div>
+    </div>
+    <div class="card">
+      <div class="f-head"><p class="t">Yes-men</p><span class="tag acc">acrítico · ativo</span></div>
+      <p class="small">Vivos, animados, mas demasiado servis. Decidem à luz do «politicamente correto». Apoiam o líder conforme o que julgam ser a vontade dele.</p>
+      <div class="how"><h4>Como liderar</h4><p class="small" style="margin:0">Dar <strong>tarefas claras, sem ambiguidade</strong>; levá-los a procurar feedback noutros profissionais que não o líder; capitalizar o apoio e o bom ambiente que criam.</p></div>
+    </div>
+    <div class="card">
+      <div class="f-head"><p class="t">Afastados</p><span class="tag blue">pensa por si · passivo</span></div>
+      <p class="small">Com potencial, mas descrentes e algo cínicos. Desiludidos com a organização e com a liderança. Pensam por si e são críticos, <strong>mas em privado</strong>; na organização são passivos.</p>
+      <div class="how"><h4>Como liderar</h4><p class="small" style="margin:0"><strong>Ouvir</strong>, pedir sugestões e reagir a elas; enfatizar valores e preocupações comuns; focar o que mais apreciamos neles; fazer chegar <strong>através de terceiros</strong> que os valorizamos.</p></div>
+    </div>
+    <div class="card">
+      <div class="f-head"><p class="t">Ovelhas</p><span class="tag gray">acrítico · passivo</span></div>
+      <p class="small">«Maria/José vai com os outros». Sem capacidade crítica, sem iniciativa, sem sentido de responsabilidade. Fazem o que lhes mandam e nada mais.</p>
+      <div class="how"><h4>Como liderar</h4><p class="small" style="margin:0"><strong>Supervisão próxima, regras precisas</strong>; valorizar e dar confiança, para gradualmente ganharem iniciativa.</p></div>
+    </div>
+    <div class="card" style="grid-column:1/-1">
+      <div class="f-head"><p class="t">Sobreviventes</p><span class="tag gray">ao centro da matriz</span></div>
+      <p class="small">Preocupados em estar perto de quem tem poder e em ficar sempre bem nas muitas mudanças por que a organização passa. Adaptam-se a tudo.</p>
+      <div class="how"><h4>Como liderar</h4><p class="small" style="margin:0">Proporcionar um <strong>ambiente de confiança</strong>; ouvir e estabelecer <strong>compromissos não quebráveis</strong>, para deixarem de estar só a proteger-se.</p></div>
+    </div>
+  </div>
+  <div class="callout">
+    <b class="k">Princípio geral</b>
+    <p><strong>O líder adapta o estilo ao seguidor.</strong> É a ponte para as teorias contingenciais e a lógica do caso Consolidated Products.</p>
+  </div>
+
+  <div class="callout blue">
+    <b class="k">Caso: Consolidated Products (pág. 38)</b>
+    <p>Compara dois gestores de fábrica com estilos opostos, um orientado para as pessoas (relacionamento) e outro para as tarefas (resultados). Pede para analisar as consequências de cada estilo a curto e longo prazo, com as teorias comportamentais e a tipologia de seguidores. O texto do caso está num PDF separado.</p>
+  </div>
+</section>
+
+<!-- 11 -->
+<section id="contingenciais">
+  <p class="num">11</p>
+  <h2>Teorias contingenciais: introdução</h2>
+  <p class="pages">Pág. 39</p>
+  <p>O líder e a sua ação são <strong>contextualizados</strong>: a eficácia depende da conjugação de <strong>personalidade, comportamento e situação</strong>.</p>
+  <blockquote>Sob a condição <em>a</em>, o estilo <em>x</em> pode ser o adequado, mas o estilo <em>y</em> pode ser o mais indicado para a situação <em>b</em> e o estilo <em>z</em> o mais apropriado para a situação <em>c</em>.</blockquote>
+  <p>Não existe um melhor estilo universal; existe o estilo adequado a cada situação. Rompe com a ideia, das teorias dos traços, de um «líder eficaz em qualquer situação».</p>
+
+  <h3>Os cinco modelos (a desenvolver a seguir)</h3>
+  <div class="grid g2">
+    <div class="card"><p class="t">1 · Fiedler</p><p class="small">O estilo do líder (orientado para tarefas ou relações, medido pela escala LPC) é relativamente fixo. A eficácia depende da «favorabilidade» da situação: relações líder-membros, estrutura da tarefa, poder de posição. Se não encaixa, muda-se a situação ou o líder.</p></div>
+    <div class="card"><p class="t">2 · Situacional (Hersey e Blanchard)</p><p class="small">O líder ajusta o estilo (dirigir, persuadir/treinar, apoiar/participar, delegar) ao nível de <strong>maturidade ou prontidão</strong> dos seguidores (competência + empenho).</p></div>
+    <div class="card"><p class="t">3 · Troca Líder-Membro (LMX)</p><p class="small">O líder desenvolve relações diferentes com cada subordinado: <em>in-group</em> (confiança, autonomia) e <em>out-group</em> (relação formal).</p></div>
+    <div class="card"><p class="t">4 · Caminho-Objetivo (House)</p><p class="small">O líder clarifica o caminho até aos objetivos e remove obstáculos. Escolhe entre estilo diretivo, apoiante, participativo e orientado para resultados, conforme subordinados e ambiente.</p></div>
+    <div class="card"><p class="t">5 · Líder-Participação (Vroom e Yetton/Jago)</p><p class="small">Árvore de decisão que indica quanto o líder deve envolver o grupo na decisão (de autocrático a totalmente participativo), conforme a situação.</p></div>
+  </div>
+  <p class="small">A matéria a partir da pág. 40 (neocarismáticas, carismática, autêntica, servidora, nível 5…) não está incluída.</p>
+</section>
+
+<!-- 12 -->
+<section id="fio">
+  <p class="num">12</p>
+  <h2>Fio condutor para rever</h2>
+  <p class="pages">Síntese</p>
+  <ol>
+    <li><strong>Pergunta central:</strong> nasce-se líder ou aprende-se? Traços (nasce-se) → comportamentais (aprende-se) → contingenciais (depende da situação) → emocionais e neocarismáticas (aprende-se a gerir emoções e relações).</li>
+    <li><strong>Liderança = influência + confiança + membros do grupo</strong>, um processo social de comunicação.</li>
+    <li><strong>A pessoa primeiro:</strong> personalidade (Big Five + humildade, Tipo A/B), valores, atitudes, necessidades, expectativas, stress (fisiológico, psicológico, comportamental) e motivação (intrínseca vs. extrínseca).</li>
+    <li><strong>Inteligência emocional:</strong> 5 competências; o QI explica no máximo 0,25 do sucesso; o QE conta mais quanto mais alto o cargo; 6 estilos emocionais.</li>
+    <li><strong>Presença:</strong> o corpo molda a mente (Cuddy); o exemplo guia os grupos (Le Bon); começar pelo porquê (Sinek).</li>
+    <li><strong>Teorias comportamentais:</strong> tarefas vs. relacionamento (ideal: integral); presente vs. futuro (ideal: estratégico); duas tarefas do líder (melhor hoje, melhor amanhã).</li>
+    <li><strong>Seguidores (Kelley):</strong> eficazes, yes-men, afastados, ovelhas, sobreviventes, e como liderar cada um. O estilo adapta-se ao seguidor, e entramos nas <strong>teorias contingenciais</strong>.</li>
+    <li><strong>Casos:</strong> Mário e Consolidated Products. Aplicar sempre a teoria ao caso.</li>
+  </ol>
+</section>
+
+<!-- 13 -->
+<section id="testa">
+  <p class="num">13</p>
+  <h2>Testa-te</h2>
+  <p class="pages">Perguntas de revisão · clica para ver uma resposta-base</p>
+
+  <details><summary>Qual a diferença entre motivação intrínseca e extrínseca? Dá dois exemplos de cada numa equipa.</summary>
+    <div class="ans"><p>Intrínseca vem do conteúdo da tarefa («o que faço»): mais variedade, autonomia, responsabilidade, resultados. Extrínseca vem do contexto («o contexto do que faço»): elogios, recompensas, expectativas, ambiente.</p><p>Exemplos: dar a alguém autonomia para decidir como executa um projeto (intrínseca); um prémio de equipa ou um elogio público (extrínseca).</p></div></details>
+
+  <details><summary>Quais são as cinco competências da inteligência emocional de Goleman? Qual a diferença entre empatia e aptidão social?</summary>
+    <div class="ans"><p>Autoconsciência, autorregulação e motivação (individuais); empatia e aptidão social (sociais).</p><p>A empatia é <em>perceber</em> as emoções e interesses dos outros. A aptidão social é <em>agir</em> sobre essa perceção: influenciar, persuadir, ouvir, negociar, inspirar, gerir a mudança.</p></div></details>
+
+  <details><summary>Porque são as teorias do Grande Homem e dos traços consideradas desatualizadas?</summary>
+    <div class="ans"><p>Assumem que os líderes nascem com características inatas e são eficazes em qualquer situação. A investigação não encontrou um conjunto estável de traços que distinga sempre líderes de não-líderes, e ignoram os seguidores e a situação.</p></div></details>
+
+  <details><summary>Descreve os seis estilos de liderança emocional e quando cada um é adequado.</summary>
+    <div class="ans"><p>Ressonantes: visionário, conselheiro, relacional, democrático. Dissonantes: pressionador e dirigista, úteis só em situações específicas (crise, prazos críticos, colaboradores problemáticos) e tóxicos em permanência. O bom líder alterna conforme a situação.</p></div></details>
+
+  <details><summary>O que distingue um seguidor «afastado» de um «eficaz»? Como se lidera cada um?</summary>
+    <div class="ans"><p>Ambos pensam por si, mas o eficaz é ativo e o afastado é passivo e cínico (crítico apenas em privado). Ao eficaz dá-se autonomia, reconhecimento e feedback. O afastado ouve-se, pedem-se sugestões, enfatizam-se valores comuns e faz-se chegar, por terceiros, que é valorizado.</p></div></details>
+
+  <details><summary>O que significa «liderança integral» na matriz tarefas/relacionamento?</summary>
+    <div class="ans"><p>É o quadrante alto em tarefas e alto em relacionamento: o líder que cuida de objetivos e prazos <em>e</em> das pessoas (empatia, motivação). As duas dimensões não são opostas.</p></div></details>
+
+  <details><summary>Explica a frase «Sob a condição a, o estilo x…» e relaciona-a com as teorias comportamentais.</summary>
+    <div class="ans"><p>Significa que não há um estilo universalmente melhor: o adequado depende da situação. As comportamentais procuram o melhor estilo (o integral) em abstrato; as contingenciais dizem que depende do contexto, dos seguidores e da tarefa.</p></div></details>
+
+  <details><summary>O que mostra a investigação de Amy Cuddy sobre as power poses e que implicações tem para a presença de um líder?</summary>
+    <div class="ans"><p>Cerca de 2 minutos de posturas expansivas aumentam a testosterona e diminuem o cortisol; as posturas fechadas fazem o inverso. O corpo molda a mente: a postura ajuda a sentir mais confiança, energia, perceção e criatividade, o que reforça a presença do líder.</p></div></details>
+
+  <details><summary>Quais as três palavras-chave comuns às definições de Robbins, Cohen &amp; Fink e Schriesheim?</summary>
+    <div class="ans"><p><strong>Influência, confiança e membros do grupo.</strong></p></div></details>
+
+  <details><summary>Aplica o Big Five e a distinção Tipo A / Tipo B ao caso «A história de Mário».</summary>
+    <div class="ans"><p>Caracteriza o Mário em cada fator (extroversão, neuroticismo, amabilidade, responsabilidade, abertura, humildade), diz se o comportamento é de Tipo A (urgência, competitividade) ou B, e liga isso aos valores, atitudes, necessidades e expectativas dele e às fontes de stress e de motivação no caso.</p></div></details>
+
+  <div style="margin-top:1.6rem;display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+    <a class="btn" href="/cl/">Ir para o quiz de escolha múltipla →</a>
+    <span class="small">Perguntas filtráveis por tema, para treinar a sério.</span>
+  </div>
+</section>
+
+</main>
+</div>
+
+<footer>
+  <div class="in">
+    <span>Resumo de apoio ao estudo. Não substitui os slides nem as aulas.</span>
+    <a href="/">mariaestuda.eu</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var bar=document.getElementById('bar');
+  function prog(){
+    var h=document.documentElement,max=h.scrollHeight-h.clientHeight;
+    bar.style.width=(max>0?Math.min(100,h.scrollTop/max*100):0)+'%';
+  }
+  addEventListener('scroll',prog,{passive:true});prog();
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if(!links.length||!('IntersectionObserver' in window))return;
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a});
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){links.forEach(function(a){a.classList.remove('on')});var a=map[e.target.id];if(a)a.classList.add('on')}
+    });
+  },{rootMargin:'-20% 0px -70% 0px'});
+  document.querySelectorAll('main section[id]').forEach(function(s){io.observe(s)});
+})();
+</script>
+</body>
+</html>
