@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz CL · Comunicação e Liderança</title>
+<meta name="description" content="Perguntas de escolha múltipla de Comunicação e Liderança (slides 1 a 39), filtráveis por tema.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/assets/css/fonts.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23FCFAF6'/><text x='50' y='72' font-size='62' font-family='Georgia,serif' font-weight='700' text-anchor='middle' fill='%23B0570D'>?</text></svg>">
+<style>
+:root{
+  --paper:#FCFAF6;--paper-2:#F4F0E8;--surface:#FFFFFF;
+  --ink:#1C1916;--ink-soft:#6B6459;--ink-faint:#9A9289;--line:#E7E1D6;--line-soft:#F0EBE2;
+  --accent:#B0570D;--accent-hover:#94480A;--accent-ink:#FFFFFF;--accent-soft:#FBF0E4;
+  --ok:#2F6B3A;--ok-soft:#E9F2EA;--bad:#9E2B25;--bad-soft:#F8E8E6;
+  --shadow:0 1px 2px rgba(28,25,22,.04),0 10px 26px -14px rgba(28,25,22,.16);
+  --display:"Playfair Display",Georgia,"Times New Roman",serif;
+  --body:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r-sm:8px;--r-md:14px;--r-lg:20px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1.02rem;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2.5px solid var(--accent);outline-offset:3px;border-radius:3px}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.mark{font-family:var(--display);font-weight:700;text-decoration:none;font-size:1.15rem;letter-spacing:-.01em}
+.mark span{color:var(--accent)}
+.topbar .back{font-size:.85rem;color:var(--ink-soft);text-decoration:none}
+.topbar .back:hover{color:var(--accent)}
+
+.eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 .4rem}
+h1{font-family:var(--display);font-weight:700;letter-spacing:-.015em;font-size:clamp(1.9rem,5vw,2.6rem);line-height:1.1;margin:0 0 .5rem}
+h2{font-family:var(--display);font-weight:700;letter-spacing:-.01em;font-size:1.35rem;margin:0 0 .6rem}
+.lede{color:var(--ink-soft);margin:0 0 1.5rem;max-width:56ch}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(1.1rem,3.5vw,1.75rem);box-shadow:var(--shadow);margin:0 0 1rem}
+.label{font-size:.72rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 .6rem}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 .9rem}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.42rem .85rem;font-size:.88rem;cursor:pointer;display:inline-flex;align-items:center;gap:.45rem;transition:background .12s,border-color .12s,color .12s}
+.chip:hover{border-color:var(--accent)}
+.chip .n{font-size:.72rem;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+.chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.chip.on .n{color:var(--accent)}
+.chips-tools{display:flex;gap:14px;margin:-.3rem 0 1.2rem;font-size:.82rem}
+.linkbtn{background:none;border:0;padding:0;color:var(--ink-soft);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.linkbtn:hover{color:var(--accent)}
+
+.row{display:flex;flex-wrap:wrap;gap:1.2rem 2rem;align-items:flex-end;margin:0 0 1.2rem}
+.field{display:grid;gap:.35rem}
+select{font:inherit;padding:.5rem .7rem;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface);color:var(--ink);min-width:9rem}
+.check{display:flex;align-items:center;gap:.5rem;font-size:.95rem;cursor:pointer}
+.check input{width:1.05rem;height:1.05rem;accent-color:var(--accent)}
+.hint{font-size:.82rem;color:var(--ink-faint);margin:.2rem 0 0}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:.72rem 1.4rem;font-weight:600;cursor:pointer;text-decoration:none;transition:background .12s,border-color .12s}
+.btn:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn.ghost:hover{background:var(--accent-soft)}
+.actions{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center}
+
+.progress{display:flex;justify-content:space-between;align-items:baseline;font-size:.85rem;color:var(--ink-soft);margin:1.2rem 0 .5rem;font-variant-numeric:tabular-nums}
+.bar{height:6px;background:var(--line-soft);border-radius:3px;overflow:hidden;margin:0 0 1.2rem}
+.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s}
+
+.qmeta{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:0 0 .8rem}
+.tag{font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:.25rem .65rem}
+.pg{font-size:.78rem;color:var(--ink-faint)}
+.qtext{font-family:var(--display);font-weight:700;font-size:clamp(1.15rem,3.2vw,1.4rem);line-height:1.35;letter-spacing:-.01em;margin:0 0 1.1rem}
+
+.opts{display:grid;gap:.6rem;margin:0}
+.opt{display:flex;gap:.8rem;align-items:flex-start;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:.8rem 1rem;cursor:pointer;line-height:1.45;transition:border-color .12s,background .12s}
+.opt:hover:not(:disabled){border-color:var(--accent);background:var(--paper)}
+.opt:disabled{cursor:default}
+.opt .k{flex:0 0 1.6rem;height:1.6rem;border-radius:50%;border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:600;color:var(--ink-soft);margin-top:.05rem}
+.opt.ok{border-color:var(--ok);background:var(--ok-soft)}
+.opt.ok .k{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt.bad{border-color:var(--bad);background:var(--bad-soft)}
+.opt.bad .k{background:var(--bad);border-color:var(--bad);color:#fff}
+.opt.dim{opacity:.55}
+
+.feedback{margin:1rem 0 0;padding:.9rem 1.1rem;border-radius:var(--r-md);border:1px solid var(--line);background:var(--paper-2);font-size:.95rem}
+.feedback.ok{border-color:#BFD8C3;background:var(--ok-soft)}
+.feedback.bad{border-color:#E4BDB9;background:var(--bad-soft)}
+.feedback b{display:block;margin:0 0 .25rem;font-family:var(--display);font-size:1.02rem}
+.feedback.ok b{color:var(--ok)} .feedback.bad b{color:var(--bad)}
+.next{margin:1.1rem 0 0;display:flex;justify-content:space-between;align-items:center;gap:.8rem;flex-wrap:wrap}
+.kbd{font-size:.78rem;color:var(--ink-faint)}
+.kbd kbd{font:inherit;border:1px solid var(--line);border-radius:4px;padding:0 .35rem;background:var(--surface)}
+
+.score{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;margin:0 0 .4rem}
+.score .big{font-family:var(--display);font-weight:700;font-size:3rem;line-height:1;color:var(--accent);letter-spacing:-.02em}
+.score .of{color:var(--ink-soft)}
+.verdict{color:var(--ink-soft);margin:0 0 1.2rem}
+.bytopic{display:grid;gap:.45rem;margin:0 0 1.4rem}
+.bt{display:grid;grid-template-columns:1fr auto;gap:.3rem 1rem;align-items:center;font-size:.92rem}
+.bt .mini{grid-column:1/-1;height:4px;background:var(--line-soft);border-radius:2px;overflow:hidden}
+.bt .mini i{display:block;height:100%;background:var(--accent)}
+.bt .pct{font-variant-numeric:tabular-nums;color:var(--ink-soft)}
+.review{display:grid;gap:.8rem}
+.rv{border:1px solid var(--line);border-radius:var(--r-md);padding:.85rem 1rem;background:var(--surface);font-size:.93rem}
+.rv .q{font-weight:600;margin:0 0 .35rem}
+.rv .a{margin:0}
+.rv .a span{color:var(--ok);font-weight:600}
+.rv .x{margin:0 0 .35rem;color:var(--bad)}
+.rv .e{margin:.4rem 0 0;color:var(--ink-soft);font-size:.88rem}
+
+.stats{font-size:.85rem;color:var(--ink-soft);margin:1.2rem 0 0}
+footer{margin:3rem 0 2rem;font-size:.8rem;color:var(--ink-faint);text-align:center}
+.hidden{display:none !important}
+@media (max-width:480px){ .next .kbd{display:none} .score .big{font-size:2.4rem} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="topbar">
+    <a class="mark" href="./">Quiz <span>CL</span></a>
+    <a class="back" href="/">mariaestuda.eu</a>
+  </header>
+
+  <!-- ===== Início / configuração ===== -->
+  <section id="setup">
+    <p class="eyebrow" style="margin-top:2rem">Comunicação e Liderança · UCP 2026-27</p>
+    <h1>Perguntas de escolha múltipla</h1>
+    <p class="lede">Matéria dos slides 1 a 39 (até à introdução às teorias contingenciais), mais as ideias repetidas nas aulas e os dois casos. Escolhe os temas, o número de perguntas e começa.</p>
+
+    <div class="card">
+      <p class="label">Temas</p>
+      <div class="chips" id="chips"></div>
+      <div class="chips-tools">
+        <button class="linkbtn" id="selAll" type="button">Selecionar todos</button>
+        <button class="linkbtn" id="selNone" type="button">Limpar</button>
+      </div>
+
+      <div class="row">
+        <label class="field">
+          <span class="label" style="margin:0">Número de perguntas</span>
+          <select id="count">
+            <option value="10">10</option>
+            <option value="20" selected>20</option>
+            <option value="40">40</option>
+            <option value="60">60</option>
+            <option value="all">Todas as selecionadas</option>
+          </select>
+        </label>
+        <label class="check"><input type="checkbox" id="onlyWrong"> Só as que já errei <span class="n" id="wrongCount"></span></label>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="start" type="button">Começar</button>
+        <span class="hint" id="avail"></span>
+      </div>
+      <p class="stats" id="stats"></p>
+    </div>
+  </section>
+
+  <!-- ===== Pergunta ===== -->
+  <section id="quiz" class="hidden">
+    <div class="progress"><span id="pos"></span><span id="run"></span></div>
+    <div class="bar"><i id="barfill"></i></div>
+    <div class="card">
+      <div class="qmeta"><span class="tag" id="qtopic"></span><span class="pg" id="qpage"></span></div>
+      <p class="qtext" id="qtext"></p>
+      <div class="opts" id="opts"></div>
+      <div class="feedback hidden" id="fb"></div>
+      <div class="next hidden" id="nextrow">
+        <span class="kbd">Teclas <kbd>1</kbd>–<kbd>4</kbd> para responder, <kbd>Enter</kbd> para avançar</span>
+        <button class="btn" id="next" type="button">Seguinte</button>
+      </div>
+    </div>
+    <div class="actions"><button class="linkbtn" id="quit" type="button">Terminar agora e ver resultado</button></div>
+  </section>
+
+  <!-- ===== Resultado ===== -->
+  <section id="result" class="hidden">
+    <p class="eyebrow" style="margin-top:2rem">Resultado</p>
+    <div class="card">
+      <div class="score"><span class="big" id="scoreN"></span><span class="of" id="scoreOf"></span></div>
+      <p class="verdict" id="verdict"></p>
+      <p class="label">Por tema</p>
+      <div class="bytopic" id="bytopic"></div>
+      <div class="actions">
+        <button class="btn" id="again" type="button">Repetir só as erradas</button>
+        <button class="btn ghost" id="restart" type="button">Novo quiz</button>
+      </div>
+    </div>
+    <div id="reviewWrap">
+      <h2>O que erraste</h2>
+      <div class="review" id="review"></div>
+    </div>
+  </section>
+
+  <footer>Feito a partir do resumo dos slides 1–39 · As respostas ficam guardadas só neste navegador.</footer>
+</div>
+
+<script>
+// Banco de perguntas — parte 1 (cadeira, comunicação, personalidade, competências, inteligência emocional)
+// Formato: [tema, pergunta, [opções], índice da correta, explicação, página]
+const Q = [];
+
+// ===== A cadeira e os casos =====
+Q.push(["cad","Nesta cadeira, a liderança é tratada sobretudo como…",["Um fenómeno de comunicação","Um conjunto de traços inatos","Uma técnica de gestão de recursos","Um cargo formal na organização"],0,"A liderança é vista como comunicação: relacionamento, presença, linguagem, discurso, dinâmicas de grupo, significado, empatia, exemplo, influência e persuasão.","Enquadramento"]);
+Q.push(["cad","Qual é o peso do teste intermédio na avaliação?",["35%","20%","25%","50%"],1,"Teste intermédio 20%, teste final 35%, trabalho de grupo sobre um filme 25%, participação 20%.","Enquadramento"]);
+Q.push(["cad","Qual é o peso do teste final na avaliação?",["20%","25%","35%","40%"],2,"Teste final 35%. O intermédio vale 20%, o trabalho de grupo 25% e a participação 20%.","Enquadramento"]);
+Q.push(["cad","O trabalho de grupo da cadeira é sobre…",["Um caso de estudo de uma empresa","Um filme","Uma entrevista a um líder","Um questionário de personalidade"],1,"O trabalho de grupo (25%) é sobre um filme.","Enquadramento"]);
+Q.push(["cad","O caso «A história de Mário» serve sobretudo para aplicar…",["Teorias contingenciais","Capacidades individuais: personalidade, stress e motivação","Tipologia de seguidores de Kelley","Os seis estilos de liderança emocional"],1,"O caso do Mário liga-se às capacidades individuais (personalidade, stress, motivação); sai pelo menos 1 pergunta no teste intermédio.","pág. 12"]);
+Q.push(["cad","O caso «Consolidated Products» liga-se a que matéria?",["Teorias comportamentais (tarefas vs. relacionamento) e tipologias de profissionais","Inteligência emocional de Goleman","Power poses de Amy Cuddy","Teoria do Grande Homem"],0,"Consolidated Products compara dois gestores com estilos opostos (pessoas vs. tarefas) e pede análise com as teorias comportamentais e a tipologia de seguidores. Saem 2 ou 3 perguntas no teste intermédio.","pág. 38"]);
+Q.push(["cad","Na escala de intensidade de influência discutida em aula, quem exerce a influência mais intensa?",["Chefe","Influenciador","Manipulador","Hipnotizador"],3,"A escala é: hipnotizador > manipulador > dissuasor > influenciador > chefe.","Aula"]);
+Q.push(["cad","Na escala de intensidade de influência discutida em aula, quem está no nível mais baixo?",["Chefe","Dissuasor","Manipulador","Influenciador"],0,"Hipnotizador > manipulador > dissuasor > influenciador > chefe. O chefe influencia pela posição, não pela intensidade.","Aula"]);
+Q.push(["cad","Na escala de influência, quem fica entre o manipulador e o influenciador?",["Hipnotizador","Dissuasor","Chefe","Gestor"],1,"Hipnotizador > manipulador > dissuasor > influenciador > chefe.","Aula"]);
+Q.push(["cad","Segundo o professor, quando há muitas teorias sobre a mesma coisa, a única certeza é que…",["A mais recente é a correta","Nenhuma está «certa»: são métodos de análise, know-how","A mais citada é a correta","Devem ser todas decoradas"],1,"As teorias são métodos de análise e know-how, exemplos de casos de sucesso, não verdades definitivas.","Aula"]);
+Q.push(["cad","Uma ideia repetida nas aulas é que os líderes são feitos…",["Das várias pessoas das suas equipas","Dos seus traços inatos","Das suas decisões solitárias","Do seu cargo formal"],0,"Pensar o contrário é fonte de enviesamentos: nunca esquecer o resto da equipa e as dinâmicas grupais.","Aula"]);
+Q.push(["cad","De acordo com o que é dito nas aulas, o formato da liderança é ditado por…",["O líder","O conselho de administração","Os liderados","O mercado"],2,"A liderança depende também dos liderados: são eles que ditam o formato da liderança.","Aula"]);
+Q.push(["cad","A liderança é descrita nas aulas como um processo social que consiste em…",["Impor a visão do líder","Procurar o melhor de cada um em prol do coletivo","Maximizar a produtividade individual","Selecionar os melhores elementos"],1,"Liderança como processo social: procurar o melhor de cada um em prol do coletivo.","Aula"]);
+Q.push(["cad","A pergunta recorrente quando se analisa alguém em aula é se essa pessoa é…",["Um chefe, um gestor ou um líder","Tipo A ou Tipo B","Introvertida ou extrovertida","Eficaz ou ovelha"],0,"Pergunta recorrente: a pessoa que estamos a ver é um chefe, um gestor ou um líder?","Aula"]);
+Q.push(["cad","Durante milénios os líderes foram homens porque, segundo o estereótipo referido em aula, …",["Eram mais inteligentes","Tinham mais força física","Tinham mais carisma","Eram mais empáticos"],1,"É a lógica do «Big Man» (força) e do Grande Homem; a teoria está desatualizada.","Aula"]);
+Q.push(["cad","Qual é a percentagem da avaliação atribuída à participação?",["10%","15%","20%","25%"],2,"Participação 20%; teste intermédio 20%; teste final 35%; trabalho de grupo 25%.","Enquadramento"]);
+Q.push(["cad","Quantas perguntas sobre o caso «Consolidated Products» estão previstas no teste intermédio?",["Nenhuma","Uma","Duas ou três","Cinco"],2,"Consolidated Products: 2 ou 3 perguntas; «A história de Mário»: pelo menos 1.","Enquadramento"]);
+
+// ===== Liderança como comunicação =====
+Q.push(["com","Qual destes elementos NÃO faz parte da lista «liderança como comunicação» do primeiro slide?",["Presença","Empatia","Autoridade formal","Persuasão"],2,"A lista é: relacionamento, presença, linguagem, discurso, dinâmicas de grupo, significado, empatia, exemplo, influência, persuasão.","pág. 1"]);
+Q.push(["com","Qual é a pergunta que atravessa toda a evolução das teorias da liderança?",["Nasce-se líder ou pode aprender-se a ser líder?","Quanto ganha um líder?","Um líder deve ser homem ou mulher?","Quantos seguidores precisa um líder?"],0,"Das teorias dos traços («nasce-se») às comportamentais («aprende-se»), esta pergunta organiza toda a matéria.","pág. 1"]);
+Q.push(["com","Qual destas NÃO é uma das três perguntas orientadoras da cadeira?",["O que é um líder?","O que faz um líder?","O que é a liderança?","Quem é o melhor líder da história?"],3,"As três perguntas: o que é um líder, o que faz um líder, o que é a liderança (e nasce-se ou aprende-se).","pág. 1"]);
+Q.push(["com","A imagem do bombeiro a apagar fogos é metáfora de que tipo de líder?",["O líder que dá direção","O líder que resolve crises (gestão reativa)","O líder que assume o peso sozinho","O líder impotente"],1,"Bombeiro a apagar fogos → líder que «apaga fogos», gestão reativa.","págs. 2–5"]);
+Q.push(["com","A tartaruga virada de pernas para o ar representa…",["Impotência, estar preso, incapacidade de agir","Coragem e risco","Controlo precário","Diversidade global"],0,"Tartaruga virada → impotência, estar preso.","págs. 2–5"]);
+Q.push(["com","O adulto a apontar o caminho a uma criança é metáfora de…",["O líder que carrega a responsabilidade","O líder que dá direção e orienta","O líder que apaga fogos","O líder que assume riscos"],1,"Apontar o caminho → o líder que dá direção / orienta.","págs. 2–5"]);
+Q.push(["com","A figura a saltar um precipício entre dois penhascos simboliza…",["Risco, coragem, decisão","Impotência","Orientação","Diversidade"],0,"Saltar o precipício → risco, coragem, decisão.","págs. 2–5"]);
+Q.push(["com","Alguém a carregar uma grande carga às costas representa…",["O líder que dá direção","O líder que assume o peso / a responsabilidade (ou carrega tudo sozinho)","O líder que apaga fogos","O líder em contexto global"],1,"Carga às costas → assumir o peso e a responsabilidade, por vezes sozinho.","págs. 2–5"]);
+Q.push(["com","O globo com pessoas diversas remete para…",["Liderança num contexto global e diverso","Liderança pela força","Impotência","Risco"],0,"Globo com pessoas diversas → liderança num contexto global e diverso.","págs. 2–5"]);
+Q.push(["com","A pessoa a conduzir/surfar em cima de um carro simboliza…",["Orientação clara","Controlo precário, equilíbrio em movimento","Impotência total","Força física"],1,"Surfar em cima de um carro → controlo precário, equilíbrio em movimento.","págs. 2–5"]);
+Q.push(["com","Qual é a mensagem global das imagens-metáfora do líder (págs. 2–5)?",["Há um único modelo de líder","Não há uma única imagem de líder: a liderança assume muitas formas","O líder é sempre um herói","O líder é quem manda"],1,"Não há uma única imagem de «líder»; a liderança assume muitas formas e ser mau líder é fácil de muitas maneiras.","págs. 2–5"]);
+Q.push(["com","À pergunta «nasce-se líder ou aprende-se?», as teorias dos traços respondem…",["Aprende-se","Nasce-se","Depende da situação","Depende dos seguidores"],1,"Traços → nasce-se; comportamentais → aprende-se; contingenciais → depende da situação.","pág. 1 / 33"]);
+Q.push(["com","À pergunta «nasce-se líder ou aprende-se?», as teorias comportamentais respondem…",["Nasce-se","Aprende-se: os atos fazem os líderes","É indiferente","Só os carismáticos lideram"],1,"Para as teorias comportamentais o comportamento determina o líder, logo a liderança pode ser aprendida.","pág. 34"]);
+Q.push(["com","As imagens das págs. 2–5 são usadas em aula para…",["Decorar a definição de liderança","Debate sobre facetas e estereótipos da liderança","Medir a personalidade","Ilustrar o modelo de Fiedler"],1,"São cliparts para debate: cada imagem é uma metáfora de uma faceta ou estereótipo da liderança.","págs. 2–5"]);
+
+// ===== Personalidade, stress e motivação =====
+Q.push(["per","Segundo o slide, personalidade é «o padrão de disposições, de atuação e traços singulares que…»",["…determinam o salário de um indivíduo»","…distinguem um indivíduo de outro e determinam o seu ajustamento ao meio envolvente»","…são iguais em todos os membros de um grupo»","…se formam apenas na infância»"],1,"Definição do slide: distingue um indivíduo de outro e determina o seu ajustamento ao meio envolvente.","pág. 7"]);
+Q.push(["per","Qual destas NÃO é referida nos slides como origem/componente da personalidade?",["Base genética","Ego e Superego","Eu e os Outros","Salário e cargo"],3,"O slide refere base genética (hereditariedade), ego e superego (Freud) e eu e os outros (relação social).","pág. 7"]);
+Q.push(["per","Qual destes NÃO pertence ao modelo Big Five?",["Extroversão","Neuroticismo","Inteligência","Amabilidade"],2,"Big Five: extroversão, neuroticismo, amabilidade, responsabilidade/escrupulosidade, abertura a novas experiências. O «+1» é a humildade.","pág. 7"]);
+Q.push(["per","No modelo «Big Five + 1», o «+1» é…",["Inteligência","Humildade","Carisma","Ambição"],1,"A humildade (honestidade-humildade, modelo HEXACO) liga-se depois à liderança de nível 5 e à liderança servidora.","pág. 7"]);
+Q.push(["per","O fator «neuroticismo» refere-se a…",["Sociabilidade e energia","Instabilidade emocional, ansiedade, tendência para emoções negativas","Organização e disciplina","Curiosidade e criatividade"],1,"Neuroticismo = instabilidade emocional (o oposto é estabilidade emocional).","pág. 7"]);
+Q.push(["per","O fator «responsabilidade / escrupulosidade» (conscienciosidade) refere-se a…",["Organização, disciplina, orientação para objetivos","Cooperação e simpatia","Imaginação e criatividade","Ansiedade"],0,"Conscienciosidade = organização, disciplina, orientação para objetivos.","pág. 7"]);
+Q.push(["per","O fator «abertura a novas experiências» refere-se a…",["Assertividade","Confiança nos outros","Curiosidade, imaginação, criatividade","Estabilidade emocional"],2,"Abertura = curiosidade, imaginação, criatividade.","pág. 7"]);
+Q.push(["per","O fator «amabilidade» do Big Five refere-se a…",["Cooperação, confiança, simpatia (vs. antagonismo)","Energia e sociabilidade","Disciplina","Instabilidade emocional"],0,"Amabilidade = cooperação, confiança, simpatia; o oposto é antagonismo.","pág. 7"]);
+Q.push(["per","O fator «extroversão» do Big Five refere-se a…",["Organização","Sociabilidade, energia, assertividade","Criatividade","Humildade"],1,"Extroversão = sociabilidade, energia, assertividade (vs. introversão).","pág. 7"]);
+Q.push(["per","A humildade (o «+1») liga-se diretamente a que matéria posterior da cadeira?",["Teoria do Grande Homem","Liderança de nível 5 e liderança servidora","Modelo de Fiedler","Power poses"],1,"A humildade é central na liderança de nível 5 (humildade + vontade profissional) e na liderança servidora.","pág. 7"]);
+Q.push(["per","Qual destas características pertence à personalidade Tipo A?",["Relax","Tranquilidade","Urgência","Lazer"],2,"Tipo A: competitiva, realização, urgência, agressiva, incansável, trabalho, objetivos.","pág. 8"]);
+Q.push(["per","Qual destas características pertence à personalidade Tipo B?",["Competitiva","Balanceamento (equilíbrio)","Agressiva","Incansável"],1,"Tipo B: sociabilidade, relax, envolvimento, tranquilidade, balanceamento, lazer, estar.","pág. 8"]);
+Q.push(["per","Qual dos dois tipos de personalidade é mais propenso ao stress?",["Tipo A","Tipo B","Ambos por igual","Nenhum"],0,"Tipo A: orientado para a realização, impaciente, urgência do tempo, competitivo, por vezes hostil; mais propenso a stress.","pág. 8"]);
+Q.push(["per","Na tabela Tipo A / Tipo B, «Objetivos» opõe-se a…",["Lazer","Estar","Relax","Sociabilidade"],1,"Pares do slide: Competitiva/Sociabilidade, Realização/Relax, Urgência/Envolvimento, Agressiva/Tranquilidade, Incansável/Balanceamento, Trabalho/Lazer, Objetivos/Estar.","pág. 8"]);
+Q.push(["per","Na tabela Tipo A / Tipo B, «Trabalho» opõe-se a…",["Estar","Lazer","Tranquilidade","Envolvimento"],1,"Trabalho (Tipo A) / Lazer (Tipo B).","pág. 8"]);
+Q.push(["per","Qual destes NÃO está na lista de fatores que, com a personalidade, explicam o comportamento no trabalho?",["Valores","Atitudes","Salário","Expectativas"],2,"A lista do slide é: valores, atitudes, necessidades, expectativas.","pág. 8"]);
+Q.push(["per","«O que considero importante» corresponde a que fator?",["Valores","Atitudes","Necessidades","Expectativas"],0,"Valores = o que considero importante; atitudes = predisposições avaliativas; necessidades = o que me falta; expectativas = o que espero que aconteça.","pág. 8"]);
+Q.push(["per","«Predisposições avaliativas face a pessoas ou situações» corresponde a…",["Valores","Atitudes","Necessidades","Expectativas"],1,"Atitudes = predisposições avaliativas.","pág. 8"]);
+Q.push(["per","«O que espero que aconteça / o que espero receber» corresponde a…",["Valores","Atitudes","Necessidades","Expectativas"],3,"Expectativas = o que espero que aconteça ou que espero receber.","pág. 8"]);
+Q.push(["per","Quais são os três vértices do triângulo que enquadra o stress?",["Líder, equipa, organização","Situação, trabalho, personalidade","Valores, atitudes, necessidades","Corpo, mente, emoção"],1,"Triângulo Situação – Trabalho – Personalidade, inserido na sociedade organizacional, com o STRESS no centro.","pág. 9"]);
+Q.push(["per","Segundo o triângulo da pág. 9, o stress resulta de…",["Apenas da personalidade","Apenas do trabalho","Da interação entre pessoa, trabalho e situação","Apenas do contexto social"],2,"O stress não é só «da pessoa» nem só «do trabalho»: resulta da interação dos três vértices.","pág. 9"]);
+Q.push(["per","Segundo o slide, o stress é…",["Uma situação coletiva igual para todos","Uma situação individual; um sentimento / emoção / perceção","Uma doença física","Um traço de personalidade"],1,"Cada pessoa sente e lida com o stress de forma diferente; é um sentimento, emoção, perceção.","pág. 10"]);
+Q.push(["per","Segundo o slide, o stress nasce de…",["Excesso / incapacidade / dúvida","Preguiça / desinteresse","Riqueza / sucesso","Autonomia / variedade"],0,"Nasce de excesso (demasiada carga), incapacidade (sensação de não ser capaz) e dúvida (incerteza).","pág. 10"]);
+Q.push(["per","Qual destas NÃO é uma manifestação de stress listada no slide?",["Ansiedade","Insegurança","Confusão","Euforia"],3,"Manifesta-se como ansiedade, insegurança, confusão, receio, tensão.","pág. 10"]);
+Q.push(["per","Tensão arterial, músculos tensos e cansaço geral pertencem a que plano do stress?",["Fisiológico","Psicológico","Comportamental","Social"],0,"Plano fisiológico: tensão arterial, atividade respiratória, músculos tensos, cansaço.","pág. 10"]);
+Q.push(["per","«Futuro sombrio» e «perceção de perigo e ameaças» pertencem a que plano do stress?",["Fisiológico","Psicológico","Comportamental","Organizacional"],1,"Plano psicológico: background, medo e ansiedade, perceção de perigo, «futuro sombrio».","pág. 10"]);
+Q.push(["per","«Falar com família e amigos» e «exercício físico» pertencem a que plano do stress?",["Fisiológico","Psicológico","Comportamental","Genético"],2,"Plano comportamental: recolher informação, falar com família e amigos, sair/«beber uns copos», exercício físico. São formas de lidar (coping).","pág. 10"]);
+Q.push(["per","Quantos planos de manifestação do stress distingue o slide?",["Dois","Três","Quatro","Cinco"],1,"Três: fisiológico, psicológico e comportamental.","pág. 10"]);
+Q.push(["per","«Recolher informação» como reação ao stress é um exemplo de…",["Manifestação fisiológica","Manifestação psicológica","Forma de lidar (coping) no plano comportamental","Traço de personalidade"],2,"O plano comportamental lista formas de lidar com o stress, umas saudáveis (informação, apoio social, exercício) e outras de evasão (álcool).","pág. 10"]);
+Q.push(["per","A motivação intrínseca vem de…",["«O contexto do que faço»","«O que faço» — o próprio conteúdo da tarefa","Dos elogios do chefe","Das recompensas"],1,"Intrínseca = o conteúdo da tarefa; extrínseca = o contexto que rodeia a tarefa.","pág. 11"]);
+Q.push(["per","A motivação extrínseca vem de…",["«O que faço»","«O contexto do que faço»","Da autonomia","Da variedade das tarefas"],1,"Extrínseca: elogios, recompensas, expectativas, ambiente.","pág. 11"]);
+Q.push(["per","Qual destes fatores aumenta a motivação INTRÍNSECA?",["+ elogios","+ recompensas","+ autonomia","+ ambiente"],2,"Intrínseca: + variedade, + autonomia, + responsabilidade, + resultados.","pág. 11"]);
+Q.push(["per","Qual destes fatores aumenta a motivação EXTRÍNSECA?",["+ variedade","+ responsabilidade","+ resultados","+ recompensas"],3,"Extrínseca: + elogios, + recompensas, + expectativas, + ambiente.","pág. 11"]);
+Q.push(["per","«Ver o efeito do que se faz» (feedback do próprio trabalho) é o fator…",["+ resultados (intrínseca)","+ elogios (extrínseca)","+ ambiente (extrínseca)","+ expectativas (extrínseca)"],0,"+ resultados é um dos quatro fatores da motivação intrínseca.","pág. 11"]);
+Q.push(["per","Um líder que enriquece o trabalho em si (mais variedade e autonomia) está a atuar sobre…",["A motivação extrínseca","A motivação intrínseca","O stress fisiológico","A personalidade Tipo B"],1,"Enriquecer o trabalho atua sobre a motivação intrínseca; atuar sobre o contexto (elogios, recompensas) é extrínseca.","pág. 11"]);
+Q.push(["per","Qual destas NÃO é uma das perguntas de partida da secção sobre personalidade e motivação?",["Como conhecer uma pessoa, social e profissionalmente?","Porque são as pessoas diferentes?","Como motivar e envolver os outros? E a nós próprios?","Quanto deve ganhar um líder?"],3,"As três perguntas de partida são as primeiras três opções.","pág. 6"]);
+Q.push(["per","O «ego» e o «superego» referidos no slide da personalidade remetem para…",["A psicanálise (Freud)","O behaviorismo","A teoria dos traços","A neurobiologia de Damásio"],0,"Referência psicanalítica: o ego media entre impulsos e as normas interiorizadas do superego.","pág. 7"]);
+Q.push(["per","«Eu e os Outros» como componente da personalidade significa que…",["A personalidade é só genética","A personalidade constrói-se também na relação social","A personalidade não muda","A personalidade depende do cargo"],1,"A personalidade constrói-se também na relação com os outros.","pág. 7"]);
+Q.push(["per","Qual é a combinação que caracteriza o Tipo A?",["Sociabilidade e relax","Competitiva, realização, urgência","Tranquilidade e lazer","Envolvimento e estar"],1,"Tipo A: competitiva, realização, urgência, agressiva, incansável, trabalho, objetivos.","pág. 8"]);
+Q.push(["per","Qual das seguintes formas de lidar com o stress listadas no slide é de evasão?",["Recolher informação","Falar com família e amigos","Sair / «beber uns copos»","Exercício físico"],2,"As outras são formas saudáveis de coping; o álcool é evasão.","pág. 10"]);
+Q.push(["per","Segundo o slide da motivação, «+ expectativas» refere-se a…",["O que os outros esperam de mim / o que posso vir a obter (extrínseca)","A liberdade para decidir como fazer (intrínseca)","A diversidade de tarefas (intrínseca)","A responsabilidade pelo resultado (intrínseca)"],0,"Expectativas é um fator extrínseco: o que os outros esperam de mim e o que posso vir a obter.","pág. 11"]);
+
+// ===== Competências do líder (Katz) =====
+Q.push(["cmp","Quais são as três famílias de competências do líder/gestor apresentadas nos slides?",["Técnicas, interpessoais e conceptuais","Físicas, mentais e sociais","Individuais, sociais e emocionais","Tarefas, relacionamento e visão"],0,"Modelo clássico de Katz: technical, interpersonal e conceptual skills.","pág. 13"]);
+Q.push(["cmp","As «technical skills» envolvem…",["Sentimentos e atitudes","Métodos, processos, equipamento, organizações (regras e estrutura)","Visão de futuro e intuição","Empatia e persuasão"],1,"Técnicas = saber «como se faz» o trabalho: métodos, processos, equipamento, organizações.","pág. 13"]);
+Q.push(["cmp","As «interpersonal skills» envolvem…",["Métodos e processos","Comportamento humano, processos de grupo, sentimentos, atitudes, motivos","Bom julgamento e criatividade","Equipamento e regras"],1,"Interpessoais = saber lidar com pessoas.","pág. 13"]);
+Q.push(["cmp","As «conceptual skills» envolvem…",["Bom julgamento, visão de futuro (foresight), intuição, criatividade","Processos de grupo","Equipamento","Regras e estrutura"],0,"Conceptuais = saber pensar o todo e o futuro.","pág. 13"]);
+Q.push(["cmp","À medida que se sobe na hierarquia, o peso das competências…",["Técnicas aumenta","Técnicas diminui; interpessoais e conceptuais aumentam","Conceptuais diminui","Interpessoais diminui"],1,"Quanto mais alto o cargo, menos pesam as técnicas e mais as interpessoais e conceptuais (ligação ao QE que sobe com a hierarquia).","pág. 13"]);
+Q.push(["cmp","«Foresight» (visão de futuro) pertence a que família de competências?",["Técnicas","Interpessoais","Conceptuais","Emocionais"],2,"Conceptual skills: good judgment, foresight, intuition, creativity.","pág. 13"]);
+Q.push(["cmp","«Processos de grupo» e «motivos» pertencem a que família de competências?",["Técnicas","Interpessoais","Conceptuais","Físicas"],1,"Interpersonal skills: comportamento humano, processos de grupo, sentimentos, atitudes, motivos.","pág. 13"]);
+Q.push(["cmp","O modelo das três competências (técnicas, interpessoais, conceptuais) é um modelo clássico de…",["Goleman","Katz","Kelley","Fiedler"],1,"É o modelo clássico de Katz, apresentado em inglês nos slides.","pág. 13"]);
+Q.push(["cmp","«Intuição» e «criatividade» são exemplos de competências…",["Técnicas","Interpessoais","Conceptuais","Operacionais"],2,"Conceptuais: bom julgamento, visão de futuro, intuição, criatividade.","pág. 13"]);
+
+// ===== Inteligência emocional =====
+Q.push(["ie","Qual destes autores NÃO é referido como referência da inteligência emocional nos slides?",["Daniel Goleman","António Damásio","Francisco Varela","Simon Sinek"],3,"Referências: Goleman, Damásio, Varela, Merleau-Ponty, Heidegger. Sinek aparece noutra secção (Círculo Dourado).","pág. 14"]);
+Q.push(["ie","A mudança de paradigma referida na secção de liderança emocional é…",["«Sinto, logo existo» → «Penso, logo existo»","«Penso, logo existo» → «Sinto, logo existo»","«Ajo, logo existo»","«Lidero, logo existo»"],1,"A razão não está separada da emoção; a emoção precede e sustenta o pensamento e a decisão.","pág. 14"]);
+Q.push(["ie","«O Erro de Descartes» é obra de…",["Daniel Goleman","António Damásio","Amy Cuddy","Gustave Le Bon"],1,"Damásio: neurobiologia das emoções, «O Erro de Descartes».","pág. 14"]);
+Q.push(["ie","Segundo os slides, o êxito profissional correlaciona-se com o QI, no máximo, em…",["0,10","0,25","0,50","0,75"],1,"O QI explica uma parte pequena do sucesso; o resto depende de outras coisas, nomeadamente da inteligência emocional.","pág. 15"]);
+Q.push(["ie","As exigências de QE (inteligência emocional)…",["Descem à medida que se sobe na hierarquia","Sobem à medida que se sobe na hierarquia","São iguais em todos os cargos","Só importam nos cargos técnicos"],1,"Quanto mais alto o cargo, mais contam as competências emocionais e sociais.","pág. 15"]);
+Q.push(["ie","Segundo os slides, a inteligência emocional tem origem em…",["Apenas na genética","Predisposição genética + histórico-contextual + personalidade","Apenas na educação formal","Apenas na experiência profissional"],1,"Origem tripla, mas a IE é passível de aprendizagem e mudança (ao contrário do QI).","pág. 15"]);
+Q.push(["ie","Qual é a diferença essencial entre QI e QE quanto à aprendizagem?",["Ambos são fixos","O QE é passível de aprendizagem e mudança; o QI é relativamente estável","O QI aprende-se; o QE é inato","Nenhum se aprende"],1,"A IE pode ser aprendida e mudada; o QI é relativamente estável.","pág. 15"]);
+Q.push(["ie","Segundo os slides, a inteligência emocional dá…",["Força física e resistência","Adaptabilidade social e profissional; razoabilidade, maturidade, ponderação, comunicação","Conhecimentos técnicos","Carisma inato"],1,"Lista do slide: adaptabilidade social e profissional; razoabilidade, maturidade, ponderação, comunicação.","pág. 15"]);
+Q.push(["ie","Complete a definição de Goleman: «A capacidade de reconhecer os meus sentimentos e emoções e os dos outros, e de…»",["…controlar os outros»","…me motivar e gerir bem as emoções, em mim e nas relações em que me envolvo»","…evitar qualquer emoção no trabalho»","…ter sempre razão»"],1,"Definição de inteligência emocional de Goleman no slide.","pág. 16"]);
+Q.push(["ie","Quais são as competências INDIVIDUAIS (pessoais) do modelo de Goleman?",["Empatia e aptidão social","Autoconsciência, autorregulação, motivação","Visão, persuasão, escuta","Presença, postura, energia"],1,"Individuais: autoconsciência, autorregulação, motivação. Sociais: empatia, aptidão social.","pág. 16"]);
+Q.push(["ie","Quais são as competências SOCIAIS do modelo de Goleman?",["Autoconsciência e motivação","Empatia e aptidão social","Autorregulação e empatia","Motivação e aptidão social"],1,"Sociais: empatia e aptidão social.","pág. 16"]);
+Q.push(["ie","Quantas competências tem o modelo de inteligência emocional de Goleman apresentado nos slides?",["Três","Quatro","Cinco","Seis"],2,"Cinco: autoconsciência, autorregulação, motivação, empatia, aptidão social.","pág. 16"]);
+Q.push(["ie","«Conhecer as próprias forças e limites; ter confiança nas nossas capacidades» descreve a competência…",["Autoconsciência","Autorregulação","Motivação","Empatia"],0,"Autoconsciência: reconhecer as emoções próprias e os seus efeitos, forças e limites, confiança no próprio valor.","pág. 17"]);
+Q.push(["ie","«Gerir emoções e impulsos negativos; ter padrões de honestidade; ser flexível e aberto à inovação» descreve…",["Autoconsciência","Autorregulação","Motivação","Aptidão social"],1,"Autorregulação inclui também ser responsável pelo desempenho.","pág. 17"]);
+Q.push(["ie","«Vontade de triunfar; estar alinhado com os objetivos da organização; ser persistente» descreve…",["Autoconsciência","Autorregulação","Motivação","Empatia"],2,"Motivação: vontade de triunfar, lutar por se aperfeiçoar, alinhamento com a organização, preparado para oportunidades, persistente.","pág. 17"]);
+Q.push(["ie","«Antecipar as necessidades dos outros; entender os equilíbrios de poder no grupo» descreve…",["Motivação","Empatia","Aptidão social","Autorregulação"],1,"Empatia: perceção das emoções e interesses dos outros, fortalecer capacidades, antecipar necessidades, entender equilíbrios de poder.","pág. 17"]);
+Q.push(["ie","«Persuadir; saber ouvir; negociar; inspirar e guiar grupos; iniciar e gerir a mudança» descreve…",["Empatia","Aptidão social","Autoconsciência","Motivação"],1,"Aptidão social é, no fundo, a descrição da liderança como comunicação.","pág. 17"]);
+Q.push(["ie","Qual das cinco competências de Goleman corresponde mais diretamente à «liderança como comunicação»?",["Autoconsciência","Autorregulação","Empatia","Aptidão social"],3,"Aptidão social: influência, persuasão, escuta, negociação, inspiração, mudança.","pág. 17"]);
+Q.push(["ie","Qual destas NÃO é uma característica das competências emocionais segundo o slide?",["Independentes","Interdependentes","Inatas e imutáveis","Hierárquicas"],2,"São independentes, interdependentes, hierárquicas, necessárias mas não suficientes, genéricas. Não são imutáveis: aprendem-se.","pág. 18"]);
+Q.push(["ie","Dizer que as competências emocionais são «hierárquicas» significa que…",["Só os chefes as têm","Constroem-se umas sobre as outras: a autoconsciência é a base","Têm diferentes salários","São ordenadas por idade"],1,"A autoconsciência é a base; a aptidão social é o topo.","pág. 18"]);
+Q.push(["ie","Dizer que as competências emocionais são «necessárias mas não suficientes» significa que…",["Não servem para nada","Ter a competência não garante que se usa; depende do contexto e da vontade","Bastam para liderar","Só servem em crise"],1,"Ter a competência não garante o seu uso.","pág. 18"]);
+Q.push(["ie","Dizer que as competências emocionais são «interdependentes» significa que…",["Cada uma funciona sozinha","Apoiam-se umas nas outras (sem autoconsciência não há autorregulação)","Só uma é necessária","São contraditórias"],1,"Ex.: sem autoconsciência não há autorregulação; sem empatia não há aptidão social.","pág. 18"]);
+Q.push(["ie","Dizer que as competências emocionais são «genéricas» significa que…",["Aplicam-se a todas as funções, embora cada função exija um perfil diferente","Só se aplicam a líderes","Só se aplicam a cargos técnicos","São iguais em todas as pessoas"],0,"Genéricas: aplicam-se a todas as funções, mas cada função exige um perfil diferente.","pág. 18"]);
+Q.push(["ie","Os seis estilos de liderança emocional são de…",["Goleman, Boyatzis & McKee (2002)","Kirkpatrick e Locke","Hersey e Blanchard","Robbins (2002)"],0,"Goleman, Boyatzis & McKee, 2002.","págs. 19–20"]);
+Q.push(["ie","Qual destes NÃO é um dos seis estilos de liderança emocional?",["Visionário","Conselheiro","Transformacional","Dirigista"],2,"Os seis: visionário, conselheiro, relacional, democrático, pressionador, dirigista.","págs. 19–20"]);
+Q.push(["ie","«O que serve para si serve para os outros; traça o caminho e os seguidores acreditam que é possível» descreve o estilo…",["Visionário","Conselheiro","Relacional","Democrático"],0,"Visionário: inspira, líder genuíno, sintonia de valores, ideias e fins.","págs. 19–20"]);
+Q.push(["ie","«Vê o profissional e vê a pessoa; ouve e aconselha os elementos do grupo» descreve o estilo…",["Visionário","Conselheiro (coaching)","Relacional","Pressionador"],1,"Conselheiro: relação estreita com o grupo, ouve e aconselha.","págs. 19–20"]);
+Q.push(["ie","«Partilha de emoções; celebra e chora; grandes laços de fidelidade» descreve o estilo…",["Democrático","Conselheiro","Relacional (afiliativo)","Dirigista"],2,"Relacional: partilha emoções, cria laços de fidelidade e relacionamento.","págs. 19–20"]);
+Q.push(["ie","«Promove constantes reuniões; tende a delegar no grupo/na maioria as decisões» descreve o estilo…",["Visionário","Democrático","Pressionador","Dirigista"],1,"Democrático: reuniões, delegação na maioria, contactos pessoais, aceita ideias e sugestões.","págs. 19–20"]);
+Q.push(["ie","«Exerce constantemente pressão, exige alto desempenho e dá o exemplo de ritmo» descreve o estilo…",["Relacional","Dirigista","Pressionador (pacesetting)","Conselheiro"],2,"Pressionador: pressão constante, alto desempenho, exemplo de ritmo.","págs. 19–20"]);
+Q.push(["ie","«Preconiza a obediência cega: faz o que eu digo» descreve o estilo…",["Dirigista (coercivo/autoritário)","Pressionador","Democrático","Visionário"],0,"Dirigista: obediência cega.","págs. 19–20"]);
+Q.push(["ie","Quais são os estilos DISSONANTES de liderança emocional?",["Visionário e conselheiro","Relacional e democrático","Pressionador e dirigista","Conselheiro e dirigista"],2,"Pressionador e dirigista criam clima negativo se usados em permanência; úteis só em situações específicas.","págs. 19–20"]);
+Q.push(["ie","Quais são os estilos RESSONANTES de liderança emocional?",["Visionário, conselheiro, relacional, democrático","Pressionador e dirigista","Apenas o visionário","Democrático e dirigista"],0,"Os quatro primeiros criam clima positivo.","págs. 19–20"]);
+Q.push(["ie","Em que situações os estilos dissonantes podem ser úteis?",["Sempre","Nunca","Crise, prazos críticos, colaboradores problemáticos","Apenas em equipas criativas"],2,"Úteis em crise, prazos críticos ou com colaboradores problemáticos; tóxicos se permanentes.","págs. 19–20"]);
+Q.push(["ie","Um bom líder emocional, segundo a leitura dos estilos de Goleman, …",["Usa sempre o mesmo estilo","Alterna entre estilos conforme a situação","Usa só o estilo dirigista","Evita qualquer estilo dissonante em qualquer circunstância"],1,"Alterna entre estilos conforme a situação.","págs. 19–20"]);
+Q.push(["ie","Qual destes campos NÃO é referido nos slides como campo da inteligência emocional?",["Psicologia","Neurobiologia","Sociologia","Engenharia mecânica"],3,"Campos: psicologia, teoria organizacional, gestão, neurobiologia, sociologia.","pág. 14"]);
+Q.push(["ie","Merleau-Ponty e Heidegger são referidos nos slides pela…",["Fenomenologia: corpo, ser-no-mundo","Teoria dos traços","Psicanálise","Gestão científica"],0,"Fenomenologia: corpo e ser-no-mundo, em diálogo com Damásio e Varela.","pág. 14"]);
+Q.push(["ie","«Ser responsável pelo desempenho» é um elemento de que competência?",["Autorregulação","Empatia","Aptidão social","Autoconsciência"],0,"Autorregulação: gerir emoções e impulsos, honestidade, responsabilidade pelo desempenho, flexibilidade.","pág. 17"]);
+Q.push(["ie","«Estar preparado para as oportunidades» é um elemento de que competência?",["Autoconsciência","Motivação","Empatia","Autorregulação"],1,"Motivação: vontade de triunfar, aperfeiçoar-se, alinhamento, preparação para oportunidades, persistência.","pág. 17"]);
+Q.push(["ie","Qual é a competência que está na BASE da hierarquia das competências emocionais?",["Aptidão social","Empatia","Autoconsciência","Motivação"],2,"A autoconsciência é a base; a aptidão social é o topo.","pág. 18"]);
+Q.push(["ie","O estilo visionário de Goleman liga-se a que ideia de outra secção dos slides?",["Power poses de Cuddy","Círculo Dourado de Sinek (começar pelo porquê)","Tipo A de personalidade","Modelo de Fiedler"],1,"Visão e significado como fontes de liderança: Sinek e o estilo visionário.","pág. 29"]);
+
+// Banco de perguntas — parte 2 (presença, exemplo/propósito, definições, traços, comportamentais, seguidores, contingenciais)
+
+// ===== Presença: corpo e mente =====
+Q.push(["pre","O vídeo sobre presença e linguagem corporal mostrado nos slides é de…",["Simon Sinek","Amy Cuddy","Daniel Goleman","Gustave Le Bon"],1,"Amy Cuddy, «Presence» (TED talk «Your body language may shape who you are»).","págs. 22–23"]);
+Q.push(["pre","No diagrama Mind ⇄ Body, a relação entre mente e corpo é…",["Só da mente para o corpo","Só do corpo para a mente","Bidirecional: a mente molda o corpo e o corpo molda a mente","Inexistente"],2,"Quando me sinto confiante expando-me; se adotar uma postura expansiva, passo a sentir-me mais confiante.","págs. 22–23"]);
+Q.push(["pre","Segundo o estudo de Cuddy, após 2 minutos de «power poses»…",["A testosterona desce e o cortisol sobe","A testosterona sobe e o cortisol desce","Ambas descem","Ambas sobem"],1,"Posturas de poder: + testosterona (dominância/confiança), − cortisol (stress). Posturas de baixo poder: o inverso.","pág. 24"]);
+Q.push(["pre","A testosterona é referida nos slides como hormona de…",["Stress","Dominância / confiança","Envelhecimento","Sono"],1,"Testosterona = dominância/confiança; cortisol = stress.","pág. 24"]);
+Q.push(["pre","O cortisol é referido nos slides como hormona de…",["Confiança","Stress","Criatividade","Dominância"],1,"O cortisol desce após power poses e sobe em posturas de baixo poder.","pág. 24"]);
+Q.push(["pre","O slide «Do you want to win? Walk like a winner» faz referência a…",["Freud","Nietzsche","Descartes","Katz"],1,"Referência a Nietzsche e à ideia de que a postura influencia o estado interior.","pág. 24"]);
+Q.push(["pre","Quanto tempo de «power poses» bastou, no estudo de Cuddy, para alterar as hormonas?",["30 segundos","2 minutos","20 minutos","2 horas"],1,"2 minutos de power poses: testosterona sobe, cortisol desce.","pág. 24"]);
+Q.push(["pre","Nos gráficos das págs. 25–26, o grupo exposto a práticas positivas, perante um fator de stress, apresenta…",["Maior subida de cortisol","Menor subida de cortisol e de pressão arterial, e recupera melhor","Igual subida de cortisol","Maior pressão arterial"],1,"O grupo exposto tem menor subida de cortisol e de pressão arterial e recupera melhor do que o grupo de controlo.","págs. 25–26"]);
+Q.push(["pre","Segundo os gráficos dos slides, a inflamação…",["Aumenta com práticas positivas","Diminui com níveis crescentes de exposição a práticas positivas","Não se altera","Só depende da idade"],1,"A inflamação diminui com níveis crescentes de exposição a práticas positivas.","págs. 25–26"]);
+Q.push(["pre","A DHEA, referida nos slides como hormona «anti-envelhecimento», …",["É maior com níveis altos de exposição a práticas positivas","Desce com práticas positivas","É igual ao cortisol","Não é mencionada"],0,"DHEA é maior com níveis altos de exposição a práticas positivas.","págs. 25–26"]);
+Q.push(["pre","Qual é a mensagem dos gráficos sobre práticas positivas?",["São só psicologia, sem efeito físico","Presença, postura e práticas positivas têm efeitos biológicos mensuráveis","Só funcionam em atletas","Aumentam o stress"],1,"Efeitos biológicos mensuráveis: cortisol, pressão arterial, inflamação, DHEA.","págs. 25–26"]);
+Q.push(["pre","Qual destas NÃO é uma consequência da «positive posture» listada no slide?",["Perception","Cognition","Obedience","Creativity"],2,"Consequências: perception, cognition, energy, confidence, creativity.","pág. 27"]);
+Q.push(["pre","«We grasp more» (captamos mais) corresponde a que consequência da postura positiva?",["Perception","Cognition","Energy","Confidence"],0,"Perception = captamos mais; cognition = compreendemos melhor.","pág. 27"]);
+Q.push(["pre","«Combinamos melhor as ideias» corresponde a…",["Energy","Confidence","Creativity","Perception"],2,"Creativity = combinamos melhor as ideias.","pág. 27"]);
+Q.push(["pre","«Mais segurança, assumimos mais riscos» corresponde a…",["Cognition","Confidence","Energy","Perception"],1,"Confidence = mais segurança, mais riscos.","pág. 27"]);
+Q.push(["pre","«Mais energia, menos stress» corresponde a…",["Energy","Cognition","Creativity","Perception"],0,"Energy = mais energia, menos stress.","pág. 27"]);
+Q.push(["pre","A frase de Amy Cuddy associada à imagem da criança a olhar para fatos de super-heróis é…",["«Fake it till you become it»","«Why, how, what»","«Sinto, logo existo»","«Os atos fazem os líderes»"],0,"A ideia de «vestir» a presença: a postura precede a identidade.","pág. 27"]);
+Q.push(["pre","Qual destas é uma «power pose» (postura de poder)?",["Braços cruzados","Ombros encolhidos","Mãos na anca, corpo expandido","Corpo pequeno e fechado"],2,"Power poses: braços abertos, mãos na anca, corpo expandido, pés em cima da mesa. Fechamento: ombros encolhidos, braços cruzados.","págs. 22–23"]);
+Q.push(["pre","Nas posturas de BAIXO poder, segundo Cuddy, …",["A testosterona sobe e o cortisol desce","A testosterona desce e o cortisol sobe","Nada muda","Só a dopamina muda"],1,"Nas posturas de baixo poder acontece o inverso das power poses.","pág. 24"]);
+Q.push(["pre","Segundo o slide, a postura mexe com que hormonas?",["Insulina e glucagon","Testosterona, cortisol, dopamina…","Apenas adrenalina","Apenas serotonina"],1,"Postura → mais força, mais motivação; mexe com testosterona, cortisol, dopamina…","pág. 24"]);
+Q.push(["pre","Que figuras públicas são mostradas nos slides em posturas expansivas?",["Políticos, Cristiano Ronaldo, Usain Bolt","Freud e Descartes","Goleman e Damásio","Sinek e Le Bon"],0,"Exemplos de posturas de poder: políticos, Cristiano Ronaldo, Usain Bolt.","págs. 22–23"]);
+
+// ===== Exemplo, significado e propósito =====
+Q.push(["ex","«É por exemplos e não por argumentos que os grupos são guiados» é uma frase de…",["Simon Sinek","Gustave Le Bon","Daniel Goleman","Robbins"],1,"Gustave Le Bon (1841–1931), autor de «Psicologia das Multidões».","pág. 28"]);
+Q.push(["ex","Gustave Le Bon é autor de…",["O Erro de Descartes","Psicologia das Multidões","Start with Why","Presence"],1,"Le Bon, «Psicologia das Multidões».","pág. 28"]);
+Q.push(["ex","A ideia de Le Bon citada nos slides é que o líder influencia sobretudo…",["Pela argumentação racional","Pelo exemplo (comportamento visível)","Pelo salário","Pela autoridade formal"],1,"O exemplo guia os grupos mais do que os argumentos; liga-se à liderança como comunicação e ao poder da emoção nos grupos.","pág. 28"]);
+Q.push(["ex","O «Círculo Dourado» (Golden Circle) é de…",["Amy Cuddy","Simon Sinek","Robert Kelley","Katz"],1,"Simon Sinek: Why? → How? → What?","pág. 29"]);
+Q.push(["ex","Qual é a ordem dos círculos do Círculo Dourado, de dentro para fora?",["What → How → Why","Why → How → What","How → Why → What","What → Why → How"],1,"Why (porquê) no centro, depois How (como), depois What (o quê).","pág. 29"]);
+Q.push(["ex","Segundo Sinek, os líderes inspiradores comunicam…",["De fora para dentro (what → how → why)","De dentro para fora: começam pelo porquê","Só pelo que fazem","Sem referir propósito"],1,"A maioria comunica de fora para dentro; os inspiradores começam pelo «porquê».","pág. 29"]);
+Q.push(["ex","«As pessoas não compram o que fazes, compram o porquê o fazes» é uma ideia de…",["Le Bon","Sinek","Cuddy","Goleman"],1,"Sinek, Círculo Dourado.","pág. 29"]);
+Q.push(["ex","Segundo Sinek, a maioria das pessoas e organizações comunica…",["Começando pelo porquê","De fora para dentro: o que fazem → como → porquê","Só pelo porquê","Sem mencionar o que fazem"],1,"A maioria comunica de fora para dentro; os líderes inspiradores fazem o contrário.","pág. 29"]);
+Q.push(["ex","Quais são as perguntas associadas ao Círculo Dourado no slide?",["Quem somos? O que fazemos? Porque o fazemos?","Quanto custa? Quando? Onde?","Chefe, gestor ou líder?","Nasce-se ou aprende-se?"],0,"Quem somos? O que fazemos? Porque o fazemos?","pág. 29"]);
+Q.push(["ex","O Círculo Dourado de Sinek liga-se a que estilo de liderança emocional de Goleman?",["Dirigista","Pressionador","Visionário","Democrático"],2,"Visão e significado como fontes de liderança: estilo visionário.","pág. 29"]);
+Q.push(["ex","As datas de vida de Gustave Le Bon indicadas nos slides são…",["1841–1931","1900–1980","1756–1832","1950–2020"],0,"Gustave Le Bon (1841–1931).","pág. 28"]);
+Q.push(["ex","A frase de Le Bon sobre exemplos e argumentos liga-se a que dimensão da «liderança como comunicação»?",["O exemplo","O salário","A estrutura","A tecnologia"],0,"O exemplo é uma das dimensões listadas no primeiro slide (relacionamento, presença, …, exemplo, influência, persuasão).","pág. 28"]);
+
+// ===== Definições e mapa das teorias =====
+Q.push(["def","No mapa «Leadership and the conditions for performance», a variável-chave da teoria do «Big Man» é…",["Excecionalidade","Força (strength)","Personalidade","Situação"],1,"Big Man → força física, pré-histórica.","pág. 30"]);
+Q.push(["def","No mapa das teorias, a variável-chave da teoria do «Great Man» é…",["Força","Excecionalidade","Comportamento","Carisma"],1,"Great Man → os líderes nascem excecionais.","pág. 30"]);
+Q.push(["def","No mapa das teorias, a variável-chave das teorias dos traços é…",["Situação","Comportamento","Personalidade","Equipa"],2,"Traços de personalidade → personalidade.","pág. 30"]);
+Q.push(["def","No mapa das teorias, a variável-chave das teorias comportamentais é…",["Comportamento","Situação","Carisma","Força"],0,"Teorias comportamentais → comportamento.","pág. 30"]);
+Q.push(["def","No mapa das teorias, a variável-chave das teorias contingenciais é…",["Personalidade","Situação","Carisma","O próprio"],1,"Teorias contingenciais → situação.","pág. 30"]);
+Q.push(["def","No mapa das teorias, a variável-chave das teorias neocarismáticas é…",["Carisma","Equipa","Força","Comportamento"],0,"Neocarismáticas → carisma.","pág. 30"]);
+Q.push(["def","No mapa das teorias, a variável-chave da liderança de nível 5 é…",["O próprio","Carisma","Equipa","Força"],2,"Nível 5 → equipa (humildade + vontade profissional; o líder põe a equipa/organização à frente de si).","pág. 30"]);
+Q.push(["def","No mapa das teorias, a variável-chave da liderança autêntica é…",["Equipa","Situação","O próprio (yourself)","Excecionalidade"],2,"Autêntica → o próprio: ser fiel a si mesmo, autoconhecimento.","pág. 30"]);
+Q.push(["def","Qual é a sequência histórica das teorias segundo a «chave de leitura» do mapa?",["Contextual → inato → aprendido","Inato → aprendido → contextual → relacional/emocional","Relacional → inato → contextual","Aprendido → inato → carisma"],1,"Do inato (força, excecionalidade, traços) → aprendido (comportamento) → contextual (situação) → relacional/emocional (carisma, equipa, autenticidade).","pág. 30"]);
+Q.push(["def","«Capacidade de influenciar um grupo em direção ao alcance de objetivos» é a definição de liderança de…",["Robbins (2002:304)","Cohen e Fink (2004:252)","Schriesheim et al. (1978)","Goleman"],0,"Robbins (2002:304).","pág. 31"]);
+Q.push(["def","«Os líderes precisam de ter a habilidade de influenciar o comportamento de outras pessoas» é de…",["Robbins","Cohen e Fink (2004:252)","Schriesheim et al.","Kelley"],1,"Cohen e Fink (2004:252).","pág. 31"]);
+Q.push(["def","«Processo de influência social em que o líder busca a participação voluntária dos membros da equipa» é de…",["Robbins","Cohen e Fink","Schriesheim et al. (1978)","Le Bon"],2,"Schriesheim et al. (1978), in Kinicki e Kreitner (2006:347).","pág. 31"]);
+Q.push(["def","Quais são as três palavras-chave comuns às definições de liderança?",["Autoridade, poder, hierarquia","Influência, confiança, membros do grupo","Força, carisma, visão","Tarefas, relacionamento, situação"],1,"Influência (não autoridade formal), confiança (participação voluntária) e membros do grupo (não há líder sem seguidores).","pág. 31"]);
+Q.push(["def","Qual destas NÃO é uma das três palavras-chave das definições de liderança?",["Influência","Confiança","Coerção","Membros do grupo"],2,"A influência não é coerção nem autoridade formal.","pág. 31"]);
+Q.push(["def","A expressão «participação voluntária» na definição de Schriesheim liga-se sobretudo à palavra-chave…",["Influência","Confiança","Força","Carisma"],1,"A influência só funciona se os membros confiarem no líder: participação voluntária.","pág. 31"]);
+Q.push(["def","A definição de Schriesheim et al. é citada a partir de…",["Kinicki e Kreitner (2006:347)","Robbins (2002:304)","Goleman (2002)","Katz"],0,"Schriesheim et al. (1978), in Kinicki e Kreitner (2006:347).","pág. 31"]);
+Q.push(["def","Na lista de teorias que o curso segue, qual vem logo a seguir às teorias comportamentais?",["Teorias neocarismáticas","Teorias contingenciais","Liderança nível 5","Liderança autêntica"],1,"Sequência: Grande Homem, traços, comportamentais, contingenciais, neocarismáticas, nível 5, autêntica, …","pág. 32"]);
+Q.push(["def","Qual é a primeira teoria da lista das teorias da liderança apresentada nos slides?",["Traços de personalidade","Grande Homem","Teorias comportamentais","Liderança autêntica"],1,"1. Grande Homem; 2. Traços; 3. Comportamentais; 4. Contingenciais; 5. Neocarismáticas; 6. Nível 5; 7. Autêntica.","pág. 32"]);
+Q.push(["def","A liderança de nível 5 combina…",["Força e carisma","Humildade e vontade profissional","Tarefas e relacionamento","Visão e presente"],1,"Nível 5: humildade + vontade profissional; o líder põe a equipa à frente de si.","pág. 30"]);
+Q.push(["def","Qual é a diferença entre «Big Man» e «Great Man» no mapa das teorias?",["Big Man = força física; Great Man = excecionalidade inata","São sinónimos","Big Man = carisma; Great Man = situação","Big Man = equipa; Great Man = o próprio"],0,"Big Man → força (pré-histórica); Great Man → excecionalidade.","pág. 30"]);
+Q.push(["def","«Não há líder sem seguidores; a liderança é relação» corresponde à palavra-chave…",["Influência","Confiança","Membros do grupo","Situação"],2,"Membros do grupo: a liderança é relação.","pág. 31"]);
+Q.push(["def","Qual destas teorias aparece na lista da pág. 32 mas está FORA da matéria até à pág. 39?",["Teoria dos traços","Teorias comportamentais","Teorias neocarismáticas","Grande Homem"],2,"Neocarismáticas, nível 5, autêntica e servidora são a matéria a partir da pág. 40.","pág. 32"]);
+Q.push(["def","Qual é o ano da definição de liderança de Robbins citada nos slides?",["1978","2002","2004","2006"],1,"Robbins (2002:304). Cohen e Fink (2004:252). Schriesheim et al. (1978).","pág. 31"]);
+
+// ===== Grande Homem e traços =====
+Q.push(["tra","As teorias do Grande Homem e dos traços são…",["As mais recentes","As primeiras teorias da liderança","Teorias contingenciais","Teorias emocionais"],1,"São as primeiras teorias da liderança, marcadas como [desatualizadas].","pág. 33"]);
+Q.push(["tra","As teorias do Grande Homem e dos traços assentam em…",["Comportamentos aprendidos","Carisma/traços, capacidades especiais e características inatas","Situação","Dinâmicas de grupo"],1,"Carisma/traços de personalidade, capacidades especiais, características inatas (nasce-se líder).","pág. 33"]);
+Q.push(["tra","Um pressuposto das teorias dos traços que as teorias contingenciais vão negar é…",["O líder aprende com a experiência","O líder é eficaz em qualquer situação","O líder depende dos seguidores","O líder deve adaptar o estilo"],1,"Pressupõem um líder eficaz em qualquer situação, independentemente do contexto.","pág. 33"]);
+Q.push(["tra","A visão do líder nas teorias do Grande Homem é descrita como…",["Técnica e burocrática","Romântica: o herói, o salvador, o fascínio","Situacional","Democrática"],1,"Visão romântica do herói, do salvador, do fascínio: o líder como figura mítica.","pág. 33"]);
+Q.push(["tra","Porque são as teorias do Grande Homem e dos traços consideradas desatualizadas?",["Porque são demasiado recentes","Porque a investigação não encontrou um conjunto estável de traços e ignoram seguidores e situação","Porque exigem demasiada formação","Porque negam o carisma"],1,"Não há conjunto estável de traços que distinga sempre líderes de não-líderes; ignoram seguidores e situação.","pág. 33"]);
+Q.push(["tra","Qual destes NÃO é um traço de Kirkpatrick e Locke?",["Ambição e energia","Desejo de liderar","Humildade","Autoconfiança"],2,"Lista: ambição e energia, desejo de liderar, honestidade e integridade, autoconfiança, inteligência, conhecimentos relevantes para o trabalho.","pág. 33"]);
+Q.push(["tra","Qual destes NÃO é um traço de Kirkpatrick e Locke?",["Inteligência","Conhecimentos relevantes para o trabalho","Honestidade e integridade","Empatia"],3,"Empatia é uma competência de Goleman, não um traço de Kirkpatrick e Locke.","pág. 33"]);
+Q.push(["tra","A nota «o seu próprio grupo» junto a «honestidade e integridade» significa que…",["A integridade é julgada sobretudo pelo próprio grupo que o líder lidera","O líder só deve ser honesto com o grupo","A integridade não interessa","O grupo é sempre honesto"],0,"A integridade é julgada sobretudo pelo próprio grupo.","pág. 33"]);
+Q.push(["tra","Os traços de Kirkpatrick e Locke devem ser entendidos como…",["Garantias de eficácia","Facilitadores, não garantias","Irrelevantes","Condições suficientes"],1,"Aumentam a probabilidade de emergir como líder mas não garantem eficácia (ligação ao 0,25 do QI).","pág. 33"]);
+Q.push(["tra","Que lista de traços de líderes é apresentada no slide?",["Kirkpatrick e Locke","Hersey e Blanchard","Goleman e Boyatzis","Blake e Mouton"],0,"Traços de personalidade segundo Kirkpatrick e Locke.","pág. 33"]);
+Q.push(["tra","Quantos traços aparecem na lista de Kirkpatrick e Locke apresentada nos slides?",["Três","Quatro","Seis","Oito"],2,"Seis: ambição e energia; desejo de liderar; honestidade e integridade; autoconfiança; inteligência; conhecimentos relevantes.","pág. 33"]);
+Q.push(["tra","Qual destas teorias responde «nasce-se» à pergunta «nasce-se ou aprende-se a ser líder»?",["Teorias comportamentais","Teorias dos traços","Teorias contingenciais","LMX"],1,"Traços: características inatas → nasce-se líder.","pág. 33"]);
+Q.push(["tra","«Inteligência» como traço de Kirkpatrick e Locke deve ser lida à luz de que dado dos slides?",["QI correlaciona-se com o êxito no máximo em 0,25","2 minutos de power poses","Seis estilos de Goleman","Matriz tarefas/relacionamento"],0,"A inteligência facilita mas não garante: o QI explica no máximo 0,25 do êxito profissional.","pág. 33 / 15"]);
+Q.push(["tra","A teoria do Grande Homem ignora sobretudo…",["O líder","Os seguidores e a situação","O carisma","Os traços"],1,"Foca só o líder; ignora seguidores e situação.","pág. 33"]);
+
+// ===== Teorias comportamentais =====
+Q.push(["cpt","As teorias comportamentais estudam…",["Os traços inatos do líder","O comportamento do líder (a partir dos anos 1950)","A situação","O carisma"],1,"Estudo do comportamento do líder, a partir dos anos 1950.","pág. 34"]);
+Q.push(["cpt","«Os atos fazem os líderes» resume…",["A teoria dos traços","As teorias comportamentais","A teoria do Grande Homem","A liderança autêntica"],1,"O comportamento determina o líder, não os traços inatos.","pág. 34"]);
+Q.push(["cpt","A consequência fundamental das teorias comportamentais é que…",["A liderança é inata","A liderança é passível de ser aprendida","A liderança depende só da situação","Só os carismáticos lideram"],1,"Se o comportamento faz o líder, a liderança pode ser aprendida.","pág. 34"]);
+Q.push(["cpt","As teorias comportamentais têm origem em investigações de que universidades?",["Harvard e Stanford","Ohio State e Michigan","Oxford e Cambridge","Yale e Princeton"],1,"Universidades de Ohio (Ohio State) e Michigan.","pág. 34"]);
+Q.push(["cpt","Os comportamentos do líder organizam-se em que duas grandes dimensões?",["Tarefas e relacionamento","Força e carisma","Presença e postura","Inato e aprendido"],0,"Tarefas e/ou relacionamento.","pág. 34"]);
+Q.push(["cpt","Na investigação de Ohio State, a «estrutura de iniciação» corresponde a…",["Relacionamento","Tarefas","Situação","Carisma"],1,"Ohio State: «estrutura de iniciação» (tarefas) e «consideração» (relacionamento).","pág. 34"]);
+Q.push(["cpt","Na investigação de Ohio State, a «consideração» corresponde a…",["Tarefas","Relacionamento","Visão","Presente"],1,"Consideração = relacionamento.","pág. 34"]);
+Q.push(["cpt","A investigação de Michigan distingue líderes…",["Orientados para a produção vs. orientados para os empregados","Visionários vs. operacionais","Eficazes vs. ovelhas","Tipo A vs. Tipo B"],0,"Michigan: orientado para a produção (tarefas) vs. orientado para os empregados (relacionamento).","pág. 34"]);
+Q.push(["cpt","Na matriz Tarefas × Relacionamento, o quadrante «Tarefas + / Relacionamento −» corresponde a…",["Integral","Tarefas: objetivos, deadlines","Relacionamento: empatia, motivação","Liderança ausente"],1,"Líder focado em resultados e prazos, pouco nas pessoas.","pág. 35"]);
+Q.push(["cpt","Na matriz Tarefas × Relacionamento, o quadrante «Tarefas − / Relacionamento +» corresponde a…",["Tarefas","Integral","Relacionamento: empatia, motivação","Operacional"],2,"Líder focado nas pessoas, pouco nos resultados.","pág. 35"]);
+Q.push(["cpt","Na matriz Tarefas × Relacionamento, o quadrante alto em ambas chama-se…",["Estratégico","Integral","Visionário","Relacional"],1,"Integral: tarefas + relacionamento, o líder completo.","pág. 35"]);
+Q.push(["cpt","O quadrante «Tarefas − / Relacionamento −» da matriz…",["Chama-se integral","Está vazio no slide: liderança fraca/ausente","Chama-se estratégico","Chama-se visionário"],1,"Quadrante vazio: baixo em ambas, liderança fraca ou ausente.","pág. 35"]);
+Q.push(["cpt","Qual é o quadrante ideal nas teorias comportamentais?",["Tarefas","Relacionamento","Integral (alto em ambas)","Nenhum"],2,"Integral, equivalente ao «9,9» da grelha de Blake e Mouton.","pág. 35"]);
+Q.push(["cpt","O quadrante integral equivale, na grelha de Blake e Mouton, a…",["1,1","9,1","1,9","9,9"],3,"9,9 = alto em tarefas e alto em relacionamento.","pág. 35"]);
+Q.push(["cpt","Nas teorias comportamentais, as dimensões tarefas e relacionamento…",["São opostas: ter uma exclui a outra","Não são opostas: podem-se ter ambas altas","São a mesma coisa","Só uma é possível por líder"],1,"Podem-se ter ambas altas (integral).","pág. 35"]);
+Q.push(["cpt","Na matriz Futuro × Presente, «Futuro + / Presente −» corresponde a…",["Estratégico","Operacional","Visionário","Integral"],2,"Visionário: pensa o futuro, mas desligado do presente.","pág. 35"]);
+Q.push(["cpt","Na matriz Futuro × Presente, «Futuro + / Presente +» corresponde a…",["Visionário","Estratégico","Operacional","Relacional"],1,"Estratégico: liga a visão de futuro à execução presente, o ideal.","pág. 35"]);
+Q.push(["cpt","Na matriz Futuro × Presente, «Futuro − / Presente +» corresponde a…",["Visionário","Estratégico","Operacional","Integral"],2,"Operacional: só gere o dia a dia, sem visão.","pág. 35"]);
+Q.push(["cpt","Qual é o quadrante ideal da matriz Futuro × Presente?",["Visionário","Operacional","Estratégico","Vazio"],2,"Estratégico: combina visão de futuro e execução presente.","pág. 35"]);
+Q.push(["cpt","Que ligação existe entre as duas matrizes da pág. 35?",["Tarefas ≈ presente/operacional; relacionamento e visão ≈ futuro","Tarefas ≈ futuro; relacionamento ≈ presente","Não há ligação","Ambas medem personalidade"],0,"O líder integral/estratégico combina os dois horizontes temporais.","pág. 35"]);
+Q.push(["cpt","Quais são as duas tarefas constantes do líder na equipa?",["Mandar e controlar","Conseguir hoje o melhor de cada um; apoiar cada um para ser melhor no futuro","Contratar e despedir","Planear e orçamentar"],1,"Desempenho presente + desenvolvimento futuro; espelha as matrizes presente/futuro e tarefas/relacionamento.","pág. 36"]);
+Q.push(["cpt","«Apoiar cada um para ser melhor no futuro» corresponde a…",["Desempenho presente","Desenvolvimento","Controlo de prazos","Supervisão"],1,"A segunda tarefa do líder é o desenvolvimento das pessoas.","pág. 36"]);
+Q.push(["cpt","Um líder focado em objetivos e deadlines mas pouco nas pessoas está no quadrante…",["Relacionamento","Tarefas","Integral","Visionário"],1,"Tarefas: objetivos, deadlines.","pág. 35"]);
+Q.push(["cpt","Um líder com empatia e motivação mas pouco foco em resultados está no quadrante…",["Tarefas","Relacionamento","Integral","Estratégico"],1,"Relacionamento: empatia, motivação.","pág. 35"]);
+Q.push(["cpt","A partir de que década se desenvolvem as teorias comportamentais?",["Anos 1920","Anos 1950","Anos 1980","Anos 2000"],1,"Estudo do comportamento do líder a partir dos anos 1950.","pág. 34"]);
+
+// ===== Tipos de seguidores (Kelley) =====
+Q.push(["seg","A tipologia de seguidores apresentada nos slides é o modelo de…",["Robert Kelley","Daniel Goleman","Fred Fiedler","Katz"],0,"Modelo de Robert Kelley.","págs. 36–37"]);
+Q.push(["seg","Na matriz de Kelley, o eixo vertical mede…",["Envolvimento passivo vs. ativo","Tipo de pensamento: independente/crítico vs. acrítico/dependente","Tarefas vs. relacionamento","Futuro vs. presente"],1,"Vertical: pensamento independente/crítico (cima) vs. acrítico/dependente (baixo).","págs. 36–37"]);
+Q.push(["seg","Na matriz de Kelley, o eixo horizontal mede…",["Tipo de pensamento","Envolvimento: passivo vs. ativo","Inteligência","Carisma"],1,"Horizontal: envolvimento passivo (esquerda) vs. ativo (direita).","págs. 36–37"]);
+Q.push(["seg","Pensamento independente + envolvimento ativo = …",["Ovelhas","Yes-people","Eficazes","Afastados"],2,"Eficazes: pensam por si e são ativos.","págs. 36–37"]);
+Q.push(["seg","Pensamento independente + envolvimento passivo = …",["Afastados / Alheados","Eficazes","Ovelhas","Sobreviventes"],0,"Afastados: pensam por si, mas em privado; na organização são passivos.","págs. 36–37"]);
+Q.push(["seg","Pensamento acrítico + envolvimento passivo = …",["Yes-people","Ovelhas","Eficazes","Afastados"],1,"Ovelhas: não pensam por si e são passivos.","págs. 36–37"]);
+Q.push(["seg","Pensamento acrítico + envolvimento ativo = …",["Eficazes","Afastados","Yes-people / Yes-men","Sobreviventes"],2,"Yes-men: não pensam por si, mas são ativos.","págs. 36–37"]);
+Q.push(["seg","Que tipo de seguidor fica no centro da matriz de Kelley?",["Eficazes","Sobreviventes","Ovelhas","Afastados"],1,"Sobreviventes: adaptam-se a tudo, «nem carne nem peixe».","págs. 36–37"]);
+Q.push(["seg","«Francos, motivados, corajosos; tomam iniciativa; não precisam de liderança forte» descreve…",["Yes-men","Eficazes","Ovelhas","Sobreviventes"],1,"Eficazes: trabalham bem em equipa, gerem-se a si próprios.","pág. 37"]);
+Q.push(["seg","«Vivos, animados, mas demasiado servis; decidem à luz do politicamente correto» descreve…",["Eficazes","Afastados","Yes-men","Ovelhas"],2,"Yes-men apoiam o líder conforme o que julgam ser a vontade dele/a.","pág. 37"]);
+Q.push(["seg","«Com potencial, mas descrentes e algo cínicos; críticos mas em privado» descreve…",["Afastados / Alheados","Sobreviventes","Ovelhas","Yes-men"],0,"Afastados: desiludidos com a organização e a liderança; pensam por si mas são passivos na organização.","pág. 37"]);
+Q.push(["seg","«Maria/José vai com os outros; sem capacidade crítica nem iniciativa; fazem o que os mandam e nada mais» descreve…",["Yes-men","Ovelhas","Sobreviventes","Eficazes"],1,"Ovelhas: sem crítica, sem iniciativa, sem sentido de responsabilidade.","pág. 37"]);
+Q.push(["seg","«Preocupados em estar perto de quem tem poder; focados em ficar sempre bem nas mudanças» descreve…",["Afastados","Sobreviventes","Eficazes","Ovelhas"],1,"Sobreviventes: adaptam-se a tudo para se protegerem.","pág. 37"]);
+Q.push(["seg","Como liderar os EFICAZES?",["Supervisão próxima e regras precisas","Autonomia, reconhecimento, receber e dar feedback","Tarefas claras sem ambiguidade","Compromissos não quebráveis"],1,"Não os sufocar; tratá-los como parceiros.","pág. 38"]);
+Q.push(["seg","Como liderar os YES-MEN?",["Autonomia total","Tarefas claras, sem ambiguidade; levá-los a procurar feedback noutros profissionais","Supervisão próxima","Ouvir e pedir sugestões através de terceiros"],1,"Para não dependerem só da aprovação do chefe; capitalizar o apoio e o bom ambiente que criam.","pág. 38"]);
+Q.push(["seg","Como liderar os AFASTADOS?",["Regras precisas","Ouvir, pedir sugestões e reagir; enfatizar valores comuns; através de terceiros fazer chegar que os valorizamos","Dar-lhes tarefas sem ambiguidade","Autonomia e reconhecimento"],1,"Reconquistar a confiança, inclusive indiretamente.","pág. 38"]);
+Q.push(["seg","Como liderar as OVELHAS?",["Autonomia","Supervisão próxima, regras precisas; valorizar e dar confiança","Procurar feedback noutros profissionais","Compromissos não quebráveis"],1,"Para gradualmente ganharem iniciativa.","pág. 38"]);
+Q.push(["seg","Como liderar os SOBREVIVENTES?",["Ambiente de confiança; ouvir e estabelecer compromissos não quebráveis","Supervisão próxima","Autonomia","Tarefas sem ambiguidade"],0,"Dar-lhes segurança para que deixem de estar só a proteger-se.","pág. 38"]);
+Q.push(["seg","«Através de terceiros fazer chegar que o/a valorizamos nisto e naquilo» é uma forma de liderar…",["Ovelhas","Afastados","Yes-men","Eficazes"],1,"Afastados: reconquistar a confiança indiretamente.","pág. 38"]);
+Q.push(["seg","«Capitalizar o apoio e o bom ambiente que criam» refere-se a…",["Yes-men","Sobreviventes","Ovelhas","Afastados"],0,"Yes-men: vivos e animados, criam bom ambiente.","pág. 38"]);
+Q.push(["seg","Que tipo de seguidor NÃO precisa de liderança forte para ter sucesso?",["Ovelhas","Eficazes","Sobreviventes","Yes-men"],1,"Eficazes gerem-se a si próprios.","pág. 37"]);
+Q.push(["seg","O princípio geral por trás da tabela «como liderar cada tipo» é…",["O líder usa sempre o mesmo estilo","O líder adapta o estilo ao seguidor: ponte para as teorias contingenciais","Só os eficazes merecem atenção","Os seguidores adaptam-se ao líder"],1,"É também a lógica do caso Consolidated Products.","pág. 38"]);
+Q.push(["seg","O caso «Consolidated Products» compara…",["Dois gestores de fábrica com estilos opostos (pessoas vs. tarefas)","Dois tipos de personalidade","Dois modelos contingenciais","Dois estilos de power poses"],0,"Pede para analisar as consequências de cada estilo a curto e longo prazo com as teorias comportamentais e a tipologia de seguidores.","pág. 38"]);
+Q.push(["seg","Quantos tipos de seguidores tem o modelo de Kelley apresentado nos slides?",["Três","Quatro","Cinco","Seis"],2,"Eficazes, yes-men, afastados, ovelhas, sobreviventes.","págs. 36–37"]);
+Q.push(["seg","O exercício proposto no slide da tipologia de seguidores é…",["«Quem é o melhor?»","«Como liderar?» cada tipo","«Qual é o salário?»","«Nasce-se ou aprende-se?»"],1,"«Como liderar?» cada um destes tipos (respondido na pág. 38).","pág. 37"]);
+Q.push(["seg","Um seguidor que critica a organização em conversas privadas mas nada faz no trabalho é…",["Eficaz","Afastado / Alheado","Yes-man","Ovelha"],1,"Afastados: críticos e independentes, mas em privado; passivos na organização.","pág. 37"]);
+Q.push(["seg","Um seguidor que apoia tudo o que o chefe diz, com energia, sem pensar por si é…",["Yes-man","Eficaz","Sobrevivente","Ovelha"],0,"Yes-men: ativos mas acríticos.","pág. 37"]);
+Q.push(["seg","A expressão «nem carne nem peixe» usada no resumo aplica-se a…",["Eficazes","Sobreviventes","Ovelhas","Afastados"],1,"Sobreviventes: ficam no meio da matriz, adaptam-se a tudo.","pág. 37"]);
+Q.push(["seg","Levar um seguidor a «procurar feedback noutros profissionais que não o líder» serve para…",["Que os yes-men não dependam só da aprovação do chefe","Que as ovelhas ganhem regras","Que os eficazes tenham autonomia","Que os sobreviventes se protejam"],0,"Estratégia para liderar yes-men.","pág. 38"]);
+
+// ===== Teorias contingenciais =====
+Q.push(["con","O princípio das teorias contingenciais é que…",["O líder é eficaz em qualquer situação","O líder e a sua ação são contextualizados: a eficácia depende de personalidade, comportamento e situação","Só os traços contam","Só o comportamento conta"],1,"Conjugação de personalidade, comportamento e situação.","pág. 39"]);
+Q.push(["con","A frase «Sob a condição a, o estilo x pode ser o adequado, mas o estilo y pode ser o mais indicado para a situação b…» significa que…",["Existe um melhor estilo universal","Não existe um melhor estilo universal; existe o estilo adequado a cada situação","O estilo x é sempre o melhor","Os estilos não importam"],1,"Frase-chave das teorias contingenciais.","pág. 39"]);
+Q.push(["con","As teorias contingenciais rompem com que ideia das teorias dos traços?",["Os atos fazem os líderes","O líder eficaz em qualquer situação","A liderança aprende-se","A liderança é comunicação"],1,"Negam o «líder eficaz em qualquer situação».","pág. 39"]);
+Q.push(["con","Qual destes NÃO é um modelo contingencial listado nos slides?",["Modelo de Fiedler","Teoria Situacional de Hersey e Blanchard","Seis estilos de Goleman","Teoria do Caminho-Objetivo (Path-Goal)"],2,"Modelos: Fiedler, Hersey e Blanchard, LMX, Path-Goal (House), Líder-Participação (Vroom e Yetton/Jago).","pág. 39"]);
+Q.push(["con","No modelo de Fiedler, o estilo do líder é…",["Facilmente mudável","Relativamente fixo (medido pela escala LPC); a eficácia depende da favorabilidade da situação","Irrelevante","Sempre orientado para tarefas"],1,"Se o estilo não encaixa, muda-se a situação ou o líder.","pág. 39"]);
+Q.push(["con","Que fatores definem a «favorabilidade» da situação no modelo de Fiedler?",["Relações líder-membros, estrutura da tarefa, poder de posição","Idade, género, salário","Visão, presente, futuro","Tarefas, relacionamento, carisma"],0,"Três fatores: relações líder-membros, estrutura da tarefa, poder de posição.","pág. 39"]);
+Q.push(["con","A Teoria Situacional de Hersey e Blanchard ajusta o estilo do líder a…",["O carisma do líder","O nível de maturidade/prontidão dos seguidores (competência + empenho)","A dimensão da empresa","O setor de atividade"],1,"Estilos: dirigir, persuadir/treinar, apoiar/participar, delegar.","pág. 39"]);
+Q.push(["con","Quais são os quatro estilos da Teoria Situacional de Hersey e Blanchard?",["Dirigir, persuadir/treinar, apoiar/participar, delegar","Visionário, conselheiro, relacional, democrático","Tarefas, relacionamento, integral, vazio","Diretivo, apoiante, participativo, orientado para resultados"],0,"Dirigir, persuadir, apoiar, delegar, conforme a maturidade dos seguidores.","pág. 39"]);
+Q.push(["con","A Teoria da Troca Líder-Membro (LMX) defende que…",["O líder trata todos de forma igual","O líder desenvolve relações diferentes com cada subordinado: in-group e out-group","O líder não tem relações","Só o grupo decide"],1,"In-group (confiança, autonomia) e out-group (relação formal).","pág. 39"]);
+Q.push(["con","Na Teoria do Caminho-Objetivo (Path-Goal, House), o líder…",["Clarifica o caminho até aos objetivos e remove obstáculos","Impõe o seu estilo fixo","Delega tudo","Avalia só os traços"],0,"Escolhe entre estilo diretivo, apoiante, participativo e orientado para resultados.","pág. 39"]);
+Q.push(["con","Quais são os estilos da Teoria do Caminho-Objetivo?",["Diretivo, apoiante, participativo, orientado para resultados","Dirigir, persuadir, apoiar, delegar","Visionário, estratégico, operacional","Eficaz, ovelha, yes-man"],0,"Path-Goal (House): diretivo, apoiante, participativo, orientado para resultados.","pág. 39"]);
+Q.push(["con","O Modelo do Líder-Participação (Vroom e Yetton/Jago) é…",["Uma escala de personalidade","Uma árvore de decisão que indica quanto o líder deve envolver o grupo na decisão","Uma lista de traços","Uma matriz de seguidores"],1,"De autocrático a totalmente participativo, conforme a situação.","pág. 39"]);
+Q.push(["con","No modelo de Fiedler, se o estilo do líder não encaixa na situação…",["O líder muda facilmente de estilo","Muda-se a situação ou o líder","Nada se faz","Aumenta-se o salário"],1,"O estilo é relativamente fixo, logo muda-se a situação ou o líder.","pág. 39"]);
+Q.push(["con","A sigla LPC no modelo de Fiedler refere-se a…",["Uma escala que mede o estilo do líder (orientado para tarefas ou relações)","Um tipo de seguidor","Um estilo emocional","Uma competência de Katz"],0,"Escala LPC: mede se o líder é orientado para tarefas ou para relações.","pág. 39"]);
+Q.push(["con","Na LMX, o «in-group» caracteriza-se por…",["Relação formal","Confiança e autonomia","Supervisão próxima","Ausência de relação"],1,"In-group: confiança, autonomia; out-group: relação formal.","pág. 39"]);
+Q.push(["con","O modelo de Vroom e Yetton/Jago vai do estilo…",["Visionário ao operacional","Autocrático ao totalmente participativo","Tarefas ao relacionamento","Ovelha ao eficaz"],1,"Árvore de decisão: de autocrático a totalmente participativo.","pág. 39"]);
+Q.push(["con","A tabela «como liderar cada tipo de seguidor» (pág. 38) é a ponte para…",["A teoria dos traços","As teorias contingenciais","As power poses","A teoria do Grande Homem"],1,"O líder adapta o estilo ao seguidor → entrada nas teorias contingenciais.","págs. 38–39"]);
+Q.push(["con","Na Teoria Situacional, a «maturidade/prontidão» dos seguidores combina…",["Idade e antiguidade","Competência e empenho","Força e carisma","Tarefas e relacionamento"],1,"Maturidade = competência + empenho.","pág. 39"]);
+Q.push(["con","Qual é a variável-chave das teorias contingenciais no mapa das teorias?",["Comportamento","Personalidade","Situação","Carisma"],2,"Contingenciais → situação.","pág. 30 / 39"]);
+Q.push(["con","Quantos modelos contingenciais são listados na pág. 39?",["Três","Quatro","Cinco","Seis"],2,"Cinco: Fiedler, Hersey e Blanchard, LMX, Path-Goal, Líder-Participação.","pág. 39"]);
+
+</script>
+<script>
+const TEMAS = {
+  cad:"A cadeira e os casos",
+  com:"Liderança como comunicação",
+  per:"Personalidade, stress e motivação",
+  cmp:"Competências do líder",
+  ie:"Inteligência emocional",
+  pre:"Presença: corpo e mente",
+  ex:"Exemplo e propósito",
+  def:"Definições e mapa das teorias",
+  tra:"Grande Homem e traços",
+  cpt:"Teorias comportamentais",
+  seg:"Tipos de seguidores",
+  con:"Teorias contingenciais"
+};
+const $ = s => document.querySelector(s);
+const hash = s => { let h = 5381; for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return (h >>> 0).toString(36); };
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const store = {
+  get(k, d) { try { const v = localStorage.getItem("cl:" + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem("cl:" + k, JSON.stringify(v)); } catch (e) {} }
+};
+
+// normalizar banco
+const BANK = Q.map((r, i) => ({ id: hash(r[1]), t: r[0], q: r[1], o: r[2], r: r[3], e: r[4], p: r[5] }));
+let hist = store.get("hist", {});   // id -> {ok:n, bad:n, last:"ok"|"bad"}
+let selected = new Set(store.get("temas", Object.keys(TEMAS)));
+
+// ---------- setup ----------
+function renderChips() {
+  const box = $("#chips"); box.innerHTML = "";
+  for (const k of Object.keys(TEMAS)) {
+    const n = BANK.filter(q => q.t === k).length;
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip" + (selected.has(k) ? " on" : "");
+    b.innerHTML = `${TEMAS[k]} <span class="n">${n}</span>`;
+    b.onclick = () => { selected.has(k) ? selected.delete(k) : selected.add(k); store.set("temas", [...selected]); renderChips(); updateAvail(); };
+    box.appendChild(b);
+  }
+}
+function pool() {
+  let p = BANK.filter(q => selected.has(q.t));
+  if ($("#onlyWrong").checked) p = p.filter(q => hist[q.id] && hist[q.id].last === "bad");
+  return p;
+}
+function updateAvail() {
+  const p = pool(), n = p.length;
+  const wrong = BANK.filter(q => hist[q.id] && hist[q.id].last === "bad").length;
+  $("#wrongCount").textContent = wrong ? `(${wrong})` : "";
+  $("#avail").textContent = n ? `${n} pergunta${n === 1 ? "" : "s"} disponíve${n === 1 ? "l" : "is"}` : "Nenhuma pergunta com estes filtros";
+  $("#start").disabled = n === 0;
+  const seen = Object.keys(hist).length, okTot = Object.values(hist).reduce((s, h) => s + h.ok, 0), badTot = Object.values(hist).reduce((s, h) => s + h.bad, 0);
+  $("#stats").textContent = seen ? `Histórico neste navegador: ${seen} de ${BANK.length} perguntas já respondidas · ${okTot} certas, ${badTot} erradas no total.` : `${BANK.length} perguntas no total, em ${Object.keys(TEMAS).length} temas.`;
+}
+$("#selAll").onclick = () => { selected = new Set(Object.keys(TEMAS)); store.set("temas", [...selected]); renderChips(); updateAvail(); };
+$("#selNone").onclick = () => { selected = new Set(); store.set("temas", []); renderChips(); updateAvail(); };
+$("#onlyWrong").onchange = updateAvail;
+
+// ---------- quiz ----------
+let run = [], idx = 0, answers = [];  // answers: {q, chosenText, ok}
+function startRun(list) {
+  run = list; idx = 0; answers = [];
+  show("quiz"); renderQ();
+}
+$("#start").onclick = () => {
+  const c = $("#count").value;
+  let p = shuffle(pool());
+  if (c !== "all") p = p.slice(0, +c);
+  startRun(p);
+};
+function renderQ() {
+  const q = run[idx];
+  $("#pos").textContent = `Pergunta ${idx + 1} de ${run.length}`;
+  const okSoFar = answers.filter(a => a.ok).length;
+  $("#run").textContent = answers.length ? `${okSoFar} certas · ${answers.length - okSoFar} erradas` : "";
+  $("#barfill").style.width = (idx / run.length * 100) + "%";
+  $("#qtopic").textContent = TEMAS[q.t];
+  $("#qpage").textContent = q.p;
+  $("#qtext").textContent = q.q;
+  const order = shuffle(q.o.map((t, i) => ({ t, i })));
+  const box = $("#opts"); box.innerHTML = "";
+  order.forEach((o, n) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "opt"; b.dataset.i = o.i;
+    b.innerHTML = `<span class="k">${n + 1}</span><span>${o.t}</span>`;
+    b.onclick = () => answer(o.i);
+    box.appendChild(b);
+  });
+  $("#fb").className = "feedback hidden"; $("#nextrow").classList.add("hidden");
+  $("#next").textContent = idx === run.length - 1 ? "Ver resultado" : "Seguinte";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function answer(i) {
+  const q = run[idx]; if (answers.length > idx) return;
+  const ok = i === q.r;
+  answers.push({ q, chosen: q.o[i], ok });
+  const h = hist[q.id] || { ok: 0, bad: 0, last: null };
+  ok ? h.ok++ : h.bad++; h.last = ok ? "ok" : "bad"; hist[q.id] = h; store.set("hist", hist);
+  document.querySelectorAll(".opt").forEach(b => {
+    b.disabled = true;
+    const bi = +b.dataset.i;
+    if (bi === q.r) b.classList.add("ok");
+    else if (bi === i) b.classList.add("bad");
+    else b.classList.add("dim");
+  });
+  const fb = $("#fb");
+  fb.className = "feedback " + (ok ? "ok" : "bad");
+  fb.innerHTML = `<b>${ok ? "Certo." : "Errado."}</b>${q.e}`;
+  $("#nextrow").classList.remove("hidden");
+  $("#run").textContent = `${answers.filter(a => a.ok).length} certas · ${answers.filter(a => !a.ok).length} erradas`;
+  $("#next").focus({ preventScroll: true });
+}
+function next() {
+  if (answers.length <= idx) return;
+  idx++;
+  if (idx >= run.length) finish(); else renderQ();
+}
+$("#next").onclick = next;
+$("#quit").onclick = () => { if (answers.length) finish(); else show("setup"); };
+document.addEventListener("keydown", e => {
+  if ($("#quiz").classList.contains("hidden")) return;
+  if (e.key >= "1" && e.key <= "4" && answers.length <= idx) {
+    const b = document.querySelectorAll(".opt")[+e.key - 1]; if (b) b.click();
+  } else if (e.key === "Enter" && answers.length > idx) { e.preventDefault(); next(); }
+});
+
+// ---------- resultado ----------
+function finish() {
+  const n = answers.length, ok = answers.filter(a => a.ok).length;
+  $("#scoreN").textContent = ok; $("#scoreOf").textContent = `de ${n} certas · ${Math.round(ok / n * 100)}%`;
+  const pct = ok / n;
+  $("#verdict").textContent = pct === 1 ? "Tudo certo. Muda de tema ou aumenta o número de perguntas." :
+    pct >= .8 ? "Muito bom. Revê só as erradas abaixo." :
+    pct >= .6 ? "Razoável. Vale a pena repetir as erradas e reler as páginas indicadas." :
+    "Ainda há trabalho. Repete só as erradas até ficarem todas certas.";
+  // por tema
+  const bt = {}; answers.forEach(a => { const k = a.q.t; bt[k] = bt[k] || { n: 0, ok: 0 }; bt[k].n++; if (a.ok) bt[k].ok++; });
+  const box = $("#bytopic"); box.innerHTML = "";
+  for (const k of Object.keys(TEMAS)) if (bt[k]) {
+    const p = Math.round(bt[k].ok / bt[k].n * 100);
+    const d = document.createElement("div"); d.className = "bt";
+    d.innerHTML = `<span>${TEMAS[k]}</span><span class="pct">${bt[k].ok}/${bt[k].n} · ${p}%</span><span class="mini"><i style="width:${p}%"></i></span>`;
+    box.appendChild(d);
+  }
+  const wrong = answers.filter(a => !a.ok);
+  $("#again").disabled = wrong.length === 0;
+  $("#reviewWrap").classList.toggle("hidden", wrong.length === 0);
+  const rv = $("#review"); rv.innerHTML = "";
+  wrong.forEach(a => {
+    const d = document.createElement("div"); d.className = "rv";
+    d.innerHTML = `<p class="q">${a.q.q} <span class="pg">· ${a.q.p}</span></p><p class="x">A tua resposta: ${a.chosen}</p><p class="a">Certa: <span>${a.q.o[a.q.r]}</span></p><p class="e">${a.q.e}</p>`;
+    rv.appendChild(d);
+  });
+  show("result"); window.scrollTo({ top: 0 });
+}
+$("#again").onclick = () => startRun(shuffle(answers.filter(a => !a.ok).map(a => a.q)));
+$("#restart").onclick = () => { show("setup"); updateAvail(); };
+
+function show(id) { for (const s of ["setup", "quiz", "result"]) $("#" + s).classList.toggle("hidden", s !== id); }
+
+renderChips(); updateAvail();
+</script>
+</body>
+</html>
