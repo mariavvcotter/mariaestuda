@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GP da Expansão Marítima · História 6.º ano</title>
+<meta name="description" content="D. João II e D. Manuel I contados como uma corrida de Fórmula 1: linha do tempo, pilotos, regulamento, quiz e exercícios do manual.">
+<style>
+:root{
+  --red:#e10600; --red2:#a80500; --ink:#15151e; --ink2:#1f1f2b; --card:#262636;
+  --line:#3a3a4e; --paper:#f4f4f6; --muted:#a9a9bd; --gold:#ffd24a; --green:#2fd27a;
+  --ff: "Arial Black","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--paper);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+a{color:inherit}
+.wrap{max-width:1020px;margin:0 auto;padding:0 16px}
+.checker{height:14px;background:
+  conic-gradient(#fff 25%,#000 0 50%,#fff 0 75%,#000 0) 0 0/28px 28px}
+header.hero{background:linear-gradient(135deg,#1b0000 0%,var(--red2) 55%,var(--red) 100%);padding:46px 0 38px;position:relative;overflow:hidden}
+header.hero:after{content:"";position:absolute;right:-60px;top:-40px;width:340px;height:340px;opacity:.12;
+  background:conic-gradient(#fff 25%,#000 0 50%,#fff 0 75%,#000 0) 0 0/40px 40px;transform:skewX(-14deg)}
+.tag{display:inline-block;background:#000;color:#fff;font:700 12px/1 var(--ff);letter-spacing:.12em;padding:7px 10px;text-transform:uppercase;transform:skewX(-10deg)}
+h1{font:900 clamp(30px,6.4vw,58px)/1.02 var(--ff);font-style:italic;margin:14px 0 8px;text-transform:uppercase;letter-spacing:-.01em}
+.sub{max-width:640px;font-size:18px;color:#ffe3e0;margin:0}
+nav.tabs{position:sticky;top:0;z-index:20;background:#0c0c12ee;backdrop-filter:blur(6px);border-bottom:2px solid var(--red)}
+nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto;padding:8px 16px;scrollbar-width:none}
+nav.tabs a{white-space:nowrap;text-decoration:none;font:700 13px/1 var(--ff);text-transform:uppercase;letter-spacing:.06em;padding:10px 12px;color:var(--muted);border-radius:6px}
+nav.tabs a:hover,nav.tabs a:focus-visible{color:#fff;background:var(--card);outline:none}
+section{padding:46px 0 10px;scroll-margin-top:52px}
+h2{font:900 clamp(22px,4.2vw,34px)/1.1 var(--ff);font-style:italic;text-transform:uppercase;margin:0 0 6px}
+h2 .n{color:var(--red);margin-right:8px}
+.lead{color:var(--muted);margin:0 0 20px;max-width:720px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.glossary{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
+.chip{background:var(--ink2);border:1px dashed var(--line);border-radius:999px;padding:6px 12px;font-size:14px}
+.chip b{color:var(--gold)}
+/* timeline */
+.timeline{position:relative;margin:0;padding:0;list-style:none}
+.timeline:before{content:"";position:absolute;left:28px;top:8px;bottom:8px;width:4px;background:repeating-linear-gradient(#fff 0 10px,#000 10px 20px);border-radius:2px}
+.timeline li{position:relative;padding-left:70px;margin-bottom:12px}
+.timeline .pin{position:absolute;left:8px;top:6px;width:44px;height:44px;border-radius:50%;background:var(--red);border:3px solid #fff;display:grid;place-items:center;font:900 11px/1 var(--ff);box-shadow:0 0 0 4px var(--ink)}
+.timeline.reign-b .pin{background:#fff;color:#000}
+button.ev{all:unset;box-sizing:border-box;display:block;width:100%;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+button.ev:hover,button.ev:focus-visible{border-color:var(--red)}
+.ev .y{font:900 13px var(--ff);color:var(--red);letter-spacing:.08em}
+.ev .t{font-weight:700;display:block}
+.ev .f1{display:block;color:var(--gold);font-size:14px}
+.ev .more{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);color:#dcdce8}
+.ev[aria-expanded="true"] .more{display:block}
+.reign{font:900 12px var(--ff);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:18px 0 10px 70px}
+/* drivers */
+.driver{position:relative;overflow:hidden}
+.driver:before{content:attr(data-num);position:absolute;right:10px;top:-6px;font:900 74px/1 var(--ff);font-style:italic;color:#fff;opacity:.07}
+.driver h3{margin:0 0 2px;font-size:18px}
+.driver .role{font-size:13px;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.driver dl{margin:10px 0 0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:14.5px}
+.driver dt{color:var(--muted)}
+.driver dd{margin:0}
+.driver.king{border-color:var(--red)}
+/* treaties */
+.vs{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.rule h3{margin:0 0 4px;font-size:18px}
+.rule .yr{font:900 13px var(--ff);color:var(--red)}
+svg.map{width:100%;height:auto;border-radius:12px;background:#0f2a44;display:block}
+.note{background:#2a2410;border-left:4px solid var(--gold);padding:12px 14px;border-radius:8px;margin:14px 0;color:#f6ecc7}
+/* podium */
+.podium{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.pod{border-radius:14px;padding:16px;background:var(--card);border:1px solid var(--line);border-top:6px solid var(--red)}
+.pod .pos{font:900 36px/1 var(--ff);font-style:italic;color:var(--gold)}
+.pod h3{margin:4px 0 4px}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font:900 12px var(--ff);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.scroll{overflow-x:auto}
+/* game */
+.pool{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.pool button,.btn{all:unset;box-sizing:border-box;cursor:pointer;background:var(--ink2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:15px}
+.pool button:hover,.pool button:focus-visible,.btn:hover,.btn:focus-visible{border-color:var(--red)}
+.pool button.used{opacity:.35;pointer-events:none}
+.pool button.bad{border-color:#ff5a5a;animation:sh .25s}
+@keyframes sh{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.btn.red{background:var(--red);border-color:var(--red);font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:14px}
+.grid-slots{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.grid-slots li{display:flex;gap:10px;align-items:center;background:var(--ink2);border:1px dashed var(--line);border-radius:10px;padding:8px 12px;min-height:44px}
+.grid-slots li b{font:900 14px var(--ff);color:var(--red);min-width:34px}
+.grid-slots li.filled{border-style:solid;border-color:var(--green)}
+/* quiz */
+.qbox .q{font-size:18px;font-weight:700;margin:6px 0 14px}
+.opts{display:grid;gap:8px}
+.opts button{all:unset;box-sizing:border-box;cursor:pointer;background:var(--ink2);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.opts button:hover,.opts button:focus-visible{border-color:var(--red)}
+.opts button.ok{background:#0f3a24;border-color:var(--green)}
+.opts button.no{background:#3d1414;border-color:#ff5a5a}
+.opts button[disabled]{cursor:default}
+.fb{min-height:24px;margin-top:10px;color:#dcdce8}
+.bar{height:8px;border-radius:99px;background:var(--ink2);overflow:hidden;margin-bottom:10px}
+.bar i{display:block;height:100%;width:0;background:var(--red);transition:width .3s}
+.qhead{display:flex;justify-content:space-between;color:var(--muted);font-size:14px}
+.final{text-align:center}
+.final .big{font:900 56px/1 var(--ff);font-style:italic;color:var(--gold)}
+/* exercises */
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:0;margin-bottom:10px}
+summary{cursor:pointer;padding:14px 16px;font-weight:700;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"▸";color:var(--red);margin-right:8px}
+details[open] summary:before{content:"▾"}
+details .body{padding:0 16px 14px;color:#dcdce8}
+details .body p{margin:6px 0}
+.exh{font:900 13px var(--ff);color:var(--red);text-transform:uppercase;letter-spacing:.1em;margin:22px 0 10px}
+.src{font-size:13px;color:var(--muted)}
+footer{margin-top:50px;padding:26px 0 40px;color:var(--muted);font-size:14px;border-top:1px solid var(--line)}
+@media (max-width:520px){.timeline li{padding-left:62px}.reign{margin-left:62px}.timeline .pin{left:4px}.timeline:before{left:24px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="checker" aria-hidden="true"></div>
+<header class="hero">
+  <div class="wrap">
+    <span class="tag">História · 6.º ano · Cap. 3</span>
+    <h1>GP da Expansão<br>Marítima</h1>
+    <p class="sub">D. João II e D. Manuel I como nunca os viste: Portugal na grelha de partida, a feitoria da Mina como box e o cabo das Tormentas como a curva mais perigosa do campeonato.</p>
+  </div>
+</header>
+<div class="checker" aria-hidden="true"></div>
+
+<nav class="tabs" aria-label="Secções">
+  <div class="wrap">
+    <a href="#grelha">Grelha</a>
+    <a href="#pilotos">Pilotos</a>
+    <a href="#regulamento">Regulamento</a>
+    <a href="#curva">A curva</a>
+    <a href="#manuel">D. Manuel I</a>
+    <a href="#rivais">Rivais</a>
+    <a href="#jogo">Jogo</a>
+    <a href="#quiz">Quiz</a>
+    <a href="#manual">Manual</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="intro">
+  <h2>Dicionário de <span style="color:var(--red)">paddock</span></h2>
+  <p class="lead">Para perceberes a história, aprende primeiro a linguagem da corrida. Cada termo de F1 tem um colega na História.</p>
+  <div class="glossary">
+    <span class="chip"><b>Equipa</b> = o reino de Portugal</span>
+    <span class="chip"><b>Chefe de equipa</b> = o rei</span>
+    <span class="chip"><b>Piloto</b> = navegador / capitão</span>
+    <span class="chip"><b>Box</b> = feitoria (ponto de apoio e comércio)</span>
+    <span class="chip"><b>Patrocinador</b> = mercador com contrato</span>
+    <span class="chip"><b>Regulamento</b> = tratado</span>
+    <span class="chip"><b>Traçado ideal</b> = volta pelo largo</span>
+    <span class="chip"><b>Rivais</b> = Espanha e os muçulmanos</span>
+  </div>
+</section>
+
+<section id="grelha">
+  <h2><span class="n">01</span>Grelha de partida</h2>
+  <p class="lead">Do arranque com D. Afonso V até ao fim do reinado de D. João II. Toca em cada marco para ver o que aconteceu.</p>
+
+  <p class="reign">Reinado de D. Afonso V</p>
+  <ul class="timeline" id="tl1"></ul>
+  <p class="reign">Reinado de D. João II</p>
+  <ul class="timeline reign-b" id="tl2"></ul>
+</section>
+
+<section id="pilotos">
+  <h2><span class="n">02</span>Os pilotos</h2>
+  <p class="lead">Quem foi mais longe, e onde. As datas e os locais vêm do mapa do manual (Doc. 1, pág. 158).</p>
+  <div class="grid g3" id="drivers"></div>
+</section>
+
+<section id="regulamento">
+  <h2><span class="n">03</span>Regulamento da prova</h2>
+  <p class="lead">Dois regulamentos dividiram a pista entre Portugal e Espanha. O segundo foi uma exigência de D. João II.</p>
+
+  <div class="vs">
+    <div class="card rule">
+      <span class="yr">1479–1480</span>
+      <h3>Tratado de Alcáçovas-Toledo</h3>
+      <p>Regra por <b>paralelo</b> (uma linha horizontal). Os territórios descobertos a <b>sul</b> do paralelo pertenciam a Portugal.</p>
+    </div>
+    <div class="card rule">
+      <span class="yr">1494</span>
+      <h3>Tratado de Tordesilhas</h3>
+      <p>O Papa propôs outra divisão, por um <b>meridiano</b> (uma linha vertical). Terras a descobrir a <b>oeste</b> → Espanha. Terras a <b>este</b> → Portugal. As ilhas onde Colombo chegou em 1492 ficaram para Espanha.</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <svg class="map" viewBox="0 0 560 250" role="img" aria-label="Esquema do Atlântico com o paralelo de Alcáçovas-Toledo e o meridiano de Tordesilhas">
+      <rect width="560" height="250" fill="#0f2a44"/>
+      <path d="M0 40 L130 40 L150 70 L120 120 L60 140 L0 120Z" fill="#c9a24b" opacity=".85"/>
+      <text x="14" y="75" fill="#2b1d00" font-size="12" font-weight="700">América</text>
+      <path d="M440 20 L560 20 L560 240 L470 240 L430 160 L455 100Z" fill="#c9a24b" opacity=".85"/>
+      <text x="480" y="95" fill="#2b1d00" font-size="12" font-weight="700">África</text>
+      <path d="M380 10 L430 8 L440 28 L395 36Z" fill="#c9a24b" opacity=".85"/>
+      <text x="360" y="52" fill="#fff" font-size="11">Portugal</text>
+      <line x1="0" y1="105" x2="560" y2="105" stroke="#ffd24a" stroke-width="2.5" stroke-dasharray="6 6"/>
+      <text x="150" y="98" fill="#ffd24a" font-size="12" font-weight="700">Paralelo Alcáçovas-Toledo (1479-80)</text>
+      <line x1="250" y1="0" x2="250" y2="250" stroke="#ff5a4f" stroke-width="3"/>
+      <text x="258" y="22" fill="#ff8a82" font-size="12" font-weight="700">Meridiano de Tordesilhas (1494)</text>
+      <text x="108" y="200" fill="#fff" font-size="14" font-weight="700">← Espanha</text>
+      <text x="268" y="200" fill="#fff" font-size="14" font-weight="700">Portugal →</text>
+      <text x="270" y="225" fill="#cfe3f6" font-size="11">espaço no Atlântico para a «volta pelo largo»</text>
+      <text x="12" y="238" fill="#9fb8d1" font-size="10">Esquema simplificado (não está à escala).</text>
+    </svg>
+  </div>
+
+  <div class="note"><b>Porque é que D. João II quis o meridiano nesse sítio?</b> Para reservar a Portugal o espaço do Atlântico onde os barcos faziam a «volta pelo largo» no regresso da Índia. É o traçado ideal da corrida: afastar-se da costa para apanhar os ventos certos.</div>
+</section>
+
+<section id="curva">
+  <h2><span class="n">04</span>A curva mais perigosa</h2>
+  <p class="lead">Em 1487–1488, Bartolomeu Dias dobrou o cabo das Tormentas. É a volta mais famosa do reinado de D. João II.</p>
+  <div class="grid g2">
+    <div class="card">
+      <h3 style="margin-top:0">O que se passou</h3>
+      <p>Os marinheiros chamaram-lhe <b>cabo Tormentoso</b> por causa dos perigos e das tempestades ao dobrá-lo. D. João II mudou-lhe o nome para <b>cabo da Boa Esperança</b>, por tudo o que prometia: o caminho marítimo para a Índia.</p>
+      <p class="src">Doc. 2 do manual: João de Barros (cronista), Décadas da Ásia, 1552.</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Porque foi importante</h3>
+      <ul style="margin:0;padding-left:18px">
+        <li>A passagem do Atlântico para o Índico <b>destruiu mitos</b>.</li>
+        <li>Mostrou que se podia <b>contornar África</b> por mar.</li>
+        <li>Reforçou a esperança de <b>chegar à Índia</b> por mar.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note"><b>Cuidado com a frase sublinhada!</b> A Índia não era desconhecida. Era «tão desejada» porque se sabia que lá havia riquezas, como as especiarias. O que ainda faltava descobrir era o <b>caminho por mar</b>. D. João II morreu sem o conhecer.</div>
+</section>
+
+<section id="manuel">
+  <h2><span class="n">05</span>Nova época: D. Manuel I</h2>
+  <p class="lead">Foi no reinado de D. Manuel I que o sonho de D. João II se realizou e que o Império Colonial se consolidou. Três grandes voltas, três vitórias.</p>
+
+  <div class="podium">
+    <div class="pod"><div class="pos">P1</div><h3>Vasco da Gama</h3><b>1498</b><p style="margin:4px 0 0">Chega à <b>Índia por mar</b> (Rota do Cabo).</p></div>
+    <div class="pod"><div class="pos">P2</div><h3>Pedro Álvares Cabral</h3><b>1500</b><p style="margin:4px 0 0">Chega ao <b>Brasil</b>.</p></div>
+    <div class="pod"><div class="pos">P3</div><h3>Fernão de Magalhães</h3><b>1519–1522</b><p style="margin:4px 0 0">Viagem de <b>circum-navegação</b> (volta ao mundo).</p></div>
+  </div>
+
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card">
+      <h3 style="margin-top:0">O mapa da prova</h3>
+      <p>As rotas marítimas ligaram a <b>Europa</b>, <b>África</b>, <b>Ásia</b> e <b>América</b>. Pelo caminho trouxeram-se produtos como especiarias, seda, ouro, marfim e pedras preciosas.</p>
+      <p class="src">Doc. 1, pág. 160: «As grandes viagens transatlânticas».</p>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">O paddock: Lisboa</h3>
+      <p>Lisboa tornou-se uma cidade rica e cheia de movimento. D. Manuel mandou construir os <b>Paços da Ribeira</b>, e na <b>Rua Nova dos Mercadores</b> juntavam-se todos os dias comerciantes de quase todo o mundo, por causa das facilidades do comércio e do porto.</p>
+      <p class="src">Doc. 2: Damião de Góis, Crónica de el-Rei D. Manuel, 1556.</p>
+    </div>
+  </div>
+</section>
+
+<section id="rivais">
+  <h2><span class="n">06</span>Rivais e contactos</h2>
+  <p class="lead">Nem tudo foi fácil e pacífico: em África, no Oriente e no Brasil, os portugueses encontraram povos com formas de vida próprias.</p>
+
+  <div class="grid g2">
+    <div class="card">
+      <h3 style="margin-top:0">No Oriente: a estratégia da equipa</h3>
+      <p><b>Grandes opositores:</b> os muçulmanos (os «mouros» do texto), que também comerciavam e não queriam concorrência.</p>
+      <p><b>Estratégias de D. Manuel I:</b></p>
+      <ul style="margin:0;padding-left:18px">
+        <li>Enviar uma <b>forte armada</b>, com gente de armas.</li>
+        <li>Deixar um <b>Governador</b> a residir na Índia, para proteger aliados e feitorias e impedir o comércio dos rivais.</li>
+        <li>Incentivar <b>casamentos</b> de portugueses com mulheres indianas (os casais ficavam isentos de impostos).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">No Brasil: pista desconhecida</h3>
+      <p>Os <b>indígenas</b> eram os povos originários da terra. Pero Vaz de Caminha (1500) descreve que viviam da natureza: comiam inhame e frutos e sementes que a terra dava, sem lavrar nem criar animais.</p>
+      <p>Os portugueses queriam <b>convertê-los ao cristianismo</b>, porque Caminha achava que não tinham crença nenhuma.</p>
+      <p class="src">Mais tarde, as relações complicaram-se: em 1554 os Tupinambás atacaram engenhos e fazendas para reaverem terras, e em 1562 uma epidemia de varíola na Baía fez cerca de 30 mil mortos.</p>
+    </div>
+  </div>
+</section>
+
+<section id="jogo">
+  <h2><span class="n">07</span>Jogo: ordena a grelha</h2>
+  <p class="lead">Toca nos acontecimentos pela ordem em que aconteceram, do mais antigo (P1) ao mais recente.</p>
+  <div class="card">
+    <div class="grid g2">
+      <div>
+        <div class="pool" id="pool"></div>
+        <button class="btn red" id="resetGame" type="button">Recomeçar</button>
+        <p class="fb" id="gameFb" aria-live="polite"></p>
+      </div>
+      <ol class="grid-slots" id="slots"></ol>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <h2><span class="n">08</span>Quiz de qualificação</h2>
+  <p class="lead">Quinze perguntas. Cada resposta certa vale 10 pontos: sobe ao pódio!</p>
+  <div class="card qbox" id="quizBox"></div>
+</section>
+
+<section id="manual">
+  <h2><span class="n">09</span>Perguntas do manual</h2>
+  <p class="lead">Tenta responder primeiro no caderno e depois abre a resposta sugerida. São propostas de resposta; confirma sempre com o teu professor ou explicador.</p>
+
+  <p class="exh">Pág. 158 · Ação de D. João II</p>
+  <details><summary>1. Que conquistas se fizeram no Norte de África?</summary><div class="body"><p>Alcácer-Ceguer, Arzila e Tânger (por D. Afonso V).</p></div></details>
+  <details><summary>2. Quem reinava?</summary><div class="body"><p>D. Afonso V.</p></div></details>
+  <details><summary>Doc. 1 · 1. Indica dois avanços na exploração da costa africana durante o período de D. João II.</summary><div class="body"><p>Por exemplo: Diogo Cão chegou à foz do rio Zaire (1483); Bartolomeu Dias dobrou o cabo da Boa Esperança (1488); foi construída a feitoria de S. Jorge da Mina (1482).</p></div></details>
+  <details><summary>Doc. 1 · 2. Que espaço garantiu D. João II com o Tratado de Tordesilhas?</summary><div class="body"><p>Garantiu o espaço do Atlântico necessário para os barcos fazerem a «volta pelo largo» no regresso da Índia, e as terras a este do meridiano.</p></div></details>
+  <details><summary>Doc. 2 · 1. Em que reinado se conseguiu passar o cabo das Tormentas?</summary><div class="body"><p>No reinado de D. João II (1488).</p></div></details>
+  <details><summary>Doc. 2 · 2. Que razão explica o seu nome «tormentoso»?</summary><div class="body"><p>Os perigos e as tormentas (tempestades) que se enfrentavam ao dobrar o cabo.</p></div></details>
+  <details><summary>Doc. 2 · 3. Atenta na frase sublinhada. A Índia era desconhecida? Justifica.</summary><div class="body"><p>Não. A Índia era conhecida e muito desejada pelas suas riquezas. O que se queria descobrir era o caminho marítimo até lá.</p></div></details>
+  <details><summary>Doc. 2 · 4. Apresenta dois novos conhecimentos geográficos que esta viagem possibilitou.</summary><div class="body"><p>Por exemplo: África podia ser contornada por mar; havia passagem do oceano Atlântico para o Índico; o extremo sul de África tinha um cabo (cabo da Boa Esperança).</p></div></details>
+
+  <p class="exh">Pág. 160 · D. Manuel I e as grandes viagens</p>
+  <details><summary>1. Identifica as três grandes viagens.</summary><div class="body"><p>A viagem à Índia, a viagem ao Brasil e a viagem de circum-navegação.</p></div></details>
+  <details><summary>2. Quando se realizou cada uma das viagens? Quem foram os capitães?</summary><div class="body"><p>Índia: 1498, Vasco da Gama. Brasil: 1500, Pedro Álvares Cabral. Circum-navegação: 1519–1522, Fernão de Magalhães.</p></div></details>
+  <details><summary>3. Quem reinava em Portugal?</summary><div class="body"><p>D. Manuel I.</p></div></details>
+  <details><summary>Doc. 1 · 1. Que continentes passaram a estar ligados através das rotas marítimas?</summary><div class="body"><p>Europa, África, Ásia e América (confirma no mapa do manual, que também mostra a Oceânia).</p></div></details>
+  <details><summary>Doc. 1 · 2. Que cidades ligava a rota do Cabo?</summary><div class="body"><p>Liga Lisboa a cidades da costa africana e da Índia (por exemplo Moçambique, Goa, Cochim). Confirma os nomes exatos no mapa, seguindo a linha da Rota do Cabo.</p></div></details>
+  <details><summary>Doc. 2 · 1. Transcreve uma frase que mostre a riqueza do rei.</summary><div class="body"><p>A frase em que D. Manuel manda fazer os «magníficos e sumptuosos Paços da Ribeira de Lisboa».</p></div></details>
+  <details><summary>Doc. 2 · 2. De que parte do Império chegava mais riqueza?</summary><div class="body"><p>Do Oriente (Índia e Ásia), sobretudo por causa do comércio das especiarias. Confirma com o que o teu professor ensinou.</p></div></details>
+  <details><summary>Doc. 2 · 3. Descreve o ambiente de Lisboa junto ao porto.</summary><div class="body"><p>Muito movimentado e cosmopolita: comerciantes de quase todo o mundo juntavam-se todos os dias na Rua Nova dos Mercadores, e na gravura veem-se muitos navios no porto.</p></div></details>
+
+  <p class="exh">Pág. 162 · Encontro com outros povos</p>
+  <details><summary>Doc. 1 · 1. Quem foram os grandes opositores à presença dos portugueses no Oriente?</summary><div class="body"><p>Os muçulmanos (chamados «mouros» no texto).</p></div></details>
+  <details><summary>Doc. 1 · 2. Que estratégias usou D. Manuel I para conseguir manter a presença dos portugueses?</summary><div class="body"><p>Enviou uma forte armada, nomeou um Governador residente na Índia e incentivou os casamentos de portugueses com mulheres indianas (com isenção de impostos).</p></div></details>
+  <details><summary>Doc. 2 · 1. Quem eram os indígenas?</summary><div class="body"><p>Os povos originários do Brasil, que já lá viviam quando os portugueses chegaram.</p></div></details>
+  <details><summary>Doc. 2 · 2. Como viviam os indígenas, de acordo com este documento?</summary><div class="body"><p>Viviam da natureza: não lavravam nem criavam animais, e comiam inhame, frutos e sementes que a terra dava. Segundo Caminha, não tinham crença nenhuma.</p></div></details>
+  <details><summary>Doc. 2 · 3. Identifica uma mudança que os portugueses queriam fazer na forma de viver dos indígenas.</summary><div class="body"><p>Convertê-los ao cristianismo.</p></div></details>
+  <details><summary>Doc. 2 · 4. Atenta na frase sublinhada. Porque é que Pero Vaz de Caminha pensava daquela forma?</summary><div class="body"><p>Porque os indígenas dançaram e bailaram com os portugueses de forma amigável, e Caminha achou-os inocentes e fáceis de converter.</p></div></details>
+</section>
+
+</main>
+
+<div class="checker" aria-hidden="true"></div>
+<footer>
+  <div class="wrap">
+    <p>Material de estudo feito a partir das páginas 158, 159, 160 e 162 do manual de História (C3 · Portugal nos séculos XV e XVI). As comparações com a Fórmula 1 são só para ajudar a memorizar: a História é a que está no manual.</p>
+    <p>mariaestuda.eu</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var $ = function(s,r){return (r||document).querySelector(s)};
+
+  /* ---------- timeline ---------- */
+  var A = [
+    {y:"1469", t:"Fernão Gomes arrenda a exploração africana", f:"Contrato de equipa satélite", m:"O rei D. Afonso V arrendou a exploração da costa africana ao mercador Fernão Gomes. Ele obrigava-se, cada ano, a pagar uma renda ao rei e a avançar no reconhecimento da costa, ficando com as riquezas que encontrasse."},
+    {y:"1471", t:"Conquista de Arzila e Tânger", f:"Aposta noutra pista", m:"Depois da morte do infante D. Henrique, as viagens de descoberta abrandaram. D. Afonso V achou mais vantajoso conquistar cidades no Norte de África: Alcácer-Ceguer, Arzila e Tânger."},
+    {y:"1475", t:"O príncipe D. João assume a expansão marítima", f:"Novo diretor desportivo", m:"A partir de 1475, D. João, ainda príncipe, ficou responsável pelas viagens de expansão. Nesse ano, Lopo Gonçalves e Rui de Sequeira chegaram ao cabo de Santa Catarina."}
+  ];
+  var B = [
+    {y:"1481", t:"D. João II torna-se rei", f:"O chefe de equipa acelera", m:"Quando se tornou rei, em 1481, D. João II intensificou a exploração da costa ocidental africana. Ordenou a construção da feitoria da Mina e financiou viagens por terra e por mar."},
+    {y:"1482", t:"Feitoria de S. Jorge da Mina", f:"Inaugura-se o box", m:"A feitoria da Mina foi o grande ponto de apoio e de comércio português na costa africana."},
+    {y:"1483", t:"Diogo Cão na foz do rio Zaire", f:"Pilotos cada vez mais longe", m:"Diogo Cão avançou pela costa africana até à foz do rio Zaire."},
+    {y:"1488", t:"Bartolomeu Dias dobra o cabo das Tormentas", f:"A curva mais perigosa, vencida", m:"Em 1487–1488, Bartolomeu Dias dobrou o cabo das Tormentas, que passou a chamar-se Boa Esperança. A passagem do Atlântico para o Índico destruiu mitos e fortaleceu a esperança de chegar à Índia por mar."},
+    {y:"1494", t:"Tratado de Tordesilhas", f:"Novo regulamento", m:"D. João II negociou com Espanha a divisão do mundo por um meridiano. A localização do meridiano foi uma exigência sua, para garantir a «volta pelo largo»."}
+  ];
+  function build(list, el){
+    list.forEach(function(e){
+      var li=document.createElement("li");
+      li.innerHTML='<span class="pin">'+e.y+'</span>'+
+        '<button type="button" class="ev" aria-expanded="false">'+
+        '<span class="y">'+e.y+'</span><span class="t">'+e.t+'</span>'+
+        '<span class="f1">🏁 '+e.f+'</span><span class="more">'+e.m+'</span></button>';
+      el.appendChild(li);
+    });
+  }
+  build(A,$("#tl1")); build(B,$("#tl2"));
+  document.addEventListener("click",function(ev){
+    var b=ev.target.closest("button.ev"); if(!b) return;
+    b.setAttribute("aria-expanded", b.getAttribute("aria-expanded")==="true"?"false":"true");
+  });
+
+  /* ---------- drivers ---------- */
+  var D = [
+    {n:"01", name:"Fernão Gomes", role:"Patrocinador com contrato", yr:"1469–1475", where:"Costa africana", note:"Pagava uma renda ao rei e explorava a costa.", cls:""},
+    {n:"02", name:"João de Santarém e Pero Escobar", role:"Dupla de pilotos", yr:"1471–1472", where:"S. Tomé e Príncipe", note:"Chegaram às ilhas do golfo da Guiné.", cls:""},
+    {n:"03", name:"Lopo Gonçalves e Rui de Sequeira", role:"Dupla de pilotos", yr:"1475", where:"Cabo de Santa Catarina", note:"Já sob a direção do príncipe D. João.", cls:""},
+    {n:"04", name:"Diogo Cão", role:"Piloto", yr:"1483", where:"Foz do rio Zaire", note:"Avançou mais para sul pela costa africana.", cls:""},
+    {n:"05", name:"Bartolomeu Dias", role:"Piloto estrela", yr:"1487–1488", where:"Cabo da Boa Esperança", note:"Dobrou o cabo das Tormentas.", cls:"king"},
+    {n:"06", name:"Vasco da Gama", role:"Piloto campeão", yr:"1498", where:"Índia", note:"Primeira chegada à Índia por mar.", cls:"king"},
+    {n:"07", name:"Pedro Álvares Cabral", role:"Piloto", yr:"1500", where:"Brasil", note:"Viagem ao Brasil, no reinado de D. Manuel I.", cls:""},
+    {n:"08", name:"Fernão de Magalhães", role:"Piloto de resistência", yr:"1519–1522", where:"Volta ao mundo", note:"Viagem de circum-navegação.", cls:""}
+  ];
+  var dh="";
+  D.forEach(function(d){
+    dh+='<article class="card driver '+d.cls+'" data-num="'+d.n+'"><div class="role">'+d.role+'</div><h3>'+d.name+'</h3>'+
+    '<dl><dt>Ano</dt><dd>'+d.yr+'</dd><dt>Onde</dt><dd>'+d.where+'</dd><dt>Feito</dt><dd>'+d.note+'</dd></dl></article>';
+  });
+  $("#drivers").innerHTML=dh;
+
+  /* ---------- order game ---------- */
+  var G = [
+    {y:1469, t:"Fernão Gomes arrenda a exploração africana"},
+    {y:1475, t:"D. João assume a expansão marítima"},
+    {y:1482, t:"Feitoria de S. Jorge da Mina"},
+    {y:1488, t:"Bartolomeu Dias dobra o cabo das Tormentas"},
+    {y:1494, t:"Tratado de Tordesilhas"},
+    {y:1498, t:"Vasco da Gama chega à Índia"},
+    {y:1500, t:"Cabral chega ao Brasil"},
+    {y:1519, t:"Começa a viagem de Magalhães"}
+  ];
+  var next=0, order;
+  function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+  function resetGame(){
+    next=0; order=shuffle(G);
+    var pool=$("#pool"); pool.innerHTML="";
+    order.forEach(function(g){
+      var b=document.createElement("button"); b.type="button"; b.textContent=g.t; b.dataset.y=g.y;
+      pool.appendChild(b);
+    });
+    var s=""; for(var i=0;i<G.length;i++){s+='<li><b>P'+(i+1)+'</b><span></span></li>'}
+    $("#slots").innerHTML=s; $("#gameFb").textContent="Qual aconteceu primeiro?";
+  }
+  $("#pool").addEventListener("click",function(e){
+    var b=e.target.closest("button"); if(!b) return;
+    if(+b.dataset.y===G[next].y){
+      var li=$("#slots").children[next]; li.classList.add("filled");
+      li.lastChild.textContent=G[next].y+" · "+G[next].t;
+      b.classList.add("used"); next++;
+      $("#gameFb").textContent = next===G.length ? "🏁 Bandeira axadrezada! Grelha completa." : "Certo! E a seguir?";
+    } else {
+      b.classList.add("bad"); setTimeout(function(){b.classList.remove("bad")},300);
+      $("#gameFb").textContent="Ainda não: há um acontecimento mais antigo.";
+    }
+  });
+  $("#resetGame").addEventListener("click",resetGame);
+  resetGame();
+
+  /* ---------- quiz ---------- */
+  var Q = [
+    {q:"Que cidades do Norte de África conquistou D. Afonso V?", a:"Alcácer-Ceguer, Arzila e Tânger", w:["Ceuta, Lagos e Sagres","Goa, Cochim e Calecute","Lisboa, Porto e Faro"]},
+    {q:"A quem foi arrendada a exploração da costa africana, em 1469?", a:"Fernão Gomes", w:["Diogo Cão","Vasco da Gama","Pedro Álvares Cabral"]},
+    {q:"O que tinha Fernão Gomes de fazer?", a:"Pagar uma renda ao rei e avançar no reconhecimento da costa", w:["Conquistar Tânger","Construir a feitoria da Mina","Negociar o Tratado de Tordesilhas"]},
+    {q:"Em que ano o príncipe D. João assumiu a direção da expansão marítima?", a:"1475", w:["1469","1488","1500"]},
+    {q:"Que feitoria mandou construir D. João II?", a:"S. Jorge da Mina", w:["Goa","Arguim","Macau"]},
+    {q:"Quem dobrou o cabo das Tormentas?", a:"Bartolomeu Dias", w:["Vasco da Gama","Cristóvão Colombo","Fernão de Magalhães"]},
+    {q:"Porque é que D. João II lhe chamou cabo da Boa Esperança?", a:"Por prometer o descobrimento da Índia", w:["Porque não havia tempestades","Porque lá havia muito ouro","Porque era o fim do mundo"]},
+    {q:"Com que reino D. João II negociou o Tratado de Tordesilhas?", a:"Espanha", w:["França","Inglaterra","Itália"]},
+    {q:"Segundo Tordesilhas, as terras a descobrir a oeste do meridiano pertenciam a…", a:"Espanha", w:["Portugal","Ao Papa","A ninguém"]},
+    {q:"Porque exigiu D. João II aquela localização do meridiano?", a:"Para reservar espaço no Atlântico para a «volta pelo largo»", w:["Para ficar com a América","Para conquistar Tânger","Para fugir às tempestades do Índico"]},
+    {q:"Quem chegou à Índia por mar em 1498?", a:"Vasco da Gama", w:["Bartolomeu Dias","Pedro Álvares Cabral","Diogo Cão"]},
+    {q:"Que rei reinava em Portugal em 1498?", a:"D. Manuel I", w:["D. João II","D. Afonso V","D. Henrique"]},
+    {q:"Quem foram os grandes opositores dos portugueses no Oriente?", a:"Os muçulmanos", w:["Os espanhóis","Os indígenas do Brasil","Os franceses"]},
+    {q:"Qual destas NÃO foi uma estratégia de D. Manuel I no Oriente?", a:"Mudar a capital para a Índia", w:["Enviar uma forte armada","Deixar um Governador na Índia","Incentivar casamentos com mulheres indianas"]},
+    {q:"O que aconteceu na Baía em 1562?", a:"Uma epidemia de varíola, com cerca de 30 mil mortos", w:["A chegada de Cabral","Um ataque dos Tupinambás a Lisboa","A assinatura de Tordesilhas"]}
+  ];
+  var qi=0, score=0, locked=false;
+  var box=$("#quizBox");
+  function renderQ(){
+    if(qi>=Q.length){ return finish(); }
+    var cur=Q[qi], opts=shuffle([cur.a].concat(cur.w));
+    box.innerHTML='<div class="qhead"><span>Pergunta '+(qi+1)+' de '+Q.length+'</span><span>'+score+' pts</span></div>'+
+      '<div class="bar"><i style="width:'+(qi/Q.length*100)+'%"></i></div>'+
+      '<p class="q"></p><div class="opts"></div><p class="fb" aria-live="polite"></p>';
+    $(".q",box).textContent=cur.q;
+    var o=$(".opts",box);
+    opts.forEach(function(t){
+      var b=document.createElement("button"); b.type="button"; b.textContent=t; o.appendChild(b);
+    });
+    locked=false;
+  }
+  box.addEventListener("click",function(e){
+    var b=e.target.closest(".opts button"); if(b && !locked){
+      locked=true; var ok = b.textContent===Q[qi].a;
+      if(ok){score+=10; b.classList.add("ok"); $(".fb",box).textContent="✅ Certo! +10 pontos";}
+      else{
+        b.classList.add("no");
+        Array.prototype.forEach.call(box.querySelectorAll(".opts button"),function(x){ if(x.textContent===Q[qi].a) x.classList.add("ok"); });
+        $(".fb",box).textContent="❌ A resposta certa está a verde.";
+      }
+      var n=document.createElement("button"); n.type="button"; n.className="btn red"; n.textContent=(qi+1<Q.length?"Próxima volta":"Ver resultado"); n.id="nextQ";
+      $(".fb",box).after(n); n.focus();
+      return;
+    }
+    if(e.target.id==="nextQ"){ qi++; renderQ(); }
+    if(e.target.id==="again"){ qi=0; score=0; renderQ(); }
+  });
+  function finish(){
+    var max=Q.length*10, pct=score/max, pos, msg;
+    if(pct>=0.9){pos="P1";msg="Vitória! Dominas a matéria como um campeão."}
+    else if(pct>=0.7){pos="P2";msg="No pódio! Revê só os pormenores que falharam."}
+    else if(pct>=0.5){pos="P3";msg="Pódio à vista. Volta às secções «Grelha» e «Pilotos»."}
+    else{pos="Box";msg="Entra no box, revê a matéria e tenta outra volta."}
+    box.innerHTML='<div class="final"><div class="big">'+pos+'</div><p style="font-size:20px;margin:8px 0"><b>'+score+' / '+max+' pontos</b></p><p>'+msg+'</p><button class="btn red" id="again" type="button">Nova corrida</button></div>';
+  }
+  renderQ();
+})();
+</script>
+</body>
+</html>
